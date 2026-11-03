@@ -24,3 +24,4 @@ require_once ES_INC_DIR . 'Helpers.php';
 
 // Dashboard option tabs — P02-T010+.
 \ErfanSanat\Theme\Options\Tabs\HeaderTab::boot();
+\ErfanSanat\Theme\Options\Tabs\MegaMenuTab::boot();
