@@ -179,6 +179,7 @@ if (!function_exists('update_option')) {
 function update_option(string $option, mixed $value, ?bool $autoload = null): bool
 {
     $GLOBALS['__wp_options'][$option] = $value;
+    $GLOBALS['__wp_option_autoload'][$option] = $autoload;
     return true;
 }
 }
@@ -261,7 +262,9 @@ function esc_url_raw(string $url): string
 if (!function_exists('wp_kses_post')) {
 function wp_kses_post(string $content): string
 {
-    return $content; // در تست، پاکسازی به عهده خود کد است
+    // تقریب رفتار kses: فقط تگ‌های مجاز محتوایی می‌مانند (script/style حذف)
+    $allowed = '<p><br><strong><em><b><i><u><a><ul><ol><li><h2><h3><h4><blockquote><code><pre><span><img><table><tr><td><th><thead><tbody>';
+    return strip_tags($content, $allowed);
 }
 }
 
@@ -310,16 +313,18 @@ function current_user_can(string $capability, mixed ...$args): bool
 if (!function_exists('wp_send_json_success')) {
 function wp_send_json_success(mixed $data = null, int $status_code = 200): never
 {
-    $GLOBALS['__wp_hooks']['json_responses'][] = ['success' => true, 'data' => $data, 'code' => $status_code];
-    exit(0);
+    $response = ['success' => true, 'data' => $data, 'code' => $status_code];
+    $GLOBALS['__wp_hooks']['json_responses'][] = $response;
+    throw new \ES_JsonExitException($response);
 }
 }
 
 if (!function_exists('wp_send_json_error')) {
 function wp_send_json_error(mixed $data = null, int $status_code = 400): never
 {
-    $GLOBALS['__wp_hooks']['json_responses'][] = ['success' => false, 'data' => $data, 'code' => $status_code];
-    exit(1);
+    $response = ['success' => false, 'data' => $data, 'code' => $status_code];
+    $GLOBALS['__wp_hooks']['json_responses'][] = $response;
+    throw new \ES_JsonExitException($response);
 }
 }
 
@@ -521,4 +526,181 @@ if (!function_exists('bloginfo')) {
 function bloginfo(string $show = ''): void
 {
 }
+}
+
+/** اکشن‌های ادمین — ثبت صفحات منو */
+if (!function_exists('add_menu_page')) {
+    function add_menu_page(string $page_title, string $menu_title, string $capability, string $menu_slug, callable|array|string $callback = '', string $icon_url = '', ?int $position = null): string {
+        $GLOBALS['__wp_hooks']['admin_pages'][$menu_slug] = [
+            'type' => 'menu', 'page_title' => $page_title, 'menu_title' => $menu_title,
+            'capability' => $capability, 'callback' => $callback, 'icon' => $icon_url, 'position' => $position,
+        ];
+        return $menu_slug;
+    }
+}
+
+if (!function_exists('add_submenu_page')) {
+    function add_submenu_page(string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable|array|string $callback = ''): string {
+        if (isset($GLOBALS['__wp_hooks']['admin_pages'][$menu_slug])) {
+            $GLOBALS['__wp_hooks']['admin_pages'][$menu_slug]['submenus'][$parent_slug] = [
+                'page_title' => $page_title, 'menu_title' => $menu_title,
+                'capability' => $capability, 'callback' => $callback,
+            ];
+        } else {
+            $GLOBALS['__wp_hooks']['admin_pages'][$menu_slug] = [
+                'type' => 'submenu', 'parent' => $parent_slug, 'page_title' => $page_title,
+                'menu_title' => $menu_title, 'capability' => $capability, 'callback' => $callback,
+            ];
+        }
+        return $menu_slug;
+    }
+}
+
+/** wp_die در تست: استثنا می‌دهد (رفتار die) */
+if (!class_exists('ES_WpDieException')) {
+    class ES_WpDieException extends \RuntimeException {
+        public $message_raw;
+        public function __construct($message = '', $code = 0) {
+            $this->message_raw = $message;
+            parent::__construct(is_string($message) ? $message : 'wp-die', $code);
+        }
+    }
+}
+
+if (!class_exists('ES_JsonExitException')) {
+    /** پاسخ JSON وردپرس در تست به‌صورت استثنا منتشر می‌شود (معادل exit هسته) */
+    class ES_JsonExitException extends \RuntimeException
+    {
+        public array $response;
+        public function __construct(array $response)
+        {
+            $this->response = $response;
+            parent::__construct('json-exit', (int) ($response['code'] ?? 0));
+        }
+    }
+}
+
+if (!function_exists('wp_die')) {
+    function wp_die(mixed $message = '', mixed $title = '', mixed $args = []): never {
+        throw new ES_WpDieException(is_string($message) ? $message : 'wp-die', is_array($args) ? (int) ($args['response'] ?? 0) : 0);
+    }
+}
+
+/** چک نانس ajax — مطابق رفتار واقعی: نامعتبر → die */
+if (!function_exists('check_ajax_referer')) {
+    function check_ajax_referer(string|int $action = -1, string $query_arg = 'nonce', bool $die = true): string|int|false {
+        $expected = 'test-nonce-' . $action;
+        $provided = isset($_POST[$query_arg]) && is_string($_POST[$query_arg]) ? $_POST[$query_arg] : ($_REQUEST[$query_arg] ?? '');
+        if (is_string($provided) && hash_equals($expected, $provided)) {
+            return '1';
+        }
+        if ($die) {
+            throw new ES_WpDieException('-1', 403);
+        }
+        return false;
+    }
+}
+
+if (!function_exists('wp_unslash')) {
+    function wp_unslash(mixed $value): mixed {
+        if (is_string($value)) {
+            return stripslashes($value);
+        }
+        if (is_array($value)) {
+            return array_map('wp_unslash', $value);
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('sanitize_key')) {
+    function sanitize_key(string $key): string {
+        return preg_replace('/[^a-z0-9_\-]/', '', strtolower($key));
+    }
+}
+
+if (!function_exists('sanitize_email')) {
+    function sanitize_email(string $email): string {
+        return filter_var(trim($email), FILTER_VALIDATE_EMAIL) ? $email : '';
+    }
+}
+
+if (!function_exists('is_email')) {
+    function is_email(mixed $email): string|bool {
+        return is_string($email) && filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : false;
+    }
+}
+
+if (!function_exists('wp_check_invalid_utf8')) {
+    function wp_check_invalid_utf8(string $text, bool $strip = false): string {
+        return mb_check_encoding($text, 'UTF-8') ? $text : ($strip ? '' : '');
+    }
+}
+
+
+if (!function_exists('wp_get_attachment_url')) {
+    function wp_get_attachment_url(int $attachment_id): string|false
+    {
+        return $GLOBALS['__es_stub_attachment_urls'][$attachment_id] ?? false;
+    }
+}
+if (!function_exists('wp_enqueue_media')) {
+    function wp_enqueue_media(array $args = []): void {
+        $GLOBALS['__wp_hooks']['media_enqueued'] = ($GLOBALS['__wp_hooks']['media_enqueued'] ?? 0) + 1;
+    }
+}
+
+/** متای پست برای تست متاباکس‌ها */
+if (!function_exists('get_post_meta')) {
+    function get_post_meta(int $post_id, string $key = '', bool $single = false): mixed {
+        $meta = $GLOBALS['__wp_post_meta'][$post_id][$key] ?? ($key === '' ? [] : null);
+        if ($key === '') {
+            return $GLOBALS['__wp_post_meta'][$post_id] ?? [];
+        }
+        return $single ? $meta : (($GLOBALS['__wp_post_meta'][$post_id][$key] ?? null) === null ? [] : [$meta]);
+    }
+}
+
+if (!function_exists('update_post_meta')) {
+    function update_post_meta(int $post_id, string $meta_key, mixed $meta_value, mixed $prev_value = ''): bool {
+        $GLOBALS['__wp_post_meta'][$post_id][$meta_key] = $meta_value;
+        return true;
+    }
+}
+
+if (!function_exists('add_meta_box')) {
+    function add_meta_box(string $id, string $title, callable|array|string $callback, string|array|false|null $screen = null, string $context = 'advanced', string $priority = 'default', ?array $callback_args = null): void {
+        $GLOBALS['__wp_hooks']['meta_boxes'][$id] = [
+            'title' => $title, 'callback' => $callback, 'screen' => $screen,
+            'context' => $context, 'priority' => $priority,
+        ];
+    }
+}
+
+if (!function_exists('wp_nonce_field')) {
+    function wp_nonce_field(string|int $action = -1, string $name = '_wpnonce', bool $referer = true, bool $echo = true): string {
+        $html = '<input type="hidden" id="' . esc_attr($name) . '" name="' . esc_attr($name) . '" value="' . esc_attr(wp_create_nonce($action)) . '">';
+        if ($echo) {
+            echo $html;
+        }
+        return $html;
+    }
+}
+
+if (!function_exists('wp_verify_nonce')) {
+    function wp_verify_nonce(string $nonce, string|int $action = -1): int|false {
+        return hash_equals('test-nonce-' . $action, $nonce) ? 1 : false;
+    }
+}
+
+if (!function_exists('get_post_type')) {
+    function get_post_type(int|string|object|null $post = null): string|false {
+        $id = is_object($post) ? ($post->ID ?? 0) : (int) ($post ?? 0);
+        return $GLOBALS['__es_stub_post_types'][$id] ?? false;
+    }
+}
+
+if (!function_exists('wp_reset_vars')) {
+    function wp_reset_vars(array $vars = []): void {
+    }
 }
