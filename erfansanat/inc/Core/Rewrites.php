@@ -17,6 +17,9 @@ defined( 'ABSPATH' ) || exit;
 
 final class Rewrites {
 
+	/** Option storing the theme version whose rewrite rules were last flushed. */
+	public const VERSION_OPTION = 'es_rewrite_version';
+
 	private static bool $booted = false;
 
 	public static function boot(): void {
@@ -27,6 +30,28 @@ final class Rewrites {
 
 		add_filter( 'register_post_type_args', array( __CLASS__, 'filter_post_type_args' ), 10, 2 );
 		add_filter( 'register_taxonomy_args', array( __CLASS__, 'filter_taxonomy_args' ), 10, 2 );
+
+		// P03-T008: flush only on activation / version upgrade, never per request.
+		add_action( 'after_switch_theme', array( __CLASS__, 'flush' ) );
+		add_action( 'admin_init', array( __CLASS__, 'maybe_flush' ) );
+	}
+
+	/**
+	 * Rebuild rewrite rules and record the current theme version.
+	 */
+	public static function flush(): void {
+		flush_rewrite_rules( false );
+		update_option( self::VERSION_OPTION, ES_VERSION, false );
+	}
+
+	/**
+	 * Flush once when the stored version differs (upgrade). Runs on admin_init,
+	 * so a normal front-end request never triggers a flush (AC-01).
+	 */
+	public static function maybe_flush(): void {
+		if ( get_option( self::VERSION_OPTION ) !== ES_VERSION ) {
+			self::flush();
+		}
 	}
 
 	public static function is_booted(): bool {
