@@ -60,3 +60,9 @@
 - template-parts/content.php + content-none.php اضافه شد (که index.php به آن‌ها ارجاع می‌دهد).
 - woocommerce cart/checkout با هوک‌های واقعی WC (wc_get_template) اصلاح شد.
 - Smoke test توسعه یافت: search/page/cart/checkout/taxonomy-city/archive-projects/single/index → ALL PASS. E2E: ALL-PASS.
+
+## DOM fidelity + service template — 2026-11-03
+- test-dom-fidelity: رندر front-page با ۱۵ سکشن (parity با استاتیک) + ۵۰ هوک data-* حفظ‌شده → ALL PASS.
+- رفع باگ: SectionManager registry فقط ۶ سکشن داشت → به ۱۵ سکشن گسترش یافت.
+- page-templates/service-detail.php برای ۵ صفحه dtail خدمات ساخته شد.
+- E2E: ALL-PASS | Smoke: ALL PASS

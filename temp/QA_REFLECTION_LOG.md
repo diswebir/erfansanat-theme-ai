@@ -57,3 +57,6 @@
 
 ## Polish — 2026-11-03
 - Added content.php/content-none.php; fixed WC cart/checkout wrappers to real hooks (wc_get_template); extended smoke coverage (9 templates). Smoke ALL PASS, E2E ALL-PASS.
+
+## DOM fidelity test — 2026-11-03
+- test-dom-fidelity.php: rendered vs static comparison → 15/15 sections, 50/50 data-* hooks, all markers. Found & fixed: SectionManager registry had only 6 of 15 home sections. ALL PASS.

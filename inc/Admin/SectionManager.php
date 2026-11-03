@@ -29,12 +29,21 @@ final class SectionManager
     /** Registered sections per template (id => label). Extended in Phase 5/7. */
     private static array $registry = [
         'front-page' => [
-            'hero'             => 'اسلایدر/ویدیو هیرو',
-            'categories'       => 'دسته‌بندی محصولات',
-            'featured-products'=> 'محصولات برگزیده',
-            'latest-projects'  => 'آخرین پروژه‌ها',
-            'latest-posts'     => 'آخرین مقالات',
-            'stats'            => 'آمار و مشتریان',
+            'hero'         => 'اسلایدر/ویدیو هیرو',
+            'projects'     => 'پروژه‌های نورپردازی شهری',
+            'categories'   => 'دسته‌بندی محصولات',
+            'about'        => 'درباره عرفان صنعت',
+            'history'      => 'تاریخچه و دستاوردها',
+            'stats'        => 'آمار وdados',
+            'products'     => 'محصولات برگزیده',
+            'brands'       => 'برندها',
+            'services'     => 'خدمات تخصصی',
+            'quality'      => 'استانداردهای کیفیت',
+            'support'      => 'پشتیبانی و گارانتی',
+            'clients'      => 'مشتریان و سازمان‌ها',
+            'blog-preview' => 'آخرین مقالات',
+            'contact-cta'  => 'دعوت به تماس',
+            'newsletter'   => 'خبرنامه',
         ],
     ];
 
