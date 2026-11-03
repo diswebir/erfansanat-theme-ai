@@ -1,0 +1,195 @@
+{
+  "generated_by": "tools/build-asset-manifest.py",
+  "reference": "static-mirror/",
+  "files": {
+    "css/styles.css": {
+      "sha256": "d05ea048277bd2942f7559107d77beb008fb9df4f4a4a1453b5a8539149b5bcb",
+      "bytes": 190867,
+      "source": "assets/css/styles.css",
+      "source_sha256": "d05ea048277bd2942f7559107d77beb008fb9df4f4a4a1453b5a8539149b5bcb",
+      "identical_to_source": true
+    },
+    "fonts/vazirmatn-arabic.woff2": {
+      "sha256": "84a382e46c30fb4f73d0e3800c16d0af15888e2731e57fa5f93e2c29a2c6a957",
+      "bytes": 46308,
+      "source": "assets/fonts/vazirmatn-arabic.woff2",
+      "source_sha256": "84a382e46c30fb4f73d0e3800c16d0af15888e2731e57fa5f93e2c29a2c6a957",
+      "identical_to_source": true
+    },
+    "fonts/vazirmatn-latin-ext.woff2": {
+      "sha256": "21529facfd236f6be527e4353623bdb889c96a7ebb7db1e148e28406be0ea004",
+      "bytes": 21860,
+      "source": "assets/fonts/vazirmatn-latin-ext.woff2",
+      "source_sha256": "21529facfd236f6be527e4353623bdb889c96a7ebb7db1e148e28406be0ea004",
+      "identical_to_source": true
+    },
+    "fonts/vazirmatn-latin.woff2": {
+      "sha256": "d29c041cd4294af893cf3c01dfab6d47202c667ab55d702f68782599918c651d",
+      "bytes": 34524,
+      "source": "assets/fonts/vazirmatn-latin.woff2",
+      "source_sha256": "d29c041cd4294af893cf3c01dfab6d47202c667ab55d702f68782599918c651d",
+      "identical_to_source": true
+    },
+    "images/chandelier.jpg": {
+      "sha256": "acbac60db9fae36c92220c0d0a9e2b6c94fdbf401c614511718bc4281d5fa09a",
+      "bytes": 309516,
+      "source": "images/chandelier.jpg",
+      "source_sha256": "acbac60db9fae36c92220c0d0a9e2b6c94fdbf401c614511718bc4281d5fa09a",
+      "identical_to_source": true
+    },
+    "images/ese-logo.svg": {
+      "sha256": "045520c60ccc300f65f4a56e03ed70cff06ff814ab4848dac259d68690735ef6",
+      "bytes": 1560,
+      "source": "images/ese-logo.svg",
+      "source_sha256": "045520c60ccc300f65f4a56e03ed70cff06ff814ab4848dac259d68690735ef6",
+      "identical_to_source": true
+    },
+    "images/factory.jpg": {
+      "sha256": "f331e44b6717a025011a69c1431221b86ab9d145e7d56e776b89c79dc91e8f25",
+      "bytes": 321188,
+      "source": "images/factory.jpg",
+      "source_sha256": "f331e44b6717a025011a69c1431221b86ab9d145e7d56e776b89c79dc91e8f25",
+      "identical_to_source": true
+    },
+    "images/hero.jpg": {
+      "sha256": "c951cfd84b6e201f3186896b769f8f172d0208a175b5a192f20d58b26c7c7ec4",
+      "bytes": 386121,
+      "source": "images/hero.jpg",
+      "source_sha256": "c951cfd84b6e201f3186896b769f8f172d0208a175b5a192f20d58b26c7c7ec4",
+      "identical_to_source": true
+    },
+    "images/light-element.jpg": {
+      "sha256": "b24283c65c31b15a60f2f8e238e8ae6fb3e66d135daa555325a8901ce29c0e3b",
+      "bytes": 303165,
+      "source": "images/light-element.jpg",
+      "source_sha256": "b24283c65c31b15a60f2f8e238e8ae6fb3e66d135daa555325a8901ce29c0e3b",
+      "identical_to_source": true
+    },
+    "images/light-sphere.jpg": {
+      "sha256": "2648ef35c3af9135b5bc2a23ae0151031d2d060ff62872328897ccbc9686e3db",
+      "bytes": 559888,
+      "source": "images/light-sphere.jpg",
+      "source_sha256": "2648ef35c3af9135b5bc2a23ae0151031d2d060ff62872328897ccbc9686e3db",
+      "identical_to_source": true
+    },
+    "images/light-tree.jpg": {
+      "sha256": "478d9ef23bcd8a6a285b865a6a517ac530a797b6bb351a43f6c0dee585a1e38b",
+      "bytes": 505873,
+      "source": "images/light-tree.jpg",
+      "source_sha256": "478d9ef23bcd8a6a285b865a6a517ac530a797b6bb351a43f6c0dee585a1e38b",
+      "identical_to_source": true
+    },
+    "images/light-tunnel.jpg": {
+      "sha256": "b81abb58de76c925cb9136ec5530624164b3f362e321dcaa6ed057995c01b100",
+      "bytes": 628791,
+      "source": "images/light-tunnel.jpg",
+      "source_sha256": "b81abb58de76c925cb9136ec5530624164b3f362e321dcaa6ed057995c01b100",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-10951256.jpg": {
+      "sha256": "aaa4c34a5da17fb6b39b71f27c0d82295c692ee3a6327be968381a9d6b72c8b2",
+      "bytes": 143720,
+      "source": "images/pexels/pexels-10951256.jpg",
+      "source_sha256": "aaa4c34a5da17fb6b39b71f27c0d82295c692ee3a6327be968381a9d6b72c8b2",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-14677080.jpg": {
+      "sha256": "647c35a526af24d8d786709b491c8587680f46dc19eb8225943b0437fef16c02",
+      "bytes": 82949,
+      "source": "images/pexels/pexels-14677080.jpg",
+      "source_sha256": "647c35a526af24d8d786709b491c8587680f46dc19eb8225943b0437fef16c02",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-14720175.jpg": {
+      "sha256": "a088e5cc51e63f5c7f837d1fb12347d3b2f7a0d081a0762e801f52649c0a8cd1",
+      "bytes": 144189,
+      "source": "images/pexels/pexels-14720175.jpg",
+      "source_sha256": "a088e5cc51e63f5c7f837d1fb12347d3b2f7a0d081a0762e801f52649c0a8cd1",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-14822163.jpg": {
+      "sha256": "3097b44ba77b2919d955bc372f1f5429329b265a25b8ffbf09c173f6d2cc562f",
+      "bytes": 177358,
+      "source": "images/pexels/pexels-14822163.jpg",
+      "source_sha256": "3097b44ba77b2919d955bc372f1f5429329b265a25b8ffbf09c173f6d2cc562f",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-17789372.jpg": {
+      "sha256": "3d5345a11a35488bdd6e1921803aed5805f3370004773044919bb1784a897f25",
+      "bytes": 148384,
+      "source": "images/pexels/pexels-17789372.jpg",
+      "source_sha256": "3d5345a11a35488bdd6e1921803aed5805f3370004773044919bb1784a897f25",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-19112845.jpg": {
+      "sha256": "98e98392b3ad3128608a3db281a714f226d25f88ce1da6e30f5b1c41960b072a",
+      "bytes": 315419,
+      "source": "images/pexels/pexels-19112845.jpg",
+      "source_sha256": "98e98392b3ad3128608a3db281a714f226d25f88ce1da6e30f5b1c41960b072a",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-29570545.jpg": {
+      "sha256": "41e7cc87e21a21221238c7b8a6f8f4e56bfaf10f07f0074d6e2b0f81334c1d3b",
+      "bytes": 188054,
+      "source": "images/pexels/pexels-29570545.jpg",
+      "source_sha256": "41e7cc87e21a21221238c7b8a6f8f4e56bfaf10f07f0074d6e2b0f81334c1d3b",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-29689925.jpg": {
+      "sha256": "fd66e5349e8f2bf53c3ef88a181b2b4a4a7575a26f33b9bbefca38373b2ededc",
+      "bytes": 200238,
+      "source": "images/pexels/pexels-29689925.jpg",
+      "source_sha256": "fd66e5349e8f2bf53c3ef88a181b2b4a4a7575a26f33b9bbefca38373b2ededc",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-34993337.jpg": {
+      "sha256": "5f3a66bf785eb396423139e1735d9f9b3459b43eea61ad9bdec07f8d7a4278ac",
+      "bytes": 91434,
+      "source": "images/pexels/pexels-34993337.jpg",
+      "source_sha256": "5f3a66bf785eb396423139e1735d9f9b3459b43eea61ad9bdec07f8d7a4278ac",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-35318900.jpg": {
+      "sha256": "8df42d99c3b437e63d6ddd2cf0bc1c1f5b8eefd8a382845513501961eefb5efd",
+      "bytes": 112358,
+      "source": "images/pexels/pexels-35318900.jpg",
+      "source_sha256": "8df42d99c3b437e63d6ddd2cf0bc1c1f5b8eefd8a382845513501961eefb5efd",
+      "identical_to_source": true
+    },
+    "images/pexels/pexels-36052966.jpg": {
+      "sha256": "478e51418092ea48de8abfe89a20ed411e8420299090e26a307038c7084018f6",
+      "bytes": 162414,
+      "source": "images/pexels/pexels-36052966.jpg",
+      "source_sha256": "478e51418092ea48de8abfe89a20ed411e8420299090e26a307038c7084018f6",
+      "identical_to_source": true
+    },
+    "images/string-lights.jpg": {
+      "sha256": "aba533bfbe57b3877ac29f16c7571464e5b8e7686d45b19325f59e8fdb20c4a6",
+      "bytes": 184112,
+      "source": "images/string-lights.jpg",
+      "source_sha256": "aba533bfbe57b3877ac29f16c7571464e5b8e7686d45b19325f59e8fdb20c4a6",
+      "identical_to_source": true
+    },
+    "images/sun-light.jpg": {
+      "sha256": "4ae9376bd6633b18107ef1e6c9273b5afe2aafcf8b2aacd29ce62e02c4c91007",
+      "bytes": 222861,
+      "source": "images/sun-light.jpg",
+      "source_sha256": "4ae9376bd6633b18107ef1e6c9273b5afe2aafcf8b2aacd29ce62e02c4c91007",
+      "identical_to_source": true
+    },
+    "js/main.js": {
+      "sha256": "00591a32a85619b2997e625f2a769bb178be443f07f94fcb0763d294e4b15f0d",
+      "bytes": 112885,
+      "source": "assets/js/main.js",
+      "source_sha256": "00591a32a85619b2997e625f2a769bb178be443f07f94fcb0763d294e4b15f0d",
+      "identical_to_source": true
+    },
+    "video/hero-video.mp4": {
+      "sha256": "b41de43d298c7ceeeaa18ca3bd236315e43d116949943b84f37929484eae2063",
+      "bytes": 7025235,
+      "source": "images/hero-video.mp4",
+      "source_sha256": "b41de43d298c7ceeeaa18ca3bd236315e43d116949943b84f37929484eae2063",
+      "identical_to_source": true
+    }
+  }
+}

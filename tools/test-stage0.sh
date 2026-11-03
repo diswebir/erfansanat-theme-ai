@@ -45,8 +45,8 @@ print('Deterministic inventory/map; all 156 source files unchanged.')
 PY
 
 printf '%s\n' '[7/7] Tooling script syntax and Git whitespace'
-bash -n tools/setup.sh tools/env.sh tools/php tools/wp tools/phpcs tools/phpunit tools/test-stage0.sh
-python3 -m py_compile tools/scan_static.py tools/prepare-phpunit.py tools/tests/test_discovery.py
+bash -n tools/setup.sh tools/env.sh tools/php tools/wp tools/phpcs tools/phpunit tools/test-stage0.sh tools/run-php-tests.sh tools/preview-wordpress.sh tools/test-local.sh
+python3 -m py_compile tools/scan_static.py tools/prepare-phpunit.py tools/tests/test_discovery.py tools/build-asset-manifest.py temp/phase-01-core-and-assets/tests/check-http.py
 # The uploaded reference is immutable, including its original trailing whitespace.
 git diff --check -- . ':!static-mirror'
 git diff --cached --check -- . ':!static-mirror'

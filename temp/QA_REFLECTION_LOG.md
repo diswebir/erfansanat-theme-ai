@@ -12,7 +12,7 @@
 
 - Task 1.1: [PASSED] — ۹ تست PHPUnit/۵۳ assertion و ۱۴ بررسی HTTP.
 - Task 1.2: [PASSED] — ۱۱ تست PHPUnit/۴۵ assertion و ۳۲ بررسی HTTP.
-- Task 1.3: [PENDING] — هنوز اجرا نشده است.
+- Task 1.3: [PASSED] — ۱۲ تست PHPUnit/۶۹۰ assertion؛ ۳۷ بررسی HTTP اختصاصی.
 - Task 2.1: [PENDING] — هنوز اجرا نشده است.
 - Task 2.2: [PENDING] — هنوز اجرا نشده است.
 - Task 2.3: [PENDING] — هنوز اجرا نشده است.
@@ -75,3 +75,17 @@
 - باگ‌های آزمون که اصلاح شدند: نبود `use ErfanSanat\Theme\DeBloat` (خطای کلاس یافت نشد)؛ ست‌کردن `query_vars` به‌جای پرچم‌های واقعی `WP_Query`؛ هشدار `Undefined array key "SERVER_NAME"` از هسته که با شبیه‌سازی `$_SERVER` در bootstrap برطرف شد؛ انتظار رشته‌ای canonical/robots با کوتیشن تک در خروجی واقعی هسته.
 - شواهد نهایی: `run-phase-01-tests.sh --task 1.2` → PHPUnit «OK (11 tests, 45 assertions)» و ۳۲/۳۲ بررسی HTTP؛ PHPCS بدون خطا.
 - محدودیت: افزونه‌های سواچ و ورود پیامکی نصب نیستند و اثر آن‌ها فقط با handleهای مصنوعی و بازبینی کد سنجیده شد.
+
+## 2026-11-03 — Task 1.3 (انتقال و بارگذاری Assets)
+
+- انتقال با `cp -p` و مقایسهٔ SHA-256: CSS، JS، ۳ فونت، ۲۱ تصویر و ویدیو همه یکسان با مرجع؛ `assets/manifest.json` (۲۷ فایل) با `tools/build-asset-manifest.py` تولید و با `--check` قابل بازبینی است.
+- `inc/AssetManager.php`: enqueue استایل در head و اسکریپت در فوتر، نسخهٔ `filemtime` با fallback به نسخهٔ قالب، preload دو فونت با `crossorigin`، حذف dashicons برای مهمان، helperهای `uri/path/has/media/version` با محدودسازی به پوشهٔ `assets/`.
+- باگ‌های کشف و اصلاح‌شده:
+  1. روتر محلی فایل‌های قالب را ۳۰۱ می‌کرد چون `realpath` از symlink به بیرون docroot می‌رسید و شرط containment رد می‌شد؛ شرط به «فایل غیر PHP داخل wp-content/themes|plugins» تغییر کرد. این تغییر عارضه‌ای داشت (هر فایل ناموجود به index.php می‌رفت) که با ۴۰۴ صریح برای دارایی ناموجود برطرف شد.
+  2. مرحلهٔ اول اصلاح، `wp-login.php` را هم ۴۰۴ می‌کرد؛ آزمون `tools/test-local.sh` این را گرفت و شرط به مسیرهای `wp-content`/`wp-includes` محدود شد.
+  3. `check-http.py` هنگام خواندن JPG/MP4 با خطای decode متوقف می‌شد؛ تابع درخواست به نسخهٔ باینری‌امن (`curl_raw`) تفکیک شد و اندازه بر مبنای بایت خام سنجیده می‌شود.
+  4. ارجاع به مرجع در تست از مسیر قالب (که symlink است) محاسبه می‌شد و به `.local/wordpress/wp-content/themes/static-mirror` می‌رسید؛ به ریشهٔ مخزن تغییر کرد.
+  5. تست «preload فقط برای فونت» روی متن خام کد اجرا می‌شد و توضیحات را مثبت کاذب می‌گرفت؛ با tokenizer به کد بدون کامنت محدود شد و به `print_font_preloads` به‌عنوان تنها تابع preload قالب تغییر یافت.
+  6. `media()` برای مسیر نامعتبر آرایه برمی‌گرداند نه رشته؛ assertion تست اصلاح شد.
+- شواهد نهایی: `run-phase-01-tests.sh` → ۹+۱۱+۱۲ تست PHPUnit با ۵۳+۴۵+۶۹۰ assertion و ۸۳/۸۳ بررسی HTTP؛ `tools/test-local.sh` و `tools/test-stage0.sh` هم دوباره پاس شدند.
+- محدودیت: آزمایش واقعی روی LiteSpeed، CDN و کش مرورگر انجام نشده؛ `filemtime` در استقرار چندسروره باید با نسخهٔ ثابت جایگزین یا همگام شود.

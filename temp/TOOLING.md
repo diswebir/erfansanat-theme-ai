@@ -46,7 +46,11 @@ bash tools/test-stage0.sh
 ## محیط وردپرس محلی
 
 - `bash tools/setup-wordpress.sh`: نصب/بازاستفاده از وردپرس، ووکامرس، SQLite، زبان فارسی و داده ساختگی در `.local/`.
-- `tools/php -S 0.0.0.0:8080 -t .local/wordpress tools/local/router.php`: پیش‌نمایش وردپرس.
+- `bash tools/preview-wordpress.sh`: پیش‌نمایش وردپرس روی پورت 8080 با روتر دارایی‌محور (پورت با `PORT=` قابل تغییر است).
 - `bash tools/test-local.sh`: آزمون runtime و HTTP محیط محلی.
 - `.local/` شامل هسته، افزونه‌ها، دیتابیس، رسانه و اعتبارنامه است و در Git ثبت نمی‌شود.
 - `tools/local/runtime-manifest.json` نسخه‌ها و منشأ دانلودها را pin می‌کند.
+- `tools/run-php-tests.sh DIR [tag]`: اجرای قراردادهای PHPUnit با نام فایل تسک‌محور (کپی موقت زیر نام کلاس، چون PHPUnit 12 نام کلاس را از نام فایل می‌سازد). `tools/phpunit` کد خروج واقعی را منتقل می‌کند.
+- `python3 tools/build-asset-manifest.py [--check]`: تولید/بازبینی `erfansanat/assets/manifest.json` با SHA-256 و اندازهٔ هر دارایی.
+- `temp/phase-01-core-and-assets/tests/check-http.py`: بررسی‌های HTTP/دارایی/مدیریت با curl؛ لازم است چون PHP-Wasm به درخواست HTTP از پروسهٔ خودش پاسخ نمی‌دهد.
+- `phpcs.xml.dist`: استاندارد WordPress با معافیت مستند PSR-4، prefix و text-domain پروژه.

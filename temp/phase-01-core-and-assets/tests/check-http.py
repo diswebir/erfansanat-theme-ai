@@ -52,23 +52,30 @@ def check(task: str, label: str, passed: bool, detail: str = "") -> None:
         failures.append(f"{task}: {label}{suffix}")
 
 
-def curl(path: str, base: str, jar: Path | None = None, data: str | None = None) -> tuple[int, str, str]:
-    """Return (status, headers, body) for one local request."""
-    command = ["curl", "-sS", "-m", "30", "-D", "-", "--compressed"]
+def curl_raw(path: str, base: str, jar: Path | None = None, data: str | None = None) -> tuple[int, str, bytes]:
+    """Return (status, headers, raw body bytes) for one local request."""
+    command = ["curl", "-sS", "-m", "60", "-D", "-", "--compressed"]
     if jar is not None:
         command += ["-b", str(jar), "-c", str(jar)]
     command += ["-o", "-"]
     if data is not None:
         command += ["--data", data]
     command.append(base + path)
-    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    result = subprocess.run(command, capture_output=True, check=False)
     raw = result.stdout
-    head, _, body = raw.partition("\r\n\r\n")
-    if not body and "\n\n" in raw:
-        head, _, body = raw.partition("\n\n")
+    head_bytes, _, body = raw.partition(b"\r\n\r\n")
+    if not body and b"\n\n" in raw:
+        head_bytes, _, body = raw.partition(b"\n\n")
+    head = head_bytes.decode("utf-8", errors="replace")
     statuses = re.findall(r"^HTTP/\S+ (\d{3})", head, re.MULTILINE)
     status = int(statuses[-1]) if statuses else 0
     return status, head, body
+
+
+def curl(path: str, base: str, jar: Path | None = None, data: str | None = None) -> tuple[int, str, str]:
+    """Text version of curl_raw for markup and stylesheet assertions."""
+    status, head, body = curl_raw(path, base, jar=jar, data=data)
+    return status, head, body.decode("utf-8", errors="replace")
 
 
 def log_size() -> int:
@@ -246,51 +253,87 @@ def check_admin_editor(base: str, task: str) -> None:
         check(task, label, status == 200 and needle in body, f"status={status}")
 
 
+def asset_meta(url: str, base: str) -> tuple[int, str, int]:
+    """Status, content type and byte size for one asset URL."""
+    status, headers, body = curl_raw(url.replace(base, ""), base)
+    kind = ""
+    for line in headers.splitlines():
+        if line.lower().startswith("content-type:"):
+            kind = line.split(":", 1)[1].strip()
+            break
+    return status, kind, len(body)
+
+
 def task_1_3(base: str) -> None:
-    """Phase 1.3: transferred assets answer 200 and keep relative font paths."""
+    """Phase 1.3: transferred assets answer 200 and stay byte-identical."""
     status, _, home = curl("/", base)
+    check("1.3", "home page still renders", status == 200, f"got {status}")
     head = head_of(home)
-    urls = asset_links(head)
-    own = [url for url in urls if "/themes/erfansanat/" in url]
-    check("1.3", "theme stylesheet is printed in the head", any(url.endswith(".css") or ".css?" in url for url in own), str(own))
-    check("1.3", "theme script is printed in the head", any(".js" in url for url in own), str(own))
 
-    css_url = next((url for url in own if "styles.css" in url), "")
-    if css_url:
-        status, _, css = curl(css_url.replace(base, ""), base)
-        check("1.3", "styles.css returns 200", status == 200, f"status={status} url={css_url}")
-        check("1.3", "styles.css keeps its font-face rules", "@font-face" in css)
-        check("1.3", "styles.css keeps the relative font path", "../fonts/vazirmatn-arabic.woff2" in css)
-        version = re.search(r"[?&]ver=([^&'\"]+)", css_url)
-        expected = str(int((ASSETS / "css/styles.css").stat().st_mtime))
-        check("1.3", "stylesheet version equals filemtime", bool(version) and version.group(1) == expected, f"ver={version.group(1) if version else 'none'} expected={expected}")
-    else:
-        check("1.3", "styles.css is enqueued", False, str(own))
+    style_tag = re.search(r"<link[^>]+id=['\"]erfansanat-styles-css['\"][^>]*>", head)
+    script_tag = re.search(r"<script[^>]+id=['\"]erfansanat-main-js['\"][^>]*>", head + home)
+    check("1.3", "theme stylesheet is enqueued", bool(style_tag))
+    check("1.3", "behaviour script is enqueued", bool(script_tag))
 
-    for font in ("vazirmatn-arabic.woff2", "vazirmatn-latin.woff2", "vazirmatn-latin-ext.woff2"):
-        path = f"/wp-content/themes/erfansanat/assets/fonts/{font}"
-        status, headers, _ = curl(path, base)
-        check("1.3", f"font {font} returns 200", status == 200, f"status={status}")
-        check("1.3", f"font {font} is served as WOFF2", "font/woff2" in headers.lower() or "application/octet-stream" in headers.lower())
+    style_url = re.search(r"href=['\"]([^'\"]+)['\"]", style_tag.group(0)).group(1) if style_tag else ""
+    script_url = re.search(r"src=['\"]([^'\"]+)['\"]", script_tag.group(0)).group(1) if script_tag else ""
 
-    for name in ("styles.css", "main.js"):
-        reference = ROOT / "static-mirror/assets" / ("css/" + name if name.endswith(".css") else "js/" + name)
-        copied = ASSETS / ("css/" + name if name.endswith(".css") else "js/" + name)
-        check("1.3", f"{name} is byte-identical to the reference", copied.exists() and reference.read_bytes() == copied.read_bytes())
+    for label, url, local, content_type in [
+        ("styles.css", style_url, "css/styles.css", "text/css"),
+        ("main.js", script_url, "js/main.js", "javascript"),
+    ]:
+        if not url:
+            check("1.3", f"{label} URL is printed", False)
+            continue
+        status, kind, size = asset_meta(url, base)
+        expected_size = (ASSETS / local).stat().st_size
+        check("1.3", f"{label} returns 200", status == 200, f"status={status} url={url}")
+        check("1.3", f"{label} serves the full file", size == expected_size, f"{size} != {expected_size}")
+        check("1.3", f"{label} has a CSS/JS content type", content_type in kind.lower(), kind)
+        version = re.search(r"[?&]ver=([^&'\"]+)", url)
+        expected = str(int((ASSETS / local).stat().st_mtime))
+        check(
+            "1.3",
+            f"{label} version equals filemtime",
+            bool(version) and version.group(1) == expected,
+            f"ver={version.group(1) if version else 'none'} expected={expected}",
+        )
 
-    home_urls = [url for url in urls if "hero-video" in url]
-    check("1.3", "home page does not preload the hero video", not home_urls, str(home_urls))
+    fonts = ["vazirmatn-arabic.woff2", "vazirmatn-latin.woff2", "vazirmatn-latin-ext.woff2"]
+    for font in fonts:
+        url = f"/wp-content/themes/erfansanat/assets/fonts/{font}"
+        status, kind, size = asset_meta(url, base)
+        expected_size = (ASSETS / "fonts" / font).stat().st_size
+        check("1.3", f"font {font} returns 200", status == 200 and size == expected_size, f"status={status} size={size}")
+        check("1.3", f"font {font} is WOFF2", "woff2" in kind.lower(), kind)
+
+    preloads = re.findall(r"<link rel=\"preload\"[^>]+>", head)
+    font_preloads = [tag for tag in preloads if 'as="font"' in tag]
+    check("1.3", "font subsets are preloaded", len(font_preloads) == 2, str(len(font_preloads)))
+    check("1.3", "font preloads declare crossorigin", all("crossorigin" in tag for tag in font_preloads))
+    check("1.3", "no media or video preload on the home page", not [tag for tag in preloads if "as=\"video\"" in tag or "as=\"image\"" in tag])
+
+    css_status, _, css = curl(style_url.replace(base, ""), base) if style_url else (0, "", "")
+    check("1.3", "stylesheet keeps its font-face rules", "@font-face" in css)
+    check("1.3", "stylesheet keeps relative font paths", "../fonts/vazirmatn-arabic.woff2" in css)
+    check("1.3", "stylesheet still carries the reference classes", ".hero-vignette" in css and ".card-light" in css)
+
+    js_status, _, js = curl(script_url.replace(base, ""), base) if script_url else (0, "", "")
+    check("1.3", "script keeps the reference behaviour engine", "initNavbar" in js and "DOMContentLoaded" in js)
+
+    for relative in ("images/hero.jpg", "images/ese-logo.svg", "video/hero-video.mp4", "images/pexels/pexels-19112845.jpg"):
+        url = f"/wp-content/themes/erfansanat/assets/{relative}"
+        status, kind, size = asset_meta(url, base)
+        check("1.3", f"{relative} returns 200", status == 200, f"status={status}")
+        check("1.3", f"{relative} keeps its full size", size == (ASSETS / relative).stat().st_size, str(size))
+
     shop_status, _, shop = curl("/shop/", base)
-    check("1.3", "shop page loads no hero video element", "hero-video.mp4" not in shop, f"status={shop_status}")
-    video_status, headers, _ = curl("/wp-content/themes/erfansanat/assets/video/hero-video.mp4", base)
-    if video_status == 200:
-        check("1.3", "hero video is served only on demand", "preload" not in headers.lower())
-    else:
-        check("1.3", "hero video file is reachable when requested", video_status == 206, f"status={video_status}")
+    check("1.3", "shop page does not preload the hero video", "hero-video.mp4" not in shop, f"status={shop_status}")
+    check("1.3", "home page does not start the video before the hero", "preload=\"metadata\"" not in home)
 
-    nonce = re.search(r"<body[^>]*class=\"([^\"]*)\"", home)
-    body_classes = nonce.group(1) if nonce else ""
-    check("1.3", "body carries the home context class", "home" in body_classes, body_classes)
+    check("1.3", "missing asset returns 404", asset_meta("/wp-content/themes/erfansanat/assets/css/missing.css", base)[0] == 404)
+    check("1.3", "theme PHP source is never served", asset_meta("/wp-content/themes/erfansanat/functions.php", base)[0] == 404)
+    check("1.3", "reference source stays untouched", subprocess.run(["git", "diff", "--exit-code", "--", "static-mirror"], cwd=ROOT, capture_output=True, check=False).returncode == 0)
 
 
 def main() -> int:

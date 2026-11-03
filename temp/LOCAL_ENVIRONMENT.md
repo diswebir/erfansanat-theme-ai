@@ -12,7 +12,7 @@
 
 ## پیش‌نمایش و ورود
 
-- پیش‌نمایش وردپرس: پورت `8080` در Live Preview همین محیط.
+- پیش‌نمایش وردپرس: پورت `8080` در Live Preview همین محیط. روتر محلی دارایی‌های قالب symlink‌شده را سرو می‌کند، فایل PHP را هرگز برنمی‌گرداند و برای دارایی ناموجود ۴۰۴ می‌دهد.
 - پیش‌نمایش مرجع استاتیک: پورت `8000` (این یکی وردپرس نیست).
 - مدیریت وردپرس: `/wp-admin/`
 - نام کاربری مدیر: `erfansanat_admin`
@@ -48,7 +48,7 @@
 ```bash
 bash tools/setup.sh
 bash tools/setup-wordpress.sh
-tools/php -S 0.0.0.0:8080 -t .local/wordpress tools/local/router.php
+bash tools/preview-wordpress.sh   # همان: tools/php -S 0.0.0.0:8080 -t .local/wordpress tools/local/router.php
 ```
 
 در یک ترمینال دیگر:
