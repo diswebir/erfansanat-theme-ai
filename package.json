@@ -1,0 +1,14 @@
+{
+  "name": "erfansanat-theme-ai-harness",
+  "private": true,
+  "description": "Local test harness for the ErfanSanat WordPress theme (php-wasm runtime). Not part of the shipped theme.",
+  "type": "module",
+  "scripts": {
+    "test": "node tools/harness/run-tests.mjs",
+    "setup": "npm install --no-audit --no-fund"
+  },
+  "dependencies": {
+    "@php-wasm/node": "3.1.62",
+    "@php-wasm/universal": "3.1.62"
+  }
+}

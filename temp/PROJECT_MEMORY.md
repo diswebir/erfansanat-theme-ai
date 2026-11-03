@@ -1,13 +1,13 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — پایان STAGE 0 (Discovery) — وضعیت: `STAGE 0 COMPLETED — WAITING FOR USER CLARIFICATION (Gate 0)`
+**آخرین به‌روزرسانی:** 2026-11-03 — STAGE 1 کامل شد — وضعیت: `STAGE 1 COMPLETED — WAITING FOR GATE 1 APPROVAL`
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
-| فاز جاری | STAGE 0 — تجهیز هارنس، اسکن استاتیک، ساخت حافظه |
-| آخرین تسک پاس‌شده | — (هنوز کدنویسی قالب آغاز نشده) |
-| دروازه تأیید | Gate 0: در انتظار پاسخ کاربر به ۱۲ سؤال ابهام‌زدایی |
+| فاز جاری | STAGE 1 — اسکلت ۸ فاز / ۲۴ تسک آماده؛ منتظر تأیید Gate 1 |
+| آخرین تسک پاس‌شده | — (همه ۲۴ تسک `PENDING`؛ عمداً تست‌ها سبز نمی‌شوند) |
+| دروازه تأیید | Gate 1: در انتظار تأیید `temp/MASTER_PLAN.md` و ۲۴ فایل تسک |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
 
@@ -35,23 +35,23 @@
 9. فیلترهای آرشیو (`data-product-*`, `data-project-*`, `data-blog-*`) **کاملاً سمت کلاینت** روی DOM اجرا می‌شوند؛ برای جایگزینی JetSmartFilters باید همان ساختار DOM از کوئری PHP تولید شود + صفحه‌بندی سرور برای سئو.
 10. `main.js` ماژولار است: `initNavbar, initMegaMenuAndSearch, initHeroVideo, initHomeHeroVariants, initCounters, initHomeServices, initGalleries, initProjectsArchive, initProductsArchive, initProductDetailAndFaqs, initPurchaseJourney, initBlogArchive, initRecruitmentTabs, initShareButtons, initContactForm, initAll`.
 
-## ۴. پاسخ‌های کاربر (بدون پاسخ تا این لحظه)
-| # | سؤال | پاسخ |
+## ۴. پاسخ‌های کاربر (Gate 0 — تأییدشده 2026-11-03)
+| # | سؤال | پاسخ کاربر |
 |---|---|---|
-| Q1 | ویدیو هیرو (۶.۸MB) → کتابخانه رسانه یا فایل تم؟ | — |
-| Q2 | ۲۰ محصول/۱۵ پروژه استاتیک در میرور، ولی دیتابیس زنده چند صد مورد دارد؛ منبع محتوا؟ | — |
-| Q3 | صفحه‌های `arya` / `smartelement` (لندینگ) در میرور نیستند | — |
-| Q4 | ۳ هیرو واریانت صفحه اصلی: کدام‌ها باید ساخته شوند؟ | — |
-| Q5 | «خدمات» پست‌تایپ نیست؛ با برگه/CPT جدید یا لندینگ ساخته شود؟ | — |
-| Q6 | سبد خرید/پرداخت: جایگزینی کامل UI ووکامرس یا استایل‌دهی روی فرم‌های استاندارد؟ | — |
-| Q7 | فرم‌ها: ایمیل مقصد + ذخیره در پیشخوان؟ | — |
-| Q8 | داشبورد: پسوند نام آپشن و پیشوند متا (`es_`)? | — |
-| Q9 | منوها از «ظاهر → فهرست‌ها» یا مدیریت کامل از داشبورد اختصاصی؟ | — |
-| Q10 | پیام‌های اعتبارسنجی/اعداد: فارسی‌سازی سمت سرور (WP-Parsidate)؟ | — |
-| Q11 | فونت/آیکون: SVGهای inline حفظ شوند یا اسپرایت؟ | — |
-| Q12 | تست روی وردپرس ۶.۷ محلی یا نیاز به اسکریپت استقرار روی لایو؟ | — |
+| G1 | واریانت‌های هیرو | فقط **home1** رندر شود؛ home2/home3 به‌عنوان فایل آماده و قابل فعال‌سازی از داشبورد بمانند |
+| G2 | `arya` / `smartelement` | فعلاً **مسکوت**؛ بعداً با Section Builder و HTML لایو |
+| G3 | سبد/پرداخت/حساب | **Override قالب‌های ووکامرس با همان UI استاتیک** + هوک‌های استاندارد |
+| G4 | راهبرد محتوا | **کاملاً داینامیک از DB**، صفر هاردکد |
+| G5 | منوها | **ساختار + آیتم‌ها + قابلیت‌های مگامنو همه در Appearance → Menus**؛ فقط تنظیمات نمایشی (خاموش/روشن، hover/click، چسبندگی) در داشبورد اختصاصی |
+| G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
-## ۵. گام بعدی (پس از دریافت پاسخ)
-1. به‌روزرسانی `PROJECT_MEMORY.md` + `STATIC_TEMPLATE_MAP.md` با پاسخ‌ها.
-2. ساخت `temp/MASTER_PLAN.md` و `temp/QA_REFLECTION_LOG.md` + پوشه‌های ۸ فاز با `tasks/` و `tests/` (STAGE 1).
-3. توقف در Gate 1 و شروع Task 1.1 پس از تأیید.
+## ۵. گام بعدی (پس از تأیید Gate 1)
+1. **Task 1.1** — اسکلت قالب (OOP، Autoloader، Kernel، theme supports) + ساخت `tools/harness/render.php` برای رندر کامل قالب در هارنس.
+2. تکمیل تست واقعی `test-task-01.php` (جایگزینی `pending()` با `check()`)، اجرا تا ۱۰۰٪ PASS، سپس کامیت.
+3. ادامه ۱.۲ و ۱.۳ و اجرای `run-phase-01-tests.sh`.
+4. گزارش فاز ۱ → Gate 2.
+
+## ۶. وضعیت هارنس تست
+- PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
+- اجرای تست: `node tools/harness/run-tests.mjs <test.php>` (نیازمند `npm install` یک‌باره — `package.json` در ریشه)
+- WooCommerce برای هارنس هنوز نصب نیست ⚠️ (فاز ۶ به آن نیاز دارد)
