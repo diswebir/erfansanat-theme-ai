@@ -4,11 +4,11 @@
 
 | شناسه | تسک | تسک قبلی | وابستگی | وضعیت |
 |---|---|---|---|---|
-| `P01-T001` | هدر قالب و style.css | `1.1` | — | `[PENDING]` |
+| `P01-T001` | هدر قالب، style.css و حداقل index.php | `1.1` | — | `[PASSED]` |
 | `P01-T002` | Bootstrap و ثابت‌های قالب | `1.1` | P01-T001 | `[PENDING]` |
 | `P01-T003` | Autoloader اختصاصی | `1.1` | P01-T002 | `[PENDING]` |
 | `P01-T004` | چرخه عمر و Theme Supports | `1.1` | P01-T003 | `[PENDING]` |
-| `P01-T005` | Fallback index.php | `1.1` | P01-T004 | `[PENDING]` |
+| `P01-T005` | تکمیل Fallback index.php | `1.1` | P01-T004 | `[PENDING]` |
 | `P01-T006` | DeBloat: صف‌های بلوک | `1.2` | P01-T004 | `[PENDING]` |
 | `P01-T007` | DeBloat: head و ایموجی | `1.2` | P01-T006 | `[PENDING]` |
 | `P01-T008` | انتقال CSS و فونت‌ها | `1.3` | P01-T001 | `[PENDING]` |

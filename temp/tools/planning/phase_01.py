@@ -1,9 +1,9 @@
 from .common import T
 TASKS = [
-T("هدر قالب و style.css", "1.1", "فقط متادیتای قالب و فایل style.css پایه ساخته شود؛ CSS استاتیک هنوز کپی نمی‌شود.",
-  ["erfansanat/style.css"], ["static-mirror/assets/css/styles.css"], [],
-  ["هدر Theme Name/Version/Text Domain/Requires PHP/WP معتبر باشد.", "style.css فقط هدر قالب باشد و CSS استاتیک را duplicate نکند.", "Text Domain با بارگذاری ترجمه یکسان باشد."],
-  ["WP قالب را در فهرست پوسته‌ها نشان دهد.", "فعال‌سازی بدون fatal انجام شود."], notes="RTL از تنظیمات سایت می‌آید؛ هدر قالب نباید CSS اضافه تزریق کند."),
+T("هدر قالب، style.css و حداقل index.php", "1.1", "متادیتای قالب، style.css پایه و یک index.php حداقلی برای اعتبار پوسته کلاسیک ساخته شود؛ CSS استاتیک هنوز کپی نمی‌شود و fallback کامل در P01-T005 می‌ماند.",
+  ["erfansanat/style.css", "erfansanat/index.php"], ["static-mirror/assets/css/styles.css"], [],
+  ["هدر Theme Name/Version/Text Domain/Requires PHP/WP معتبر باشد.", "style.css فقط هدر قالب باشد و CSS استاتیک را duplicate نکند.", "Text Domain با بارگذاری ترجمه یکسان باشد.", "index.php حداقلی باشد و پوسته را بدون خطای theme_no_index معتبر کند."],
+  ["WP قالب را در فهرست پوسته‌ها نشان دهد.", "فعال‌سازی بدون fatal انجام شود."], notes="RTL از تنظیمات سایت می‌آید؛ هدر قالب نباید CSS اضافه تزریق کند. وردپرس پوسته کلاسیک بدون index.php را معتبر نمی‌داند."),
 T("Bootstrap و ثابت‌های قالب", "1.1", "functions.php حداقلی، ثابت‌های مسیر/نسخه و بارگذاری Autoloader را راه‌اندازی کند.",
   ["erfansanat/functions.php", "erfansanat/inc/Constants.php"], ["agent.md"], ["T001"],
   ["ABSPATH guard داشته باشد.", "ثابت‌های ES_THEME_DIR/ES_THEME_URI/ES_VERSION تعریف شوند.", "بارگذاری دوباره Autoloader رخ ندهد."],
@@ -16,7 +16,7 @@ T("چرخه عمر و Theme Supports", "1.1", "کلاس Theme و hookهای setu
   ["erfansanat/inc/Core/Theme.php"], ["agent.md"], ["T003"],
   ["title-tag/post-thumbnails/woocommerce/html5 پشتیبانی شوند.", "content_width و language domain تنظیم شوند.", "setup فقط یک‌بار در after_setup_theme اجرا شود."],
   ["current_theme_supports پس از فعال‌سازی true باشد.", "تغییر پوسته رفتن/برگشتن بدون notice باشد."]),
-T("Fallback index.php", "1.1", "یک index.php حداقلی و ایمن برای حالت نبود قالب تخصصی ساخته شود.",
+T("تکمیل Fallback index.php", "1.1", "index.php حداقلی موجود در P01-T001 به fallback ایمن با loop/header/footer تبدیل شود.",
   ["erfansanat/index.php"], ["static-mirror/blog.html"], ["T004"],
   ["header/footer و loop استاندارد را صدا بزند.", "در نبود نوشته پیام خالی escape‌شده نشان دهد.", "بدون صفحه‌ساز کار کند."],
   ["یک نوشته آزمایشی رندر شود.", "آرشیو خالی fatal ندهد."]),
