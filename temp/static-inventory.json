@@ -158518,9 +158518,9 @@
         "hreflang:en": "https://erfansanat.com/en/services/bridge-lighting",
         "hreflang:ar": "https://erfansanat.com/ar/services/bridge-lighting"
       },
-      "proposed_template": "page-templates/service-detail.php",
+      "proposed_template": "single-services.php",
       "source_route": "/services/bridge-lighting/",
-      "mapping_note": "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید",
+      "mapping_note": "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر",
       "landmarks": {
         "header": {
           "count": 1,
@@ -159675,9 +159675,9 @@
         "hreflang:en": "https://erfansanat.com/en/services/building-lighting",
         "hreflang:ar": "https://erfansanat.com/ar/services/building-lighting"
       },
-      "proposed_template": "page-templates/service-detail.php",
+      "proposed_template": "single-services.php",
       "source_route": "/services/building-lighting/",
-      "mapping_note": "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید",
+      "mapping_note": "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر",
       "landmarks": {
         "header": {
           "count": 1,
@@ -160837,9 +160837,9 @@
         "hreflang:en": "https://erfansanat.com/en/services/element-lighting",
         "hreflang:ar": "https://erfansanat.com/ar/services/element-lighting"
       },
-      "proposed_template": "page-templates/service-detail.php",
+      "proposed_template": "single-services.php",
       "source_route": "/services/element-lighting/",
-      "mapping_note": "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید",
+      "mapping_note": "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر",
       "landmarks": {
         "header": {
           "count": 1,
@@ -161994,9 +161994,9 @@
         "hreflang:en": "https://erfansanat.com/en/services/square-lighting",
         "hreflang:ar": "https://erfansanat.com/ar/services/square-lighting"
       },
-      "proposed_template": "page-templates/service-detail.php",
+      "proposed_template": "single-services.php",
       "source_route": "/services/square-lighting/",
-      "mapping_note": "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید",
+      "mapping_note": "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر",
       "landmarks": {
         "header": {
           "count": 1,
@@ -163151,9 +163151,9 @@
         "hreflang:en": "https://erfansanat.com/en/services/street-lighting",
         "hreflang:ar": "https://erfansanat.com/ar/services/street-lighting"
       },
-      "proposed_template": "page-templates/service-detail.php",
+      "proposed_template": "single-services.php",
       "source_route": "/services/street-lighting/",
-      "mapping_note": "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید",
+      "mapping_note": "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر",
       "landmarks": {
         "header": {
           "count": 1,
@@ -164313,9 +164313,9 @@
         "hreflang:en": "https://erfansanat.com/en/services",
         "hreflang:ar": "https://erfansanat.com/ar/services"
       },
-      "proposed_template": "page-templates/services.php",
+      "proposed_template": "archive-services.php",
       "source_route": "/services/",
-      "mapping_note": "نامزد برگه خدمات؛ ارتباط آن با smartelement تأیید نشده",
+      "mapping_note": "آرشیو CPT مستقل services؛ smartelement یکی از آیتم‌های خدمات است",
       "landmarks": {
         "header": {
           "count": 1,

@@ -120,7 +120,7 @@ def proposed_map(relative: str) -> tuple[str, str, str]:
         "refund_returns.html": ("page-templates/refund-returns.php", "/refund_returns/", "برگه 14922"),
         "cart.html": ("woocommerce/cart/cart.php", "/cart/", "پوسته سبد خرید؛ منطق واقعی WooCommerce"),
         "checkout.html": ("woocommerce/checkout/form-checkout.php", "/checkout/", "پوسته پرداخت؛ بدون رسید نمایشی localStorage"),
-        "services.html": ("page-templates/services.php", "/services/", "نامزد برگه خدمات؛ ارتباط آن با smartelement تأیید نشده"),
+        "services.html": ("archive-services.php", "/services/", "آرشیو CPT مستقل services؛ smartelement یکی از آیتم‌های خدمات است"),
     }
     if relative in root_maps:
         return root_maps[relative]
@@ -147,7 +147,7 @@ def proposed_map(relative: str) -> tuple[str, str, str]:
     if group == "category":
         return "category.php", f"/category/{slug}/", "آرشیو دسته مقاله؛ اسلاگ category زنده هنوز تأیید نشده"
     if group == "services":
-        return "page-templates/service-detail.php", f"/services/{slug}/", "نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید"
+        return "single-services.php", f"/services/{slug}/", "تک‌خدمت از CPT services؛ مطابق تصمیم کاربر"
     raise ValueError(f"Unmapped static page: {relative}")
 
 
@@ -353,7 +353,7 @@ def write_map(inventory):
         "| `blog.html` | 1 | `home.php` | آرشیو نوشته‌ها، فیلتر و صفحه‌بندی واقعی |",
         "| `blog/*.html` | 7 | `single.php` | TOC، اشتراک‌گذاری، بازدید و دیدگاه‌ها |",
         "| `category/*.html` | 2 | `category.php` | اسلاگ پایه دسته‌بندی مقالات نیازمند بررسی نسخه زنده |",
-        "| `services.html` + `services/*.html` | 6 | `page-templates/services.php`, `page-templates/service-detail.php` | نوع داده و ارتباط با `smartelement` مشخص نیست؛ سؤال Stage 0 |",
+        "| `services.html` + `services/*.html` | 6 | `archive-services.php`, `single-services.php` | CPT مستقل services؛ smartelement یک آیتم خدمت است |",
         "| برگه‌های عمومی موجود | 6 | `page-templates/*.php` | درباره، تماس، مجوزها، FAQ، استخدام، گارانتی |",
         "| `cart.html`, `checkout.html` | 2 | override قالب‌های WooCommerce | حفظ هوک‌ها؛ حذف شبیه‌سازی خرید و رسید ساختگی |",
         "",
@@ -437,12 +437,12 @@ def write_map(inventory):
         "",
         "1. مرجع ظاهر، همین آرشیو باشد و متن/قیمت/رسانه از دیتابیس زنده خوانده شود؟ داده نمایشی آرشیو خودکار وارد سایت نشود؟",
         "2. مسیرهای اصلی بلوپرینت canonical باشند و مسیرهای همسان فقط پس از بررسی سایت زنده redirect شوند؟ هیچ URL حذف نشود تا نقشه تأیید شود.",
-        "3. برای `arya`، `smartelement`، حساب کاربری و ورود، HTML تکمیلی ارائه می‌شود یا استفاده از اجزای موجود و مارک‌آپ استاندارد افزونه تأیید می‌شود؟",
-        "4. `services` شش صفحه مستقل است یا به برگه موجود `smartelement` متصل می‌شود؟ نوع داده و والد/URL آن در سایت فعلی چیست؟",
+        "3. برای `arya`، حساب کاربری و ورود، HTML تکمیلی ارائه می‌شود یا استفاده از اجزای موجود و مارک‌آپ استاندارد افزونه تأیید می‌شود؟ مرجع بصری تک‌خدمت `smartelement` نیز باید پیش از مهاجرت تعیین شود.",
+        "4. تصمیم ثبت‌شده: `services` CPT مستقل و `smartelement` یکی از آیتم‌های آن است؛ نگارش مهاجرت برگه موجود در استیجینگ بعداً تأیید می‌شود.",
         "5. برای تطبیق واقعی فرمت متاهای JetEngine، خروجی استیجینگ/نمونه ناشناس‌سازی‌شده دیتابیس چه زمانی در دسترس است؟ کلیدواژه یا رمز در چت درخواست نمی‌شود.",
         "6. مقصد ایمیل فرم‌ها، دسترسی به رزومه‌ها و مدت نگهداری پیام‌ها چیست؟ پیشنهاد پیش‌فرض: رزومه خصوصی، پیام‌ها فقط برای مدیران مجاز، بدون ارسال پیوست رزومه در ایمیل عمومی.",
         "",
-        "**وضعیت فعلی: `STAGE 0 COMPLETED - WAITING FOR USER CLARIFICATION`. ساخت فایل‌های قالب تا دریافت پاسخ و تأیید متوقف است.**",
+        "**وضعیت فعلی: پاسخ‌های Stage 0 دریافت و در `PROJECT_MEMORY.md` ثبت شده‌اند. نصب محیط آزمایشی و برنامه‌ریزی Stage 1 در جریان است؛ این جدول هنوز قالب پیاده‌سازی‌شده نیست.**",
         "",
     ]
     (OUTPUT / "STATIC_TEMPLATE_MAP.md").write_text("\n".join(out))

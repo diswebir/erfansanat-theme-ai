@@ -32,7 +32,7 @@
 | `blog.html` | 1 | `home.php` | آرشیو نوشته‌ها، فیلتر و صفحه‌بندی واقعی |
 | `blog/*.html` | 7 | `single.php` | TOC، اشتراک‌گذاری، بازدید و دیدگاه‌ها |
 | `category/*.html` | 2 | `category.php` | اسلاگ پایه دسته‌بندی مقالات نیازمند بررسی نسخه زنده |
-| `services.html` + `services/*.html` | 6 | `page-templates/services.php`, `page-templates/service-detail.php` | نوع داده و ارتباط با `smartelement` مشخص نیست؛ سؤال Stage 0 |
+| `services.html` + `services/*.html` | 6 | `archive-services.php`, `single-services.php` | CPT مستقل services؛ smartelement یک آیتم خدمت است |
 | برگه‌های عمومی موجود | 6 | `page-templates/*.php` | درباره، تماس، مجوزها، FAQ، استخدام، گارانتی |
 | `cart.html`, `checkout.html` | 2 | override قالب‌های WooCommerce | حفظ هوک‌ها؛ حذف شبیه‌سازی خرید و رسید ساختگی |
 
@@ -209,12 +209,12 @@
 | `projects.html` | `S01` پروژه‌های نورپردازی شهری<br>`S02#archive` فیلتر و آرشیو پروژه‌ها<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `archive-projects.php` | آرشیو CPT projects؛ با برگه project تفاوت دارد |
 | `recruitment.html` | `S01` فرصت‌های شغلی و استخدام در کارخانه دانش‌بنیان<br>`S02` واحدهای سازمانی و موقعیت‌های شغلی باز | `page-templates/recruitment.php` | برگه 17898؛ فرم و فایل رزومه |
 | `refund_returns.html` | `S01` شرایط گارانتی و خدمات پس از فروش محصولات<br>`S02` ۲۴ ماه گارانتی تعویض بی‌قید و شرط<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/refund-returns.php` | برگه 14922 |
-| `services/bridge-lighting.html` | `S01` نورپردازی پل<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/service-detail.php` | نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید |
-| `services/building-lighting.html` | `S01` نورپردازی ساختمان<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/service-detail.php` | نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید |
-| `services/element-lighting.html` | `S01` نورپردازی المان‌های شهری<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/service-detail.php` | نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید |
-| `services/square-lighting.html` | `S01` نورپردازی میدان<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/service-detail.php` | نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید |
-| `services/street-lighting.html` | `S01` نورپردازی خیابان و بلوار<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/service-detail.php` | نوع داده خدمات در بلوپرینت موجود نیست؛ نیازمند تأیید |
-| `services.html` | `S01` خدماتنورپردازی شهری<br>`S02#services-list` نورپردازی میدان<br>`S03` مسیر همکاری با ما؛ از ایده تا درخشش<br>`S04#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `page-templates/services.php` | نامزد برگه خدمات؛ ارتباط آن با smartelement تأیید نشده |
+| `services/bridge-lighting.html` | `S01` نورپردازی پل<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `single-services.php` | تک‌خدمت از CPT services؛ مطابق تصمیم کاربر |
+| `services/building-lighting.html` | `S01` نورپردازی ساختمان<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `single-services.php` | تک‌خدمت از CPT services؛ مطابق تصمیم کاربر |
+| `services/element-lighting.html` | `S01` نورپردازی المان‌های شهری<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `single-services.php` | تک‌خدمت از CPT services؛ مطابق تصمیم کاربر |
+| `services/square-lighting.html` | `S01` نورپردازی میدان<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `single-services.php` | تک‌خدمت از CPT services؛ مطابق تصمیم کاربر |
+| `services/street-lighting.html` | `S01` نورپردازی خیابان و بلوار<br>`S02#service-details` اقلام اجرایی این خدمت<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `single-services.php` | تک‌خدمت از CPT services؛ مطابق تصمیم کاربر |
+| `services.html` | `S01` خدماتنورپردازی شهری<br>`S02#services-list` نورپردازی میدان<br>`S03` مسیر همکاری با ما؛ از ایده تا درخشش<br>`S04#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `archive-services.php` | آرشیو CPT مستقل services؛ smartelement یکی از آیتم‌های خدمات است |
 | `shop.html` | `S01` فروشگاه محصولات نورپردازی شهری و صنعتی<br>`S02#archive` فیلترهای هوشمند فروشگاه<br>`S03#contact` روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید | `archive-product.php` | آرشیو اصلی فروشگاه طبق بلوپرینت |
 
 ## گروه‌های بدنه کاملاً یکسان
@@ -269,9 +269,9 @@
 
 1. مرجع ظاهر، همین آرشیو باشد و متن/قیمت/رسانه از دیتابیس زنده خوانده شود؟ داده نمایشی آرشیو خودکار وارد سایت نشود؟
 2. مسیرهای اصلی بلوپرینت canonical باشند و مسیرهای همسان فقط پس از بررسی سایت زنده redirect شوند؟ هیچ URL حذف نشود تا نقشه تأیید شود.
-3. برای `arya`، `smartelement`، حساب کاربری و ورود، HTML تکمیلی ارائه می‌شود یا استفاده از اجزای موجود و مارک‌آپ استاندارد افزونه تأیید می‌شود؟
-4. `services` شش صفحه مستقل است یا به برگه موجود `smartelement` متصل می‌شود؟ نوع داده و والد/URL آن در سایت فعلی چیست؟
+3. برای `arya`، حساب کاربری و ورود، HTML تکمیلی ارائه می‌شود یا استفاده از اجزای موجود و مارک‌آپ استاندارد افزونه تأیید می‌شود؟ مرجع بصری تک‌خدمت `smartelement` نیز باید پیش از مهاجرت تعیین شود.
+4. تصمیم ثبت‌شده: `services` CPT مستقل و `smartelement` یکی از آیتم‌های آن است؛ نگارش مهاجرت برگه موجود در استیجینگ بعداً تأیید می‌شود.
 5. برای تطبیق واقعی فرمت متاهای JetEngine، خروجی استیجینگ/نمونه ناشناس‌سازی‌شده دیتابیس چه زمانی در دسترس است؟ کلیدواژه یا رمز در چت درخواست نمی‌شود.
 6. مقصد ایمیل فرم‌ها، دسترسی به رزومه‌ها و مدت نگهداری پیام‌ها چیست؟ پیشنهاد پیش‌فرض: رزومه خصوصی، پیام‌ها فقط برای مدیران مجاز، بدون ارسال پیوست رزومه در ایمیل عمومی.
 
-**وضعیت فعلی: `STAGE 0 COMPLETED - WAITING FOR USER CLARIFICATION`. ساخت فایل‌های قالب تا دریافت پاسخ و تأیید متوقف است.**
+**وضعیت فعلی: پاسخ‌های Stage 0 دریافت و در `PROJECT_MEMORY.md` ثبت شده‌اند. نصب محیط آزمایشی و برنامه‌ریزی Stage 1 در جریان است؛ این جدول هنوز قالب پیاده‌سازی‌شده نیست.**

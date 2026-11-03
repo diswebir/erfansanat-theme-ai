@@ -102,7 +102,7 @@ class DiscoveryAcceptanceTest(unittest.TestCase):
 
     def test_08_gate_documented_and_no_theme_implementation(self):
         memory = (ROOT / "temp/PROJECT_MEMORY.md").read_text()
-        self.assertIn("STAGE 0", memory)
+        self.assertRegex(memory, r"STAGE [0-9]+")
         self.assertIn("پرسش", memory)
         for filename in ["functions.php", "style.css", "index.php", "header.php", "footer.php", "front-page.php"]:
             self.assertFalse((ROOT / filename).exists(), f"Premature theme file: {filename}")

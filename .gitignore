@@ -15,3 +15,6 @@ Thumbs.db
 # Keep memory documents and source fixtures; discard generated test output.
 /temp/**/output/
 /temp/**/results/
+
+# Isolated WordPress runtime, database, credentials and uploaded fixtures.
+/.local/
