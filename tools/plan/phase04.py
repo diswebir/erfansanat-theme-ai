@@ -1,0 +1,215 @@
+# -*- coding: utf-8 -*-
+"""Phase 4 — atomic tasks: header, mega menu, mobile menu, footer."""
+
+PHASE = dict(
+    num=4, slug='header-footer-navigation',
+    title='هدر، مگامنو، منوی موبایل و فوتر',
+    goal='یک هدر/فوتر مشترک با حفظ ۱۰۰٪ DOM، Walkers اختصاصی و مدیریت کامل منو و مگامنو از Appearance → Menus.',
+    tasks=[
+
+dict(id='4.1', size='M', deps=['1.9','2.7'],
+  title='`head` سفارشی: `wp_head`، متا، Hreflang و JSON-LD پایه',
+  desc='`inc/Frontend/Head.php`: تزریق Hreflang از متای `hrefmeta_*`، متاهای OG/Twitter پایه (در نبود SEOPress)، و اسکیمای `Organization`/`WebSite`/`BreadcrumbList` مطابق استاتیک — بدون تداخل با SEOPress.',
+  files=['inc/Frontend/Head.php','inc/SEO/JsonLd.php'],
+  steps=[
+   'Hreflang از `hrefmeta_fa/en/ar` + پیش‌فرض `home_url()`.',
+   'JSON-LD مطابق اسکریپت `ese-jsonld-schema` استاتیک (Organization/WebSite/Breadcrumb).',
+   'اگر SEOPress فعال است، OG/Twitter توسط افزونه تولید شود و ما تکرار نکنیم (`defined(\'SEOPRESS_VERSION\')`).',
+   'خروجی JSON-LD با `wp_json_encode` و `wp_kses` مجاز `<script>`.',
+  ],
+  pass_=[
+   'در نبود SEOPress، تگ‌های OG و Twitter موجود باشند',
+   'با فعال بودن SEOPress، هیچ تگ تکراری OG تولید نشود',
+   'Hreflang سه زبان و تنها یک‌بار',
+   'JSON-LD معتبر (`json_decode` موفق) و شامل Organization + WebSite',
+  ],
+  asserts=['OG شرطی', 'عدم تکرار', 'Hreflang', 'اعتبار JSON-LD']),
+
+dict(id='4.2', size='L', deps=['4.1','2.7'],
+  title='`header.php`: نوار اعلان + لوگو + نوار ناوبری',
+  desc='استخراج دقیق مارک‌آپ هدر استاتیک: نوار اعلان بالایی، لوگو (ESE + نام فارسی/انگلیسی)، نوار ناوبری دسکتاپ، دکمه‌های جستجو/سبد/منو، با داده‌های داشبورد و حفظ تمام کلاس‌ها و هوک‌ها.',
+  files=['header.php','template-parts/header/topbar.php','template-parts/header/branding.php','template-parts/header/primary-nav.php'],
+  steps=[
+   'کپی مارک‌آپ از `index.html` (بازه `<header>` تا `</header>`) با حفظ کلاس‌ها.',
+   'تبدیل `href="index.html"` → `home_url(\'/\')`، `licenses-and-honors.html` → `get_permalink` برگه، `product_cat/...` → `get_term_link`.',
+   'داده‌های نوار اعلان از `es_option(\'header.announcement\')`.',
+   'کلاس حالت فعال با `aria-current="page"` در منو (Walker در ۴.۴).',
+   'حذف `custom="..."` بازمانده و `data-initial-qty` تزریقی.',
+   'وجود `wp_head`/`wp_body_open`/`body_class` در قالب‌های والد (index).',
+  ],
+  pass_=[
+   'مقایسه ساختاری DOM با استاتیک ≥ ۹۹٪ (تگ/کلاس/اتریبیوت)',
+   'هیچ لینک `.html` در خروجی هدر نباشد',
+   'بدون `custom=` در خروجی',
+   'نوار اعلان با toggle داشبورد حذف شود',
+   '`aria-label="منوی اصلی"` حفظ شود',
+  ],
+  asserts=['diff ساختاری', 'بدون لینک html', 'بدون custom', 'toggle نوار', 'aria-label']),
+
+dict(id='4.3', size='M', deps=['4.2'],
+  title='`footer.php` + بازگشت به بالا + اطلاعات تماس',
+  desc='فوتر مشترک (۱۲۸ صفحه یکسان) با ستون‌های لینک سریع/دسته‌ها/اطلاعات تماس/کپی‌رایت و دکمه `data-scroll-top` با داده‌های داشبورد.',
+  files=['footer.php','template-parts/footer/columns.php','template-parts/footer/contact.php','template-parts/footer/copyright.php'],
+  steps=[
+   'کپی مارک‌آپ فوتر با حفظ کلاس‌ها.',
+   'دسته‌ها از `product_cat` (۵ مورد پرکاربرد یا از تنظیمات).',
+   'تلفن/ایمیل/آدرس/ساعات کاری از `es_option`.',
+   '`wp_footer()` پیش از بستن `</body>`.',
+  ],
+  pass_=[
+   'DOM ≥ ۹۹٪ منطبق با استاتیک',
+   'لینک‌های فوتر با `home_url`/`get_term_link` ساخته شوند',
+   '`wp_footer()` حضور داشته باشد',
+   'در نبود داده تماس، خطا/بلوک خالی رندر نشود',
+  ],
+  asserts=['diff فوتر', 'لینک‌های صحیح', 'وجود wp_footer', 'حالت خالی']),
+
+dict(id='4.4', size='L', deps=['4.2','1.11'],
+  title='Walker مگامنو محصولات (تب‌ها + ستون‌ها)',
+  desc='Walker اختصاصی که مارک‌آپ `data-mega-menu-products` / `data-mega-prod-tab` / `data-mega-prod-panel` را از ساختار فهرست وردپرس تولید کند: هر آیتم سطح ۱ = تب، آیتم‌های فرزند = ستون‌ها و لینک‌ها.',
+  files=['inc/Nav/MegaMenuWalker.php','template-parts/header/mega-products.php'],
+  steps=[
+   'Walker با `start_lvl`/`start_el`/`end_el` مطابق مارک‌آپ.',
+   'تب اول به‌صورت پیش‌فرض `aria-expanded="false"` و پنل `block`/`hidden` مطابق استاتیک.',
+   'ستون همه دسته‌ها از ترم‌ها (بدون کوئری اضافه؛ کش transient).',
+   'پشتیبانی از `<svg>` آیکون تعریف‌شده در فیلد آیتم منو.',
+  ],
+  pass_=[
+   'خروجی Walker با نمونه استاتیک منطبق (تعداد تب‌ها/پنل‌ها/لینک‌ها)',
+   'کارکرد باز/بسته شدن با `main.js` بدون تغییر JS',
+   'بدون منو، fallback استاتیک رندر شود',
+   'کوئری اضافه در هر صفحه ایجاد نشود (≤ ۲ کوئری Term)',
+  ],
+  asserts=['انطباق مارک‌آپ', 'کارکرد JS', 'fallback', 'شمارش کوئری']),
+
+dict(id='4.5', size='L', deps=['4.2','1.11'],
+  title='Walker مگامنو پروژه‌ها (تب نوع/شهر)',
+  desc='مارک‌آپ `data-mega-menu-projects` با دو تب «نوع پروژه» و «شهر» و ستون‌های ترم‌ها، شامل همه شهرها (`city`) و انواع (`project_type`) با لینک صحیح.',
+  files=['inc/Nav/ProjectsMegaWalker.php','template-parts/header/mega-projects.php'],
+  steps=[
+   'لیست ترم‌ها از `get_terms` با `hide_empty => false` (نمایش شهرهای بدون پروژه هم مجاز است).',
+   'ساختار دو-تبی.',
+   'لینک هر ترم با `get_term_link` (بدون hardcode).',
+  ],
+  pass_=[
+   'همه ترم‌های `city` و `project_type` در پنل ظاهر شوند',
+   'لینک‌ها با `get_term_link` برابر باشند',
+   'در نبود ترم، تب مربوطه رندر نشود (نه لینک شکسته)',
+  ],
+  asserts=['پوشش ترم‌ها', 'لینک صحیح', 'حالت خالی']),
+
+dict(id='4.6', size='L', deps=['2.7'],
+  title='فیلدهای آیتم منو در Appearance → Menus',
+  desc='افزودن فیلدهای مگامنو روی هر آیتم منو با هوک `wp_nav_menu_item_custom_fields` و ذخیره در `wp_update_nav_menu_item`: نوع پنل، ستون، آیکون (لیست SVG)، برچسب، تصویر، تب‌بودن، عرض ستون، توضیح کوچک.',
+  files=['inc/Nav/MenuItemFields.php','inc/Nav/Icons.php','assets/admin/nav-fields.css'],
+  steps=[
+   'رندر فیلدها در همان صفحه (بدون صفحه جدید).',
+   'ذخیره با `wp_update_nav_menu_item` و کلیدهای `menu-item-es-*`.',
+   'لیست آیکون‌های مجاز (SVG inline) برای انتخاب.',
+   'نمایش فیلدها فقط برای آیتم سطح ۱ و ۲ (متناسب با مگامنو).',
+  ],
+  pass_=[
+   'فیلدها در صفحه Appearance → Menus رندر شوند',
+   'مقادیر پس از ذخیره درست برگردند',
+   'هیچ صفحه مدیریت منوی جداگانه‌ای ساخته نشود (تصمیم G5)',
+   'آیکون نامعتبر ذخیره نشود',
+  ],
+  asserts=['محل رندر', 'ذخیره/بازیابی', 'عدم صفحه جدا', 'whitelist آیکون']),
+
+dict(id='4.7', size='M', deps=['4.6'],
+  title='تنظیمات نمایشی منو در داشبورد (بدون مدیریت ساختار)',
+  desc='تب «منو و هدر» در داشبورد: روشن/خاموش مگامنو، حالت باز شدن (hover/click)، ارتفاع هدر، چسبندگی (sticky)، نمایش نوار اعلان — **بدون** مدیریت ساختار/آیتم‌های منو (G5).',
+  files=['inc/Admin/Tabs/NavTab.php','inc/Frontend/NavConfig.php'],
+  steps=[
+   'فیلدهای toggle/select با whitelist.',
+   'انتقال به `body_class`/`<header>` به‌صورت کلاس‌های مجاز (نه CSS تولیدی دلخواه).',
+   'در حالت پیش‌فرض، خروجی دقیقاً مثل استاتیک.',
+  ],
+  pass_=[
+   'حالت پیش‌فرض = مارک‌آپ استاتیک (بدون کلاس اضافه)',
+   'خاموش‌کردن مگامنو، پنل‌ها را از DOM حذف کند',
+   'هیچ فیلد مدیریت منو/آیتم در این تب نباشد',
+  ],
+  asserts=['پیش‌فرض برابر استاتیک', 'حذف پنل‌ها', 'نبود فیلد ساختاری']),
+
+dict(id='4.8', size='M', deps=['4.2'],
+  title='منوی موبایل off-canvas (`aside[data-mobile-sidebar]`)',
+  desc='مارک‌آپ کامل منوی موبایل با کلاس‌های استاتیک، سطوح بازشو، دکمه بستن و back-drop، متصل به فهرست `mobile-menu` و کارکرد با `main.js` بدون تغییر.',
+  files=['template-parts/header/mobile-menu.php'],
+  steps=[
+   'کپی مارک‌آپ `aside` از استاتیک.',
+   '`wp_nav_menu` با `theme_location=mobile-menu` و walker ساده چندسطحی.',
+   'دکمه‌های باز/بسته با همان `data-*` استاتیک.',
+   'حالت پیش‌فرض: بسته (`aria-hidden="true"` مطابق استاتیک).',
+  ],
+  pass_=[
+   'باز/بسته شدن با JS موجود کار کند',
+   'ساختار چندسطحی منو حفظ شود',
+   'بدون منو، لینک‌های پیش‌فرض استاتیک نمایش داده شود',
+  ],
+  asserts=['کارکرد JS', 'سطوح منو', 'fallback']),
+
+dict(id='4.9', size='M', deps=['4.1'],
+  title='`template-parts/header/search-modal.php` (مارک‌آپ مودال جستجو)',
+  desc='مارک‌آپ مودال جستجوی گلوبال (`data-global-search-*`) با سه ستون محصولات/پروژه‌ها/مقالات و داده اولیه سبک از سرور؛ منطق ایجکس در تسک ۸.۱.',
+  files=['template-parts/header/search-modal.php','inc/Search/SearchData.php'],
+  steps=[
+   'کپی مارک‌آپ مودال.',
+   'تزریق حداکثر ۸ نتیجه اولیه (محصول/پروژه/مقاله) به‌صورت HTML آماده برای فیلتر کلاینت.',
+   'غیرفعال‌سازی جستجوی ایجکس در این تسک (فقط داده اولیه).',
+  ],
+  pass_=[
+   'مودال با کلاس‌های استاتیک رندر شود',
+   'حداکثر ۸ آیتم هر گروه (بدون کوئری سنگین)',
+   'باز/بسته شدن با JS موجود',
+  ],
+  asserts=['مارک‌آپ', 'محدودیت تعداد', 'کارکرد باز/بسته']),
+
+dict(id='4.10', size='M', deps=['4.2'],
+  title='شمارنده سبد خرید هدر (WooCommerce Fragment)',
+  desc='اتصال `data-header-cart-badge` و `data-cart-modal-count` به سبد واقعی ووکامرس با Fragment استاندارد و به‌روزرسانی بدون رفرش.',
+  files=['inc/Woo/HeaderCart.php'],
+  steps=[
+   '`woocommerce_add_to_cart_fragments` برای شمارنده/آیکون.',
+   'پشتیبانی از `wc-cart-fragments` (بدون duplicate enqueue).',
+   'در نبود ووکامرس: نمایش ۰ یا حذف badge (نه خطا).',
+  ],
+  pass_=[
+   'افزودن محصول → عدد badge افزایش یابد',
+   'حذف محصول → کاهش یابد',
+   'بدون ووکامرس، هدر سالم رندر شود',
+  ],
+  asserts=['افزایش/کاهش', 'سازگاری Fragment', 'ایمنی بدون ووکامرو']),
+
+dict(id='4.11', size='M', deps=['4.4','4.5','4.8'],
+  title='سازگاری کامل با `main.js` (بدون تغییر فایل JS)',
+  desc='بررسی تمام قراردادهای `data-*` موردنیاز هدر/مگامنو/موبایل و صحت تزریق داده اولیه؛ اثبات md5 یکسان `main.js`.',
+  files=['inc/Frontend/InlineData.php'],
+  steps=[
+   'استخراج فهرست کامل هوک‌های `initNavbar`, `initMegaMenuAndSearch` از `main.js`.',
+   'تضمین وجود هر هوک در خروجی PHP با مقدار اولیه صحیح.',
+   'تست md5 با فایل مرجع.',
+  ],
+  pass_=[
+   'md5(`assets/js/main.js`) = md5 فایل مرجع استاتیک',
+   'همه هوک‌های ناوبار/مگامنو در خروجی موجود باشند',
+   'بدون خطای JS در کنسول (تست jsdom در صورت امکان)',
+  ],
+  asserts=['md5', 'پوشش هوک‌ها', 'خطای JS']),
+
+dict(id='4.12', size='S', deps=['4.1','4.2','4.3','4.4','4.5','4.6','4.7','4.8','4.9','4.10','4.11'],
+  title='گیت فاز ۴: مقایسه DOM هدر/فوتر با مرجع',
+  desc='اجرای تست‌های فاز و مقایسه ساختاری DOM (تگ/کلاس/اتریبیوت) هدر و فوتر رندر‌شده با فایل استاتیک.',
+  files=['temp/phase-04-header-footer-navigation/tests/run-phase-04-tests.sh','tools/harness/dom-diff.php'],
+  steps=[
+   'استخراج هدر/فوتر رندرشده و نرمال‌سازی مسیرها.',
+   'مقایسه درخت DOM (بی‌توجه به مقادیر متنی داینامیک).',
+   'گزارش درصد انطباق.',
+  ],
+  pass_=[
+   'انطباق ≥ ۹۹٪ برای هر دو',
+   '۱۰۰٪ تست‌های تسک PASS',
+   'صفر Warning',
+  ],
+  asserts=['درصد انطباق', 'اجرای فاز', 'بدون Warning']),
+])

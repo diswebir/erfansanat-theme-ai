@@ -1,49 +1,61 @@
-# Task 4.3 — جستجوی گلوبال هدر و سبد خرید هدر
+# Task 4.3 — `footer.php` + بازگشت به بالا + اطلاعات تماس
 
-**فاز:** 4 — هدر، مگامنو، منوی موبایل و فوتر  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 4.2
+| فیلد | مقدار |
+|---|---|
+| فاز | 4 — هدر، مگامنو، منوی موبایل و فوتر |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 4.2` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-03.php` |
 
-## هدف
+## ۱. هدف
 
-اتصال مودال جستجو (`data-global-search-*`) به کوئری واقعی محصولات/پروژه‌ها و شمارنده سبد خرید هدر به WooCommerce.
+فوتر مشترک (۱۲۸ صفحه یکسان) با ستون‌های لینک سریع/دسته‌ها/اطلاعات تماس/کپی‌رایت و دکمه `data-scroll-top` با داده‌های داشبورد.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `template-parts/header/search-modal.php`
-- `inc/Search/LiveSearch.php`
-- `inc/Woo/HeaderCart.php`
+- `footer.php`
+- `template-parts/footer/columns.php`
+- `template-parts/footer/contact.php`
+- `template-parts/footer/copyright.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. کپی مارک‌آپ فوتر با حفظ کلاس‌ها.
+2. دسته‌ها از `product_cat` (۵ مورد پرکاربرد یا از تنظیمات).
+3. تلفن/ایمیل/آدرس/ساعات کاری از `es_option`.
+4. `wp_footer()` پیش از بستن `</body>`.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — DOM ≥ ۹۹٪ منطبق با استاتیک
+- [ ] **P2** — لینک‌های فوتر با `home_url`/`get_term_link` ساخته شوند
+- [ ] **P3** — `wp_footer()` حضور داشته باشد
+- [ ] **P4** — در نبود داده تماس، خطا/بلوک خالی رندر نشود
+
+## ۵. تست‌های خودکار
+
+- `diff فوتر`
+- `لینک‌های صحیح`
+- `وجود wp_footer`
+- `حالت خالی`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. رندر داده اولیه جستجو از سرور (بدون کوئری اضافه)
-2. Endpoint ایجکس امن برای جستجوی زنده
-3. شمارنده سبد از `WC()->cart` با Fragment
-4. حالت خالی/لودینگ با همان کلاس‌های استاتیک
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] جستجو بدون رفرش نتیجه بدهد (<۲۰۰ms)
-- [ ] خروجی escape شده و کوئری با `$wpdb->prepare`/`WP_Query` امن باشد
-- [ ] شمارنده سبد با افزودن محصول به‌روز شود
-- [ ] در نبود ووکامرس، هدر بدون خطا رندر شود
-
-## تست‌های خودکار
-
-- تست endpoint
-- تست escaping
-- تست fragment سبد
-- تست نبود WooCommerce
-
-> اسکریپت: `temp/phase-04-header-footer-navigation/tests/test-task-3.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

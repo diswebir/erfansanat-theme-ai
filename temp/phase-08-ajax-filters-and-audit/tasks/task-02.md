@@ -1,49 +1,58 @@
-# Task 8.2 — سیستم فرم‌های اختصاصی + ذخیره‌سازی و ایمیل
+# Task 8.2 — UI جستجوی زنده در مودال هدر (Debounce + حالت خالی)
 
-**فاز:** 8 — جایگزینی Native جستجو/فیلترها، فرم‌ها و ممیزی نهایی  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 8.1
+| فیلد | مقدار |
+|---|---|
+| فاز | 8 — جایگزینی Native جستجو/فیلترها، فرم‌ها و ممیزی نهایی |
+| اندازه | `L` — بزرگ (~۲ روز) |
+| وابستگی | `Task 8.1`، `Task 4.9` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-02.php` |
 
-## هدف
+## ۱. هدف
 
-فرم تماس، استعلام قیمت (پاپ‌آپ)، استخدام، بازخورد مشتری با ذخیره در جدول اختصاصی و ایمیل اطلاع‌رسانی.
+اتصال ورودی جستجو به اندپوینت با Debounce ۲۵۰ms، حالت لودینگ، حالت خالی و کلید Escape — بدون تغییر `main.js`.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `inc/Forms/FormHandler.php`
-- `inc/Forms/FormRepository.php`
-- `inc/Admin/FormsList.php`
+- `assets/js/search.js`
+- `template-parts/header/search-modal.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. Debounce + AbortController برای لغو درخواست قبلی.
+2. حالت‌های `loading`/`empty`/`error` با کلاس‌های موجود.
+3. کلیدهای Arrow/Enter برای انتخاب نتیجه (دسترسی‌پذیری).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — تایپ سریع فقط یک درخواست نهایی بفرستد
+- [ ] **P2** — Escape مودال را ببندد
+- [ ] **P3** — بدون نتیجه، حالت خالی نمایش دهد
+- [ ] **P4** — کارکرد کامل با کیبورد
+
+## ۵. تست‌های خودکار
+
+- `Debounce`
+- `Escape`
+- `حالت خالی`
+- `کیبورد`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. جدول `{$wpdb->prefix}es_forms` با migration نسخه‌دار
-2. Nonce + Honeypot + محدودیت نرخ
-3. ایمیل با `wp_mail` و قالب فارسی
-4. لیست و جزئیات در ادمین + نشانگر خوانده‌نشده
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] ثبت امن از فرانت
-- [ ] لیست پیام‌ها در منوی اختصاصی
-- [ ] ارسال ایمیل (mock)
-- [ ] رد درخواست‌های بدون Nonce
-
-## تست‌های خودکار
-
-- تست ثبت فرم
-- تست لیست ادمین
-- تست ایمیل mock
-- تست امنیت
-
-> اسکریپت: `temp/phase-08-ajax-filters-and-audit/tests/test-task-2.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

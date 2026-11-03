@@ -1,55 +1,60 @@
-# Task 1.1 — اسکلت پایه قالب و معماری شیءگرا (OOP)
+# Task 1.1 — هدر قالب در `style.css` و متادیتای نسخه
 
-**فاز:** 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک |
+| اندازه | `S` — کوچک (~نیم روز) |
+| وابستگی | — |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-ساخت `style.css` (هدر قالب)، `functions.php` سبک، `index.php`، Autoloader دستی در `inc/Autoloader.php` و Namespace `ErfanSanat\Theme`. راه‌اندازی `Theme` به‌عنوان Kernel با الگوی Singleton و ثبت `add_theme_support`های لازم.
+ساخت `style.css` صرفاً به‌عنوان شناسنامه قالب (هدر استاندارد وردپرس) — **بدون هیچ استایل واقعی** چون تمام CSS از `assets/css/styles.css` می‌آید. تعریف ثابت `ES_THEME_VERSION` برای استفاده در نسخه‌گذاری دارایی‌ها و flush نسخه‌دار rewrite.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
 - `style.css`
-- `functions.php`
-- `index.php`
-- `inc/Autoloader.php`
-- `inc/Theme.php`
-- `inc/Contracts/ModuleInterface.php`
+- `inc/Constants.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. هدر استاندارد: Theme Name `عرفان صنعت اصفهان (ErfanSanat)`, Theme URI, Author, Version `1.0.0`, Requires at least `6.5`, Requires PHP `8.0`, License `GPL-2.0-or-later`, Text Domain `erfansanat`, Domain Path `/languages`, Tags.
+2. `inc/Constants.php`: `ES_THEME_VERSION` (خوانده‌شده از هدر فایل با `wp_get_theme()` یک‌بار و کش‌شده)، `ES_THEME_DIR`, `ES_THEME_URI`, `ES_THEME_SLUG`.
+3. هیچ قاعده CSS در `style.css` نوشته نشود (فقط کامنت هدر + بلوک توضیح).
+4. گارد `defined( 'ABSPATH' ) || exit;` در ابتدای هر فایل PHP.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — `style.css` فقط شامل کامنت هدر و توضیح باشد (بدون `{` استایل واقعی بیرون از کامنت)
+- [ ] **P2** — `wp_get_theme()->get('Version')` مقدار `1.0.0` بدهد
+- [ ] **P3** — `wp_get_theme()->get('TextDomain')` برابر `erfansanat` باشد
+- [ ] **P4** — `ES_THEME_VERSION` با نسخه هدر برابر باشد (تست همگامی)
+- [ ] **P5** — ثابت‌ها فقط یک‌بار تعریف شوند (`defined()` guard)
+
+## ۵. تست‌های خودکار
+
+- `پارس هدر قالب`
+- `همگامی نسخه`
+- `نبود قاعده CSS`
+- `گارد ABSPATH`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. هدر `style.css` با فیلدهای استاندارد وردپرس (Text Domain: `erfansanat`)
-2. Autoloader PSR-4 دستی: `ErfanSanat\Theme\Foo\Bar` → `inc/Foo/Bar.php` (بدون Composer)
-3. Kernel: ثبت هوک‌ها، `after_setup_theme` برای `title-tag`, `post-thumbnails`, `html5`, `custom-logo`, `woocommerce`, `wc-product-gallery-zoom/slider/lightbox`
-4. `add_theme_support('align-wide')` فقط اگر با CSS استاتیک تعارض نداشت
-5. `load_theme_textdomain` با پوشه `languages/`
-6. ثبت منوها در `inc/Setup/Menus.php` (بدون Walker در این تسک)
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] فعال‌سازی قالب بدون هیچ Notice/Warning در `WP_DEBUG=true`
-- [ ] `php -l` روی همه فایل‌های PHP بدون خطا
-- [ ] `get_theme_support('title-tag')`, `post-thumbnails`, `html5`, `woocommerce` همگی true
-- [ ] کلاس‌ها با Autoloader بارگذاری می‌شوند (بدون `require` دستی در functions.php)
-- [ ] `wp_get_theme()->get('TextDomain') === 'erfansanat'`
-
-## تست‌های خودکار
-
-- لینت همه فایل‌های PHP
-- وجود add_theme_supportهای الزامی در سورس
-- بارگذاری کلاس Kernel از طریق Autoloader
-- نبود Notice در بوت
-
-> اسکریپت: `temp/phase-01-core-and-assets/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

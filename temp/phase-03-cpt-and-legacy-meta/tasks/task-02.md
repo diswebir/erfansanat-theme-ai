@@ -1,52 +1,57 @@
-# Task 3.2 — متاباکس محصولات + لایه نرمال‌سازی متا
+# Task 3.2 — ثبت تکسونومی `project_type`
 
-**فاز:** 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 3.1
+| فیلد | مقدار |
+|---|---|
+| فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 3.1` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-02.php` |
 
-## هدف
+## ۱. هدف
 
-متاباکس تب‌بندی‌شده برای همه کلیدهای متای محصول و Repeaterها با پشتیبانی از آرایه سریالایز و JSON؛ نوشتن با حفظ فرمت قبلی.
+ثبت Native با slug `project_type`، `with_front=false`، `hierarchical=true`، REST و برچسب‌های فارسی.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `inc/Admin/Metaboxes/ProductMeta.php`
-- `inc/Meta/MetaRepository.php`
-- `inc/Meta/RepeaterCodec.php`
+- `inc/Content/Taxonomies.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `register_taxonomy` با آرگومان‌های بلوپرینت.
+2. `show_admin_column => true` و `show_in_rest => true`.
+3. برچسب‌های فارسی.
+4. urldecode/اصلاح کاراکترهای فارسی در نام ترم پشتیبانی شود (WP-Parsidate).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — `taxonomy_exists('project_type')` true
+- [ ] **P2** — `get_term_link` = `/project_type/{slug}/`
+- [ ] **P3** — rewrite با `hierarchical => false` در بخش rewrite باشد
+- [ ] **P4** — آرشیو تاکسونومی بدون 404 رندر شود
+
+## ۵. تست‌های خودکار
+
+- `ثبت تکسونومی`
+- `لینک ترم`
+- `آرشیو بدون 404`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. تب‌ها: شناسه‌های قانونی / عناوین و فروش / فایل و گالری / روابط / ویژگی‌ها / کاربردها / FAQ
-2. `RepeaterCodec`: decode/encode هم برای serialize و هم JSON
-3. Auto-sync `galerry_produ` ↔ `_product_image_gallery`
-4. Quick Edit برای `gs1_id..product_id`, `zireonvan`, `english_titl`, `true_sale`
-5. Media picker برای `product-catalog-file` (ذخیره URL) و گالری (CSV IDs)
-6. Relations: انتخابگر پروژه‌ها و ترم‌های `project_type`
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] خواندن مقادیر `{"item-0":{...}}` سریالایز همان نتیجه JSON را بدهد
-- [ ] ذخیره مجدد، ساختار قبلی را خراب نکند (round-trip byte-stable در سطح داده)
-- [ ] تمام ۱۴ کلید و ۴ Repeater خوانده/نوشته شوند
-- [ ] `true_sale` فقط `true`/`false` بپذیرد
-- [ ] Nonce و capability روی هر متاباکس اعمال شود
-
-## تست‌های خودکار
-
-- تست round-trip همه کلیدها
-- تست هر دو فرمت Repeater
-- تست sync گالری
-- تست sanitize و capability
-
-> اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-2.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

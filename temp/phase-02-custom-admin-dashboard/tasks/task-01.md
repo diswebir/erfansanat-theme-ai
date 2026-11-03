@@ -1,55 +1,59 @@
-# Task 2.1 — پنل «داشبورد اختصاصی عرفان صنعت» و لایه آپشن
+# Task 2.1 — لایه آپشن: `es_option()` / `es_update_option()` با کش و fallback
 
-**فاز:** 2 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 2 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 1.3` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-صفحه ادمین مدرن و تب‌بندی‌شده با ذخیره AJAX، Nonce و Capability (`manage_options`). ذخیره در آپشن واحد `erfansanat_theme_options` و دسترسی از طریق `es_option($key,$default)` با کش استاتیک.
+قلب دسترسی به تنظیمات: خواندن/نوشتن در آپشن واحد `erfansanat_theme_options` با کش استاتیک درون‌درخواستی، پشتیبانی از dot-notation و مقدار پیش‌فرض برابر محتوای استاتیک.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `inc/Admin/AdminMenu.php`
-- `inc/Admin/ThemeOptions.php`
-- `inc/Admin/Fields/FieldRenderer.php`
 - `inc/Helpers/Options.php`
-- `assets/admin/admin.css`
-- `assets/admin/admin.js`
+- `inc/Helpers/Defaults.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `es_option( string $key, $default = null )` با `get_option` یک‌بار (static cache) و پشتیبانی `header.phone`.
+2. `es_update_option( $key, $value )` با merge در آرایه واحد (بدون نوشتن آپشن جدید).
+3. `Defaults.php`: تمام مقادیر پیش‌فرض استخراج‌شده از میرور (تلفن‌ها، ایمیل، آدرس، شبکه‌ها، متن کپی‌رایت، نوار اعلان).
+4. `es_option_reset()` و هوک `es_options_saved` برای invalidation.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — ۱۰۰ فراخوانی `es_option` در یک درخواست فقط ۱ بار `get_option` بزند
+- [ ] **P2** — dot-notation مقدار درست برگرداند (`social.instagram`)
+- [ ] **P3** — در نبود آپشن، مقدار پیش‌فرض برابر متن استاتیک باشد
+- [ ] **P4** — `es_update_option` آپشن دوم نسازد (شمارش ردیف‌های `option` ثابت بماند)
+
+## ۵. تست‌های خودکار
+
+- `شمارش get_option`
+- `dot-notation`
+- `تطابق پیش‌فرض با استاتیک`
+- `عدم ایجاد آپشن جدید`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. ثبت منوی سطح‌بالا با آیکون اختصاصی + زیرمنوها
-2. Schema تب‌ها (هدر، فوتر، تماس، شبکه‌های اجتماعی، برند/رنگ، اسکریپت‌ها، آرشیوها، منوها)
-3. `FieldRenderer`: text, textarea, url, email, color, media, toggle, repeater, select
-4. AJAX save با `check_ajax_referer` + `current_user_can`
-5. `es_option()` با کش استاتیک و fallback دقیقاً برابر محتوای استاتیک
-6. صفحه‌بندی «برند و رنگ» فقط متغیرهای CSS مجاز را تغییر دهد (بدون دست‌زدن به ساختار)
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] درخواست بدون Nonce یا بدون Capability رد شود (403)
-- [ ] ذخیره در یک ردیف آپشن (`erfansanat_theme_options`) انجام شود
-- [ ] مقدار پیش‌فرض هیچ تفاوتی با خروجی استاتیک ایجاد نکند
-- [ ] تمام فیلدها با `sanitize_*` مناسب پاکسازی و با `esc_*` خروجی داده شوند
-- [ ] `es_option()` در ۱۰۰ فراخوانی فقط ۱ بار `get_option` بزند (کش)
-
-## تست‌های خودکار
-
-- تست منفی Nonce/Capability
-- تست رفت‌وبرگشت ذخیره فیلدها
-- شمارش فراخوانی get_option
-- تطابق پیش‌فرض با استاتیک
-
-> اسکریپت: `temp/phase-02-custom-admin-dashboard/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

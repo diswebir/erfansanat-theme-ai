@@ -1,20 +1,29 @@
 <?php
 /**
- * Test for Task 6.2 — آرشیوها: `archive-product.php`, `taxonomy-product_cat.php`, `taxonomy-product_tag.php`
+ * Test — Task 6.2: هیرو محصول (`template-parts/product/hero.php`)
  * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
  *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-2.php
- * هر Assertion باید PASS شود تا تسک پاس شود.
+ * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-02.php
+ *
+ * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
+ * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
  */
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../tests/bootstrap.php';
 
-echo "== Task 6.2: آرشیوها: `archive-product.php`, `taxonomy-product_cat.php`, `taxonomy-product_tag.php` ==\n";
+echo "== Task 6.2: هیرو محصول (`template-parts/product/hero.php`) ==\n";
+echo "   phase 6 | size L | files: 2 | pass conditions: 4\n";
 
-pending( 'تست آرشیو' );
-pending( 'تست صفحه‌بندی' );
-pending( 'تست داده‌هوک‌ها' );
-pending( 'تست حالت خالی' );
+// --- Pass Conditions (4 شرط) -----------------------------------
+// دو حالت
+check('دو حالت', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// یکتایی h1
+check('یکتایی h1', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// escaping
+check('escaping', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// breadcrumb
+check('breadcrumb', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
 
+// --- summary -----------------------------------------------------------------
 summary();

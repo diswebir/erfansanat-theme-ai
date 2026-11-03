@@ -1,20 +1,29 @@
 <?php
 /**
- * Test for Task 5.2 — اتصال سکشن‌های داینامیک به WP_Query و کارت‌های استاندارد
- * Phase 5: صفحه اصلی و کامپوننت‌های ماژولار
+ * Test — Task 5.2: هیرو واریانت home1 (اسلایدر صحنه + ویدیو + نوار دسته‌بندی)
+ * Phase 5: صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار
  *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-05-homepage-and-sections/tests/test-task-2.php
- * هر Assertion باید PASS شود تا تسک پاس شود.
+ * اجرا:  node tools/harness/run-tests.mjs temp/phase-05-homepage-and-sections/tests/test-task-02.php
+ *
+ * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
+ * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
  */
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../tests/bootstrap.php';
 
-echo "== Task 5.2: اتصال سکشن‌های داینامیک به WP_Query و کارت‌های استاندارد ==\n";
+echo "== Task 5.2: هیرو واریانت home1 (اسلایدر صحنه + ویدیو + نوار دسته‌بندی) ==\n";
+echo "   phase 5 | size L | files: 2 | pass conditions: 7\n";
 
-pending( 'شمارش کوئری' );
-pending( 'تست کارت‌ها' );
-pending( 'تست حالت خالی' );
-pending( 'تست cache invalidation' );
+// --- Pass Conditions (7 شرط) -----------------------------------
+// diff ساختاری سکشن
+check('diff ساختاری سکشن', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// اسکن هاردکد
+check('اسکن هاردکد', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// اثر داشبورد
+check('اثر داشبورد', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// حالت خالی
+check('حالت خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
 
+// --- summary -----------------------------------------------------------------
 summary();

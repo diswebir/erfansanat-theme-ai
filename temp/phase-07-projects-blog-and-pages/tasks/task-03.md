@@ -1,50 +1,54 @@
-# Task 7.3 — قالب‌های برگه اختصاصی
+# Task 7.3 — محصولات استفاده‌شده در پروژه (`mortabet_mahsole_2`)
 
-**فاز:** 7 — پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 7.2
+| فیلد | مقدار |
+|---|---|
+| فاز | 7 — صفحه پروژه‌ها، وبلاگ، خدمات و برگه‌های عمومی |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 7.1`، `Task 5.18` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-03.php` |
 
-## هدف
+## ۱. هدف
 
-درباره ما، تماس، مجوزها، FAQ، شرایط گارانتی، استخدام (+فرم) با ویرایش کامل از داشبورد؛ لندینگ‌های `arya`/`smartelement` فعلاً مسکوت (تصمیم Gate 0).
+سکشن `#used-products` با کارت محصولات مرتبط شده به پروژه، به ترتیب ذخیره‌شده و با حذف محصولات ناموجود.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `page-templates/template-about.php`
-- `template-contact.php`
-- `template-licenses.php`
-- `template-faq.php`
-- `template-refund.php`
-- `template-recruitment.php`
+- `template-parts/project/used-products.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `WP_Query` روی `post__in` با `orderby => post__in`.
+2. کارت با `card-product` و `data-product-*` کامل.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — ترتیب ذخیره‌شده حفظ شود
+- [ ] **P2** — بدون محصول، سکشن حذف شود
+- [ ] **P3** — ID حذف‌شده نادیده گرفته شود
+
+## ۵. تست‌های خودکار
+
+- `ترتیب`
+- `حذف خالی`
+- `ID حذف‌شده`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. انتقال هر برگه به Section Schema
-2. فرم تماس/استخدام با Nonce و Honeypot
-3. آکاردئون FAQ (`data-faq-*`)
-4. تب‌های استخدام (`initRecruitmentTabs`)
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] تمام متون/تصاویر/تب‌ها از داشبورد قابل ویرایش باشند
-- [ ] فرم‌ها امن و با پیام موفقیت درست
-- [ ] هیچ متن هاردکدی باقی نماند
-
-## تست‌های خودکار
-
-- تست قالب برگه‌ها
-- تست فرم
-- اسکن هاردکد
-
-> اسکریپت: `temp/phase-07-projects-blog-and-pages/tests/test-task-3.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

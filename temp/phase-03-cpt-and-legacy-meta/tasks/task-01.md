@@ -1,53 +1,59 @@
-# Task 3.1 — ثبت `projects` + `project_type` + `city` و اصلاح Rewriteها
+# Task 3.1 — ثبت پست‌تایپ `projects` (Native)
 
-**فاز:** 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 1.3` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-ثبت دقیق CPT و تکسونومی‌ها طبق DATA_BLUEPRINT + ستون‌های ادمین (`same_key_hrefl`, `number2-viewc`) و فیلترهای دراپ‌داون شهر/نوع پروژه.
+ثبت دقیق `projects` مطابق بلوپرینت: `public`, `has_archive`, slug `projects`, `with_front=false`, non-hierarchical، supports کامل، `show_in_rest`, و آیکون منو. برچسب‌های فارسی برای همه `labels`.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
 - `inc/Content/PostTypes.php`
-- `inc/Content/Taxonomies.php`
-- `inc/Admin/ListTables.php`
-- `inc/Content/Rewrites.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `register_post_type` با آرگومان‌های دقیق بلوپرینت (بدون تغییر).
+2. Labels فارسی: نام، تکی، افزودن، ویرایش، آرشیو، «یافت نشد».
+3. `map_meta_cap => true` و `capability_type => 'post'`.
+4. `rewrite` فقط با slug و with_front (بدون `hierarchical`).
+5. ثبت در `init` اولویت پیش‌فرض (۱۰).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — `post_type_exists('projects')` و `is_post_type_public` true
+- [ ] **P2** — `get_post_type_archive_link('projects')` = `/projects/`
+- [ ] **P3** — `get_post_type_object('projects')->rewrite` دقیقاً slug/with_front مورد انتظار
+- [ ] **P4** — supports شامل title, editor, thumbnail, comments, custom-fields, revisions باشد
+
+## ۵. تست‌های خودکار
+
+- `ثبت تایپ`
+- `لینک آرشیو`
+- `rewrite`
+- `supports`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. `register_post_type('projects')` با تنظیمات دقیق بلوپرینت
-2. `register_taxonomy('project_type'|'city')`
-3. بازنویسی `product_cat` به `product_cat` (نه product-category) با `with_front=true`
-4. `product_tag` slug=`product-tag`, `with_front=false`
-5. ستون‌های لیست ادمین + فیلترها + قابل مرتب‌سازی
-6. Flush rewrite فقط هنگام فعال‌سازی/تغییر نسخه
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] `get_post_type_archive_link('projects')` = `/projects/`
-- [ ] `get_term_link` برای `city` = `/city/{slug}/` و `project_type` = `/project_type/{slug}/`
-- [ ] دسته محصول = `/product_cat/{slug}/`
-- [ ] بدون flush در هر بار بارگذاری (فقط on activation)
-- [ ] ستون‌ها و فیلترها در لیست ادمین پروژه‌ها ظاهر شوند
-
-## تست‌های خودکار
-
-- تست URL تولیدی
-- تست ثبت تایپ/تکسونومی
-- تست نبود flush_rewrite_rules در هوک روزمره
-- تست ستون‌های ادمین
-
-> اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

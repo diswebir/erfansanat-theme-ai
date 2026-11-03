@@ -1,19 +1,29 @@
 <?php
 /**
- * Test for Task 7.1 — `single-projects.php` و آرشیوهای `project_type`/`city`
- * Phase 7: پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها
+ * Test — Task 7.1: `single-projects.php`: هیرو + گالری + شناسنامه
+ * Phase 7: صفحه پروژه‌ها، وبلاگ، خدمات و برگه‌های عمومی
  *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-07-projects-blog-and-pages/tests/test-task-1.php
- * هر Assertion باید PASS شود تا تسک پاس شود.
+ * اجرا:  node tools/harness/run-tests.mjs temp/phase-07-projects-blog-and-pages/tests/test-task-01.php
+ *
+ * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
+ * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
  */
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../tests/bootstrap.php';
 
-echo "== Task 7.1: `single-projects.php` و آرشیوهای `project_type`/`city` ==\n";
+echo "== Task 7.1: `single-projects.php`: هیرو + گالری + شناسنامه ==\n";
+echo "   phase 7 | size L | files: 4 | pass conditions: 4\n";
 
-pending( 'تست رندر' );
-pending( 'تست گالری جزئی' );
-pending( 'تست لینک تاکسونومی' );
+// --- Pass Conditions (4 شرط) -----------------------------------
+// دو حالت گالری
+check('دو حالت گالری', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// تاریخ
+check('تاریخ', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// لینک تاکسونومی
+check('لینک تاکسونومی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+// h1
+check('h1', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
 
+// --- summary -----------------------------------------------------------------
 summary();

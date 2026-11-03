@@ -1,47 +1,60 @@
-# Task 5.3 — تعاملات صفحه اصلی (اسلایدر هیرو، تایم‌لاین، تب‌ها، شمارنده)
+# Task 5.3 — معرفی پروژه‌های نورپردازی شهری
 
-**فاز:** 5 — صفحه اصلی و کامپوننت‌های ماژولار  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 5.2
+| فیلد | مقدار |
+|---|---|
+| فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
+| اندازه | `S` — کوچک (~نیم روز) |
+| وابستگی | `Task 2.11`، `Task 2.13` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-03.php` |
 
-## هدف
+## ۱. هدف
 
-اطمینان از کارکرد تمام ماژول‌های `main.js` روی مارک‌آپ PHP-تولیدشده (بدون تغییر JS) و افزودن داده اولیه صحیح.
+تبدیل سکشن «معرفی پروژه‌های نورپردازی شهری» از `index.html` به `template-parts/home/section-projects-intro.php` با اتصال کامل به Section Manager و بدون تغییر در `main.js`.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `assets/js/main.js (بدون تغییر)`
-- `template-parts/home/*`
-- `inc/Frontend/InlineData.php`
+- `template-parts/home/section-projects-intro.php`
+- `inc/Sections/Schema/home/projects-intro.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. برش دقیق مارک‌آپ سکشن از `index.html` (بازه بایتی از `temp/_scan/sections.json` → سکشن #2) با حفظ تمام کلاس‌ها.
+2. انتقال متون/تصاویر/لینک‌ها به Schema سکشن در `Registry` (کلید `projects-intro`).
+3. حفظ قرارداد JS: هیچ هوک JS (سکشن استاتیک با ۳ کارت)
+4. حذف `custom="..."` و اتریبیوت‌های بازمانده React؛ تبدیل مسیر تصویر به `assets/img/...`.
+5. پشتیبانی از حالت «داده خالی» → رندر بلوک پیش‌فرض یا حذف کامل بدون خطا.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — مقایسه ساختاری DOM با استاتیک ≥ ۹۹٪
+- [ ] **P2** — هیچ متن هاردکدی در فایل سکشن نمانده باشد (همه از Schema)
+- [ ] **P3** — تغییر محتوا از داشبورد در خروجی اعمال شود
+- [ ] **P4** — در حالت خالی، خطا/Warning نداشته باشد
+
+## ۵. تست‌های خودکار
+
+- `diff ساختاری سکشن`
+- `اسکن هاردکد`
+- `اثر داشبورد`
+- `حالت خالی`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. بررسی `data-home1-scene-*` و تزریق تعداد صحیح صحنه‌ها
-2. تب‌های پورت‌فولیو (`data-home2-port-*`) و تایم‌لاین (`data-home2-history-*`)
-3. شمارنده‌ها (`data-counter-target`)
-4. مودال ویدیو/لایت‌باکس
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] هیچ خطای JS در کنسول نباشد
-- [ ] همه تعاملات استاتیک در نسخه PHP کار کنند
-- [ ] بدون تغییر در `main.js` (md5 یکسان)
-
-## تست‌های خودکار
-
-- تست md5 main.js
-- تست وجود هوک‌های لازم
-- بررسی نبود خطای JS با jsdom (در صورت امکان)
-
-> اسکریپت: `temp/phase-05-homepage-and-sections/tests/test-task-3.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

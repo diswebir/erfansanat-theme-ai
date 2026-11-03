@@ -1,52 +1,54 @@
-# Task 3.3 — متاباکس پروژه‌ها، FAQ دسته‌ها، Hreflang و شمارنده بازدید
+# Task 3.3 — ثبت تکسونومی `city`
 
-**فاز:** 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 3.1
+| فیلد | مقدار |
+|---|---|
+| فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 3.1` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-03.php` |
 
-## هدف
+## ۱. هدف
 
-متاباکس پروژه با ۵ تصویر گالری (با املای دقیق `foure-image`)، تاریخ تکمیل، محصولات مرتبط؛ متاباکس FAQ تکسونومی `product_cat` با Media؛ متاباکس Hreflang؛ شمارنده `number2-viewc`.
+ثبت Native `city` (محل پروژه) دقیقاً مطابق بلوپرینت با slug `city` و `with_front=false`.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `inc/Admin/Metaboxes/ProjectMeta.php`
-- `inc/Admin/Metaboxes/TermMeta.php`
-- `inc/Admin/Metaboxes/Hreflang.php`
-- `inc/Meta/Views.php`
+- `inc/Content/Taxonomies.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. همان رویه ۳.۲ با اسلاگ `city`.
+2. نمایش آرشیو شهر با همان قالب `taxonomy-city.php` (فاز ۷).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — `taxonomy_exists('city')` true
+- [ ] **P2** — `get_term_link` = `/city/{slug}/`
+- [ ] **P3** — حذف/ویرایش ترم باعث خطا در آرشیو نشود
+
+## ۵. تست‌های خودکار
+
+- `ثبت`
+- `لینک ترم`
+- `ایمنی حذف ترم`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. گالری پروژه با همگام‌سازی دوطرفه بین فیلد مدرن و `second-image..six-image`
-2. `finish-pro-time` با اعتبارسنجی الگوی تاریخ جلالی
-3. `mortabet_mahsole_2` انتخابگر چندگانه محصول
-4. Term meta: `thumbnail` (media) و `faq` (repeater) برای `product_cat`
-5. Hreflang برای post/page/product/projects + همه تکسونومی‌ها + ستون `same_key_hrefl`
-6. `number2-viewc` با fallback خواندن `number-viewc` و ضدتکرار در یک session
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] همه ۷ کلید پروژه و ۴ کلید Hreflang و ۲ کلید تکسونومی تست شوند
-- [ ] گالری پروژه با هیچ‌یک از کلیدهای قدیمی گم نشود
-- [ ] تاریخ نامعتبر رد شود
-- [ ] افزایش بازدید بدون تأثیر بر زمان پاسخ (<5ms) و بدون شمارش ربات‌ها
-
-## تست‌های خودکار
-
-- CRUD کامل متاها
-- تست گالری دوطرفه
-- تست هنجاری تاریخ
-- تست شمارنده بازدید
-
-> اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-3.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

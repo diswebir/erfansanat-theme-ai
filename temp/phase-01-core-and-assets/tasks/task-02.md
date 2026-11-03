@@ -1,49 +1,61 @@
-# Task 1.2 — ماژول DeBloat و پاکسازی سرصفحه
+# Task 1.2 — Autoloader PSR-4 دستی و Namespace `ErfanSanat\Theme`
 
-**فاز:** 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** Task 1.0
+| فیلد | مقدار |
+|---|---|
+| فاز | 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 1.1` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-02.php` |
 
-## هدف
+## ۱. هدف
 
-حذف کامل CSS/JS گوتنبرگ و بلاک‌ها، ایموجی، oEmbed، `wp-embed.js`، و متاتگ‌های اضافی `wp_head` برای رسیدن به بودجه عملکرد.
+پیاده‌سازی Autoloader بدون Composer که کلاس‌های `ErfanSanat\Theme\Foo\Bar` را به `inc/Foo/Bar.php` نگاشت می‌کند، با کشِ نام‌کلاس→مسیر و پشتیبانی از interface/trait.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `inc/Performance/DeBloat.php`
+- `inc/Autoloader.php`
+- `inc/bootstrap.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `spl_autoload_register` با prefix دقیق `ErfanSanat\Theme\` و `strlen` guard (نه `strpos === 0` خام).
+2. نگاشت `\` → `/` و `.php`؛ پشتیبانی از حروف بزرگ/کوچک فایل (تبدیل به form استاندارد).
+3. کش استاتیک `array $paths` تا `file_exists` تکراری انجام نشود.
+4. `inc/bootstrap.php` تنها نقطه ورود: تعریف ثابت‌ها → ثبت Autoloader → راه‌اندازی Kernel.
+5. هیچ `require` دستی برای کلاس‌ها؛ فقط `bootstrap.php` در `functions.php` require شود.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — کلاس تازه‌ساخته `ErfanSanat\Theme\Demo\Probe` بدون `require` بارگذاری شود
+- [ ] **P2** — کلاس ناموجود هیچ خطا/Notice تولید نکند (فقط false)
+- [ ] **P3** — کلاس خارج از namespace قالب (مثل `WP_Query`) دست‌نخورده بماند
+- [ ] **P4** — `inc/bootstrap.php` تنها فایل require‌شده در `functions.php` باشد
+- [ ] **P5** — تعداد `file_exists` در دو بار بارگذاری یک کلاس = ۱ (کش کار کند)
+
+## ۵. تست‌های خودکار
+
+- `بارگذاری خودکار`
+- `ایمنی کلاس ناموجود`
+- `عدم تداخل با هسته`
+- `شمارش file_exists`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. حذف `wp-block-library`, `wp-block-library-theme`, `global-styles`, `classic-theme-styles`
-2. حذف اکشن‌های ایموجی (`print_emoji_*`, `wp_emoji_*`) و فیلترهای `the_content` مرتبط
-3. حذف `wp_oembed_add_discovery_links`, `wp_oembed_add_host_js`, `rest_output_link_wp_head`
-4. حذف `wp_generator`, `rsd_link`, `wlwmanifest_link`, `shortlink`
-5. غیرفعال‌سازی `dashicons` در فرانت (فقط برای کاربر وارد‌شده)
-6. حذف `wp-block-library` از `wp_enqueue_scripts` با اولویت ۱۰۰
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] هیچ فایل `wp-includes/css/dist/block-library/*` در سورس HTML خروجی نباشد
-- [ ] هیچ `wp-emoji`/`wp-embed` در سورس نباشد
-- [ ] تعداد `<link rel=stylesheet>` فقط ۲ عدد (styles.css + افزونه‌های لازم)
-- [ ] `global-styles` و `classic-theme-styles` حذف شده باشند
-- [ ] صفحه ادمین و ویرایشگر بدون خطا کار کند (DeBloat فقط فرانت)
-
-## تست‌های خودکار
-
-- شبیه‌سازی wp_enqueue_scripts و بررسی نبود handleها
-- بررسی خروجی wp_head برای الگوهای ممنوع
-- تست ایزوله‌بودن ادمین
-
-> اسکریپت: `temp/phase-01-core-and-assets/tests/test-task-2.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

@@ -1,49 +1,59 @@
-# Task 8.1 — جستجوی زنده و فیلترهای هوشمند (جایگزین JetSearch/JetSmartFilters)
+# Task 8.1 — اندپوینت جستجوی زنده (`SearchEndpoint`)
 
-**فاز:** 8 — جایگزینی Native جستجو/فیلترها، فرم‌ها و ممیزی نهایی  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 8 — جایگزینی Native جستجو/فیلترها، فرم‌ها و ممیزی نهایی |
+| اندازه | `L` — بزرگ (~۲ روز) |
+| وابستگی | `Task 4.9` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-فیلتر محصولات بر اساس متن/دسته/قیمت/وضعیت فروش/`pa_*` + مرتب‌سازی؛ فیلتر پروژه بر اساس نوع/شهر با شمارنده.
+`admin-ajax.php?action=es_search` با Nonce، محدودیت نرخ، whitelist نوع محتوا، خروجی JSON/HTML کارت‌ها و جستجوی امن (بدون SQL دستی).
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
 - `inc/Ajax/SearchEndpoint.php`
-- `inc/Ajax/FilterEndpoint.php`
-- `assets/js/filters.js`
-- `template-parts/archive/filters.php`
+- `assets/js/search.js`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `check_ajax_referer` + محدودیت نرخ با transient (IP hash).
+2. `WP_Query` با `s`, `post_type` از whitelist، `posts_per_page` محدود (۱۰).
+3. پاسخ شامل HTML آماده رندر (کارت) + JSON متا.
+4. escape کامل خروجی و عدم افشای اطلاعات (بدون لیست پیش‌نویس‌ها).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — پاسخ < ۲۰۰ms در تست محلی
+- [ ] **P2** — payloadهای `<script>`, `%27 OR 1=1`, `">` بی‌اثر باشند
+- [ ] **P3** — پیش‌نویس/خصوصی برنگردد
+- [ ] **P4** — بدون nonce → 403
+
+## ۵. تست‌های خودکار
+
+- `زمان پاسخ`
+- `تست SQLi/XSS`
+- `عدم افشای پیش‌نویس`
+- `nonce`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. Endpoint با Nonce، rate-limit سبک و `WP_Query` امن
-2. پارامترهای فیلتر whitelist شده
-3. فرagment HTML کارت‌ها
-4. سازگاری با SEO (لینک‌های قابل crawl برای فیلترهای اصلی)
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] پاسخ < ۲۰۰ms در محیط تست
-- [ ] مقاوم در برابر SQLi/XSS (تست payload)
-- [ ] بدون رفرش صفحه
-- [ ] کارکرد بدون جاوااسکریپت (fallback فرم GET)
-
-## تست‌های خودکار
-
-- تست زمان پاسخ
-- تست payloadهای امنیتی
-- تست fallback بدون JS
-
-> اسکریپت: `temp/phase-08-ajax-filters-and-audit/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

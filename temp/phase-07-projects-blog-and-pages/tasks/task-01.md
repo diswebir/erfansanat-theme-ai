@@ -1,49 +1,61 @@
-# Task 7.1 — `single-projects.php` و آرشیوهای `project_type`/`city`
+# Task 7.1 — `single-projects.php`: هیرو + گالری + شناسنامه
 
-**فاز:** 7 — پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 7 — صفحه پروژه‌ها، وبلاگ، خدمات و برگه‌های عمومی |
+| اندازه | `L` — بزرگ (~۲ روز) |
+| وابستگی | `Task 3.1`، `Task 3.2`، `Task 3.3`، `Task 5.18` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-گالری ۵ تصویره، تاریخ تکمیل، شهر/نوع، تب‌های جزئیات، محصولات استفاده‌شده و آرشیوهای فیلترشده.
+صفحه تک‌پروژه: breadcrumb، عنوان، شهر/نوع، تاریخ تکمیل (`finish-pro-time`)، گالری ۵ تصویره (`second-image`..`six-image`) و شناسنامه اجرایی.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
 - `single-projects.php`
-- `archive-projects.php`
-- `taxonomy-project_type.php`
-- `taxonomy-city.php`
-- `template-parts/project/*.php`
+- `template-parts/project/hero.php`
+- `template-parts/project/gallery.php`
+- `template-parts/project/facts.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. Breadcrumb: خانه › پروژه‌ها › نوع › عنوان.
+2. گالری فقط با تصاویر موجود (۱ تا ۵) بدون خانه خالی.
+3. نمایش `city`/`project_type` با `get_the_terms`.
+4. تاریخ تکمیل با تبدیل شمسی صحیح (WP-Parsidate یا helper).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — پروژه با ۵ تصویر و پروژه بدون گالری هر دو رندر شوند
+- [ ] **P2** — تاریخ نامعتبر باعث خطا نشود (fallback مخفی)
+- [ ] **P3** — شهر/نوع با لینک آرشیو صحیح
+- [ ] **P4** — h1 یکتا
+
+## ۵. تست‌های خودکار
+
+- `دو حالت گالری`
+- `تاریخ`
+- `لینک تاکسونومی`
+- `h1`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. گالری از `second-image..six-image` (فقط تصاویر موجود)
-2. `finish-pro-time` با نمایش تاریخ شمسی
-3. `mortabet_mahsole_2` → کارت محصول
-4. آرشیو با فیلتر نوع/شهر و شمارنده
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] رندر صحیح تک‌پروژه و هر دو آرشیو
-- [ ] پروژه بدون گالری خطا ندهد
-- [ ] لینک‌های تاکسونومی درست باشند
-
-## تست‌های خودکار
-
-- تست رندر
-- تست گالری جزئی
-- تست لینک تاکسونومی
-
-> اسکریپت: `temp/phase-07-projects-blog-and-pages/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

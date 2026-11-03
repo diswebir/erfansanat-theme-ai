@@ -1,59 +1,57 @@
-# Task 6.1 — `single-product.php` و اتصال کامل متاها
+# Task 6.1 — راه‌اندازی پوشه `woocommerce/` و `declare_compatibility`
 
-**فاز:** 6 — قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 6 — قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 1.9` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-هیرو، گالری (`galerry_produ` + گالری ووکامرس)، زیرعنوان، عنوان انگلیسی، شناسه‌های قانونی، اطلاعیه پیش از خرید، کاتالوگ، جدول ۱۸ ویژگی، ویژگی‌ها/کاربردهای Repeater، پروژه‌های مرتبط، FAQ، نظرات.
+فعال‌سازی پشتیبانی رسمی WooCommerce (HPOS و blocks) و ساخت ساختار پوشه قالب‌های ووکامرس + نسخه‌گذاری قالب‌ها.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `woocommerce/single-product.php`
-- `woocommerce/content-single-product.php`
-- `template-parts/product/hero.php`
-- `gallery.php`
-- `tabs.php`
-- `specs.php`
-- `legal-ids.php`
-- `related-projects.php`
-- `faq.php`
-- `inc/Woo/ProductData.php`
+- `inc/Woo/WooSupport.php`
+- `woocommerce/.keep`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true)` در `before_woocommerce_init`.
+2. `declare_compatibility('cart_checkout_blocks', ...)` مطابق تصمیم G3 (قالب‌های کلاسیک).
+3. حذف `wc-blocks` از فرانت در DeBloat (تسک ۱.۶) و اطمینان از سالم بودن چک‌اوت کلاسیک.
+4. تعریف `ES_WC_TEMPLATE_VERSION` برای همگامی با نسخه قالب‌های ووکامرس.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — در WooCommerce > Status هیچ «outdated template» دیده نشود
+- [ ] **P2** — بدون WooCommerce، قالب بدون Fatal کار کند
+- [ ] **P3** — اعلام سازگاری HPOS ثبت شده باشد
+
+## ۵. تست‌های خودکار
+
+- `اعلام سازگاری`
+- `ایمنی بدون ووکامرس`
+- `بدون قالب قدیمی`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. خواندن `true_sale` برای حالت خرید/استعلام
-2. گالری با fallback زنجیره‌ای `galerry_produ` → `_product_image_gallery` → `gallery-filed` → `image-2..6`
-3. جدول ویژگی‌ها از `pa_*` (۱۸ مورد) با ترتیب ثابت
-4. Repeaterها با `RepeaterCodec`
-5. فرم افزودن به سبد استاندارد ووکامرس (متغیر/ساده)
-6. نظرات با `comments_template`
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] محصول `true_sale=true` دکمه/فرم خرید داشته باشد
-- [ ] محصول `true_sale=false` دکمه استعلام + لینک تماس داشته باشد
-- [ ] سکشن خالی رندر نشود
-- [ ] همه متاها با املای دقیق خوانده شوند
-- [ ] بدون خطای PHP با محصول بدون گالری/بدون ویژگی
-
-## تست‌های خودکار
-
-- تست دو حالت فروش
-- تست fallback گالری
-- تست جدول ویژگی
-- تست محصول بدون داده
-
-> اسکریپت: `temp/phase-06-woocommerce-and-products/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

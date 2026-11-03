@@ -1,54 +1,59 @@
-# Task 4.1 — `header.php` و `footer.php` از روی میرور
+# Task 4.1 — `head` سفارشی: `wp_head`، متا، Hreflang و JSON-LD پایه
 
-**فاز:** 4 — هدر، مگامنو، منوی موبایل و فوتر  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 4 — هدر، مگامنو، منوی موبایل و فوتر |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 1.9`، `Task 2.7` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-برش هدر/فوتر مشترک (۱۲۸ فایل یکسان) به همراه Hreflang در `<head>`, `wp_head`/`wp_body_open`/`wp_footer`, و اتصال به Theme Options.
+`inc/Frontend/Head.php`: تزریق Hreflang از متای `hrefmeta_*`، متاهای OG/Twitter پایه (در نبود SEOPress)، و اسکیمای `Organization`/`WebSite`/`BreadcrumbList` مطابق استاتیک — بدون تداخل با SEOPress.
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
-- `header.php`
-- `footer.php`
-- `template-parts/header/topbar.php`
-- `template-parts/header/nav.php`
-- `template-parts/header/mobile-menu.php`
 - `inc/Frontend/Head.php`
+- `inc/SEO/JsonLd.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. Hreflang از `hrefmeta_fa/en/ar` + پیش‌فرض `home_url()`.
+2. JSON-LD مطابق اسکریپت `ese-jsonld-schema` استاتیک (Organization/WebSite/Breadcrumb).
+3. اگر SEOPress فعال است، OG/Twitter توسط افزونه تولید شود و ما تکرار نکنیم (`defined('SEOPRESS_VERSION')`).
+4. خروجی JSON-LD با `wp_json_encode` و `wp_kses` مجاز `<script>`.
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — در نبود SEOPress، تگ‌های OG و Twitter موجود باشند
+- [ ] **P2** — با فعال بودن SEOPress، هیچ تگ تکراری OG تولید نشود
+- [ ] **P3** — Hreflang سه زبان و تنها یک‌بار
+- [ ] **P4** — JSON-LD معتبر (`json_decode` موفق) و شامل Organization + WebSite
+
+## ۵. تست‌های خودکار
+
+- `OG شرطی`
+- `عدم تکرار`
+- `Hreflang`
+- `اعتبار JSON-LD`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. استخراج هدر از `index.html` و پارامتری کردن لینک‌ها با `home_url()`
-2. جایگزینی لینک‌های ثابت با `get_permalink`/`get_term_link`
-3. Hreflang از متای `hrefmeta_*` + پیش‌فرض سایت
-4. حذف `custom="0.03"` باقی‌مانده از React (تبدیل به `data-*` در صورت نیاز JS)
-5. فوتر با همان ساختار و داده‌های تماس از داشبورد
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] DOM خروجی ≥ ۹۹٪ منطبق بر استاتیک (تست مقایسه ساختاری)
-- [ ] وجود `wp_head`, `body_class`, `wp_body_open`, `wp_footer`
-- [ ] همه لینک‌های داخلی با `home_url` ساخته شوند (بدون `.html`)
-- [ ] بدون `custom=` در خروجی
-- [ ] هیچ کلاس Tailwind حذف/اضافه نشود
-
-## تست‌های خودکار
-
-- diff ساختاری DOM
-- تست وجود هوک‌ها
-- تست مطلق‌بودن لینک‌ها
-- تست نبود custom=
-
-> اسکریپت: `temp/phase-04-header-footer-navigation/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)

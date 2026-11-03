@@ -1,64 +1,60 @@
-# Task 5.1 — برش ۱۵ سکشن صفحه اصلی به `template-parts/home/`
+# Task 5.1 — `front-page.php` + حلقه رندر ۱۵ سکشن
 
-**فاز:** 5 — صفحه اصلی و کامپوننت‌های ماژولار  
-**وضعیت:** `[PENDING]`  
-**وابستگی:** —
+| فیلد | مقدار |
+|---|---|
+| فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
+| اندازه | `M` — متوسط (~۱ روز) |
+| وابستگی | `Task 2.11`، `Task 2.13` |
+| وضعیت | `[PENDING]` |
+| تست | `tests/test-task-01.php` |
 
-## هدف
+## ۱. هدف
 
-هر سکشن یک فایل، با رندر پویا بر اساس Section Manager و حفظ کامل مارک‌آپ؛ فقط واریانت هیروی فعال (home1) رندر می‌شود، دو واریانت دیگر به‌صورت فایل آماده و از داشبورد قابل فعال‌سازی‌اند.
+ساخت `front-page.php` که فقط از `Renderer` سکشن‌ها استفاده می‌کند (بدون هیچ مارک‌آپ سکشن داخل خودش)، به‌همراه انتخاب واریانت هیرو از آپشن (طبق G1: پیش‌فرض `home1`).
 
-## فایل‌های هدف
+## ۲. فایل‌های هدف
 
 - `front-page.php`
-- `template-parts/home/section-hero.php`
-- `section-projects.php`
-- `section-gallery.php`
-- `section-about.php`
-- `section-timeline.php`
-- `section-products.php`
-- `section-catalog.php`
-- `section-services.php`
-- `section-quality.php`
-- `section-support.php`
-- `section-clients.php`
-- `section-blog.php`
-- `section-cta.php`
-- `section-map.php`
-- `template-parts/home/hero-variants/hero-home2.php`
-- `hero-home3.php`
+- `inc/Sections/Renderer.php`
+- `inc/Sections/Schema/home.php`
 
-## مراحل اجرا (چرخه ۶ گامی)
+## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
+
+1. `front-page.php` = `get_header()` + `Renderer::render('home')` + `get_footer()`.
+2. آپشن `home_hero_variant` با مقادیر `home1`/`home2`/`home3` (پیش‌فرض `home1`).
+3. فهرست ۱۵ کلید سکشن در Registry به ترتیب دقیق استاتیک.
+4. پشتیبانی از `page` واقعی صفحه اصلی (fallback به محتوای برگه در صورت خالی بودن سکشن‌ها).
+
+## ۴. شروط پاس شدن (Pass Conditions)
+
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+
+- [ ] **P1** — `front-page.php` هیچ مارک‌آپ سکشن نداشته باشد (تست grep)
+- [ ] **P2** — ۱۵ سکشن در ترتیب صحیح رندر شوند
+- [ ] **P3** — تغییر `home_hero_variant` به `home2` سکشن هیرو متفاوتی رندر کند
+- [ ] **P4** — بدون سکشن فعال، صفحه خطا ندهد
+
+## ۵. تست‌های خودکار
+
+- `بدون مارک‌آپ مستقیم`
+- `ترتیب ۱۵ سکشن`
+- `سوییچ واریانت`
+- `حالت خالی`
+
+## ۶. چرخه اجرایی (۶ گام اجباری)
 
 | گام | اقدام |
 |---|---|
-| `[READ MEMORY]` | خواندن `temp/PROJECT_MEMORY.md` و `temp/STATIC_TEMPLATE_MAP.md` و همین فایل |
-| `[THINK & PLAN]` | تحلیل مارک‌آپ استاتیک مربوطه و طرح اتصال به وردپرس |
-| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` |
-| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM |
-| `[RUN TEST]` | اجرا و رفع خطا تا ۱۰۰٪ شروط |
-| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` + کامیت |
+| `[READ MEMORY]` | `temp/PROJECT_MEMORY.md` + `temp/STATIC_TEMPLATE_MAP.md` + این فایل |
+| `[THINK & PLAN]` | تحلیل مارک‌آپ/داده مربوطه و طرح اتصال |
+| `[WRITE TEST]` | تکمیل `tests/test-task-XX.php` (تبدیل `pending()` به `check()`) |
+| `[IMPLEMENT]` | پیاده‌سازی بدون حذف کلاس/DOM/هوک |
+| `[RUN TEST]` | اجرا تا ۱۰۰٪ PASS + ثبت در `QA_REFLECTION_LOG.md` |
+| `[UPDATE MEMORY]` | آپدیت `PROJECT_MEMORY.md`, `MASTER_PLAN.md` + کامیت |
 
-## جزئیات پیاده‌سازی
+## ۷. ضدالگوها (Anti-patterns) — انجام نده
 
-1. استخراج هر سکشن با ابزار برش (offsets دقیق از `temp/_scan/sections.json`)
-2. پارامتری‌کردن متون/تصاویر/لینک‌ها از Theme Options و Section Schema
-3. حفظ `data-home1-*`, `data-home2-*` و همه کلاس‌ها
-4. انتخاب واریانت هیرو از آپشن (`es_option('home_hero_variant')`)
-5. حذف `custom=...` و `style`های تولیدی React در صورت بی‌اثر بودن
-
-## شروط پاس شدن (Pass Conditions)
-
-- [ ] رندر پیش‌فرض با استاتیک منطبق باشد (تست ساختاری سکشن‌به‌سکشن)
-- [ ] تغییر ترتیب/خاموش‌کردن سکشن از داشبورد کار کند
-- [ ] هیچ متن فارسی هاردکدی در فایل‌های سکشن نباشد (به‌جز fallback پیش‌فرض در Registry)
-- [ ] تمام ۱۵ سکشن موجود باشند
-
-## تست‌های خودکار
-
-- مقایسه سکشن‌به‌سکشن
-- تست ترتیب
-- اسکن متن هاردکد
-- شمارش ۱۵ فایل
-
-> اسکریپت: `temp/phase-05-homepage-and-sections/tests/test-task-1.php`
+- طراحی مجدد مارک‌آپ یا افزودن کلاس Tailwind جدید (قانون R1)
+- تغییر فایل `assets/js/main.js` یا `assets/css/styles.css` (md5 باید ثابت بماند)
+- استفاده از `TODO`/`...`/حذف بخشی از HTML برای کوتاه‌سازی (قانون R6)
+- خواندن/نوشتن متا با املای «تصحیح‌شده» (مثل `english_title` به‌جای `english_titl`)
