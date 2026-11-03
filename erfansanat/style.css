@@ -1,0 +1,21 @@
+/*
+Theme Name: Erfan Sanat Esfahan
+Theme URI: https://erfansanat.com
+Author: Erfan Sanat Esfahan
+Author URI: https://erfansanat.com
+Description: Bespoke RTL WordPress/WooCommerce theme converted from the approved static reference. No page builder.
+Version: 0.1.0
+Requires at least: 7.1
+Tested up to: 7.1.4
+Requires PHP: 8.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: erfansanat
+Domain Path: /languages
+Tags: rtl-language-support, custom-theme, woocommerce
+*/
+
+/*
+ * This file is the theme header only.
+ * The approved static stylesheet is loaded from assets/css/styles.css in Task 1.3.
+ */

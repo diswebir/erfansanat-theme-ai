@@ -10,7 +10,7 @@
 
 ## آزمون‌های در انتظار اجرای فازها
 
-- Task 1.1: [PENDING] — هنوز اجرا نشده است.
+- Task 1.1: [PASSED] — ۹ تست PHPUnit/۵۳ assertion و ۱۴ بررسی HTTP.
 - Task 1.2: [PENDING] — هنوز اجرا نشده است.
 - Task 1.3: [PENDING] — هنوز اجرا نشده است.
 - Task 2.1: [PENDING] — هنوز اجرا نشده است.
@@ -52,3 +52,16 @@
 - `bash tools/test-local.sh` موفق شد: نحو PHP، ۲۶ شرط runtime، HTTP عمومی/REST/ورود مدیر/پیشخوان/سبد/پرداخت، میزبان preview و HTTPS forwarding، اجرای دوباره seeder و سلامت منبع استاتیک.
 - `bash tools/setup-wordpress.sh` روی محیط موجود دوباره اجرا شد و بدون تغییر تعداد داده‌ها موفق شد؛ نصب تازه از صفر هنوز جداگانه آزمون نشده است.
 - محدودیت: SQLite/PHP-Wasm جای آزمون MySQL/MariaDB، LiteSpeed، پرداخت، ایمیل و دیتابیس تولید را نمی‌گیرد. درخواست‌های خارجی محلی مسدودند و هشدارهای translations_api در لاگ ناشی از محدودیت شبکه است.
+
+## 2026-11-03 — Task 1.1 (اسکلت قالب، Autoloader، پشتیبانی ووکامرس)
+
+- ساختار: قالب مستقل در `erfansanat/`، namespace `ErfanSanat\Theme`، autoloader PSR-4 با `realpath` و بررسی containment، سینگلتون `Theme`، به‌علاوهٔ `header.php`/`footer.php`/`sidebar.php` سازگاری برای حذف هشدارهای `theme-compat` هسته.
+- باگ‌های کشف و اصلاح‌شده:
+  1. آزمون «بدون وابستگی صفحه‌ساز» روی متن خام اجرا می‌شد و جملهٔ توضیحی docblock را مثبت کاذب می‌گرفت؛ regex به `require/include` و `new Class` محدود شد.
+  2. `tools/phpunit` با وجود FAILURES کد خروج ۰ برمی‌گرداند؛ wrapper اکنون کد خروج را منتقل و خروجی FAILURES/ERRORS/WARNINGS/No tests executed را هم بررسی می‌کند.
+  3. PHPUnit 12 نام کلاس را از نام فایل استنتاج می‌کند و `test-task-01.php` هرگز با `TaskP01T01Test` جور نمی‌شد؛ `tools/run-php-tests.sh` قرارداد را زیر نام کلاس در کش کپی و `bootstrap.php` را با مسیر مطلق جایگزین می‌کند. اجرای XML suite به‌دلیل هشدار «does not extend TestCase» برای bootstrap رد شد.
+  4. درخواست HTTP از داخل همان پروسهٔ PHP-Wasm به خودش timeout می‌دهد؛ همهٔ شرط‌های HTTP به `check-http.py` (curl بیرونی) منتقل شدند؛ این محدودیت محیط است نه نقص قالب.
+  5. قالب بدون `<title>` صریح رندر می‌شد چون `wp_get_document_title()` در زمان اجرای `header.php` هنوز title-tag را چاپ نکرده بود؛ درج دستی `<title>` باعث عنوان تکراری شد و حذف شد؛ خروجی فعلی یک title از `wp_head` دارد و آزمون همین را می‌سنجد.
+  6. `phpcs.xml.dist` اضافه شد تا استاندارد رسمی WordPress با معافیت مستند PSR-4 و prefix/text-domain پروژه اجرا شود؛ ۲۱۹ ایراد قالب‌بندی با phpcbf اصلاح و ایرادهای باقی‌مانده (Yoda، docblock پارامتر، نام رزروشده) دستی برطرف شد.
+- شواهد نهایی: `bash temp/phase-01-core-and-assets/tests/run-phase-01-tests.sh --task 1.1` → PHPUnit «OK (9 tests, 53 assertions)» و ۱۴/۱۴ بررسی HTTP.
+- محدودیت باقی‌مانده: این آزمون‌ها محیط محلی SQLite/PHP-Wasm را می‌سنجند؛ سازگاری تولید، MySQL و درگاه پرداخت همچنان آزمون‌نشده است.
