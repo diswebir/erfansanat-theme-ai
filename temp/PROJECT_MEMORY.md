@@ -3,8 +3,8 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**STAGE 1-R COMPLETED — AWAITING USER APPROVAL TO START PHASE 1**
-درخت تسک‌ها به درخواست کارفرما به **۸۲ تسک اتمیک** بازطراحی شد (از ۲۲). هر تسک: هدف/وابستگی/مراجع دقیق میرور/خروجی‌ها/مراحل گام‌به‌گام/محدودیت‌ها/شروط پاس + تست اختصاصی.
+**PHASE 1 COMPLETED (8/8 TASKS PASSED) — AWAITING USER APPROVAL TO START PHASE 2**
+درخت ۸۲ تسکی اتمیک؛ فاز ۱ کامل و کامیت شد. تسک بعدی: فاز ۲ (داشبورد ادمین) — Task 2.1.
 
 ## آخرین رویداد
 - **2026-11-03 — Stage 0 انجام شد:** تجهیز محیط (PHP 8.4 wasm + Node 22)، استخراج میرور (۱۲۸ HTML، ۳۹MB)، اسکن کامل و ساخت ۴ فایل حافظه. کامیت `94d4986`.
@@ -46,6 +46,18 @@
 - قیمت‌ها «تومان» (IRT)؛ RTL؛ JSON-LDها داینامیک شوند.
 - `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
+
+## رویدادهای فاز ۱ (2026-11-03)
+- سان‌باکس بین پیام‌ها ریست شد → ترمیم: ZIP میرور داخل ریپو ذخیره شد (`uploads/erfansanat-static-mirror.zip`، gitignore فقط نسخه استخراج‌شده)؛ PHP wasm بازنصب شد.
+- تسک 1.1 تا 1.8 اجرا و هرکدام جداگانه کامیت شد؛ تست‌ها: 18/18, 16/16, 18/18, 11/11, 24/24, 21/21, 25/25, 21/21 — فاز: ۸/۸ تسک پاس.
+- فایل‌های قالب ساخته‌شده: style.css, functions.php, index.php, inc/{Theme,Autoloader,Helpers,ThemeSetup}.php, inc/Frontend/{DeBloat,AssetManager}.php + assets/ کامل (۱۳MB).
+- زیرساخت تست: temp/harness/{wp-stubs.php (۶۲ تابع), README.md} + شیم /home/user/tools/php (بازنویسی کامل).
+
+## تصمیمات جدید فاز ۱
+- **D-010:** تسک 1.8 (wp-stubs) به ابتدای فاز جابه‌جا شد چون تست‌های 1.2+ به آن نیاز دارند (در QA log مستند است).
+- **D-011:** شیم PHP: ریپو با `createNodeFsMountHandler` به wasm مونت می‌شود (خواندن میرور بدون سینک سنگین)؛ `PHP.run` روی exitCode≠0 استثنا می‌دهد (پاسخ در e.response)؛ wrapper مسیر واقعی را با ES_SCRIPT_PATH تزریق می‌کند (dirname سطح ۴).
+- **D-012:** توابع stub باید در گارد function_exists باشند — اعلان بدون شرط در زمان کامپایل bind می‌شود و redeclare fatal می‌دهد حتی با گارد runtime.
+- **D-013:** `es_option_reset_cache()` اضافه شد (برای ذخیره ایجکس فاز ۲)؛ `es_stubs_reset` آن را صدا می‌زند.
 
 ## پاسخ‌های دریافتی از کارفرما
 - Q1: live_slugs · Q2: cpt_services · Q3: compose_from_components · Q4: wc_full  (2026-11-03)
