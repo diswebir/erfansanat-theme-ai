@@ -49,7 +49,7 @@
 | `P02-T012` | تب فوتر/تماس/شبکه‌های اجتماعی | `2.2` | P02-T010 | `[PASSED]` |
 | `P02-T013` | تب برند/رنگ و اسکریپت سفارشی | `2.2` | P02-T009 | `[PASSED]` |
 | `P02-T014` | تب تنظیمات آرشیو | `2.2` | P02-T005 | `[PASSED]` |
-| `P02-T015` | SectionManager: schema و ذخیره متا | `2.3` | P02-T001, P02-T007 | `[PENDING]` |
+| `P02-T015` | SectionManager: schema و ذخیره متا | `2.3` | P02-T001, P02-T007 | `[PASSED]` |
 | `P02-T016` | SectionManager: UI ترتیب و فعال‌سازی | `2.3` | P02-T015 | `[PENDING]` |
 | `P02-T017` | SectionManager: ویرایش محتوای سکشن | `2.3` | P02-T006, P02-T007, P02-T016 | `[PENDING]` |
 | `P02-T018` | SectionManager: API رندر و کش | `2.3` | P02-T015, P02-T017 | `[PENDING]` |
