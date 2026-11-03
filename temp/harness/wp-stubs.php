@@ -813,6 +813,37 @@ if (!function_exists('is_serialized')) {
     }
 }
 
+
+if (!function_exists('selected')) {
+    /** چاپ اتریبیوت selected مطابق هسته */
+    function selected(mixed $helper, mixed $current = true, bool $display = true): string
+    {
+        $result = (string) $helper === (string) $current ? " selected='selected'" : '';
+        if ($display) {
+            echo $result;
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('checked')) {
+    function checked(mixed $helper, mixed $current = true, bool $display = true): string
+    {
+        $result = (string) $helper === (string) $current ? " checked='checked'" : '';
+        if ($display) {
+            echo $result;
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('get_the_terms')) {
+    function get_the_terms(int|object $post, string $taxonomy): array|false
+    {
+        $id = is_object($post) ? ($post->ID ?? 0) : (int) $post;
+        return $GLOBALS['__es_stub_post_term_map'][$id][$taxonomy] ?? false;
+    }
+}
 if (!function_exists('pre_get_posts_hook_recorder')) {
     function pre_get_posts_hook_recorder(): void
     {

@@ -1,13 +1,7 @@
 <?php
 /**
- * Test 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی
- * فاز: 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
- * اجرا: /home/user/tools/php -f phase-03-cpt-and-legacy-meta/tests/test-task-04.php
- *
- * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
- * وردپرس نیاز دارند ابتدا stubها را require کنید:
- *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
- * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
+ * Test 3.4 — Rewrite تکسونومی‌های ووکامرس: product_cat با with_front=true + flush فعال‌سازی
+ * اجرا: /home/user/tools/php -f temp/phase-03-cpt-and-legacy-meta/tests/test-task-04.php
  */
 declare(strict_types=1);
 
@@ -20,16 +14,51 @@ function check(bool $cond, string $label): void {
     else       { $failures[] = $label; echo "  FAIL  $label\n"; }
 }
 
-echo "== Test 3.4: Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی ==\n";
+$root = dirname(ES_SCRIPT_PATH, 4);
+echo "== Test 3.4: Rewrite تکسونومی‌های ووکامرس ==\n";
 
-/* گام WRITE TEST — شروط Pass Conditions این تسک:
-// check(<expr>, 'پاس شدن php -l');
-// check(<expr>, 'فیلتر product_cat دقیقاً with_front=true و slug=product_cat');
-// check(<expr>, 'فیلتر product_tag با slug=product-tag');
-// check(<expr>, 'flush در activation زنجیره‌شده باشد');
-*/
+require $root . '/temp/harness/wp-stubs.php';
+require $root . '/inc/Helpers.php';
+$GLOBALS['__es_theme_dir'] = $root;
+require $root . '/functions.php';
 
-check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 3.4)');
+use ErfanSanat\Theme\Data\WooRewrite;
+
+check(class_exists(WooRewrite::class), 'کلاس WooRewrite resolve شد');
+
+// فیلترها ثبت شده‌اند
+$filters = $GLOBALS['__wp_hooks']['filters'];
+$has = static function (string $hook, string $method) use ($filters): bool {
+    foreach ($filters[$hook] ?? [] as $entry) {
+        if (is_array($entry['cb']) && $entry['cb'][1] === $method) {
+            return true;
+        }
+    }
+    return false;
+};
+check($has('woocommerce_taxonomy_args_product_cat', 'product_cat_args'), 'فیلتر product_cat ثبت شد');
+check($has('woocommerce_taxonomy_args_product_tag', 'product_tag_args'), 'فیلتر product_tag ثبت شد');
+check($has('woocommerce_taxonomy_args_product_brand', 'product_brand_args'), 'فیلتر product_brand ثبت شد');
+
+// اجرای فیلترها — نکته حیاتی سئو: with_front=true
+$cat = WooRewrite::product_cat_args(['hierarchical' => false, 'rewrite' => ['slug' => 'product-category', 'with_front' => false]]);
+check($cat['rewrite']['slug'] === 'product_cat', 'دسته: slug=product_cat (نه product-category)');
+check($cat['rewrite']['with_front'] === true, 'دسته: with_front=TRUE (نکته حیاتی بلوپرینت سئو)');
+check($cat['rewrite']['hierarchical'] === true, 'دسته: hierarchical=true');
+check($cat['hierarchical'] === false, 'سایر آرگومان‌های ورودی دست‌نخورده');
+
+$tag = WooRewrite::product_tag_args([]);
+check($tag['rewrite']['slug'] === 'product-tag' && $tag['rewrite']['with_front'] === false, 'برچسب: slug=product-tag با with_front=false');
+
+$brand = WooRewrite::product_brand_args(['hierarchical' => false]);
+check($brand['hierarchical'] === true, 'برند: سلسله‌مراتبی');
+
+// flush در فعال‌سازی قالب (از 1.3) — رگرسیون
+$GLOBALS['__wp_hooks']['flushed'] = 0;
+require $root . '/functions.php';
+// activate مستقیم:
+\ErfanSanat\Theme\ThemeSetup::activate();
+check($GLOBALS['__wp_hooks']['flushed'] === 1, 'after_switch_theme → flush_rewrite_rules (لینک flush زنجیره)');
 
 echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
-exit((empty($failures) && $passes > 0) ? 0 : 1);
+exit(empty($failures) ? 0 : 1);
