@@ -77,7 +77,7 @@
 
 ## §8 — فاز ۱ اجرا شد (زیرساخت هسته و دارایی‌ها) — 2026-11-03
 
-**وضعیت: `PHASE 1 DONE — GATE 1 PENDING USER REVIEW`**
+**وضعیت: `PHASE 1 DONE — GATE 1 GREEN (170/170) — WAITING FOR USER APPROVAL TO START PHASE 2`**
 
 ### آنچه ساخته شد (کد واقعی، بدون placeholder)
 
@@ -112,12 +112,12 @@ theme/
 | سنجه | مقدار | بودجه |
 |---|---|---|
 | فایل تست سبز | 12/12 | 12 |
-| assertion PASS | 164 | همه |
+| assertion PASS | 170 | همه |
 | FAIL / PENDING | 0 / 0 | 0 |
 | CSS قالب در هر صفحه | 1 | ≤ 2 |
 | JS قالب در هر صفحه | 1 | ≤ 2 |
 | Warning/Deprecated | 0 | 0 |
-| theme_ms | 72ms | < 500 |
+| theme_ms | 49–79ms | < 500 |
 | کوئری SQL (`/`) | 14–17 | < 60 |
 
 ### دستورهای تکرارپذیر
