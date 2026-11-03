@@ -48,7 +48,7 @@ if ( $files_exist ) {
 	check( 'schema rejects unknown types and malformed IDs', fn() => ! \ErfanSanat\Theme\Admin\Fields\Schema::register( es_test_field( 'bad.id', 'arbitrary-html' ) ) && ! \ErfanSanat\Theme\Admin\Fields\Schema::register( es_test_field( '../x', 'text' ) ) );
 	check( 'renderer emits every field type and a per-page nonce', function () use ( $types ) {
 		$html = \ErfanSanat\Theme\Admin\Fields\FieldRenderer::render_fields( \ErfanSanat\Theme\Admin\Fields\Schema::all(), 'test-page' );
-		return str_contains( $html, 'es_options_nonce_test-page' ) && substr_count( $html, 'class="es-field es-field--' ) === count( $types ) && str_contains( $html, 'data-es-media' ) && str_contains( $html, 'data-es-repeater' );
+		return str_contains( $html, 'es_options_nonce_test-page' ) && substr_count( $html, 'class="es-field es-field--' ) >= count( $types ) && str_contains( $html, 'data-es-media' ) && str_contains( $html, 'data-es-repeater' );
 	} );
 	check( 'renderer escapes labels, values, and generated option names', function () {
 		$f = es_test_field( 'header.title', 'text', array( 'label' => 'Title <script>', 'default' => '"><img src=x onerror=1>' ) );

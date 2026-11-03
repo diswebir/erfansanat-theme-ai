@@ -184,3 +184,15 @@
 | Syntax | `node --check theme/assets/admin/media.js` → موفق |
 | خوداصلاحی | Media preview ابتدا صرفاً CSV را parse می‌کرد و attachment ناموجود را هم نگه می‌داشت؛ اکنون renderer و sanitizer هر دو post_type و در صورت نیاز MIME را اعتبارسنجی می‌کنند |
 | وضعیت | Task 2.5 `[PASSED]`; بعدی: Task 2.6 |
+
+## Phase 2 — Task 2.6 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | 6 assertion در شروع به‌درستی FAIL شدند؛ بعد از پیاده‌سازی به 7 شرط گسترش یافت |
+| پیاده‌سازی | Codec آرایه/JSON/serialized + UI ردیف‌های JetEngine + JS بومی reorder/add/remove/keyboard |
+| تست اختصاصی PHP | **7 PASS / 0 FAIL / 0 PENDING** (round-trip سه فرمت، کلید item-N، template و حذف ردیف خالی) |
+| تست رفتاری JS | `node tools/harness/test-repeater.mjs` → جابه‌جایی صفحه‌کلید، حذف، افزودن و نام‌های ذخیره‌شده PASS |
+| کل suite فاز تا اینجا | 54 PASS / 0 FAIL / 27 PENDING از 15 فایل؛ 9 فایلِ باقیمانده pending هستند |
+| خوداصلاحی | تست اولیه `$rows` سراسری run-phase.php را shadow می‌کرد و گزارش تجمیعی را خراب می‌ساخت؛ متغیر به `$es_repeater_rows` تغییر کرد؛ تست فاز پس از scaffold از 54 PASS تأیید شد |
+| وضعیت | Task 2.6 `[PASSED]`; بعدی: Task 2.7 |

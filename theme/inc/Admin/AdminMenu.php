@@ -99,6 +99,7 @@ final class AdminMenu implements ModuleInterface {
 		wp_enqueue_style( 'es-admin', $base . '/assets/admin/admin.css', array(), $version );
 		wp_enqueue_script( 'es-admin', $base . '/assets/admin/admin.js', array(), $version, true );
 		wp_enqueue_script( 'es-admin-media', $base . '/assets/admin/media.js', array(), $version, true );
+		wp_enqueue_script( 'es-admin-repeater', $base . '/assets/admin/repeater.js', array(), $version, true );
 	}
 
 	/** Check a complete WordPress hook suffix, not a loose substring. */

@@ -59,7 +59,7 @@
 | 2.3 | موتور فیلدها: Renderer، Sanitizer، Schema | `L` | `2.2` | `[PASSED]` | `inc/Admin/Fields/Schema.php` +3 |
 | 2.4 | ذخیره AJAX امن (Nonce + Capability + rate) | `L` | `2.3` | `[PASSED]` | `inc/Admin/AjaxSave.php` |
 | 2.5 | ریفیلد Media Picker (کتابخانه رسانه) | `M` | `2.4` | `[PASSED]` | `assets/admin/media.js` +1 |
-| 2.6 | فیلد Repeater با Drag&Drop (بدون jQuery UI) | `L` | `2.5` | `[PENDING]` | `inc/Admin/Fields/types/repeater.php` +2 |
+| 2.6 | فیلد Repeater با Drag&Drop (بدون jQuery UI) | `L` | `2.5` | `[PASSED]` | `inc/Admin/Fields/types/repeater.php` +2 |
 | 2.7 | تب «هدر» و «فوتر» (نوار اعلان، تلفن‌ها، شبکه‌ها، کپی‌رایت) | `L` | `2.4` | `[PENDING]` | `inc/Admin/Tabs/HeaderTab.php` +1 |
 | 2.8 | تب «برند و رنگ» با متغیرهای CSS | `M` | `2.7` | `[PENDING]` | `inc/Admin/Tabs/BrandTab.php` +1 |
 | 2.9 | تب «آرشیوها» (تعداد ستون، تعداد آیتم، ترتیب، فیلترها) | `M` | `2.4` | `[PENDING]` | `inc/Admin/Tabs/ArchiveTab.php` +1 |

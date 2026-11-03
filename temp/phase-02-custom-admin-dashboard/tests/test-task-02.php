@@ -62,7 +62,7 @@ if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' )
 	$class::enqueue_assets( 'plugins.php' );
 	check( 'theme assets and media library stay off unrelated admin pages', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 0 && $GLOBALS['es_wp_media_enqueued'] === 0 );
 	$class::enqueue_assets( 'toplevel_page_erfansanat-theme' );
-	check( 'CSS, dashboard JS and media JS enqueue on the theme dashboard screen only', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 3 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][1][0] === 'script' && $GLOBALS['es_mock_enqueued'][2][1][0] === 'es-admin-media' && $GLOBALS['es_wp_media_enqueued'] === 1 );
+	check( 'admin CSS, dashboard, media and repeater JS enqueue only on the theme dashboard', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 4 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][1][0] === 'script' && $GLOBALS['es_mock_enqueued'][2][1][0] === 'es-admin-media' && $GLOBALS['es_mock_enqueued'][3][1][0] === 'es-admin-repeater' && $GLOBALS['es_wp_media_enqueued'] === 1 );
 	$callback = $top[0]['args'][4] ?? null;
 	if ( is_callable( $callback ) ) { ob_start(); $callback(); $html = ob_get_clean(); } else { $html = ''; }
 	check( 'dashboard renderer outputs an escaped RTL admin shell', fn() => str_contains( $html, 'class="es-admin' ) && str_contains( $html, 'dir="rtl"' ) );

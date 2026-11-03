@@ -137,7 +137,9 @@ final class Sanitizer {
 
 	/** Sanitize nested repeater rows while preserving JetEngine item-N keys. */
 	private static function sanitize_repeater( array $field, $value ): array {
-		if ( is_string( $value ) ) {
+		if ( class_exists( RepeaterCodec::class ) ) {
+			$value = RepeaterCodec::decode( $value );
+		} elseif ( is_string( $value ) ) {
 			$decoded = json_decode( $value, true );
 			$value   = is_array( $decoded ) ? $decoded : array();
 		}

@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — کاربر Gate 1 را تأیید کرد؛ Phase 2 در حال اجرا (Task 2.1 پاس).
+**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Phase 2 در حال اجرا تا Task 2.6 (همه تست‌های انجام‌شده سبز).
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.5 — Media Picker (5/5 assertions؛ مجموع 47 PASS، 0 FAIL، 31 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.6 — Repeater Codec/Editor (7/7 assertions؛ مجموع 54 PASS، 0 FAIL، 27 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -179,3 +179,11 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - تست PHP: **5 PASS / 0 FAIL / 0 PENDING**؛ harness رفتاری JS با DOM mock: تک/چند انتخاب، پیش‌نمایش، پاک‌کردن، reject کردن `javascript:` همگی PASS؛ `node --check` موفق.
 - تست قدیمی Task 2.3 به‌روزرسانی شد تا media validation فعلی را با fixture attachment واقعی بسنجد.
 - وضعیت بعدی: Task 2.6 — Repeater Codec و drag-and-drop بی‌وابستگی.
+
+### Task 2.6 — PASS
+- `RepeaterCodec` safely decodes JetEngine `item-N` arrays, JSON and PHP serialized arrays (`allowed_classes=false`); `preserve_format()` encodes updated values in the previous representation.
+- Repeater markup lives at `inc/Admin/Fields/types/repeater.php`: keyed rows, reorder handle, up/down buttons, delete, and a safely escaped `<template>` whose placeholders become `item-N` form names.
+- `assets/admin/repeater.js` is dependency-free: add/remove, native drag/drop, keyboard arrows and up/down buttons all reindex both IDs and `name` attributes. The script enqueues only on theme admin screens.
+- `Sanitizer` now uses `RepeaterCodec` when available and continues to discard empty rows / sanitize schema-defined children.
+- Tests: **7 PASS / 0 FAIL / 0 PENDING**. The Node DOM mock verified reorder, deletion, add and stable posted names. Complete current phase runner: **54 PASS / 0 FAIL / 27 PENDING** (9 remaining tasks not implemented yet).
+- Next: Task 2.7 — header/footer option tabs and exact static fallbacks.
