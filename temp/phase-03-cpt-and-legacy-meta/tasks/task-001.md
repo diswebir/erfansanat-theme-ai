@@ -1,6 +1,6 @@
 # P03-T001 — ثبت CPT projects
 
-> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `3.1` · وابستگی‌ها: `P01-T004`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@
 `projects`
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: public/has_archive/rewrite/supports/menu_icon دقیق باشد.
-- [ ] AC-02: show_in_rest=true باشد.
-- [ ] AC-03: اسلاگ projects و with_front=false حفظ شود.
+- [x] AC-01: public/has_archive/rewrite/supports/menu_icon دقیق باشد.
+- [x] AC-02: show_in_rest=true باشد.
+- [x] AC-03: اسلاگ projects و with_front=false حفظ شود.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: یک پروژه ساخته و permalink آن /projects/slug/ باشد.
-- [ ] SC-02: آرشیو projects فعال باشد.
+- [x] SC-01: یک پروژه ساخته و permalink آن /projects/slug/ باشد.
+- [x] SC-02: آرشیو projects فعال باشد.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-001.php`
@@ -45,3 +45,7 @@
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-03-cpt-and-legacy-meta/tests/test-task-001.php` → **15 passed, 0 failed, 0 pending**.

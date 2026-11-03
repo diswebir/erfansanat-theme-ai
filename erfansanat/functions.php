@@ -18,6 +18,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Core\Theme::boot();
 \ErfanSanat\Theme\Core\DeBloat::boot();
 \ErfanSanat\Theme\Core\AssetManager::boot();
+\ErfanSanat\Theme\Core\PostTypes::boot();
 
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
