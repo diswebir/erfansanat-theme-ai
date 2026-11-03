@@ -84,7 +84,71 @@ final class LegacyRedirects {
 			return self::with_query( self::resolve_products( $segments ), $query );
 		}
 
+		if ( 'project' === $segments[0] && count( $segments ) === 1 ) {
+			// P03-T010: the legacy project page → projects archive (D4).
+			$archive = get_post_type_archive_link( 'projects' );
+			return self::with_query( $archive ? $archive : home_url( '/projects/' ), $query );
+		}
+
+		if ( 'projects' === $segments[0] && count( $segments ) >= 2 ) {
+			return self::with_query( self::resolve_project_alias( $segments[1] ), $query );
+		}
+
 		return null;
+	}
+
+	/**
+	 * Legacy city alias → canonical city slug (filterable for live Persian slugs).
+	 *
+	 * @return array<string,string>
+	 */
+	public static function city_map(): array {
+		$default = array(
+			'city-alborz'   => 'alborz',
+			'city-esfahan'  => 'esfahan',
+			'city-khorsand' => 'khorsand',
+			'city-qom'      => 'qom',
+		);
+
+		/** Configure the legacy city alias map from live data (AC-04/D3). */
+		return apply_filters( 'es_legacy_redirects_cities', $default );
+	}
+
+	/**
+	 * Legacy project-type alias → canonical project_type slug.
+	 *
+	 * @return array<string,string>
+	 */
+	public static function type_map(): array {
+		$default = array(
+			'type-bridge-lighting' => 'bridge-lighting',
+			'type-light-element'   => 'luminous-elements',
+			'type-light-tunnel'    => 'light-tunnel',
+			'type-square-lighting' => 'square-lighting',
+		);
+
+		/** Configure the legacy project-type alias map from live data (AC-04/D3). */
+		return apply_filters( 'es_legacy_redirects_project_types', $default );
+	}
+
+	/**
+	 * Resolve projects/city-* and projects/type-* aliases (P03-T010). A real
+	 * single project slug (no alias prefix) is canonical and returns null.
+	 */
+	private static function resolve_project_alias( string $slug ): ?string {
+		if ( str_starts_with( $slug, 'city-' ) ) {
+			$map    = self::city_map();
+			$target = $map[ $slug ] ?? substr( $slug, strlen( 'city-' ) );
+			return home_url( '/city/' . $target . '/' );
+		}
+
+		if ( str_starts_with( $slug, 'type-' ) ) {
+			$map    = self::type_map();
+			$target = $map[ $slug ] ?? substr( $slug, strlen( 'type-' ) );
+			return home_url( '/project_type/' . $target . '/' );
+		}
+
+		return null; // Canonical single project — never redirect.
 	}
 
 	/**
