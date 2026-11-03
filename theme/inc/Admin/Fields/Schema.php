@@ -18,7 +18,7 @@ final class Schema {
 	private static array $fields = array();
 
 	/** @var string[] */
-	private const TYPES = array( 'text', 'textarea', 'url', 'email', 'tel', 'number', 'color', 'media', 'toggle', 'select', 'checkbox-group', 'repeater' );
+	private const TYPES = array( 'text', 'textarea', 'code', 'url', 'email', 'tel', 'number', 'color', 'media', 'toggle', 'select', 'checkbox-group', 'repeater' );
 
 	/** Register one field definition. */
 	public static function register( array $field ): bool {

@@ -20,7 +20,7 @@ if ( ! function_exists( 'get_option' ) ) { function get_option( $key, $default =
 if ( ! function_exists( 'update_option' ) ) { function update_option( $key, $value, $autoload = null ) { $GLOBALS['es_mock_options'][$key] = $value; return true; } }
 if ( ! function_exists( 'current_user_can' ) ) { function current_user_can( $capability ) { return 'manage_options' === $capability; } }
 if ( ! function_exists( 'is_rtl' ) ) { function is_rtl() { return true; } }
-if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return false; } }
+if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return ! empty( $GLOBALS['es_mock_admin_context'] ); } }
 if ( ! function_exists( 'wp_nonce_field' ) ) { function wp_nonce_field( $action, $name, $referer = true, $display = true ) { return '<input type="hidden" name="' . esc_attr( $name ) . '" value="nonce">'; } }
 
 class EsMockArchiveQuery {

@@ -11,6 +11,7 @@ use ErfanSanat\Theme\Admin\Tabs\ArchiveTab;
 use ErfanSanat\Theme\Admin\Tabs\BrandTab;
 use ErfanSanat\Theme\Admin\Tabs\FooterTab;
 use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
+use ErfanSanat\Theme\Admin\Tabs\ScriptsTab;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -46,7 +47,7 @@ final class AdminMenu implements ModuleInterface {
 		),
 		'es-theme-tools' => array(
 			'title'       => 'ابزارها',
-			'description' => 'ابزارهای پشتیبان‌گیری، بازیابی تنظیمات و نگهداری قالب.',
+			'description' => 'مدیریت اسکریپت‌های مجاز هدر و فوتر به‌همراه ابزارهای نگهداری قالب.',
 		),
 	);
 
@@ -183,6 +184,10 @@ final class AdminMenu implements ModuleInterface {
 		}
 		if ( 'es-theme-archives' === $slug ) {
 			echo ArchiveTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
+			return;
+		}
+		if ( 'es-theme-tools' === $slug ) {
+			echo ScriptsTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
 			return;
 		}
 

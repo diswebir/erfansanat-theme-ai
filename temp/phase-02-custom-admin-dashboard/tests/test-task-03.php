@@ -38,7 +38,7 @@ echo "== Task 2.3: field framework ==\n";
 check( 'schema, sanitizer and renderer exist', fn() => $files_exist );
 if ( $files_exist ) {
 	\ErfanSanat\Theme\Admin\Fields\Schema::reset();
-	$types = array( 'text', 'textarea', 'url', 'email', 'tel', 'number', 'color', 'media', 'toggle', 'select', 'checkbox-group', 'repeater' );
+	$types = array( 'text', 'textarea', 'code', 'url', 'email', 'tel', 'number', 'color', 'media', 'toggle', 'select', 'checkbox-group', 'repeater' );
 	$register_ok = true;
 	foreach ( $types as $i => $type ) {
 		$f = es_test_field( 'test.field_' . $i, $type, array( 'options' => array( 'one' => 'One', 'two' => 'Two' ), 'fields' => array( array( 'id' => 'label', 'type' => 'text', 'label' => 'Label' ) ) ) );
@@ -66,7 +66,7 @@ if ( $files_exist ) {
 	check( 'media sanitization accepts only a positive attachment identifier', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media', array( 'default' => 0 ) ), '12' ) === 12 && \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media', array( 'default' => 0 ) ), '999999' ) === 0 );
 	check( 'repeater sanitizer filters nested fields and drops empty rows', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'repeater', array( 'fields' => array( array( 'id' => 'label', 'type' => 'text', 'label' => 'Label' ) ) ) ), array( 'item-0' => array( 'label' => 'ok<script>', 'surprise' => 'bad' ), 'item-1' => array( 'label' => '' ) ) ) === array( 'item-0' => array( 'label' => 'ok' ) ) );
 } else {
-	for ( $i = 1; $i < 13; $i++ ) { check( 'field framework condition ' . $i, fn() => false ); }
+	for ( $i = 1; $i < 14; $i++ ) { check( 'field framework condition ' . $i, fn() => false ); }
 }
 
 summary();

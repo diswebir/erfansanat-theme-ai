@@ -9,6 +9,8 @@ namespace ErfanSanat\Theme\Admin\Fields;
 
 defined( 'ABSPATH' ) || exit;
 
+require_once dirname( __DIR__, 2 ) . '/Helpers/CustomCodeSanitizer.php';
+
 /**
  * Sanitizes a posted field value against its registered schema.
  */
@@ -28,6 +30,12 @@ final class Sanitizer {
 
 			case 'textarea':
 				return is_scalar( $value ) ? wp_kses_post( (string) $value ) : $default;
+
+			case 'code':
+				if ( ! is_scalar( $value ) || ! function_exists( 'current_user_can' ) || ! current_user_can( 'manage_options' ) ) {
+					return $default;
+				}
+				return \ErfanSanat\Theme\Helpers\CustomCodeSanitizer::sanitize( (string) $value );
 
 			case 'url':
 				if ( ! is_scalar( $value ) ) {

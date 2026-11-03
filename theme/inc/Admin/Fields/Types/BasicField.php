@@ -15,7 +15,7 @@ final class BasicField {
 		$disabled    = ! empty( $field['disabled'] ) ? ' disabled' : '';
 		$attributes  = $description . $required . $disabled;
 
-		if ( 'textarea' === $type ) {
+		if ( in_array( $type, array( 'textarea', 'code' ), true ) ) {
 			$rows = max( 2, min( 20, absint( $field['rows'] ?? 4 ) ) );
 			return '<textarea class="es-field__control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="' . esc_attr( (string) $rows ) . '"' . $attributes . '>' . esc_textarea( is_scalar( $value ) ? (string) $value : '' ) . '</textarea>';
 		}

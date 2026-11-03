@@ -186,7 +186,7 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `assets/admin/repeater.js` is dependency-free: add/remove, native drag/drop, keyboard arrows and up/down buttons all reindex both IDs and `name` attributes. The script enqueues only on theme admin screens.
 - `Sanitizer` now uses `RepeaterCodec` when available and continues to discard empty rows / sanitize schema-defined children.
 - Tests: **7 PASS / 0 FAIL / 0 PENDING**. The Node DOM mock verified reorder, deletion, add and stable posted names. Complete current phase runner: **54 PASS / 0 FAIL / 27 PENDING** (9 remaining tasks not implemented yet).
-- Next: Task 2.10 — scripts/custom-code settings; no Phase 3 work until Gate 2 review and approval.
+- Next: Task 2.11 — Section Manager schema/storage; no Phase 3 work until Gate 2 review and approval.
 
 
 ### Task 2.7 — PASS
@@ -212,4 +212,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `ArchiveConfig` فقط روی کوئری اصلی آرشیوی `pre_get_posts` تعداد/ترتیب را اعمال می‌کند؛ `visible_filters()` و `render_filter()` امکان حذف کامل کنترل خاموش از DOM را برای templateها می‌دهند، بدون تغییر کلاس‌های استاتیک یا ساخت query جدید.
 - تنظیمات آرشیو در AdminMenu اضافه شد؛ تست قدیمی ثبت منوها برای زیرصفحه جدید هم‌راستا شد.
 - تست اختصاصی: **5 PASS / 0 FAIL / 0 PENDING**؛ full Phase 2 suite: **75 PASS / 0 FAIL / 18 PENDING**؛ موارد PENDING فقط Tasks 2.10–2.15 هستند.
-- ادامه: Task 2.10؛ Gate 2 پس از پایان Task 2.15 و پیش از هر کار Phase 3.
+- ادامه پس از تکمیل Task 2.10: Task 2.11؛ Gate 2 پس از پایان Task 2.15 و پیش از هر کار Phase 3.
+
+
+### Task 2.10 — PASS
+- `ScriptsTab` در صفحه ابزارها دو code-field امن برای `wp_head` و `wp_footer` می‌دهد؛ محتوا با KSES محدود به تگ‌های `<script>` و صفات امن می‌ماند.
+- `CustomCode` در اولویت 99 به `wp_head`/`wp_footer` وصل است، در صفحه ادمین یا در صورت خالی بودن مقدار هیچ خروجی ندارد و قبل از انتشار مجدداً sanitize می‌کند.
+- type فیلد `code` به Schema/BasicField افزوده شد؛ sanitization ذخیره علاوه بر nonce/capability endpoint، خودش هم `manage_options` را الزام می‌کند. صفحه Tools به فرم nonce/AJAX متصل شد.
+- Task 2.3 renderer suite برای فیلد code به‌روز شد؛ تست اختصاصی Task 2.10: **7 PASS / 0 FAIL / 0 PENDING**.
+- full Phase 2 suite پس از تکمیل: **82 PASS / 0 FAIL / 15 PENDING**؛ pendingها فقط Tasks 2.11–2.15 هستند.
+- ادامه: Task 2.11؛ Phase 3 فقط بعد از Gate 2 و تأیید کاربر.

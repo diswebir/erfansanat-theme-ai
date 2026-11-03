@@ -233,3 +233,16 @@
 | Suite Phase 2 | **75 PASS / 0 FAIL / 18 PENDING**؛ 6 تسک آینده باقی است |
 | اصلاح هم‌پوشانی | Task 2.2 submenu regression assertion به‌روزرسانی شد تا صفحه آرشیو جدید را نیز پوشش دهد (7 submenu با manage_options) |
 | وضعیت | Task 2.9 `[PASSED]`; بعدی: Task 2.10 |
+
+
+## Phase 2 — Task 2.10 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 5 شرطی پیش از ایجاد moduleها اجرا شد: **0 PASS / 5 FAIL / 0 PENDING** |
+| پیاده‌سازی | field type `code`، KSES policy مشترک، ScriptsTab در صفحه ابزارها و `CustomCode` برای `wp_head`/`wp_footer` |
+| تست اختصاصی | **7 PASS / 0 FAIL / 0 PENDING**؛ خروجی خالی/ادمین، slot و priority=99، KSES allowlist، capability و فرم nonce بررسی شد |
+| سازگاری موتور فیلد | Task 2.3 تست supported-types را برای نوع جدید `code` به‌روز کرد؛ suite همان **15 PASS / 0 FAIL / 0 PENDING** ماند |
+| امنیت | AJAX endpoint همچنان nonce+manage_options را الزام می‌کند؛ sanitizer محتوای code نیز capability را مستقل بررسی و خروجی در front-end مجدداً KSES می‌شود |
+| Suite Phase 2 | **82 PASS / 0 FAIL / 15 PENDING**؛ pendingها فقط Tasks 2.11–2.15 |
+| وضعیت | Task 2.10 `[PASSED]`; بعدی: Task 2.11 |
