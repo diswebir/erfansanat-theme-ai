@@ -21,5 +21,10 @@ final class Theme {
         Frontend\DeBloat::init();
 
         Frontend\AssetManager::init();
+
+        if (class_exists(Admin\ThemeOptions::class)) {
+            Admin\ThemeOptions::init();
+            Admin\OptionsOutput::init();
+        }
     }
 }

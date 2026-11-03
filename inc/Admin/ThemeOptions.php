@@ -4,6 +4,7 @@
  *
  * ذخیره‌سازی در آپشن واحد erfansanat_theme_options (autoload=false)؛
  * خواندن فرانت از طریق es_option() (کش‌شده — inc/Helpers.php).
+ * پیش‌فرض‌ها عیناً از میرور استاتیک استخراج شده‌اند (temp/STATIC_TEMPLATE_MAP.md).
  *
  * @package ErfanSanat
  */
@@ -13,7 +14,7 @@ namespace ErfanSanat\Theme\Admin;
 
 final class ThemeOptions {
 
-    public const OPTION_KEY  = 'erfansanat_theme_options';
+    public const OPTION_KEY   = 'erfansanat_theme_options';
     public const NONCE_ACTION = 'es_admin';
     public const MENU_SLUG    = 'erfansanat-theme';
     public const AJAX_ACTION  = 'es_theme_options_save';
@@ -23,6 +24,7 @@ final class ThemeOptions {
         add_action('admin_enqueue_scripts', [AdminAssets::class, 'enqueue']);
         add_action('wp_ajax_' . self::AJAX_ACTION, [self::class, 'ajax_save']);
         add_action('admin_init', [self::class, 'register_media']);
+        add_filter('es_default_options', [self::class, 'merge_defaults']);
     }
 
     /** کتابخانه رسانه فقط در صفحه تنظیمات (پیکر media فیلدها) */
@@ -58,7 +60,30 @@ final class ThemeOptions {
     }
 
     /**
-     * تعریف تب‌های داشبورد — فیلدها در تسک‌های 2.3 تا 2.5 به این اسکیم اضافه می‌شوند.
+     * درخت پیش‌فرض‌ها از روی اسکیم فیلدها (منبع واحد حقیقت)
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public static function defaults(): array {
+        $tree = [];
+        foreach (self::tabs() as $tab_key => $tab) {
+            foreach (($tab['fields'] ?? []) as $field) {
+                if (!isset($field['key'])) {
+                    continue;
+                }
+                $tree[(string) $tab_key][$field['key']] = $field['default'] ?? '';
+            }
+        }
+        return $tree;
+    }
+
+    /** ادغام پیش‌فرض‌های اسکیم با آپشن ذخیره‌شده (فیلتر es_default_options) */
+    public static function merge_defaults(array $raw): array {
+        return array_replace_recursive(self::defaults(), $raw);
+    }
+
+    /**
+     * تعریف تب‌های داشبورد
      *
      * @return array<string, array{label:string, icon:string, description:string, fields:list<array>}>
      */
@@ -68,31 +93,31 @@ final class ThemeOptions {
                 'label'       => __('هدر و لوگو', 'erfansanat'),
                 'icon'        => '🖼',
                 'description' => __('مدیریت لوگو، رفتار هدر چسبان و نوار اعلان', 'erfansanat'),
-                'fields'      => [],
+                'fields'      => self::header_fields(),
             ],
             'footer'   => [
                 'label'       => __('فوتر و تماس', 'erfansanat'),
                 'icon'        => '📞',
                 'description' => __('اطلاعات تماس کارخانه، شبکه‌های اجتماعی و متن فوتر', 'erfansanat'),
-                'fields'      => [],
+                'fields'      => self::footer_fields(),
             ],
             'brand'    => [
                 'label'       => __('برند و استایل', 'erfansanat'),
                 'icon'        => '🎨',
-                'description' => __('رنگ‌های برند و تزریق متغیرهای CSS', 'erfansanat'),
-                'fields'      => [],
+                'description' => __('رنگ‌های برند (تزریق متغیر CSS فقط هنگام تغییر از پیش‌فرض)', 'erfansanat'),
+                'fields'      => self::brand_fields(),
             ],
             'custom'   => [
                 'label'       => __('اسکریپت‌های سفارشی', 'erfansanat'),
                 'icon'        => '⌨️',
-                'description' => __('تزریق کد سفارشی در head و footer سایت', 'erfansanat'),
-                'fields'      => [],
+                'description' => __('تزریق کد سفارشی در head و footer — فقط برای مدیران با مجوز unfiltered_html', 'erfansanat'),
+                'fields'      => self::custom_fields(),
             ],
             'archives' => [
                 'label'       => __('آرشیوها', 'erfansanat'),
                 'icon'        => '🗃',
                 'description' => __('تعداد ستون‌ها و آیتم‌های هر صفحه در آرشیو محصولات، پروژه‌ها و وبلاگ', 'erfansanat'),
-                'fields'      => [],
+                'fields'      => self::archives_fields(),
             ],
         ];
 
@@ -104,11 +129,215 @@ final class ThemeOptions {
         return is_array($tabs) ? $tabs : [];
     }
 
-    /** همه فیلدهای همه تب‌ها (برای sanitize و defaults) */
+    /** تب هدر: لوگو، رفتار هدر، CTA و نوار اعلان — پیش‌فرض‌ها عین میرور */
+    private static function header_fields(): array {
+        return [
+            [
+                'key' => 'logo', 'type' => 'media', 'label' => __('لوگوی سایت', 'erfansanat'),
+                'default' => 'assets/images/ese-logo.svg',
+                'help'    => __('آیدی رسانه یا آدرس تصویر؛ خالی بودن → لوگوی پیش‌فرض قالب', 'erfansanat'),
+            ],
+            [
+                'key' => 'logo_alt', 'type' => 'text', 'label' => __('متن جایگزین لوگو', 'erfansanat'),
+                'default' => __('لوگوی شرکت دانش‌بنیان عرفان صنعت اصفهان', 'erfansanat'),
+            ],
+            [
+                'key' => 'sticky', 'type' => 'switch', 'label' => __('هدر چسبان هنگام اسکرول', 'erfansanat'),
+                'default' => 1,
+                'help'    => __('مطابق رفتار میرور (data-navbar-header)', 'erfansanat'),
+            ],
+            [
+                'key' => 'search_toggle', 'type' => 'switch', 'label' => __('دکمه جستجوی هدر', 'erfansanat'),
+                'default' => 1,
+            ],
+            [
+                'key' => 'cart_toggle', 'type' => 'switch', 'label' => __('دکمه سبد خرید هدر', 'erfansanat'),
+                'default' => 1,
+                'help'    => __('با ووکامرس واقعی همگام می‌شود (فاز ۶)', 'erfansanat'),
+            ],
+            [
+                'key' => 'cta_text', 'type' => 'text', 'label' => __('متن دکمه CTA هدر', 'erfansanat'),
+                'default' => __('استعلام قیمت', 'erfansanat'),
+                'placeholder' => __('مثلاً: استعلام قیمت', 'erfansanat'),
+            ],
+            [
+                'key' => 'cta_url', 'type' => 'url', 'label' => __('لینک دکمه CTA', 'erfansanat'),
+                'default' => '/contact/',
+            ],
+            [
+                'key' => 'ann_enabled', 'type' => 'switch', 'label' => __('نمایش نوار اعلان بالای سایت', 'erfansanat'),
+                'default' => 0,
+                'help'    => __('میرور نوار اعلان ندارد؛ در صورت نیاز فعال کنید', 'erfansanat'),
+            ],
+            [
+                'key' => 'ann_text', 'type' => 'textarea', 'label' => __('متن نوار اعلان', 'erfansanat'),
+                'default' => '',
+            ],
+            [
+                'key' => 'ann_url', 'type' => 'url', 'label' => __('لینک نوار اعلان', 'erfansanat'),
+                'default' => '',
+            ],
+            [
+                'key' => 'ann_bg', 'type' => 'color', 'label' => __('رنگ پس‌زمینه نوار اعلان', 'erfansanat'),
+                'default' => '#065f46',
+            ],
+        ];
+    }
+
+    /** تب فوتر: تماس، سوشال، متن‌ها و لینک‌های دسترسی سریع — پیش‌فرض‌ها عین میرور */
+    private static function footer_fields(): array {
+        return [
+            [
+                'key' => 'contact_phone', 'type' => 'text', 'label' => __('تلفن کارخانه', 'erfansanat'),
+                'default' => '031-91091011',
+                'help'    => __('مطابق JSON-LD میرور', 'erfansanat'),
+            ],
+            [
+                'key' => 'contact_phone_display', 'type' => 'text', 'label' => __('نمایش تلفن (فارسی)', 'erfansanat'),
+                'default' => '۰۳۱ - ۹۱۰۹۱۰۱۱ (۱۰ خط ویژه)',
+            ],
+            [
+                'key' => 'contact_sales_phone', 'type' => 'text', 'label' => __('تلفن مدیر فروش', 'erfansanat'),
+                'default' => '09137976915',
+            ],
+            [
+                'key' => 'contact_sales_display', 'type' => 'text', 'label' => __('نمایش تلفن مدیر فروش', 'erfansanat'),
+                'default' => 'مدیر فروش (آقای محمدعلی قربانی): ۰۹۱۳۷۹۷۶۹۱۵',
+            ],
+            [
+                'key' => 'contact_email', 'type' => 'text', 'label' => __('ایمیل', 'erfansanat'),
+                'default' => 'info@erfansanat.com',
+            ],
+            [
+                'key' => 'contact_address', 'type' => 'textarea', 'label' => __('آدرس کارخانه', 'erfansanat'),
+                'default' => 'اصفهان، شهرستان خمینی‌شهر، شهرک صنعتی برق و الکترونیک، بلوار الکترونیک، فرعی دوم، پلاک ۱۱۹',
+            ],
+            [
+                'key' => 'contact_postal_code', 'type' => 'text', 'label' => __('کد پستی', 'erfansanat'),
+                'default' => '۸۴۱۸۱۴۸۶۷۸',
+            ],
+            [
+                'key' => 'working_hours', 'type' => 'text', 'label' => __('ساعات کاری', 'erfansanat'),
+                'default' => 'شنبه تا پنجشنبه — ۷ صبح تا ۴:۳۰ بعدازظهر',
+            ],
+            [
+                'key' => 'footer_about', 'type' => 'textarea', 'label' => __('متن معرفی فوتر', 'erfansanat'),
+                'default' => 'طراح و تولیدکننده تجهیزات نورپردازی پیشرفته، المان‌های نوری تزئینی، درختان نوری هوشمند، خورشیدنماها، ریسه‌های LED (بلوطی، فندقی، سوزنی IP68) و پوینت لایت پیکسل با ۲۴ ماه گارانتی تعویض و ۵ سال خدمات پس از فروش.',
+            ],
+            [
+                'key' => 'footer_copyright', 'type' => 'text', 'label' => __('متن کپی‌رایت', 'erfansanat'),
+                'default' => '© تمامی حقوق این وب‌سایت متعلق به شرکت دانش‌بنیان عرفان صنعت اصفهان است.',
+            ],
+            [
+                'key' => 'social_instagram', 'type' => 'url', 'label' => __('اینستاگرام', 'erfansanat'),
+                'default' => 'https://instagram.com/erfan_sanat_esfahan',
+            ],
+            [
+                'key' => 'social_telegram', 'type' => 'url', 'label' => __('تلگرام', 'erfansanat'),
+                'default' => 'https://t.me/erfansanat',
+            ],
+            [
+                'key' => 'social_linkedin', 'type' => 'url', 'label' => __('لینکدین', 'erfansanat'),
+                'default' => 'https://linkedin.com/company/erfansanat',
+            ],
+            [
+                'key' => 'social_whatsapp', 'type' => 'url', 'label' => __('واتساپ', 'erfansanat'),
+                'default' => '',
+                'help'    => __('خالی → آیکون نمایش داده نمی‌شود', 'erfansanat'),
+            ],
+            [
+                'key' => 'social_aparat', 'type' => 'url', 'label' => __('آپارات', 'erfansanat'),
+                'default' => '',
+                'help'    => __('خالی → آیکون نمایش داده نمی‌شود', 'erfansanat'),
+            ],
+            [
+                'key' => 'quick_links', 'type' => 'repeater', 'label' => __('لینک‌های دسترسی سریع فوتر', 'erfansanat'),
+                'add_label' => __('افزودن لینک', 'erfansanat'),
+                'help'      => __('Fallback وقتی منوی «تولیدات شرکت» تعریف نشده باشد', 'erfansanat'),
+                'default'   => [
+                    ['label' => 'فروشگاه محصولات', 'url' => '/shop/'],
+                    ['label' => 'پروژه‌های اجراشده', 'url' => '/projects/'],
+                    ['label' => 'خدمات نورپردازی', 'url' => '/services/'],
+                    ['label' => 'مجوزها و افتخارات', 'url' => '/licenses-and-honors/'],
+                    ['label' => 'سوالات متداول', 'url' => '/faq/'],
+                    ['label' => 'شرایط گارانتی محصولات', 'url' => '/refund_returns/'],
+                    ['label' => 'فرصت‌های شغلی و استخدام', 'url' => '/recruitment/'],
+                    ['label' => 'اخبار و مقالات', 'url' => '/blog/'],
+                ],
+                'fields' => [
+                    ['key' => 'label', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                    ['key' => 'url', 'type' => 'url', 'label' => __('آدرس', 'erfansanat')],
+                ],
+            ],
+        ];
+    }
+
+    /** تب برند — رنگ‌های پایه از styles.css میرور (emerald) */
+    private static function brand_fields(): array {
+        return [
+            [
+                'key' => 'brand_primary', 'type' => 'color', 'label' => __('رنگ اصلی برند', 'erfansanat'),
+                'default' => '#059669',
+                'help'    => __('پیش‌فرض میرور (emerald-600)؛ تغییر فقط در صورت نیاز', 'erfansanat'),
+            ],
+            [
+                'key' => 'brand_dark', 'type' => 'color', 'label' => __('رنگ تیره برند', 'erfansanat'),
+                'default' => '#065f46',
+            ],
+            [
+                'key' => 'brand_accent', 'type' => 'color', 'label' => __('رنگ مکمل', 'erfansanat'),
+                'default' => '#10b981',
+            ],
+        ];
+    }
+
+    /** تب اسکریپت سفارشی — ورودی خام فقط برای کاربر با unfiltered_html */
+    private static function custom_fields(): array {
+        return [
+            [
+                'key' => 'head_js', 'type' => 'textarea', 'label' => __('کد سفارشی head', 'erfansanat'),
+                'default' => '',
+                'help'    => __('تگ‌های script/meta verifying و… — دقیقاً قبل از بسته شدن head چاپ می‌شود', 'erfansanat'),
+            ],
+            [
+                'key' => 'footer_js', 'type' => 'textarea', 'label' => __('کد سفارشی footer', 'erfansanat'),
+                'default' => '',
+                'help'    => __('تگ‌های تحلیلی و… — دقیقاً قبل از بسته شدن body چاپ می‌شود', 'erfansanat'),
+            ],
+        ];
+    }
+
+    /** تب آرشیوها — مطابق گرید میرور */
+    private static function archives_fields(): array {
+        return [
+            [
+                'key' => 'products_per_page', 'type' => 'number', 'label' => __('محصولات در هر صفحه', 'erfansanat'),
+                'default' => 20, 'min' => 1, 'max' => 100,
+                'help'    => __('میرور: ۲۰ کارت در آرشیو فروشگاه', 'erfansanat'),
+            ],
+            [
+                'key' => 'products_columns', 'type' => 'select', 'label' => __('ستون‌های گرید محصولات', 'erfansanat'),
+                'default' => '4', 'options' => ['2' => '۲ ستون', '3' => '۳ ستون', '4' => '۴ ستون'],
+            ],
+            [
+                'key' => 'projects_per_page', 'type' => 'number', 'label' => __('پروژه‌ها در هر صفحه', 'erfansanat'),
+                'default' => 12, 'min' => 1, 'max' => 100,
+            ],
+            [
+                'key' => 'posts_per_page', 'type' => 'number', 'label' => __('مقالات در هر صفحه', 'erfansanat'),
+                'default' => 9, 'min' => 1, 'max' => 100,
+            ],
+        ];
+    }
+
+    /** همه فیلدهای همه تب‌ها (برای sanitize) */
     public static function all_fields(): array {
         $fields = [];
         foreach (self::tabs() as $tab_key => $tab) {
             foreach (($tab['fields'] ?? []) as $field) {
+                if (!is_array($field) || !isset($field['key'])) {
+                    continue;
+                }
                 $field['tab']            = (string) $tab_key;
                 $fields[$field['key']] = $field;
             }
@@ -156,9 +385,14 @@ final class ThemeOptions {
             );
             printf('<p class="es-admin__panel-desc">%s</p>', esc_html($tab['description'] ?? ''));
             foreach (($tab['fields'] ?? []) as $field) {
-                if (class_exists(FieldRenderer::class)) {
-                    echo FieldRenderer::render(is_array($field) ? $field : [], null, 'opt');
+                if (!is_array($field) || !isset($field['key']) || !class_exists(FieldRenderer::class)) {
+                    continue;
                 }
+                // مقدار جاری: آپشن ذخیره‌شده یا پیش‌فرض (از طریق es_option و درخت defaults)
+                $current           = es_option($tab_key . '.' . $field['key'], $field['default'] ?? '');
+                $field['name']     = sprintf('opt[%s][%s]', (string) $tab_key, (string) $field['key']);
+                $field['value']    = $current;
+                echo FieldRenderer::render($field, $current, 'opt');
             }
             echo '</section>';
             $first = false;
@@ -181,10 +415,17 @@ final class ThemeOptions {
             wp_send_json_error(['message' => __('دسترسی غیرمجاز.', 'erfansanat')], 403);
         }
 
-        // ۳) پیلود و پاکسازی
-        $old      = function_exists('get_option') ? (array) get_option(self::OPTION_KEY, []) : [];
-        $payload  = isset($_POST['opt']) && is_array($_POST['opt']) ? wp_unslash($_POST['opt']) : [];
-        $payload  = Sanitizer::sanitize_fields(self::all_fields(), is_array($payload) ? $payload : []);
+        // ۳) پیلود تودرتو (opt[tab][field]) — پاکسازی به ازای اسکیم هر تب
+        $old     = function_exists('get_option') ? (array) get_option(self::OPTION_KEY, []) : [];
+        $raw     = isset($_POST['opt']) && is_array($_POST['opt']) ? wp_unslash($_POST['opt']) : [];
+        $payload = [];
+
+        foreach (self::tabs() as $tab_key => $tab) {
+            if (!isset($raw[$tab_key]) || !is_array($raw[$tab_key])) {
+                continue;
+            }
+            $payload[$tab_key] = Sanitizer::sanitize_fields(is_array($tab['fields'] ?? null) ? $tab['fields'] : [], $raw[$tab_key]);
+        }
 
         if (array_key_exists('custom', $payload)) {
             $payload['custom'] = Sanitizer::sanitize_custom_scripts(
