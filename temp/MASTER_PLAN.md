@@ -103,76 +103,76 @@
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
 ---
-## Phase 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده `[PENDING]`
+## Phase 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده `[PASSED]`
 **هدف فاز:** ثبت Native داده‌های JetEngine با املای دقیق کلیدها و حفظ ۱۰۰٪ URLها؛ هیچ بایت دیتا از دست نرود
 **پوشه:** `temp/phase-03-cpt-and-legacy-meta/` · **تست جامع:** `tests/run-phase-03-tests.sh`
 
-### Task 3.1 — ثبت CPT projects و تکسونومی‌های project_type و city `[PENDING]`
+### Task 3.1 — ثبت CPT projects و تکسونومی‌های project_type و city `[PASSED]`
 - 🎯 جایگزینی مستقیم رجیستر JetEngine با کد قالب — آرگومان‌ها بایت‌به‌بایت مطابق بلوپرینت
 - 📤 خروجی: `inc/Data/PostTypes.php` · **وابستگی:** Task 1.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.2 — فیلترهای ادمین لیست پروژه‌ها (دراپ‌داون city/project_type + ستون same_key_hrefl) `[PENDING]`
+### Task 3.2 — فیلترهای ادمین لیست پروژه‌ها (دراپ‌داون city/project_type + ستون same_key_hrefl) `[PASSED]`
 - 🎯 مدیریت راحت پروژه‌ها: فیلتر دراپ‌داونی تکسونومی‌ها و ستون مرتب‌سازی کلید hreflang
 - 📤 خروجی: `inc/Data/AdminListFilters.php` · **وابستگی:** Task 3.1
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.3 — ثبت CPT services (تصمیم Q2 کارفرما) `[PENDING]`
+### Task 3.3 — ثبت CPT services (تصمیم Q2 کارفرما) `[PASSED]`
 - 🎯 پست‌تایپ خدمات به‌صورت Native — مطابق تصمیم ثبت‌شده D-005
 - 📤 خروجی: `بسط inc/Data/PostTypes.php` · **وابستگی:** Task 1.3
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی `[PENDING]`
+### Task 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی `[PASSED]`
 - 🎯 حفظ ساختار سئوی فعلی URLها: /product_cat/{term} با with_front=true و flush خودکار هنگام فعال‌سازی قالب
 - 📤 خروجی: `inc/Data/WooRewrite.php`؛ `بسط هوک after_switch_theme` · **وابستگی:** Task 3.1, Task 3.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.5 — متاباکس محصول — تب شناسه‌های صنعتی + Quick Edit `[PENDING]`
+### Task 3.5 — متاباکس محصول — تب شناسه‌های صنعتی + Quick Edit `[PASSED]`
 - 🎯 مدیریت ۶ شناسه قانونی با املای دقیق دیتابیس + ویرایش سریع از لیست محصولات
 - 📤 خروجی: `inc/Admin/ProductMetaboxes.php (هسته + تب identifiers)`؛ `inc/Admin/QuickEdit.php` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.6 — متاباکس محصول — تب عناوین و وضعیت فروش (zireonvan/english_titl/true_sale/before-sale-c) `[PENDING]`
+### Task 3.6 — متاباکس محصول — تب عناوین و وضعیت فروش (zireonvan/english_titl/true_sale/before-sale-c) `[PASSED]`
 - 🎯 مدیریت زیرعنوان، عنوان انگلیسی (املا خاص)، اطلاعیه قبل از خرید و وضعیت خرید آنلاین/استعلامی
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب titles)` · **وابستگی:** Task 3.5
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 3.7 — موتور Repeater سازگار JetEngine (خواندن/نوشتن دو-مد serial/JSON) `[PENDING]`
+### Task 3.7 — موتور Repeater سازگار JetEngine (خواندن/نوشتن دو-مد serial/JSON) `[PASSED]`
 - 🎯 کلاس مرکزی خواندن و نوشتن فیلدهای تکرارشونده با حفظ دقیق فرمت فعلی دیتابیس ({item-0:{…}})
 - 📤 خروجی: `inc/Data/RepeaterEngine.php` · **وابستگی:** Task 1.2
 - ✅ 5 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.8 — متاباکس محصول — Repeaterهای ویژگی‌ها/کاربردها/FAQ با موتور 3.7 `[PENDING]`
+### Task 3.8 — متاباکس محصول — Repeaterهای ویژگی‌ها/کاربردها/FAQ با موتور 3.7 `[PASSED]`
 - 🎯 چهار فیلد تکرارشونده محصول با UI افزودن/حذف/جابه‌جایی و کلیدهای دقیق دیتابیس
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب repeaters)` · **وابستگی:** Task 3.7, Task 2.2
 - ✅ 3 شرط پاس · 🛠 6 گام اجرا
 
-### Task 3.9 — متاباکس محصول — گالری (galerry_produ + fallbackها) و فایل کاتالوگ `[PENDING]`
+### Task 3.9 — متاباکس محصول — گالری (galerry_produ + fallbackها) و فایل کاتالوگ `[PASSED]`
 - 🎯 مدیریت گالری سازگار با سه منبع دیتا + دانلود کاتالوگ، با خواندن fallback کامل
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب gallery)`؛ `inc/Data/ProductGallery.php` · **وابستگی:** Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.10 — متاباکس محصول — روابط (project-ids و usage_countr) `[PENDING]`
+### Task 3.10 — متاباکس محصول — روابط (project-ids و usage_countr) `[PASSED]`
 - 🎯 انتخاب چندگانه پروژه‌های مرتبط و کاربردها (ترم‌های project_type) با ذخیره آرایه/JSON مطابق ساختار فعلی
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب relations)`؛ `inc/Admin/RelatedPicker.php` · **وابستگی:** Task 3.7, Task 3.1
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.11 — متاباکس پروژه — گالری شش‌تایی قدیمی + گالری مدرن همگام `[PENDING]`
+### Task 3.11 — متاباکس پروژه — گالری شش‌تایی قدیمی + گالری مدرن همگام `[PASSED]`
 - 🎯 مدیریت تصاویر پروژه با کلیدهای تاریخی (second/three/foure/five/six-image) و یک گالری مدرن که با همین کلیدها sync می‌شود
 - 📤 خروجی: `inc/Admin/ProjectMetaboxes.php (تب gallery)` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.12 — متاباکس پروژه — تاریخ تکمیل و محصولات استفاده‌شده `[PENDING]`
+### Task 3.12 — متاباکس پروژه — تاریخ تکمیل و محصولات استفاده‌شده `[PASSED]`
 - 🎯 مدیریت finish-pro-time (متنی با فرمت شمسی) و انتخاب محصولات پروژه (mortabet_mahsole_2)
 - 📤 خروجی: `بسط ProjectMetaboxes.php (تب info)` · **وابستگی:** Task 3.10, Task 3.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.13 — متای ترم product_cat — تصویر دسته (thumbnail) و FAQ دسته `[PENDING]`
+### Task 3.13 — متای ترم product_cat — تصویر دسته (thumbnail) و FAQ دسته `[PASSED]`
 - 🎯 فرم‌های افزودن/ویرایش دسته محصول با فیلد تصویر و سوالات متداول تکرارشونده (کلیدهای thumbnail و faq)
 - 📤 خروجی: `inc/Admin/CategoryTermMeta.php` · **وابستگی:** Task 3.7
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.14 — Hreflang سراسری + شمارنده بازدید (number2-viewc) `[PENDING]`
+### Task 3.14 — Hreflang سراسری + شمارنده بازدید (number2-viewc) `[PASSED]`
 - 🎯 متاباکس ترجمه‌ها روی همه انواع محتوا + ستون مرتب‌سازی + شمارنده بازدید با fallback و ضد-بات
 - 📤 خروجی: `inc/Admin/HreflangMeta.php`؛ `inc/Frontend/ViewCounter.php` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
@@ -551,76 +551,76 @@
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
 ---
-## Phase 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده `[PENDING]`
+## Phase 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده `[PASSED]`
 **هدف فاز:** ثبت Native داده‌های JetEngine با املای دقیق کلیدها و حفظ ۱۰۰٪ URLها؛ هیچ بایت دیتا از دست نرود
 **پوشه:** `temp/phase-03-cpt-and-legacy-meta/` · **تست جامع:** `tests/run-phase-03-tests.sh`
 
-### Task 3.1 — ثبت CPT projects و تکسونومی‌های project_type و city `[PENDING]`
+### Task 3.1 — ثبت CPT projects و تکسونومی‌های project_type و city `[PASSED]`
 - 🎯 جایگزینی مستقیم رجیستر JetEngine با کد قالب — آرگومان‌ها بایت‌به‌بایت مطابق بلوپرینت
 - 📤 خروجی: `inc/Data/PostTypes.php` · **وابستگی:** Task 1.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.2 — فیلترهای ادمین لیست پروژه‌ها (دراپ‌داون city/project_type + ستون same_key_hrefl) `[PENDING]`
+### Task 3.2 — فیلترهای ادمین لیست پروژه‌ها (دراپ‌داون city/project_type + ستون same_key_hrefl) `[PASSED]`
 - 🎯 مدیریت راحت پروژه‌ها: فیلتر دراپ‌داونی تکسونومی‌ها و ستون مرتب‌سازی کلید hreflang
 - 📤 خروجی: `inc/Data/AdminListFilters.php` · **وابستگی:** Task 3.1
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.3 — ثبت CPT services (تصمیم Q2 کارفرما) `[PENDING]`
+### Task 3.3 — ثبت CPT services (تصمیم Q2 کارفرما) `[PASSED]`
 - 🎯 پست‌تایپ خدمات به‌صورت Native — مطابق تصمیم ثبت‌شده D-005
 - 📤 خروجی: `بسط inc/Data/PostTypes.php` · **وابستگی:** Task 1.3
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی `[PENDING]`
+### Task 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی `[PASSED]`
 - 🎯 حفظ ساختار سئوی فعلی URLها: /product_cat/{term} با with_front=true و flush خودکار هنگام فعال‌سازی قالب
 - 📤 خروجی: `inc/Data/WooRewrite.php`؛ `بسط هوک after_switch_theme` · **وابستگی:** Task 3.1, Task 3.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.5 — متاباکس محصول — تب شناسه‌های صنعتی + Quick Edit `[PENDING]`
+### Task 3.5 — متاباکس محصول — تب شناسه‌های صنعتی + Quick Edit `[PASSED]`
 - 🎯 مدیریت ۶ شناسه قانونی با املای دقیق دیتابیس + ویرایش سریع از لیست محصولات
 - 📤 خروجی: `inc/Admin/ProductMetaboxes.php (هسته + تب identifiers)`؛ `inc/Admin/QuickEdit.php` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.6 — متاباکس محصول — تب عناوین و وضعیت فروش (zireonvan/english_titl/true_sale/before-sale-c) `[PENDING]`
+### Task 3.6 — متاباکس محصول — تب عناوین و وضعیت فروش (zireonvan/english_titl/true_sale/before-sale-c) `[PASSED]`
 - 🎯 مدیریت زیرعنوان، عنوان انگلیسی (املا خاص)، اطلاعیه قبل از خرید و وضعیت خرید آنلاین/استعلامی
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب titles)` · **وابستگی:** Task 3.5
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 3.7 — موتور Repeater سازگار JetEngine (خواندن/نوشتن دو-مد serial/JSON) `[PENDING]`
+### Task 3.7 — موتور Repeater سازگار JetEngine (خواندن/نوشتن دو-مد serial/JSON) `[PASSED]`
 - 🎯 کلاس مرکزی خواندن و نوشتن فیلدهای تکرارشونده با حفظ دقیق فرمت فعلی دیتابیس ({item-0:{…}})
 - 📤 خروجی: `inc/Data/RepeaterEngine.php` · **وابستگی:** Task 1.2
 - ✅ 5 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.8 — متاباکس محصول — Repeaterهای ویژگی‌ها/کاربردها/FAQ با موتور 3.7 `[PENDING]`
+### Task 3.8 — متاباکس محصول — Repeaterهای ویژگی‌ها/کاربردها/FAQ با موتور 3.7 `[PASSED]`
 - 🎯 چهار فیلد تکرارشونده محصول با UI افزودن/حذف/جابه‌جایی و کلیدهای دقیق دیتابیس
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب repeaters)` · **وابستگی:** Task 3.7, Task 2.2
 - ✅ 3 شرط پاس · 🛠 6 گام اجرا
 
-### Task 3.9 — متاباکس محصول — گالری (galerry_produ + fallbackها) و فایل کاتالوگ `[PENDING]`
+### Task 3.9 — متاباکس محصول — گالری (galerry_produ + fallbackها) و فایل کاتالوگ `[PASSED]`
 - 🎯 مدیریت گالری سازگار با سه منبع دیتا + دانلود کاتالوگ، با خواندن fallback کامل
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب gallery)`؛ `inc/Data/ProductGallery.php` · **وابستگی:** Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 3.10 — متاباکس محصول — روابط (project-ids و usage_countr) `[PENDING]`
+### Task 3.10 — متاباکس محصول — روابط (project-ids و usage_countr) `[PASSED]`
 - 🎯 انتخاب چندگانه پروژه‌های مرتبط و کاربردها (ترم‌های project_type) با ذخیره آرایه/JSON مطابق ساختار فعلی
 - 📤 خروجی: `بسط ProductMetaboxes.php (تب relations)`؛ `inc/Admin/RelatedPicker.php` · **وابستگی:** Task 3.7, Task 3.1
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.11 — متاباکس پروژه — گالری شش‌تایی قدیمی + گالری مدرن همگام `[PENDING]`
+### Task 3.11 — متاباکس پروژه — گالری شش‌تایی قدیمی + گالری مدرن همگام `[PASSED]`
 - 🎯 مدیریت تصاویر پروژه با کلیدهای تاریخی (second/three/foure/five/six-image) و یک گالری مدرن که با همین کلیدها sync می‌شود
 - 📤 خروجی: `inc/Admin/ProjectMetaboxes.php (تب gallery)` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.12 — متاباکس پروژه — تاریخ تکمیل و محصولات استفاده‌شده `[PENDING]`
+### Task 3.12 — متاباکس پروژه — تاریخ تکمیل و محصولات استفاده‌شده `[PASSED]`
 - 🎯 مدیریت finish-pro-time (متنی با فرمت شمسی) و انتخاب محصولات پروژه (mortabet_mahsole_2)
 - 📤 خروجی: `بسط ProjectMetaboxes.php (تب info)` · **وابستگی:** Task 3.10, Task 3.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.13 — متای ترم product_cat — تصویر دسته (thumbnail) و FAQ دسته `[PENDING]`
+### Task 3.13 — متای ترم product_cat — تصویر دسته (thumbnail) و FAQ دسته `[PASSED]`
 - 🎯 فرم‌های افزودن/ویرایش دسته محصول با فیلد تصویر و سوالات متداول تکرارشونده (کلیدهای thumbnail و faq)
 - 📤 خروجی: `inc/Admin/CategoryTermMeta.php` · **وابستگی:** Task 3.7
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 3.14 — Hreflang سراسری + شمارنده بازدید (number2-viewc) `[PENDING]`
+### Task 3.14 — Hreflang سراسری + شمارنده بازدید (number2-viewc) `[PASSED]`
 - 🎯 متاباکس ترجمه‌ها روی همه انواع محتوا + ستون مرتب‌سازی + شمارنده بازدید با fallback و ضد-بات
 - 📤 خروجی: `inc/Admin/HreflangMeta.php`؛ `inc/Frontend/ViewCounter.php` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا

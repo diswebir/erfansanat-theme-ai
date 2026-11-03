@@ -3,6 +3,24 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
+**PHASE 3 COMPLETED (14/14 TASKS, 221/221 CONDITIONS, TESTS 01-14)**
+
+- D-014: `PostTypes::init()` روی init — projects (rewrite `projects` with_front=false, archive, icon screenoptions) / services (has_archive FALSE — بدون صفحه آرشیو، D-005) / تاکسونومی‌های city و project_type روی projects (hierarchical, with_front=false, show_admin_column).
+- D-015: `WooRewrite` — product_cat slug=`product_cat` با with_front=TRUE (سئو-بحرانی: /product_cat/…)؛ product_tag `product-tag` with_front=false؛ product_brand hierarchical.
+- D-016: `AdminListFilters` — دراپ‌داون city/project_type در لیست پروژه‌ها (GET sanitize_key + parse_query tax_query)، ستون‌های es-city/es-project_type/es-hrefkey + سورت متا.
+- D-017: `RepeaterEngine` — dual-mode: `parse()` → {format: json|serial|array|empty, rows[]}؛ ذخیره با حفظ فرمت قبلی (json_encode UNESCAPED_UNICODE|SLASHES یا serialize یا آرایه item-N)؛ read/read_term/write/write_term.
+- D-018: `ProductMetaboxes` — متاباکس es-product-info (۵ تب)، nonce es_product_meta، پریفیکس opt_meta؛ کلیدها با املای دقیق دیتابیس زنده: gs1_id/national_code/hs_id/isic_id/cpc_id/product_id، zireonvan، `english_titl` (بدون e پایانی!)، `before-sale-c`، true_sale (radio: 'false' استعلامی/else آنلاین)، `product-catalog-file` (esc_url_raw یا آیدی)، `galerry_produ` (با typo!)؛ repeaterها product-feature (add-new-feature)، product-feature2_copy (add-new-feature + `vaule_of_variable`!)، usage_product (add-new-usage)، faq (name_question/answer_question) — sanitize ردیف‌ها با Sanitizer::field نوع repeater + نوشتن با فرمت قدیمی (خالی→آرایه)؛ ستون es-identifiers (span.es-quickedit-data با data-*) + es-sale-mode؛ اکشن es_product_meta_saved.
+- D-019: `ProductGallery::sync` — منابع به ترتیب: galerry_produ → _product_image_gallery → gallery-filed → image-2..6؛ normalize فقط ارقام مثبت (ctype_digit — absint منفی را مثبت می‌کند!)؛ sync رشته کاما در هر دو کلید galerry_produ و _product_image_gallery.
+- D-020: `QuickEdit` — quick_edit_custom_box روی ستون es-identifiers فقط product؛ فیلدهای identifiers با data-es-qe؛ اسکریپت admin_footer-edit.php پر می‌کند/ذخیره با AJAX موجود.
+- D-021: `RelatedPicker` — AJAX es_related_search (nonce es_related، cap edit_posts، فیلتر es_related_search_results، fallback get_terms name__like)؛ چیپ‌ها + اینپوت مخفی کاما؛ current_ids مقاوم (آرایه/JSON/کاما).
+- D-022: `Purchasable` — is_online = true_sale !== 'false'؛ برچسب آنلاین/استعلامی؛ پایه فاز ۶ (is_purchasable filter + CTA استعلام).
+- D-023: `ProjectMetaboxes` — متاباکس es-project-info روی projects، nonce es_project_meta؛ گالری: ۵ کلید تاریخی second-image/three-image/**foure-image** (typo دقیق)/five-image/six-image + کلید مدرن _es_project_gallery؛ ذخیره: ۵ آیدی اول گالری مدرن → کلیدهای تاریخی sync می‌شوند (بدون پاک‌کردن data قدیمی مگر مقدار جدید)؛ finish-pro-time (متن شمسی)؛ mortabet_mahsole_2 (محصولات پروژه، حفظ فرمت JSON/آرایه)؛ ستون es-finish-time.
+- D-024: `ProjectGallery` (Frontend) — get_gallery: ادغام ۵ کلید تاریخی + مدرن، dedup ترتیب‌دار، URL قدیمی → آیدی از فیلتر es_attachment_id_from_url؛ get_products: mortabet_mahsole_2 مقاوم (آرایه/JSON/کاما).
+- D-025: `HreflangMeta` — متاباکس es-hreflang-meta روی [post,page,product,projects,services] (فیلتر es_hreflang_post_types) + فرم ترم روی [product_cat,city,project_type]؛ کلیدها hrefmeta_fa/en/ar + same_key_hrefl (پریفیکس فرم opt_href)؛ خروجی wp_head (pri 5): fa/en/ar موجود + x-default=same_key_hrefl (fallback fa)؛ fa و x-default با URL یکسان هر دو چاپ می‌شوند (دستورالعمل مجزا)؛ dedupe per-hreflang با استاتیک $emitted؛ بدون متا → بدون خروجی.
+- D-026: `ViewCounter` — شمارش روی wp (pri 20) برای [product,projects,post]؛ کلید number2-viewc (fallback number-viewc)؛ کوکی es_vc_{id} (TTL DAY_IN_SECONDS، فیلتر es_view_counter_cookie_ttl)؛ رد: ادمین/پیش‌نمایش/فید/بدون-UA/بات (لیست فیلتر es_view_counter_bots)؛ ستون es-views محصولات.
+
+**QA فاز ۳ (خوداصلاحی‌ها):** sanitize ردیف‌های repeater با اسکیم تخت خطا می‌داد → Sanitizer::field نوع repeater؛ absint('-5')=5 → فیلتر با ctype_digit؛ array_unique روی URL حذف x-default می‌کرد → dedupe فقط per-hreflang؛ استاب add_meta_box با id تکراری overwrite می‌کرد → تجمیع screens؛ تست 3.6 ترتیب override دستی true_sale را اصلاح کرد.
+
 **PHASE 2 COMPLETED (9/9 TASKS PASSED) — AWAITING USER APPROVAL TO START PHASE 3**
 فاز ۱ (۸/۸) و فاز ۲ (۹/۹) کامل شدند. تسک بعدی: فاز ۳ (CPTها و متاباکس‌ها) — Task 3.1.
 

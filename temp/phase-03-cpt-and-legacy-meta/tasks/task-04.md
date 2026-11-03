@@ -1,7 +1,7 @@
 # Task 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی
 
 **فاز:** 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[PASSED]`
 **تست:** `temp/phase-03-cpt-and-legacy-meta/tests/test-task-04.php`
 
 ## 🎯 هدف

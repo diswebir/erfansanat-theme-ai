@@ -1,7 +1,7 @@
 # Task 3.6 — متاباکس محصول — تب عناوین و وضعیت فروش (zireonvan/english_titl/true_sale/before-sale-c)
 
 **فاز:** 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[PASSED]`
 **تست:** `temp/phase-03-cpt-and-legacy-meta/tests/test-task-06.php`
 
 ## 🎯 هدف

@@ -1,7 +1,7 @@
 # Task 3.7 — موتور Repeater سازگار JetEngine (خواندن/نوشتن دو-مد serial/JSON)
 
 **فاز:** 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[PASSED]`
 **تست:** `temp/phase-03-cpt-and-legacy-meta/tests/test-task-07.php`
 
 ## 🎯 هدف
