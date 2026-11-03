@@ -147,3 +147,15 @@
 | JS syntax | `node --check theme/assets/admin/admin.js` → موفق |
 | اصلاح در مسیر | اندیس اسلاگ/کال‌بک منوی وردپرس در تست با امضای واقعی API (`page_slug` و callback) هم‌تراز شد؛ آزمون رد دسترسی هم پیش از بررسی enqueue تنظیم شد |
 | وضعیت | Task 2.2 `[PASSED]`; بعدی: Task 2.3 |
+
+
+## Phase 2 — Task 2.3 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست کامل 13 شرطی پیش از کد اجرا شد و به‌درستی FAIL شد |
+| پیاده‌سازی | `Schema`, `Sanitizer`, `FieldRenderer` + type renderers پایه/مدیا/Repeater |
+| تست اختصاصی | **15 PASS / 0 FAIL / 0 PENDING** (رندر 12 نوع، escaping، nonce، XSS، whitelist، boolean، ID رسانه و nested repeater) |
+| Suite فاز | 33 PASS در تسک‌های 2.1–2.3؛ 40 PENDING در 12 تسک باقیمانده؛ 0 FAIL در کار انجام‌شده |
+| خوداصلاحی | fixtureهای تست اصلاح شد تا nonce, escape و تفاوت `sanitize_email` (حذف markup به‌جای حذف متن مجازِ اسم تگ) را درست منعکس کند |
+| وضعیت | Task 2.3 `[PASSED]`; بعدی: Task 2.4 |
