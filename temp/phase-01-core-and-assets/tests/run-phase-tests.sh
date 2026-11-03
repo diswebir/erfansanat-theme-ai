@@ -7,7 +7,9 @@ export PATH="$ROOT/temp/tools:$PATH"
 fail=0
 
 # Prepare real QA state: active theme, HTTP asset report, deploy zip.
-wp theme activate erfansanat --allow-root >/dev/null 2>&1 || { echo "[FAIL] cannot activate erfansanat"; fail=1; }
+if ! wp theme is-active erfansanat --allow-root >/dev/null 2>&1; then
+  wp theme activate erfansanat --allow-root >/dev/null 2>&1 || { echo "[FAIL] cannot activate erfansanat"; fail=1; }
+fi
 bash "$ROOT/temp/tools/check-assets-http.sh" || fail=1
 bash "$ROOT/temp/tools/package-theme.sh" || fail=1
 

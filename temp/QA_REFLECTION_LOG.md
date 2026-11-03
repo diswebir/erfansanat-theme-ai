@@ -44,3 +44,19 @@
 - **باگ میرور:** `<title>undefined</title>` در `category/magazine.html` و `category/news-and-events.html` → در وردپرس از title-tag/SEOPress استفاده می‌شود (الگو نیست).
 - **کشف ساختاری:** ۴۰ فایل Alias (فقط canonical متفاوت) → پیشنهاد 301 (تایید شد D3). هدر/فوتر تماماً data-attribute (بدون id).
 - **نتیجه:** هارنس سالم (`wp core install` + `wp eval` موفق)؛ ۴ فایل حافظه ساخته شد.
+
+---
+
+## 2026-11-03 — Phase 1 تکمیل شد (P01-T001..T012)
+- **READ MEMORY:** PROJECT_MEMORY و تسک‌های فاز ۱ خوانده شد. کاربر مجوز داد همه تسک‌های فاز ۱ بدون توقف بین تسک‌ها کامل شوند.
+- **THINK & PLAN:** ترتیب وابستگی رعایت شد؛ چون `functions.php` به Autoloader/Theme/DeBloat/AssetManager نیاز دارد، ماژول‌ها قبل از تست bootstrap ساخته شدند. Assetها عیناً از mirror کپی شدند (hash یکسان).
+- **WRITE TEST + IMPLEMENT:** برای هر تسک تست اختصاصی واقعی نوشته شد (بدون PENDING). فایل‌های هدف: `functions.php`, `inc/Constants.php`, `inc/Autoloader.php`, `inc/Core/Theme.php`, `inc/Core/DeBloat.php`, `inc/Core/AssetManager.php`, `index.php`, `assets/` و `temp/tools/package-theme.sh`.
+- **RUN TEST / SELF-CORRECT:**
+  - محیط کار در ابتدای ادامه به snapshot قدیمی برگشته بود؛ با `git fetch`/`reset --hard origin/arena/...` به `adcc499` بازیابی شد و هارنس بازسازی شد.
+  - `run-phase-tests.sh` مسیر ROOT را اشتباه محاسبه می‌کرد (`../..` به‌جای `../../..`) → اصلاح شد و جنریتور هم اصلاح شد تا بازتولید سالم بماند.
+  - PHP-WASM امکان `shell_exec`/HTTP ندارد → تست HTTP 200 با اسکریپت Python (`check_assets_http.py`) انجام و گزارش JSON به تست‌های PHP داده می‌شود.
+  - `set_current_screen('dashboard')` در WP-CLI باعث توقف می‌شد → تست admin با `define('WP_ADMIN', true)` شبیه‌سازی شد.
+  - `functools.partial` قابل subclass نبود → handler سرور HTTP اصلاح شد.
+- **نتیجه تست‌ها:** T001=12، T002=12، T003=6، T004=9، T005=7، T006=6، T007=11، T008=11، T009=7، T010=8، T011=13، T012=9؛ مجموعاً **111 چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-01-core-and-assets/tests/run-phase-tests.sh` → `PHASE RESULT: PASS`.
+- **Asset/Package:** `check-assets-http.sh` → 27/27 HTTP 200 و تطابق اندازه. `package-theme.sh` → `temp/dist/erfansanat.zip` فقط شامل `erfansanat/` (بدون static-mirror/temp/node_modules). تست T012 زیپ را extract و پوسته بسته‌بندی‌شده را فعال/برگرداند.
+- **UPDATE MEMORY + Git:** وضعیت فاز ۱ PASSED؛ گام بعدی Phase 2 / P02-T001 در انتظار تایید کاربر. کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai`.

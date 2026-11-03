@@ -2,10 +2,12 @@
 
 > آخرین به‌روزرسانی: 2026-11-03 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی
+## وضعیت فعلی: **PHASE 1 PASSED** — همه ۱۲ تسک فاز ۱ پاس شدند.
 ```
-PHASE 1 IN PROGRESS — P01-T001 PASSED — WAITING FOR USER APPROVAL FOR P01-T002
+PHASE 1 PASSED — P01-T001..T012 PASSED — WAITING FOR USER APPROVAL FOR PHASE 2
 ```
+- **فاز ۱ کامل شد:** bootstrap/constants، Autoloader، Theme supports، fallback index، DeBloat، انتقال CSS/فونت/JS/تصاویر/ویدیو، AssetManager نسخه‌گذاری/enqueue شرطی، بسته‌بندی zip.
+- نتیجه runner فاز ۱: `PHASE RESULT: PASS` (۱۲ تست، ۰ fail/pending). HTTP asset check: 27/27 OK. zip فقط `erfansanat/`.
 - Stage 0 ✅ (اسکن + هارنس + ۴ فایل حافظه) — کاربر به همه ۷ سوال پاسخ داد.
 - Stage 1 ✅ نسخه اول: ۸ فاز / ۲۲ تسک.
 - **Stage 1 بازطراحی اتمیک ✅ طبق درخواست کاربر:** ۸ فاز / **۱۷۵ تسک اتمیک** با وابستگی، فایل هدف، منبع، کلید داده، شروط پذیرش AC و سناریوی تست SC.
@@ -31,7 +33,7 @@ PHASE 1 IN PROGRESS — P01-T001 PASSED — WAITING FOR USER APPROVAL FOR P01-T0
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**PHASE 1 / P01-T002** — Bootstrap و ثابت‌های قالب (`functions.php` حداقلی + `inc/Constants.php`). سپس P01-T003 Autoloader و ... به‌صورت اتمیک. چرخه ۶ گامی + کامیت برای هر تسک.
+**PHASE 2 / P02-T001** — Schema و ذخیره‌گاه آپشن‌ها (`erfansanat_theme_options`). فاز ۱ کامل پاس شد؛ در انتظار تایید کاربر برای شروع فاز ۲.
 
 ## نکات یادآوری برای تسک‌های آینده
 - املای تاریخی متاها مقدس است: `foure-image`, `galerry_produ`, `english_titl`, `vaule_of_variable`, `usage_countr`, `mortabet_mahsole_2`, `number2-viewc`.
