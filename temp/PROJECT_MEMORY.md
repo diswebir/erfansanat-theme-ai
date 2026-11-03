@@ -74,3 +74,8 @@
 ## REAL WordPress integration — 2026-11-03
 - WP 7.2-beta3 (clone از GitHub) + SQLite dropin روی php-wasm بوت شد؛ thme فعال، 19/19 ALL PASS: front-page (279KB, 15 سکشن)، single-product (metaهای legacy)، single-projects.
 - رفع باگ‌های واقعی: get_template_part با .php در front-page.php؛ guard fonksiyon_exists برای woocommerce_template_single_add_to_cart.
+
+## FULL DEBUG pass — 2026-11-03
+- test-debug-full: رندر ۱۲ template روی WP واقعی با WP_DEBUG → theme-file diagnostics: **0** (293 noise همگی از core/harness).
+- باگ‌های رفع‌شده: comments.php اضافه شد, guard null $term در taxonomyها, number_format(null), woocommerce_* بدون guard در archive-product.
+- E2E incl. debug suite: ALL-PASS

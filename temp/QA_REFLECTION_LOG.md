@@ -66,3 +66,6 @@
 
 ## REAL WP integration — 2026-11-03
 - WordPress 7.2 + SQLite on php-wasm: install OK, theme activates (0 errors), CPT/tax registered, legacy meta roundtrip OK, front-page/single-product/single-projects render through real WP. 19/19 ALL PASS. Real bugs fixed: get_template_part .php suffix in front-page.php; woocommerce call guarded by function_exists.
+
+## FULL DEBUG — 2026-11-03
+- Rendered 12 templates on real WP 7.2/SQLite with error handler: 0 theme-file diagnostics. Fixed: missing comments.php (WP deprecation), null $term in taxonomy templates, number_format(null), unguarded woocommerce_* in archive-product. E2E ALL-PASS.

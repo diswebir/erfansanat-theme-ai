@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) { exit; }
 
 get_header();
 $term = get_queried_object();
+$term = ($term && !is_wp_error($term)) ? $term : null;
 $thumbId = $term ? get_term_meta($term->term_id, 'thumbnail', true) : 0;
 $faqRaw  = $term ? get_term_meta($term->term_id, 'faq', true) : [];
 $faqRaw  = is_string($faqRaw) ? (json_decode($faqRaw, true) ?: maybe_unserialize($faqRaw)) : (array) $faqRaw;
@@ -21,8 +22,8 @@ $faqRaw  = is_string($faqRaw) ? (json_decode($faqRaw, true) ?: maybe_unserialize
             <?php if ($thumbId) : ?>
                 <img src="<?php echo esc_url(wp_get_attachment_image_url($thumbId, 'large')); ?>" alt="<?php echo esc_attr($term->name); ?>" class="mb-4 h-28 w-28 rounded-3xl object-cover" />
             <?php endif; ?>
-            <h1 class="text-2xl font-black text-slate-900 sm:text-3xl lg:text-4xl"><?php echo esc_html($term->name); ?></h1>
-            <?php if ($term->description) : ?><div class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600"><?php echo wp_kses_post($term->description); ?></div><?php endif; ?>
+            <h1 class="text-2xl font-black text-slate-900 sm:text-3xl lg:text-4xl"><?php echo esc_html($term ? $term->name : ''); ?></h1>
+            <?php if ($term && $term->description) : ?><div class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600"><?php echo wp_kses_post($term->description); ?></div><?php endif; ?>
         </div>
     </section>
 
