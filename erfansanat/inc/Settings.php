@@ -419,8 +419,10 @@ final class Settings {
 	 */
 	public static function sanitize( array $input, bool $partial = false ): array {
 		$current = self::all();
-		$values  = $partial ? $current : array();
-		$errors  = array();
+		// A full save starts from the defaults so the returned set is always
+		// complete; a partial save keeps whatever is already stored.
+		$values = $partial ? $current : self::defaults();
+		$errors = array();
 
 		foreach ( self::fields() as $name => $definition ) {
 			if ( ! array_key_exists( $name, $input ) ) {

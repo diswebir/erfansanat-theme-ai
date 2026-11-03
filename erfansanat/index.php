@@ -2,8 +2,9 @@
 /**
  * Fallback template.
  *
- * Phase 1 only provides a safe fallback. Static-derived header/footer, homepage,
- * WooCommerce, project, blog and page templates are introduced in later phases.
+ * Phase 1 provides a safe fallback. Static-derived header, homepage, WooCommerce,
+ * project, blog and page templates are introduced in later phases. The opening
+ * <main> element lives in header.php and is closed by footer.php.
  *
  * @package ErfanSanat
  */
@@ -14,7 +15,6 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 ?>
-<main id="primary" class="site-main">
 	<?php if ( have_posts() ) : ?>
 		<?php
 		while ( have_posts() ) :
@@ -31,6 +31,5 @@ get_header();
 			<h1><?php esc_html_e( 'چیزی یافت نشد', 'erfansanat' ); ?></h1>
 		</article>
 	<?php endif; ?>
-</main>
 <?php
 get_footer();

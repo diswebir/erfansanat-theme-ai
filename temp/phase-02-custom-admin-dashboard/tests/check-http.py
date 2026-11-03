@@ -161,12 +161,84 @@ def task_2_1(jar: Path) -> None:
     check("2.1", "settings can be restored", bool(reset.get("success")), f"status={reset_status}")
 
 
+def task_2_2(jar: Path) -> None:
+    """Saved settings appear on the public site and unknown data never does."""
+    status, _, panel = curl("/wp-admin/admin.php?page=erfansanat-options", jar=jar)
+    nonce = nonce_from(panel)
+    check("2.2", "panel still loads", status == 200 and bool(nonce), f"status={status}")
+
+    # Start every run from the shipped defaults, whoever ran the suite before.
+    subprocess.run(
+        ["tools/wp", "--path=.local/wordpress", "option", "delete", "erfansanat_theme_options"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+
+    _, _, home = curl("/")
+    check("2.2", "reference brand name is printed by default", "عرفان صنعت اصفهان" in home)
+    check("2.2", "reference phone is printed as a tel link", "tel:03191091011" in home)
+    check("2.2", "reference email is printed as a mailto link", "mailto:info@erfansanat.com" in home)
+    check("2.2", "footer about text is printed", "۲۴ ماه گارانتی تعویض" in home)
+    check("2.2", "trust badges are printed", "ISO 9001:2015" in home and "IP67 / IP68" in home)
+    check("2.2", "footer quick links are printed", "/licenses-and-honors/" in home and "/refund_returns/" in home)
+    check("2.2", "footer product categories are printed", "/product_cat/point-light/" in home)
+    check("2.2", "primary navigation is present", "erfansanat-menu" in home)
+    check("2.2", "announcement bar is off by default", "erfansanat-notice" not in home)
+
+    save_status, saved = ajax(
+        jar,
+        "erfansanat_save_options",
+        {
+            "brand_name": "برند آزمایشی دو",
+            "brand_tagline": "شعار آزمایشی",
+            "phone_primary": "03112345678",
+            "notice_enabled": "1",
+            "notice_text": "اعلان آزمایشی",
+            "notice_link": "/shop/",
+            "unknown_field": "must vanish",
+        },
+        nonce,
+    )
+    check("2.2", "settings save for an administrator", bool(saved.get("success")), f"status={save_status} {str(saved)[:120]}")
+
+    _, _, home = curl("/")
+    check("2.2", "saved brand reaches the front end", "برند آزمایشی دو" in home)
+    check("2.2", "saved tagline reaches the front end", "شعار آزمایشی" in home)
+    check("2.2", "saved phone reaches the tel link", "tel:03112345678" in home)
+    check("2.2", "saved announcement bar renders", "اعلان آزمایشی" in home and "erfansanat-notice" in home)
+    check("2.2", "unknown field is not printed", "must vanish" not in home)
+    check("2.2", "old default no longer leaks when replaced", "tel:03191091011" not in home)
+
+    ajax(
+        jar,
+        "erfansanat_save_options",
+        {
+            "brand_name": "عرفان صنعت اصفهان",
+            "brand_tagline": "نورپردازی شهری و المان‌های نوری",
+            "phone_primary": "031-91091011",
+            "notice_enabled": "0",
+            "notice_text": "",
+            "notice_link": "",
+        },
+        nonce,
+    )
+    _, _, home = curl("/")
+    check("2.2", "defaults can be restored", "tel:03191091011" in home and "erfansanat-notice" not in home)
+
+    mobile_status, _, mobile = curl("/")
+    check("2.2", "header has a mobile-safe viewport", 'name="viewport"' in mobile, f"status={mobile_status}")
+    check("2.2", "header markup carries no fixed width", "width:1200px" not in mobile)
+
+    check("2.2", "mobile view exposes the same settings", "tel:03191091011" in mobile)
+
+
 def main() -> int:
     """Run the requested tasks."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--task", action="append", choices=["2.1"])
+    parser.add_argument("--task", action="append", choices=["2.1", "2.2"])
     args = parser.parse_args()
-    tasks = args.task or ["2.1"]
+    tasks = args.task or ["2.1", "2.2"]
 
     if not CREDENTIALS.exists():
         print("Local credentials are missing; run tools/setup-wordpress.sh first.", file=sys.stderr)

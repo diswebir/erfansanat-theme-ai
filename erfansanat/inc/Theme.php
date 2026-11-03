@@ -74,6 +74,15 @@ final class Theme {
 		if ( ! isset( $GLOBALS['content_width'] ) ) {
 			$GLOBALS['content_width'] = 1300;
 		}
+
+		register_nav_menus(
+			array(
+				'main-mega-menu'  => __( 'مگامنوی اصلی', 'erfansanat' ),
+				'mobile-menu'     => __( 'منوی موبایل', 'erfansanat' ),
+				'tolidat-sherkat' => __( 'تولیدات شرکت', 'erfansanat' ),
+				'landing'         => __( 'منوی لندینگ', 'erfansanat' ),
+			)
+		);
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 ## وضعیت جاری
 
-`STAGE 1 - PHASE 2 IN PROGRESS - TASK 2.1 PASSED`
+`STAGE 1 - PHASE 2 IN PROGRESS - TASK 2.2 PASSED`
 
 - تاریخ شروع: 2026-11-03.
 - شاخه کار: `arena/de593948-erfansanat-theme-ai`.
@@ -79,6 +79,8 @@
 ## وضعیت فاز ۲
 
 - **Task 2.1 PASSED** (`2026-11-03`): `inc/Settings.php` + `inc/Admin/ThemeOptions.php` + `inc/helpers.php` + `assets/admin/`. یک ردیف `erfansanat_theme_options`، تب‌های RTL، AJAX با `manage_options` و nonce، sanitize تایپ‌دار و fallback برای ردیف خراب.
+- **Task 2.2 PASSED** (`2026-11-03`): `inc/Frontend/SiteParts.php` + بازنویسی `header.php`/`footer.php`؛ همهٔ فیلدهای سراسری (برند، اعلان، تماس، شبکه‌ها، لینک‌ها، نشان‌ها، دسته‌های فوتر، اسکریپت مجاز، ۴ جایگاه منو) با پیش‌فرض‌های مرجع در فرانت‌اند چاپ می‌شوند. PHPUnit ۱۳/۷۵، HTTP ۲۱/۲۱ (کل فاز ۳۵/۳۵)، فاز ۱ بدون رگرسیون.
 - پیش‌فرض‌ها عیناً از مرجع استاتیک گرفته شده‌اند (نام برند، شعار، تلفن‌ها، ایمیل، نشانی، ساعات کاری، متن فوتر، ۸ لینک دسترسی سریع، ۸ دستهٔ فوتر).
+- **Task 2.3 در انتظار**: SectionManager با ترتیب/فعال‌سازی/تکرارشونده و ۱۵ سکشن پیش‌فرض صفحهٔ اصلی.
 - دو لایهٔ پذیرش فاز ۲: PHPUnit (`tests/test-task-0N.php`) و `tests/check-http.py` (پنل/ذخیرهٔ واقعی/مجوز/nonce).
 - در جریان: Task 2.2 رندر عمومی مقادیر در هدر/فوتر/نوار اعلان و Task 2.3 رجیستری سکشن‌ها.
