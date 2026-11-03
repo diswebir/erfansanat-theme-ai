@@ -7,6 +7,7 @@
 
 namespace ErfanSanat\Theme\Admin;
 
+use ErfanSanat\Theme\Admin\Tabs\ArchiveTab;
 use ErfanSanat\Theme\Admin\Tabs\BrandTab;
 use ErfanSanat\Theme\Admin\Tabs\FooterTab;
 use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
@@ -30,6 +31,10 @@ final class AdminMenu implements ModuleInterface {
 		'es-theme-brand' => array(
 			'title'       => 'برند و رنگ',
 			'description' => 'تنظیم رنگ‌های برند و هویت بصری قالب، بدون تغییر کلاس‌ها یا دارایی‌های ثابت فرانت‌اند.',
+		),
+		'es-theme-archives' => array(
+			'title'       => 'آرشیوها',
+			'description' => 'تنظیم تعداد، ترتیب و فیلترهای قابل‌نمایش در آرشیو محصولات، پروژه‌ها و نوشته‌ها.',
 		),
 		'es-theme-sections' => array(
 			'title'       => 'سکشن‌های صفحات',
@@ -174,6 +179,10 @@ final class AdminMenu implements ModuleInterface {
 		}
 		if ( 'es-theme-brand' === $slug ) {
 			echo BrandTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
+			return;
+		}
+		if ( 'es-theme-archives' === $slug ) {
+			echo ArchiveTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
 			return;
 		}
 

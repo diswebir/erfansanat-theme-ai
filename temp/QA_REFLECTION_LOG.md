@@ -221,3 +221,15 @@
 | Suite Phase 2 | **70 PASS / 0 FAIL / 21 PENDING**؛ pendingها Tasks 2.9–2.15 |
 | محافظت | محدودسازی خروجی به `sanitize_hex_color`; override روی wrapper موجود `#es-page.es-site`, بدون تغییر stylesheet یا `!important` |
 | وضعیت | Task 2.8 `[PASSED]`; بعدی: Task 2.9 |
+
+
+## Phase 2 — Task 2.9 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 6 شرطی را ابتدا اجرا کردیم؛ همه **0 PASS / 6 FAIL / 0 PENDING** بودند |
+| پیاده‌سازی | `ArchiveTab`، allowlist تنظیمات و `ArchiveConfig` برای query اصلی و کنترل‌های فیلتر قابل‌رندر؛ route ادمین آرشیو اضافه شد |
+| تست اختصاصی | **5 PASS / 0 FAIL / 0 PENDING**: posts-per-page/order، fallback ورودی نامعتبر، حذف فیلتر خاموش از render list و فرم امن |
+| Suite Phase 2 | **75 PASS / 0 FAIL / 18 PENDING**؛ 6 تسک آینده باقی است |
+| اصلاح هم‌پوشانی | Task 2.2 submenu regression assertion به‌روزرسانی شد تا صفحه آرشیو جدید را نیز پوشش دهد (7 submenu با manage_options) |
+| وضعیت | Task 2.9 `[PASSED]`; بعدی: Task 2.10 |

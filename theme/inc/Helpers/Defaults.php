@@ -57,6 +57,20 @@ final class Defaults {
 				'color'   => self::BRAND_COLOR,
 				'heading' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE)',
 			),
+			'archive' => array(
+				'columns'        => '3',
+				'posts_per_page' => '12',
+				'order'          => 'date_desc',
+				'filters'        => array(
+					'category' => true,
+					'ip'       => true,
+					'voltage'  => true,
+					'price'    => true,
+					'rating'   => true,
+					'views'    => true,
+				),
+				'show_faq' => true,
+			),
 		);
 	}
 }

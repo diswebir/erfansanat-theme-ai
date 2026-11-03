@@ -48,10 +48,10 @@ if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' )
 	$top = array_values( array_filter( $GLOBALS['es_mock_admin_pages'], fn( $p ) => 'top' === $p['kind'] ) );
 	$subs = array_values( array_filter( $GLOBALS['es_mock_admin_pages'], fn( $p ) => 'sub' === $p['kind'] ) );
 	check( 'top-level menu requires manage_options and has the expected slug', fn() => count( $top ) === 1 && $top[0]['args'][2] === 'manage_options' && $top[0]['args'][3] === 'erfansanat-theme' );
-	check( 'dashboard, global, brand, sections, forms and tools submenus are registered', function () use ( $subs ) {
+	check( 'dashboard, global, brand, archives, sections, forms and tools submenus are registered', function () use ( $subs ) {
 		$slugs = array_map( fn( $p ) => $p['args'][4], $subs );
-		return count( array_intersect( array( 'erfansanat-theme', 'es-theme-settings', 'es-theme-brand', 'es-theme-sections', 'es-theme-forms', 'es-theme-tools' ), $slugs ) ) === 6
-			&& count( $subs ) === 6 && array_reduce( $subs, fn( $ok, $p ) => $ok && 'manage_options' === $p['args'][3], true );
+		return count( array_intersect( array( 'erfansanat-theme', 'es-theme-settings', 'es-theme-brand', 'es-theme-archives', 'es-theme-sections', 'es-theme-forms', 'es-theme-tools' ), $slugs ) ) === 7
+			&& count( $subs ) === 7 && array_reduce( $subs, fn( $ok, $p ) => $ok && 'manage_options' === $p['args'][3], true );
 	} );
 	$GLOBALS['es_mock_admin_pages'] = array();
 	$GLOBALS['es_mock_user_can'] = false;
@@ -67,7 +67,7 @@ if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' )
 	if ( is_callable( $callback ) ) { ob_start(); $callback(); $html = ob_get_clean(); } else { $html = ''; }
 	check( 'dashboard renderer outputs an escaped RTL admin shell', fn() => str_contains( $html, 'class="es-admin' ) && str_contains( $html, 'dir="rtl"' ) );
 } else {
-	foreach ( array( 'registers only the admin menu and conditional asset hooks', 'top-level menu requires manage_options and has the expected slug', 'dashboard, global, brand, sections, forms and tools submenus are registered', 'unauthorized user does not register admin pages', 'assets are not enqueued on unrelated admin pages', 'CSS and JS enqueue on the theme dashboard screen', 'dashboard renderer outputs an escaped RTL admin shell' ) as $label ) { check( $label, fn() => false ); }
+	foreach ( array( 'registers only the admin menu and conditional asset hooks', 'top-level menu requires manage_options and has the expected slug', 'dashboard, global, brand, archives, sections, forms and tools submenus are registered', 'unauthorized user does not register admin pages', 'assets are not enqueued on unrelated admin pages', 'CSS and JS enqueue on the theme dashboard screen', 'dashboard renderer outputs an escaped RTL admin shell' ) as $label ) { check( $label, fn() => false ); }
 }
 
 function capability_index() { return 2; }

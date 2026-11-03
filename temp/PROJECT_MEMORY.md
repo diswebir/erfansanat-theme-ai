@@ -186,7 +186,7 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `assets/admin/repeater.js` is dependency-free: add/remove, native drag/drop, keyboard arrows and up/down buttons all reindex both IDs and `name` attributes. The script enqueues only on theme admin screens.
 - `Sanitizer` now uses `RepeaterCodec` when available and continues to discard empty rows / sanitize schema-defined children.
 - Tests: **7 PASS / 0 FAIL / 0 PENDING**. The Node DOM mock verified reorder, deletion, add and stable posted names. Complete current phase runner: **54 PASS / 0 FAIL / 27 PENDING** (9 remaining tasks not implemented yet).
-- Next: Task 2.9 — archive settings; no Phase 3 work until Gate 2 review and approval.
+- Next: Task 2.10 — scripts/custom-code settings; no Phase 3 work until Gate 2 review and approval.
 
 
 ### Task 2.7 — PASS
@@ -204,4 +204,12 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `InlineCss` فقط رنگ hex معتبر و متفاوت از پالت پایه را روی wrapper موجود `#es-page.es-site` در متغیر `--es-brand` اعمال می‌کند؛ `styles.css` و کلاس‌های DOM دست‌نخورده‌اند و هیچ `!important` تولید نمی‌شود.
 - payload رنگ نامعتبر با `reject_invalid_save` از whitelist حذف می‌شود تا مقدار ذخیره‌شده قبلی باقی بماند.
 - تست اختصاصی: **5 PASS / 0 FAIL / 0 PENDING**؛ کل Suite Phase 2: **70 PASS / 0 FAIL / 21 PENDING**؛ pendingها فقط Tasks 2.9–2.15 هستند.
-- ادامه: Task 2.9؛ پس از Task 2.15 در Gate 2 توقف و برای Phase 3 منتظر تأیید کاربر بمان.
+- ادامه پس از تکمیل Task 2.9: Task 2.10؛ پس از Task 2.15 در Gate 2 توقف و برای Phase 3 منتظر تأیید کاربر بمان.
+
+
+### Task 2.9 — PASS
+- `ArchiveTab` صفحه تنظیمات آرشیو را با ستون‌های گرید 1–4، تعداد مجاز 6/9/12/24، ترتیب whitelist شده، toggle فیلترهای دسته/IP/ولتاژ/قیمت/امتیاز/بازدید و نمایش FAQ ثبت می‌کند.
+- `ArchiveConfig` فقط روی کوئری اصلی آرشیوی `pre_get_posts` تعداد/ترتیب را اعمال می‌کند؛ `visible_filters()` و `render_filter()` امکان حذف کامل کنترل خاموش از DOM را برای templateها می‌دهند، بدون تغییر کلاس‌های استاتیک یا ساخت query جدید.
+- تنظیمات آرشیو در AdminMenu اضافه شد؛ تست قدیمی ثبت منوها برای زیرصفحه جدید هم‌راستا شد.
+- تست اختصاصی: **5 PASS / 0 FAIL / 0 PENDING**؛ full Phase 2 suite: **75 PASS / 0 FAIL / 18 PENDING**؛ موارد PENDING فقط Tasks 2.10–2.15 هستند.
+- ادامه: Task 2.10؛ Gate 2 پس از پایان Task 2.15 و پیش از هر کار Phase 3.
