@@ -3,31 +3,35 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**STAGE 0 COMPLETED — WAITING FOR USER CLARIFICATION** (توقف روی دروازه تایید کارفرما)
+**STAGE 1 COMPLETED — AWAITING USER APPROVAL TO START PHASE 1**
+(درخت کامل ۸ فاز + تسک‌ها + اسکلت تست‌ها در `temp/` ساخته شد؛ اجرای کدنویسی هنوز شروع نشده است)
 
 ## آخرین رویداد
-- **2026-11-03 — Stage 0 انجام شد:**
-  1. محیط تجهیز شد: Node 22 ✅، PHP 8.4.27 (WASM از `@php-wasm/node`، شیم `/home/user/tools/php`) ✅، curl/git/unzip ✅. نصب apt مسدود بود (شبکه فقط GitHub/npm/pypi) — باینری release-assets هم مسدود؛ راه‌حل: PHP wasm. برای تست‌های سرتاسری آینده `@wp-playground/cli` (WordPress + SQLite روی npm) در دسترس است (در فاز ۱ فعال می‌شود).
-  2. میرور استاتیک از `erfansanat-static-mirror.zip.png` (فایل ZIP با پسوند اشتباه) استخراج شد به `uploads/static-mirror/` — ۱۲۸ HTML، ۳۹MB.
-  3. اسکن کامل انجام و ۴ فایل حافظه ساخته شد (`PROJECT_GOAL`, `DATA_BLUEPRINT`, `STATIC_TEMPLATE_MAP`, `PROJECT_MEMORY`).
-  4. `.gitignore` برای `uploads/` (مرجع سنگین) و `node_modules` ساخته شد. کامیت Stage 0 روی `arena/594c659e-erfansanat-theme-ai` ثبت شد.
+- **2026-11-03 — Stage 0 انجام شد:** تجهیز محیط (PHP 8.4 wasm + Node 22)، استخراج میرور (۱۲۸ HTML، ۳۹MB)، اسکن کامل و ساخت ۴ فایل حافظه. کامیت `94d4986`.
+- **2026-11-03 — پاسخ‌های کارفرما به سوالات Stage 0 دریافت شد:**
+  - **Q1 → اسلاگ‌های سایت زنده** ملاک است: `product/`, `shop`, `product_cat/`, `city/`, `project_type/`. واریانت‌های تکراری میرور (`products/*`, `products.html`, `products/category-*`, `projects/city-*`, `projects/type-*`) نادیده گرفته می‌شوند.
+  - **Q2 → خدمات = CPT اختصاصی Native `services`** (افزوده‌شدن به بلوپرینت؛ رجیستر در تسک 3.1، قالب‌ها در فاز ۷).
+  - **Q3 → صفحات بدون مرجع (`arya`, `smartelement`, `my-account`, `auth`)** از کامپوننت‌های موجود میرور ساخته می‌شوند (فاز ۷ تسک 7.3 + استایل فرم‌های ووکامرس/voorodak در 6.3).
+  - **Q4 → ووکامرس کامل** برای cart/checkout؛ محصول استعلامی (`true_sale=false`) دکمه استعلام/تماس می‌گیرد.
+- **2026-11-03 — Stage 1 انجام شد:** ساخت `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md` و درخت کامل `temp/phase-01…08` (tasks + tests + run-phase scripts).
 
 ## تصمیمات فنی ثبت‌شده
-- **D-001:** PHP runtime = `@php-wasm/node` 8.4 (شیم bash: `/home/user/tools/php -l/-f/-r`). هر بوت ~۱۵-۳۰ ثانیه طول می‌کشد؛ تست‌های سنگین باید در یک فرآیند واحد (اسکریپت واحد) اجرا شوند.
-- **D-002:** میرور استاتیک فقط مرجع است و کامیت نمی‌شود؛ دارایی‌ها در فاز ۱ کپی می‌شوند.
-- **D-003:** واریانت‌های تکراری میرور (`products/*`, `products.html`, `projects/city-*`, `projects/type-*`) به‌احتمال قوی خروجی دو اسکیم URL ژنراتور میرورند؛ canonical = اسلاگ‌های سایت زنده (`product/`, `shop`, `product_cat/`, `city/`, `project_type/`). **در انتظار تایید کارفرما (Q1).**
-- **D-004:** `category/magazine.html` و `category/news-and-events.html` باگ title=undefined دارند؛ H1 معتبر است. عنوان‌های واقعی از دیتابیس زنده رندر می‌شوند.
-- **D-005:** معماری `services/` (CPT یا برگه) **در انتظار پاسخ کارفرما (Q2)** — پیش‌فرض: برگه + SectionManager.
-- **D-006:** لندینگ‌های `arya`/`smartelement` و صفحات `my-account`/`auth` در میرور نیستند؛ پیش‌فرض: ساخت از کامپوننت‌های موجود. **در انتظار تایید (Q3).**
+- **D-001:** PHP runtime = `@php-wasm/node` 8.4 (شیم `/home/user/tools/php`). بوت هر اجرا ~۱۵-۳۰s → تست‌های هر تسک در یک اسکریپت واحد اجرا شوند.
+- **D-002:** میرور استاتیک فقط مرجع (gitignored). دارایی‌ها در فاز ۱ کپی می‌شوند.
+- **D-003 (نهایی با تایید کارفرما):** canonical = اسلاگ‌های سایت زنده؛ واریانت‌های تکراری میرور دور ریخته می‌شوند.
+- **D-004:** `category/magazine|news-and-events` باگ title دارند؛ عنوان واقعی از دیتابیس رندر می‌شود.
+- **D-005 (نهایی):** خدمات → CPT Native `services` (سینگل: `/services/{slug}`؛ فهرست: برگه/آرشیو با کارت‌های میرور). هنگام register، اولویت rewrite طوری تنظیم شود که تداخلی با برگه‌های موجود نداشته باشد.
+- **D-006 (نهایی):** `arya`/`smartelement`/`my-account`/`auth` از کامپوننت‌های میرور ساخته می‌شوند.
+- **D-007 (نهایی):** سبد/چک‌اوت = ووکامرس کامل با پوسته میرور؛ `true_sale=false` → دکمه استعلام.
+- **D-008:** قالب خدمات جدید (CPT `services`) در فاز ۳ ثبت و پشتیبانی متاباکس Hreflang/بازدید روی آن هم اضافه می‌شود.
 
 ## نکات به‌یادماندنی برای تسک‌های بعدی
-- هدر/فوتر در هر ۱۲۸ صفحه یکسان است → برش تمیز در فاز ۴.
-- CSS واحد minified است (۲ خط)؛ هنگام DeBloat دست نزنیم، فقط Enqueue.
-- مسیر فونت‌ها در CSS نسبی است (`../fonts/`) → ساختار پوشه `assets/` باید مثل میرور حفظ شود.
-- main.js هیچ fetch ندارد؛ همه فیلترها سمت کلاینت‌اند → در فاز ۸ به AJAX متصل می‌شوند و data-hookها حفظ می‌شوند.
-- سبد خرید میرور localStorage است → با ووکامرس جایگزین می‌شود (Q4 برای نحوه پیش‌فاکتور).
-- قیمت‌ها «تومان» (IRT) ✓؛ RTL ✓؛ Vazirmatn ✓.
-- JSON-LDهای (Organization/Breadcrumb) میرور باید داینامیک شوند.
+- هدر/فوتر در هر ۱۲۸ صفحه یکسان → برش در فاز ۴.
+- CSS واحد minified (۲ خط) — دست نزنیم، فقط Enqueue. مسیر فونت نسبی `../fonts/` → ساختار `assets/` مثل میرور.
+- main.js بدون fetch؛ ۲۶۳ data-hook → فاز ۸ اتصال AJAX با حفظ hookها.
+- قیمت‌ها «تومان» (IRT)؛ RTL؛ JSON-LDها داینامیک شوند.
+- `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
+- متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## پاسخ‌های دریافتی از کارفرما
-- (هنوز پاسخی ثبت نشده — سوالات Stage 0: Q1 واریانت‌های URL، Q2 معماری services، Q3 صفحات بدون مرجع، Q4 سبد/پیش‌فاکتور)
+- Q1: live_slugs · Q2: cpt_services · Q3: compose_from_components · Q4: wc_full  (2026-11-03)

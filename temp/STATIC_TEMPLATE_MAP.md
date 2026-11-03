@@ -78,9 +78,11 @@
   - ساختار: هیرو + بدنه مقاله + دکمه اشتراک‌گذاری (`share-btn`) + CTA محصولات مرتبط. (TOC/بازدید/دیدگاه در میرور رندر نشده — طبق بلوپرینت در فاز ۷ با سبک کامپوننت‌های موجود اضافه می‌شود: `number2-viewc`, TOC, comments)
 - آرشیوها: `category/magazine.html` (H1: «مجله علمی نورپردازی شهری» — title باگ ژنراتور: `undefined`) و `category/news-and-events.html` (اخبار و رویدادها) → `category.php`
 
-### ۳.۷. خدمات — `services/` (۵ فایل)
+### ۳.۷. خدمات — `services/` (۵ فایل) — ✅ تصمیم کارفرما: CPT اختصاصی Native `services`
 `bridge-lighting`, `building-lighting`, `element-lighting`, `square-lighting`, `street-lighting`
-ساختار: هیرو خدمت + توضیح + CTA استعلام. → معماری (CPT یا برگه+SectionManager) در پرسش Stage 0 — پیش‌فرض پیشنهادی: برگه با قالب `page-templates/service.php` (فاز ۷).
+ساختار: هیرو خدمت + توضیح + CTA استعلام.
+→ CPT `services` در تسک 3.1 ثبت می‌شود (`public`, `rewrite slug 'services'`, `has_archive => false` تا با برگه فهرست خدمات تداخل نکند؛ `show_in_rest`, پشتیبانی thumbnail/editor) + متاباکس Hreflang/بازدید.
+→ `single-services.php` (فاز ۷) · فهرست خدمات = برگه با قالب `page-templates/services-listing.php` (کوئری CPT + کارت‌های `card-service.php`) · صفحه `services.html` مرجع ظاهر فهرست است.
 
 ### ۳.۸. ووکامرس — `cart.html` و `checkout.html`
 - `cart.html` (`data-cart-page`): جدول سبد (`cart-items-list/item-row/qty-inc/dec/remove/clear/subtotal/tax/grandtotal`) + `buyer-type-radio` (حقیقی/حقوقی) — در میرور با localStorage کار می‌کند.
