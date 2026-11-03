@@ -54,3 +54,6 @@ for (const r of rows) {
   for (const w of r.warnings) console.log('   ⚠ ' + w);
 }
 console.log(`\nmax css=${report.totals.max_stylesheets} max js=${report.totals.max_scripts} max time=${report.totals.max_time_ms}ms (theme ${report.totals.max_theme_ms}ms) warnings=${report.totals.warnings}`);
+
+// php-wasm keeps a runtime handle alive, so CLI wrappers must exit explicitly.
+process.exit(0);

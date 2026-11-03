@@ -86,10 +86,12 @@
 | درخواست CSS قالب در `/` | 1 | ≤ 2 | ✅ |
 | درخواست JS قالب در `/` | 1 | ≤ 2 | ✅ |
 | Warning/Deprecated در رندر | 0 | 0 | ✅ |
-| زمان رندر قالب (`theme_ms`) | 72 ms | < 500 | ✅ |
+| زمان رندر قالب (`theme_ms`) | 49–79 ms | < 500 | ✅ |
 | زمان کل بوت + رندر | 735 ms | ثبت شده | ℹ️ |
 | تعداد کوئری SQL | 14 | < 60 | ✅ |
 | حجم HTML صفحه `/` | 2033 B | — | ℹ️ |
+| پوشش چند صفحه (بدون warning) | `/`, `/blog/`, `/shop/`, `/sample-page/` | — | ✅ |
+| زمان کل گیت کامل | ~۳ ثانیه | — | ✅ |
 
 ### چه چیزی واقعاً ساخته شد
 
@@ -116,3 +118,7 @@
 | B12 | runner تست، FAIL را تشخیص نمی‌داد | exit code از PHP CLI نمی‌آمد | تشخیص «RESULT: NOT OK» در stderr/stdout |
 | B13 | سقف ۵۰۰ms با بوت WP شکسته می‌شد | سنجه اشتباه (کل درخواست) | mu-plugin زمان‌سنج + سنجه `theme_ms` |
 | B14 | `wp-embed-responsive` در body_class | DeBloat فقط اسکریپت را حذف می‌کرد | فیلتر `body_class` |
+| B15 | بازتولید scaffold تست‌های دست‌نویس را پاک می‌کرد | generator فقط فایل تولیدی می‌نوشت | پوشه `tools/plan/filled/phase-NN/` منبع رسمی تست‌ها شد |
+| B16 | اسکریپت gate فاز با backtick شکسته بود | عنوان تسک داخل «`» در bash | حذف backtick در label و اجرای تک‌پروسه‌ای |
+| B17 | `phase-gate.mjs` در مرحله perf هنگ می‌کرد | `execFileSync` خروجی php-wasm را بافر می‌کرد | `spawnSync` با `stdio: 'inherit'` |
+| B18 | `perf.mjs` بعد از import هیچ خروجی نمی‌داد | `process.exit(0)` سطح-بالا در ماژول importشده اجرا می‌شد | exit فقط در CLI خودِ perf.mjs |
