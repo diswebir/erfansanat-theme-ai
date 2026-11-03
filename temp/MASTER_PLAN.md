@@ -62,7 +62,7 @@
 |---|---|---|---|---|
 | `P03-T001` | ثبت CPT projects | `3.1` | P01-T004 | `[PASSED]` |
 | `P03-T002` | ثبت CPT services | `3.1` | P03-T001 | `[PASSED]` |
-| `P03-T003` | ثبت تکسونومی project_type | `3.1` | P03-T001 | `[PENDING]` |
+| `P03-T003` | ثبت تکسونومی project_type | `3.1` | P03-T001 | `[PASSED]` |
 | `P03-T004` | ثبت تکسونومی city | `3.1` | P03-T001 | `[PENDING]` |
 | `P03-T005` | حفظ rewrite محصول و product_cat | `3.1` | P01-T004 | `[PENDING]` |
 | `P03-T006` | حفظ product_tag/product_brand | `3.1` | P03-T005 | `[PENDING]` |
