@@ -65,7 +65,7 @@
 | `P03-T003` | ثبت تکسونومی project_type | `3.1` | P03-T001 | `[PASSED]` |
 | `P03-T004` | ثبت تکسونومی city | `3.1` | P03-T001 | `[PASSED]` |
 | `P03-T005` | حفظ rewrite محصول و product_cat | `3.1` | P01-T004 | `[PASSED]` |
-| `P03-T006` | حفظ product_tag/product_brand | `3.1` | P03-T005 | `[PENDING]` |
+| `P03-T006` | حفظ product_tag/product_brand | `3.1` | P03-T005 | `[PASSED]` |
 | `P03-T007` | نقشه سازگاری ۱۸ ویژگی pa_* | `3.1` | P03-T005 | `[PENDING]` |
 | `P03-T008` | Flush و رگرسیون Permalink | `3.1` | P03-T001, P03-T002, P03-T003, P03-T004, P03-T005, P03-T006 | `[PENDING]` |
 | `P03-T009` | ریدایرکت aliasهای محصول/دسته | `3.3` | P03-T005, P03-T008 | `[PENDING]` |

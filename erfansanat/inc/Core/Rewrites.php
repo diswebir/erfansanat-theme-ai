@@ -66,6 +66,15 @@ final class Rewrites {
 			$rewrite['hierarchical'] = true; // Keep nested category URLs (SC-02).
 			$args['rewrite']         = $rewrite;
 			$args['hierarchical']    = true;
+		} elseif ( 'product_tag' === $taxonomy ) {
+			// P03-T006: keep the product-tag base, front-less.
+			$rewrite               = is_array( $args['rewrite'] ?? null ) ? $args['rewrite'] : array();
+			$rewrite['slug']       = 'product-tag';
+			$rewrite['with_front'] = false;
+			$args['rewrite']       = $rewrite;
+		} elseif ( 'product_brand' === $taxonomy ) {
+			// P03-T006: brand stays hierarchical; its base is left untouched.
+			$args['hierarchical'] = true;
 		}
 
 		return $args;
