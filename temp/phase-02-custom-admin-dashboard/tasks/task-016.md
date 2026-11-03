@@ -1,6 +1,6 @@
 # P02-T016 — SectionManager: UI ترتیب و فعال‌سازی
 
-> فاز 2: داشبورد اختصاصی ادمین و Section Builder · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 2: داشبورد اختصاصی ادمین و Section Builder · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `2.3` · وابستگی‌ها: `P02-T015`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@ Drag&Drop، روشن/خاموش و افزودن/حذف سکشن در metabox ب�
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: ترتیب جدید بدون reload ذخیره شود.
-- [ ] AC-02: سکشن خاموش رندر نشود.
-- [ ] AC-03: دسترسی/nonce متاباکس بررسی شود.
+- [x] AC-01: ترتیب جدید بدون reload ذخیره شود.
+- [x] AC-02: سکشن خاموش رندر نشود.
+- [x] AC-03: دسترسی/nonce متاباکس بررسی شود.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: جابجایی دو سکشن در خروجی اعمال شود.
-- [ ] SC-02: ذخیره غیرمجاز رد شود.
+- [x] SC-01: جابجایی دو سکشن در خروجی اعمال شود.
+- [x] SC-02: ذخیره غیرمجاز رد شود.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-02-custom-admin-dashboard/tests/test-task-016.php`
@@ -45,3 +45,7 @@ Drag&Drop، روشن/خاموش و افزودن/حذف سکشن در metabox ب�
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-02-custom-admin-dashboard/tests/test-task-016.php` → **12 passed, 0 failed, 0 pending**.
