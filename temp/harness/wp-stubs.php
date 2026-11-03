@@ -670,9 +670,20 @@ if (!function_exists('update_post_meta')) {
 
 if (!function_exists('add_meta_box')) {
     function add_meta_box(string $id, string $title, callable|array|string $callback, string|array|false|null $screen = null, string $context = 'advanced', string $priority = 'default', ?array $callback_args = null): void {
+        if (isset($GLOBALS['__wp_hooks']['meta_boxes'][$id])) {
+            $prev = $GLOBALS['__wp_hooks']['meta_boxes'][$id];
+            $screens = (array) ($prev['screens'] ?? [$prev['screen']]);
+            foreach ((array) $screen as $one) {
+                if (!in_array($one, $screens, true)) {
+                    $screens[] = $one;
+                }
+            }
+            $GLOBALS['__wp_hooks']['meta_boxes'][$id]['screens'] = $screens;
+            return;
+        }
         $GLOBALS['__wp_hooks']['meta_boxes'][$id] = [
             'title' => $title, 'callback' => $callback, 'screen' => $screen,
-            'context' => $context, 'priority' => $priority,
+            'screens' => (array) $screen, 'context' => $context, 'priority' => $priority,
         ];
     }
 }
@@ -769,6 +780,18 @@ if (!function_exists('get_terms')) {
     }
 }
 
+if (!function_exists('setcookie_es_stub')) {
+}
+
+/** استاب setcookie — ثبت در گلوبال برای assert */
+if (!function_exists('setcookie')) {
+    function setcookie(string $name, string $value = '', array|int $expires_or_options = 0, string $path = '', string $domain = '', bool $secure = false, bool $httponly = false): bool
+    {
+        $GLOBALS['__es_stub_cookies'][$name] = $value;
+        return true;
+    }
+}
+
 /** شرطی‌های کوئری برای ViewCounter و فیلترهای ادمین */
 if (!function_exists('is_singular')) {
     function is_singular(array|string $post_types = []): bool
@@ -779,6 +802,52 @@ if (!function_exists('is_singular')) {
         }
         return in_array($current, (array) $post_types, true);
     }
+}
+
+/** کوئری‌بندی: get_queried_object_id / get_queried_object / is_tax برای HreflangMeta */
+if (!function_exists('get_queried_object_id')) {
+    function get_queried_object_id(): int
+    {
+        return (int) ($GLOBALS['__es_stub_queried_object_id'] ?? 0);
+    }
+}
+
+if (!function_exists('get_queried_object')) {
+    function get_queried_object(): mixed
+    {
+        return $GLOBALS['__es_stub_queried_object'] ?? null;
+    }
+}
+
+if (!function_exists('is_tax')) {
+    function is_tax(string|array $taxonomies = ''): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_tax'] ?? false);
+    }
+}
+
+if (!function_exists('is_category')) {
+    function is_category(mixed $category = ''): bool
+    {
+        return false;
+    }
+}
+
+if (!function_exists('is_tag')) {
+    function is_tag(mixed $tag = ''): bool
+    {
+        return false;
+    }
+}
+
+if (!function_exists('headers_sent')) {
+    function headers_sent(): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_headers_sent'] ?? true);
+    }
+}
+
+if (!function_exists('setcookie_stub_note')) {
 }
 
 if (!function_exists('is_preview')) {
