@@ -11,7 +11,7 @@
 | `P02-T005` | Renderer فیلدهای پایه | `2.1` | P02-T001, P02-T004 | `[PASSED]` |
 | `P02-T006` | فیلدهای Media/Link/Icon | `2.2` | P02-T005 | `[PASSED]` |
 | `P02-T007` | فیلد Repeater | `2.3` | P02-T005 | `[PASSED]` |
-| `P02-T008` | AJAX Save: امنیت | `2.1` | P02-T003, P02-T005 | `[PENDING]` |
+| `P02-T008` | AJAX Save: امنیت | `2.1` | P02-T003, P02-T005 | `[PASSED]` |
 | `P02-T009` | AJAX Save: sanitize و validation | `2.1` | P02-T001, P02-T008 | `[PENDING]` |
 | `P02-T010` | تب هدر/اعلان/لوگو | `2.2` | P02-T005, P02-T006 | `[PENDING]` |
 | `P02-T011` | تب مگامنو | `2.2` | P02-T010 | `[PENDING]` |
