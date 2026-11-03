@@ -2,7 +2,7 @@
 
 ## وضعیت جاری
 
-`PHASE 1 IN PROGRESS - TASK 1.1 PASSED`
+`PHASE 1 IN PROGRESS - TASKS 1.1 AND 1.2 PASSED`
 
 - تاریخ شروع: 2026-11-03.
 - شاخه کار: `arena/de593948-erfansanat-theme-ai`.
@@ -69,5 +69,5 @@
 - **Task 1.1 PASSED** (`2026-11-03`): قالب `erfansanat` فعال است؛ ساختار OOP با `ErfanSanat\Theme`، autoloader امن، supports بومی و سه گالری ووکامرس، فایل‌های سازگاری header/footer/sidebar.
 - شواهد: PHPUnit 9 تست/53 assertion؛ 14 بررسی HTTP؛ PHPCS با `phpcs.xml.dist` بدون خطا؛ `php -l` پاک؛ مرجع استاتیک بدون تغییر.
 - دام‌های ابزار که حل شدند: کد خروج نادرست PHPUnit، تطبیق نام کلاس PHPUnit 12 با نام فایل قرارداد، و ناتوانی PHP-Wasm در پاسخ به درخواست HTTP از پروسهٔ خودش.
-- Task 1.2 در جریان است: فقط فرانت‌اند پاک‌سازی می‌شود؛ `wc-blocks-*`، سواچ‌ها، ورود پیامکی و ویرایشگر مدیریت باید سالم بمانند.
-- Task 1.3 پس از آن: انتقال بایت‌به‌بایت CSS/JS/فونت و enqueue شرطی با نسخهٔ filemtime؛ ویدیو هیرو فقط در صفحهٔ مربوط. هر دو Task هنوز آزمون نشده‌اند.
+- **Task 1.2 PASSED** (`2026-11-03`): `inc/DeBloat.php`؛ فرانت‌اند بدون block library/global styles/emoji/oEmbed/تگ‌های اضافی `wp_head`؛ مدیریت، REST، feed، embed و preview معاف؛ `wc-blocks-style` و دارایی‌های ووکامرس سالم.
+- Task 1.3 در جریان است: انتقال بایت‌به‌بایت CSS/JS/فونت و enqueue شرطی با نسخهٔ filemtime؛ ویدیو هیرو فقط در صفحهٔ مربوط. هنوز آزمون نشده است.

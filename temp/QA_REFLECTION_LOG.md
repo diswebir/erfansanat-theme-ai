@@ -11,7 +11,7 @@
 ## آزمون‌های در انتظار اجرای فازها
 
 - Task 1.1: [PASSED] — ۹ تست PHPUnit/۵۳ assertion و ۱۴ بررسی HTTP.
-- Task 1.2: [PENDING] — هنوز اجرا نشده است.
+- Task 1.2: [PASSED] — ۱۱ تست PHPUnit/۴۵ assertion و ۳۲ بررسی HTTP.
 - Task 1.3: [PENDING] — هنوز اجرا نشده است.
 - Task 2.1: [PENDING] — هنوز اجرا نشده است.
 - Task 2.2: [PENDING] — هنوز اجرا نشده است.
@@ -65,3 +65,13 @@
   6. `phpcs.xml.dist` اضافه شد تا استاندارد رسمی WordPress با معافیت مستند PSR-4 و prefix/text-domain پروژه اجرا شود؛ ۲۱۹ ایراد قالب‌بندی با phpcbf اصلاح و ایرادهای باقی‌مانده (Yoda، docblock پارامتر، نام رزروشده) دستی برطرف شد.
 - شواهد نهایی: `bash temp/phase-01-core-and-assets/tests/run-phase-01-tests.sh --task 1.1` → PHPUnit «OK (9 tests, 53 assertions)» و ۱۴/۱۴ بررسی HTTP.
 - محدودیت باقی‌مانده: این آزمون‌ها محیط محلی SQLite/PHP-Wasm را می‌سنجند؛ سازگاری تولید، MySQL و درگاه پرداخت همچنان آزمون‌نشده است.
+
+## 2026-11-03 — Task 1.2 (پاک‌سازی فرانت‌اند)
+
+- `inc/DeBloat.php` اضافه شد: حذف `wp-block-library`/`global-styles`/`classic-theme-styles`، ایموجی و oEmbed، و تگ‌های `generator`/`EditURI`/`shortlink`/کشف REST؛ فیلترهای `should_load_separate_core_block_assets` و `should_load_block_assets_on_demand` هم روی فرانت‌اند خاموش می‌شوند.
+- معافیت‌ها: `is_admin`, REST، AJAX، feed، embed و preview؛ به‌علاوه فیلتر قالب `erfansanat_debloat_front_end` برای خروج.
+- `wc-blocks-style` عمداً حذف نمی‌شود چون دارایی ووکامرس برای سبد/پرداخت بلوکی است؛ آزمون با handle واقعی همان را تأیید می‌کند.
+- بافر حذف تگ فقط دور `wp_head` باز و بسته می‌شود (نه کل صفحه) تا خروجی و ووکامرس دست‌نخورده بمانند.
+- باگ‌های آزمون که اصلاح شدند: نبود `use ErfanSanat\Theme\DeBloat` (خطای کلاس یافت نشد)؛ ست‌کردن `query_vars` به‌جای پرچم‌های واقعی `WP_Query`؛ هشدار `Undefined array key "SERVER_NAME"` از هسته که با شبیه‌سازی `$_SERVER` در bootstrap برطرف شد؛ انتظار رشته‌ای canonical/robots با کوتیشن تک در خروجی واقعی هسته.
+- شواهد نهایی: `run-phase-01-tests.sh --task 1.2` → PHPUnit «OK (11 tests, 45 assertions)» و ۳۲/۳۲ بررسی HTTP؛ PHPCS بدون خطا.
+- محدودیت: افزونه‌های سواچ و ورود پیامکی نصب نیستند و اثر آن‌ها فقط با handleهای مصنوعی و بازبینی کد سنجیده شد.

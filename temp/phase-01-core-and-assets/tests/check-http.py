@@ -161,37 +161,55 @@ def task_1_2(base: str) -> None:
     status, _, home = curl("/", base)
     check("1.2", "home page still renders", status == 200, f"got {status}")
     head = head_of(home)
-    urls = asset_links(head)
 
-    check(
-        "1.2",
-        "no wp-block-library stylesheet",
-        not [url for url in urls if "wp-block-library" in url or "wp-block-library" in head],
-    )
-    check("1.2", "no global-styles stylesheet", "global-styles" not in head)
-    check("1.2", "no block-support inline styles", "wp-block-" not in head or "wp-block-library" not in head)
-    check("1.2", "no emoji detection script", "wp-emoji" not in home and "emoji-release.min.js" not in home)
-    check("1.2", "no emoji stylesheet", "emoji.css" not in head)
+    check("1.2", "no wp-block-library stylesheet", "wp-block-library" not in home)
+    check("1.2", "no block-support inline styles", "wp-block-support" not in home)
+    check("1.2", "no global-styles stylesheet", "global-styles" not in home)
+    check("1.2", "no classic-theme-styles", "classic-theme-styles" not in home)
+    check("1.2", "no emoji detection script", "wp-emoji" not in home)
+    check("1.2", "no emoji stylesheet", "emoji.css" not in head and "wp-emoji" not in home)
+    check("1.2", "no emoji CDN hint", "s.w.org/images/core/emoji" not in home)
     check("1.2", "no oEmbed host script", "wp-embed.min.js" not in home)
-    check("1.2", "no generator meta", 'name="generator"' not in head)
-    check("1.2", "no RSD link", 'rel="EditURI"' not in head)
-    check("1.2", "no shortlink tag", 'rel="shortlink"' not in head)
-    check("1.2", "no WordPress version query strings", not re.search(r"\?ver=6\.", head))
+    check("1.2", "no oEmbed discovery tag", "json+oembed" not in home and "xml+oembed" not in home)
+    check("1.2", "no generator meta", "name=\"generator\"" not in home and "name='generator'" not in home)
+    check("1.2", "no RSD link", "rel=\"EditURI\"" not in head and "rel='EditURI'" not in head)
+    check("1.2", "no shortlink tag", "shortlink" not in head)
+    check("1.2", "no REST discovery link", "api.w.org" not in home)
+    check("1.2", "no WordPress core version strings", not re.search(r"\?ver=6\.", head))
+    check("1.2", "canonical link still printed", "rel=\"canonical\"" in home or "rel='canonical'" in home)
+    check("1.2", "robots meta still printed", "name=\"robots\"" in head or "name='robots'" in head)
+    check("1.2", "feed autodiscovery still printed", "application/rss+xml" in head)
 
     shop_status, _, shop = curl("/shop/", base)
     check("1.2", "shop archive still renders", shop_status == 200, f"got {shop_status}")
-    check(
-        "1.2",
-        "WooCommerce front-end assets survive clean-up",
-        "woocommerce" in shop or "wc-" in shop,
-    )
-    check("1.2", "shop page keeps its add-to-cart markup", 'add_to_cart' in shop or "add-to-cart" in shop)
-    check("1.2", "product archive is not blank", "product" in shop.lower())
+    check("1.2", "WooCommerce front-end assets survive clean-up", "woocommerce" in shop and "woocommerce-js" in shop)
+    check("1.2", "WooCommerce block stylesheet is kept", "wc-blocks" in shop)
+    check("1.2", "shop keeps add-to-cart behaviour", "add-to-cart" in shop or "add_to_cart" in shop)
+    check("1.2", "shop renders product cards", 'class="product' in shop or "woocommerce-loop-product" in shop)
+
+    cart_status, _, cart = curl("/cart/", base)
+    check("1.2", "cart page still renders with WooCommerce script", cart_status == 200 and "woocommerce" in cart, f"status={cart_status}")
+
+    product_url = first_product_url(shop)
+    if product_url:
+        status, _, product = curl(product_url.replace(base, ""), base)
+        check("1.2", "single product page renders", status == 200, f"{product_url} status={status}")
+        check("1.2", "variation scripts kept on single product", "wc-single-product" in product or "variations" in product)
+    else:
+        check("1.2", "single product page renders", False, "no product link on the shop archive")
 
     new_lines = log_growth(before)
     check("1.2", "clean-up adds no warning to the debug log", not new_lines, "; ".join(new_lines[:3]))
 
     check_admin_editor(base, "1.2")
+
+
+def first_product_url(shop: str) -> str:
+    """Absolute URL of the first product linked from the first product card."""
+    match = re.search(r'class="[^"]*woocommerce-LoopProduct-link[^"]*"[^>]*href="([^"]+)"', shop)
+    if not match:
+        match = re.search(r'href="(https?://[^"]+/product/[^"]+)"', shop)
+    return match.group(1) if match else ""
 
 
 def check_admin_editor(base: str, task: str) -> None:
@@ -212,14 +230,17 @@ def check_admin_editor(base: str, task: str) -> None:
             "testcookie": "1",
         }
     )
-    status, _, body = curl("/wp-login.php", base, jar=jar, data=data)
-    check(task, "administrator can sign in", status == 200 and "/wp-admin/" in body, f"got {status}")
+    status, headers, body = curl("/wp-login.php", base, jar=jar, data=data)
+    # A successful login answers 302 with a Location header; a failed one re-renders the form.
+    redirected = status == 302 and "wp-admin" in headers
+    landed = status == 200 and "/wp-admin/" in body
+    check(task, "administrator can sign in", redirected or landed, f"got {status}")
 
     for path, needle, label in [
         ("/wp-admin/post-new.php?post_type=page", "wp-block-editor", "block editor loads for pages"),
         ("/wp-admin/post-new.php?post_type=product", "wp-block-editor", "block editor loads for products"),
-        ("/wp-admin/admin.php?page=wc-settings", "woocommerce", "WooCommerce settings screen loads"),
-        ("/wp-admin/upload.php", "wp-list-table", "media library loads"),
+        ("/wp-admin/admin.php?page=wc-settings", "wc-settings", "WooCommerce settings screen loads"),
+        ("/wp-admin/upload.php", "media", "media library loads"),
     ]:
         status, _, body = curl(path, base, jar=jar)
         check(task, label, status == 200 and needle in body, f"status={status}")

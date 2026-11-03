@@ -43,6 +43,8 @@ final class Theme {
 	public function register(): void {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'init', array( $this, 'load_textdomain' ) );
+
+		$this->boot_modules();
 	}
 
 	/**
@@ -67,6 +69,15 @@ final class Theme {
 		if ( ! isset( $GLOBALS['content_width'] ) ) {
 			$GLOBALS['content_width'] = 1300;
 		}
+	}
+
+	/**
+	 * Module instances attached to this theme.
+	 *
+	 * @return void
+	 */
+	public function boot_modules(): void {
+		DeBloat::register();
 	}
 
 	/**
