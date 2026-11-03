@@ -32,7 +32,7 @@
 ## مراحل
 - Stage 0: ✅ COMPLETED (commit 92747ca)
 - Stage 1: ✅ COMPLETED — MASTER_PLAN + QA_REFLECTION_LOG + ۸ پوشه فاز (tasks/ + tests/) — ۵۹ فایل
-- Stage 2+: ✅ MILESTONE — کاربر指示 «هر طور میدونی بهتره پیش ببر»؛ autoplay کامل فعال شد
+- Stage 2+: ✅ MILESTONE — کاربر «هر طور میدونی بهتره پیش ببر»؛ autoplay کامل فعال شد
 - Phase 1 Task 1.1: ✅ PASSED — اسکلت قالب + OOP core + تست 18/18
 - Phase 1 Task 1.2: ✅ PASSED — inc/DeBloat.php (Gutenberg/emoji/head cleanup) + تست 13/13
 - Phase 1 Task 1.3: ✅ PASSED — assets/ (27 فایل, 13MB) کپی شد؛ inc/AssetManager.php با filemtime versioning + تست 16/16؛ run-phase-01-tests.sh: 3/3 ALL PASS
@@ -56,7 +56,7 @@
 - E2E: ALL-PASS. All lint clean.
 
 ## Polish — 2026-11-03
--  reset بعد از push → از remote بازیابی شد (33d6d35).
-- template-parts/content.php + content-none.php اضافه شد (referenziert von index.php).
+- ریست شدن محیط بعد از push → از remote بازیابی شد (33d6d35).
+- template-parts/content.php + content-none.php اضافه شد (که index.php به آن‌ها ارجاع می‌دهد).
 - woocommerce cart/checkout با هوک‌های واقعی WC (wc_get_template) اصلاح شد.
 - Smoke test توسعه یافت: search/page/cart/checkout/taxonomy-city/archive-projects/single/index → ALL PASS. E2E: ALL-PASS.
