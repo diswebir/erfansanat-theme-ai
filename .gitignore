@@ -1,0 +1,17 @@
+# Local development tools and caches (never ship inside the theme).
+/.tools/
+/node_modules/
+**/node_modules/
+/.cache/
+*.log
+__pycache__/
+*.py[cod]
+.phpunit.result.cache
+
+# OS/editor artifacts.
+.DS_Store
+Thumbs.db
+
+# Keep memory documents and source fixtures; discard generated test output.
+/temp/**/output/
+/temp/**/results/
