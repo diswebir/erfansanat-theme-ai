@@ -37,6 +37,11 @@ foreach ($es_boot_files as $es_boot_file) {
 }
 unset($es_boot_files, $es_boot_file);
 
+// ثبت اوتولودر پیش از هر resolve کلاسی
+if (class_exists(\ErfanSanat\Theme\Autoloader::class)) {
+    \ErfanSanat\Theme\Autoloader::register();
+}
+
 /**
  * بوت هسته قالب — تمام ماژول‌ها هوک‌های خود را از همین نقطه ثبت می‌کنند.
  * (کلاس Theme از اوتولودر resolve می‌شود؛ در نبود فایل‌های هسته خطایی رخ نمی‌دهد.)
