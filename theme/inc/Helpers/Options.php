@@ -76,29 +76,50 @@ final class Options {
 	 * @return bool Whether WordPress changed the database value.
 	 */
 	public static function update( string $key, $value ): bool {
-		$segments = self::segments( $key );
-		if ( ! $segments ) {
+		return self::update_many( array( $key => $value ) );
+	}
+
+	/**
+	 * Update several dot paths in one database write.
+	 *
+	 * @param array<string,mixed> $values Values keyed by schema paths.
+	 */
+	public static function update_many( array $values ): bool {
+		if ( ! $values ) {
 			return false;
 		}
-
 		self::all();
 		$updated = self::$stored ?? array();
-		$cursor  =& $updated;
-		$last    = array_pop( $segments );
-		foreach ( $segments as $segment ) {
-			if ( ! isset( $cursor[ $segment ] ) || ! is_array( $cursor[ $segment ] ) ) {
-				$cursor[ $segment ] = array();
-			}
-			$cursor =& $cursor[ $segment ];
-		}
-		$cursor[ $last ] = $value;
-		unset( $cursor );
+		$saved   = array();
 
+		foreach ( $values as $key => $value ) {
+			if ( ! is_string( $key ) ) {
+				continue;
+			}
+			$segments = self::segments( $key );
+			if ( ! $segments ) {
+				continue;
+			}
+			$cursor =& $updated;
+			$last    = array_pop( $segments );
+			foreach ( $segments as $segment ) {
+				if ( ! isset( $cursor[ $segment ] ) || ! is_array( $cursor[ $segment ] ) ) {
+					$cursor[ $segment ] = array();
+				}
+				$cursor =& $cursor[ $segment ];
+			}
+			$cursor[ $last ] = $value;
+			unset( $cursor );
+			$saved[] = $key;
+		}
+
+		if ( ! $saved ) {
+			return false;
+		}
 		$result = update_option( self::OPTION_NAME, $updated, false );
 		if ( function_exists( 'do_action' ) ) {
-			do_action( 'es_options_saved', $updated, $key );
+			do_action( 'es_options_saved', $updated, $saved );
 		}
-
 		self::$stored = $updated;
 		self::$merged = self::merge( Defaults::all(), $updated );
 		return (bool) $result;

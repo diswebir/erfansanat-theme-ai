@@ -159,3 +159,15 @@
 | Suite فاز | 33 PASS در تسک‌های 2.1–2.3؛ 40 PENDING در 12 تسک باقیمانده؛ 0 FAIL در کار انجام‌شده |
 | خوداصلاحی | fixtureهای تست اصلاح شد تا nonce, escape و تفاوت `sanitize_email` (حذف markup به‌جای حذف متن مجازِ اسم تگ) را درست منعکس کند |
 | وضعیت | Task 2.3 `[PASSED]`; بعدی: Task 2.4 |
+
+
+## Phase 2 — Task 2.4 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 8 شرطی قبل از کد نوشته و اجرا شد؛ همه به‌درستی FAIL شدند |
+| پیاده‌سازی | endpoint authenticated-only، nonce/capability، whitelist+sanitize، پاسخ JSON، rate limit و `Options::update_many` تک‌نوشت |
+| تست اختصاصی | **9 PASS / 0 FAIL / 0 PENDING**: nonce، capability، فیلد ناشناس، پاک‌سازی، یک write، JSON، rate limit و ثبت hook |
+| تست کل Phase تا اینجا | 42 PASS / 0 FAIL / 35 PENDING در 15 فایل؛ 11 فایل pending مربوط به کارهای آینده است |
+| باگ تست/اصلاح | نام متغیرهای تست (`$files`/`$file`) با متغیر حلقه‌ی `run-phase.php` تصادم داشت و گزارش را به‌هم می‌ریخت؛ به `$dependency_files`/`$dep_file` تغییر کرد |
+| وضعیت | Task 2.4 `[PASSED]`; بعدی: Task 2.5 |

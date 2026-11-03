@@ -6,7 +6,7 @@
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.3 — Schema/Renderer/Sanitizer فیلدها (15/15 assertions؛ مجموع 33 PASS، 0 fail/pending در سه تسک) |
+| آخرین تسک پاس‌شده | 2.4 — ذخیره امن AJAX (9/9 assertions؛ مجموع 42 PASS، 0 FAIL، 35 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -161,3 +161,11 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - type rendererهای Basic/Media/Repeater در `inc/Admin/Fields/Types/` قرار گرفتند؛ CSS پایه فیلدها در پوسته admin اضافه شد.
 - تست: **15 PASS / 0 FAIL / 0 PENDING**؛ کل تست‌های پیاده‌شده (2.1–2.3): **33 PASS**؛ 12 تست آینده عمداً PENDING هستند.
 - وضعیت بعدی: Task 2.4 — endpoint امن ذخیره گزینه‌ها.
+
+
+### Task 2.4 — PASS
+- `AjaxSave` ثبت‌کننده‌ی authenticated-only action `wp_ajax_es_save_options` است؛ ابتدا nonce با `check_ajax_referer(..., false)`، سپس `manage_options` و rate limit (30 درخواست/دقیقه/کاربر) بررسی می‌شوند.
+- payload از `es_options` می‌خواند (نامی مطابق `FieldRenderer`)، از Schema فقط مسیرهای ثبت‌شده را استخراج و sanitize می‌کند؛ کلید ناشناس حذف می‌شود.
+- `Options::update_many()` چند مقدار را در یک `update_option('erfansanat_theme_options', ...)` ذخیره می‌کند؛ پاسخ `wp_send_json_success/error` و hook `es_options_changed` ارائه می‌شود.
+- تست: **9 PASS / 0 FAIL / 0 PENDING**؛ suite 15 فایلی فعلی: **42 PASS / 0 FAIL / 35 PENDING** (تسک‌های هنوز پیاده‌نشده).
+- وضعیت بعدی: Task 2.5 — Media Picker مبتنی بر `wp.media` و اعتبارسنجی attachment.

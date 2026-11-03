@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 $GLOBALS['es_mock_options'] = array();
 $GLOBALS['es_mock_get_option_calls'] = 0;
+$GLOBALS['es_option_update_calls'] = 0;
 $GLOBALS['es_mock_actions'] = array();
 
 function get_option( $name, $default = false ) {
@@ -11,6 +12,7 @@ function get_option( $name, $default = false ) {
 	return array_key_exists( $name, $GLOBALS['es_mock_options'] ) ? $GLOBALS['es_mock_options'][ $name ] : $default;
 }
 function update_option( $name, $value, $autoload = null ) {
+	$GLOBALS['es_option_update_calls'] = ( $GLOBALS['es_option_update_calls'] ?? 0 ) + 1;
 	$changed = ! array_key_exists( $name, $GLOBALS['es_mock_options'] ) || $GLOBALS['es_mock_options'][ $name ] !== $value;
 	$GLOBALS['es_mock_options'][ $name ] = $value;
 	return $changed;
