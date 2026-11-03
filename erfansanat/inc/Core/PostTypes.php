@@ -35,6 +35,47 @@ final class PostTypes {
 	 */
 	public static function register(): void {
 		self::register_projects();
+		self::register_services();
+	}
+
+	/**
+	 * Services CPT — decision D2 (P03-T002). No independent archive: the
+	 * services overview is the `smartelement` page; singles live at /services/.
+	 */
+	private static function register_services(): void {
+		if ( post_type_exists( 'services' ) ) {
+			return; // Never duplicate an existing registration.
+		}
+
+		register_post_type(
+			'services',
+			array(
+				'labels'       => array(
+					'name'               => __( 'خدمات', 'erfansanat' ),
+					'singular_name'      => __( 'خدمت', 'erfansanat' ),
+					'add_new'            => __( 'افزودن خدمت', 'erfansanat' ),
+					'add_new_item'       => __( 'افزودن خدمت جدید', 'erfansanat' ),
+					'edit_item'          => __( 'ویرایش خدمت', 'erfansanat' ),
+					'new_item'           => __( 'خدمت جدید', 'erfansanat' ),
+					'view_item'          => __( 'نمایش خدمت', 'erfansanat' ),
+					'search_items'       => __( 'جستجوی خدمات', 'erfansanat' ),
+					'not_found'          => __( 'خدمتی یافت نشد.', 'erfansanat' ),
+					'not_found_in_trash' => __( 'خدمتی در زباله‌دان نیست.', 'erfansanat' ),
+					'all_items'          => __( 'همه خدمات', 'erfansanat' ),
+					'menu_name'          => __( 'خدمات', 'erfansanat' ),
+				),
+				'public'       => true,
+				'has_archive'  => false,
+				'rewrite'      => array(
+					'slug'       => 'services',
+					'with_front' => false,
+				),
+				'hierarchical' => false,
+				'menu_icon'    => 'dashicons-lightbulb',
+				'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ),
+				'show_in_rest' => true,
+			)
+		);
 	}
 
 	/**
