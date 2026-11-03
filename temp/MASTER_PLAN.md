@@ -52,7 +52,7 @@
 | `P02-T015` | SectionManager: schema و ذخیره متا | `2.3` | P02-T001, P02-T007 | `[PASSED]` |
 | `P02-T016` | SectionManager: UI ترتیب و فعال‌سازی | `2.3` | P02-T015 | `[PASSED]` |
 | `P02-T017` | SectionManager: ویرایش محتوای سکشن | `2.3` | P02-T006, P02-T007, P02-T016 | `[PASSED]` |
-| `P02-T018` | SectionManager: API رندر و کش | `2.3` | P02-T015, P02-T017 | `[PENDING]` |
+| `P02-T018` | SectionManager: API رندر و کش | `2.3` | P02-T015, P02-T017 | `[PASSED]` |
 
 ## Phase 3 — CPTها، تکسونومی‌ها و متاباکس‌های Legacy (`temp/phase-03-cpt-and-legacy-meta`)
 

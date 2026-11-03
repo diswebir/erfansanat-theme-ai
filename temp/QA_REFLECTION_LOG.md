@@ -64,3 +64,17 @@
 ### خوداصلاحی تکمیلی فاز ۱ (پایداری تست‌ها)
 - **باگ ۳ (مهم):** تست T012 پوسته بسته‌بندی‌شده را در `temp/dist/package-test` استخراج و فعال می‌کرد؛ `switch_theme` باعث می‌شد `stylesheet_root`/`template_root` روی مسیر موقت بمانند و در اجرای بعدی `wp_get_theme('erfansanat')` خطای `theme_not_found` بدهد. **اصلاح:** استخراج در مسیر یکتا، تغییر نام به `erfansanat-packaged`، بازگرداندن صریح `stylesheet_root`/`template_root`، پاک‌سازی کامل مسیر موقت. تست‌های T001/T004 نیز rootها را صریح برمی‌گردانند.
 - **نتیجه:** runner فاز ۱ دو بار متوالی `PHASE RESULT: PASS`؛ هیچ leftover package-test؛ ریشه پوسته فعال سالم.
+
+---
+
+## 2026-11-03 — Phase 2 تکمیل شد (P02-T001..T018)
+- **READ MEMORY:** PROJECT_MEMORY + تسک‌های فاز ۲ خوانده شد. کاربر دو بار «ادامه بده» داد → اجرای پیوسته تا پایان فاز بدون توقف بین تسک‌ها؛ گیت پایان فاز قبل از فاز ۳ باقی است.
+- **THINK & PLAN:** Schema منبع واحد حقیقت آپشن‌ها؛ Store با رد کلید ناشناخته/بازگشت به پیش‌فرض در خرابی؛ Sanitizer per-type با خطای فیلدی (بدون abort دسته‌ای)؛ Section Builder با متای نسخه‌دار و رندر کش‌شونده.
+- **WRITE TEST + IMPLEMENT:** برای هر ۱۸ تسک تست واقعی نوشته شد. فایل‌های هدف: `inc/Options/{Schema,Store,Sanitizer}.php`, `inc/Options/Tabs/{Header,MegaMenu,Footer,Brand,Archive}Tab.php`, `inc/Admin/{ThemeOptions,FieldRenderer,SectionMetabox}.php`, `inc/Sections/{Schema,SectionManager,Renderer}.php`, `assets/admin/{options,media-field,repeater,sections}.js`, `functions.php`.
+- **RUN TEST / SELF-CORRECT:**
+  - **Regression #2 workspace:** ابتدای ادامه، `.git` به `8eddaff` برگشته و پوشه‌های gitignore (`temp/wp`, `node_modules`, `bin`) حذف شده بودند؛ کامیت‌های T001–T013 فقط local بودند و از دست رفتند. **بازیابی:** `git fetch` + `git reset --mixed origin/arena/...` (نه hard/clean — کار کامیت‌نشده T014 حفظ شد)، بازسازی ۱۳ کامیت از فایل‌های سالم (guardهای `class_exists` فایل‌های مشترک را backward-safe می‌کردند)، push، بازسازی هارنس. **قاعده دائمی: بعد از هر کامیت بلافاصله push.**
+  - **باگ AJAX در WASM:** `wp_send_json` وقتی `DOING_AJAX` تعریف نشده باشد `die` می‌کند (تست را می‌کشت). **اصلاح:** الگوی T008 — `define('DOING_AJAX',true)` + فیلتر `status_header` برای گرفتن کد + throw در `wp_die_handler` + ob برای گرفتن JSON. تست T016 با همین الگو بازنویسی شد.
+  - **AC-01 سخت‌گیرانه:** `save_section_fields` ابتدا فیلدهای موجود را نگه می‌داشت (کلید خارج از schema باقی می‌ماند). **اصلاح:** بازسازی `$clean` فقط از کلیدهای schema؛ مقدار خالی فیلد را حذف نمی‌کند؛ فیلد ارسال‌نشده حفظ می‌شود؛ media/link/icon نامعتبر مقدار خوب قبلی را بازنویسی نمی‌کند.
+  - **Renderer:** `locate_template` + fallback امن → template-part ناموجود fatal نمی‌دهد؛ کش per-page/context با invalidation روی `erfansanat_sections_updated`.
+- **نتیجه تست‌ها:** T001=16، T002=10، T003=9، T004=24، T005=30، T006=19، T007=18، T008=13، T009=24، T010=11، T011=7، T012=10، T013=10، T014=9، T015=14، T016=12، T017=14، T018=10 → **۲۶۰ چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-02-custom-admin-dashboard/tests/run-phase-tests.sh` → `PHASE RESULT: ALL PASS`. گارد activate در runner مانند فاز ۱ سخت‌گیرانه شد (`is-active` + `--allow-root`).
+- **UPDATE MEMORY + Git:** وضعیت فاز ۲ PASSED؛ گام بعدی Phase 3 در انتظار تایید کاربر. همه کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai` و بلافاصله push شدند.

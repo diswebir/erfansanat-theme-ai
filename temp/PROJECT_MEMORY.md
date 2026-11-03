@@ -2,10 +2,13 @@
 
 > آخرین به‌روزرسانی: 2026-11-03 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 1 PASSED** — همه ۱۲ تسک فاز ۱ پاس شدند.
+## وضعیت فعلی: **PHASE 2 PASSED** — همه ۱۸ تسک فاز ۲ پاس شدند.
 ```
-PHASE 1 PASSED — P01-T001..T012 PASSED — WAITING FOR USER APPROVAL FOR PHASE 2
+PHASE 2 PASSED — P02-T001..T018 PASSED (260 checks) — WAITING FOR USER APPROVAL FOR PHASE 3
 ```
+- **فاز ۲ کامل شد (داشبورد اختصاصی + Section Builder):** Schema/Store آپشن‌ها (`erfansanat_theme_options`)، `es_option()` با کش، منوی ادمین + AJAX امن (nonce/cap)، UI تب‌بندی RTL/ARIA، FieldRenderer (پایه/media/link/icon/repeater)، Sanitizer per-type، تب‌های Header/MegaMenu/Footer/Brand/Archive، و Section Builder کامل: `Sections\Schema` (۱۳ سکشن خانه + about/contact/arya)، `SectionManager` (متای نسخه‌دار `_es_sections_v1`، ترتیب/فعال/شناسه یکتا، ویرایش فیلد schema-only)، `Admin\SectionMetabox` (drag&drop + AJAX امن)، `Sections\Renderer` (رندر ترتیبی enabled-only + کش + fallback امن).
+- نتیجه runner فاز ۲: `PHASE RESULT: ALL PASS` (۱۸ تست، **۲۶۰ چک پاس، ۰ fail/pending**).
+- شمارش چک هر تسک: T001=16، T002=10، T003=9، T004=24، T005=30، T006=19، T007=18، T008=13، T009=24، T010=11، T011=7، T012=10، T013=10، T014=9، T015=14، T016=12، T017=14، T018=10.
 - **فاز ۱ کامل شد:** bootstrap/constants، Autoloader، Theme supports، fallback index، DeBloat، انتقال CSS/فونت/JS/تصاویر/ویدیو، AssetManager نسخه‌گذاری/enqueue شرطی، بسته‌بندی zip.
 - نتیجه runner فاز ۱: `PHASE RESULT: PASS` (۱۲ تست، ۰ fail/pending). HTTP asset check: 27/27 OK. zip فقط `erfansanat/`.
 - Stage 0 ✅ (اسکن + هارنس + ۴ فایل حافظه) — کاربر به همه ۷ سوال پاسخ داد.
@@ -33,7 +36,9 @@ PHASE 1 PASSED — P01-T001..T012 PASSED — WAITING FOR USER APPROVAL FOR PHASE
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**PHASE 2 / P02-T001** — Schema و ذخیره‌گاه آپشن‌ها (`erfansanat_theme_options`). فاز ۱ کامل پاس شد؛ در انتظار تایید کاربر برای شروع فاز ۲.
+**PHASE 3** — طبق `temp/MASTER_PLAN.md` (۲۴ تسک اتمیک). فاز ۲ کامل پاس شد (۲۶۰ چک)؛ در انتظار تایید کاربر برای شروع فاز ۳.
+- نکته معماری فاز ۲ برای فازهای بعد: template-partهای سکشن‌ها هنوز slice نشده‌اند (فاز ۵/۷)؛ `Sections\Renderer` تا آن زمان fallback ساختاری امن می‌دهد. مسیر قرارداد: `template-parts/sections/{context}/section-{type}.php`. هر سکشن `{id,type,enabled,order,fields}`. کش رندر با اکشن `erfansanat_sections_updated` invalid می‌شود.
+- `SectionManager::save_section_fields` فقط کلیدهای schema را نگه می‌دارد؛ مقدار خالی فیلد را حذف نمی‌کند؛ media/link/icon با `Sanitizer::sanitize_field` پاک‌سازی می‌شوند.
 
 ## نکات یادآوری برای تسک‌های آینده
 - املای تاریخی متاها مقدس است: `foure-image`, `galerry_produ`, `english_titl`, `vaule_of_variable`, `usage_countr`, `mortabet_mahsole_2`, `number2-viewc`.

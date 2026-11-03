@@ -29,3 +29,4 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Options\Tabs\BrandTab::boot();
 \ErfanSanat\Theme\Options\Tabs\ArchiveTab::boot();
 \ErfanSanat\Theme\Admin\SectionMetabox::boot();
+\ErfanSanat\Theme\Sections\Renderer::boot();
