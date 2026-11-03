@@ -60,3 +60,7 @@
 - **نتیجه تست‌ها:** T001=12، T002=12، T003=6، T004=9، T005=7، T006=6، T007=11، T008=11، T009=7، T010=8، T011=13، T012=9؛ مجموعاً **111 چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-01-core-and-assets/tests/run-phase-tests.sh` → `PHASE RESULT: PASS`.
 - **Asset/Package:** `check-assets-http.sh` → 27/27 HTTP 200 و تطابق اندازه. `package-theme.sh` → `temp/dist/erfansanat.zip` فقط شامل `erfansanat/` (بدون static-mirror/temp/node_modules). تست T012 زیپ را extract و پوسته بسته‌بندی‌شده را فعال/برگرداند.
 - **UPDATE MEMORY + Git:** وضعیت فاز ۱ PASSED؛ گام بعدی Phase 2 / P02-T001 در انتظار تایید کاربر. کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai`.
+
+### خوداصلاحی تکمیلی فاز ۱ (پایداری تست‌ها)
+- **باگ ۳ (مهم):** تست T012 پوسته بسته‌بندی‌شده را در `temp/dist/package-test` استخراج و فعال می‌کرد؛ `switch_theme` باعث می‌شد `stylesheet_root`/`template_root` روی مسیر موقت بمانند و در اجرای بعدی `wp_get_theme('erfansanat')` خطای `theme_not_found` بدهد. **اصلاح:** استخراج در مسیر یکتا، تغییر نام به `erfansanat-packaged`، بازگرداندن صریح `stylesheet_root`/`template_root`، پاک‌سازی کامل مسیر موقت. تست‌های T001/T004 نیز rootها را صریح برمی‌گردانند.
+- **نتیجه:** runner فاز ۱ دو بار متوالی `PHASE RESULT: PASS`؛ هیچ leftover package-test؛ ریشه پوسته فعال سالم.

@@ -50,3 +50,4 @@
 ## نتیجه اجرا (2026-11-03)
 - تست اختصاصی: `php temp/phase-01-core-and-assets/tests/test-task-012.php` → **9 passed, 0 failed, 0 pending**.
 - فاز ۱ runner: PASS.
+- خوداصلاحی: فعال‌سازی پوسته بسته‌بندی‌شده نباید `stylesheet_root`/`template_root` را روی مسیر موقت باقی بگذارد؛ تست حالا rootها را برمی‌گرداند و مسیر استخراج را پاک می‌کند.

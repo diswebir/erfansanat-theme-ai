@@ -50,11 +50,15 @@ if ( es_load_wp() ) {
 	es_check( 'AC-03: Domain Path = /languages', '/languages' === $domain_path );
 
 	// SC-02: activate the real theme, then restore the previous QA theme.
-	$previous_stylesheet = get_option( 'stylesheet' );
+	$previous_stylesheet      = get_option( 'stylesheet' );
+	$previous_stylesheet_root = get_option( 'stylesheet_root' );
+	$previous_template_root   = get_option( 'template_root' );
 	switch_theme( 'erfansanat' );
 	$activated = get_option( 'stylesheet' ) === 'erfansanat';
 	es_check( 'SC-02: فعال‌سازی قالب بدون fatal', $activated );
 	switch_theme( $previous_stylesheet );
+	update_option( 'stylesheet_root', $previous_stylesheet_root );
+	update_option( 'template_root', $previous_template_root );
 	wp_clean_themes_cache();
 } else {
 	es_check( 'SC-01/SC-02: بارگذاری WordPress تست', false );

@@ -25,8 +25,12 @@ if ( es_load_wp() ) {
 
 	// Switch away and back; no fatal/notice should occur.
 	$previous = get_option( 'stylesheet' );
+	$previous_stylesheet_root = get_option( 'stylesheet_root' );
+	$previous_template_root   = get_option( 'template_root' );
 	switch_theme( 'twentytwentyfive' );
 	switch_theme( 'erfansanat' );
+	update_option( 'stylesheet_root', $previous_stylesheet_root );
+	update_option( 'template_root', $previous_template_root );
 	es_check( 'SC-02: رفت/برگشت پوسته بدون خطا', get_option( 'stylesheet' ) === 'erfansanat' );
 	es_check( 'SC-01: supports پس از فعال‌سازی باقی است', current_theme_supports( 'title-tag' ) );
 } else {
