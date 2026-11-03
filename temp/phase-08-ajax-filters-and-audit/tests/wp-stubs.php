@@ -164,3 +164,10 @@ function __seed_sample_data(): void {
     $GLOBALS['__terms']['pa_wattage'] = [ (object) ['name' => '50W', 'slug' => '50w'] ];
     $GLOBALS['__qobj'] = (object) ['term_id' => 9, 'name' => 'ریسه LED', 'slug' => 'led-lamp', 'description' => 'توضیحات دسته', 'count' => 8];
 }
+
+function the_ID() { echo get_the_ID(); }
+function post_class($c = '') { echo 'class="' . esc_attr($c) . '"'; }
+function the_permalink() { echo esc_url(get_permalink()); }
+function the_excerpt() { echo esc_html(get_the_excerpt()); }
+function wc_print_notices() { echo '<!-- wc notices -->'; }
+function wc_get_template($f) { echo '<!-- wc template: ' . esc_html($f) . ' -->'; }

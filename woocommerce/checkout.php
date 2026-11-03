@@ -15,7 +15,12 @@ get_header();
         </div>
     </section>
     <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
-        <?php do_action('woocommerce_checkout'); ?>
+        <?php
+        wc_print_notices();
+        do_action('woocommerce_before_checkout_form');
+        wc_get_template('checkout/form-checkout.php');
+        do_action('woocommerce_after_checkout_form');
+        ?>
     </section>
 </main>
 <?php get_footer();

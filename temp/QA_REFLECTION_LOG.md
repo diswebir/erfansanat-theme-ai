@@ -54,3 +54,6 @@
 - Self-correction caught a REAL front-end fatal: helpers were namespaced → moved to global inc/helpers.php.
 - Stub fixes: get_template_part .php handling, get_post returns WP_Post, Walker_Nav_Menu stub, array_key_exists for supports.
 - RESULT: smoke ALL PASS, E2E ALL-PASS.
+
+## Polish — 2026-11-03
+- Added content.php/content-none.php; fixed WC cart/checkout wrappers to real hooks (wc_get_template); extended smoke coverage (9 templates). Smoke ALL PASS, E2E ALL-PASS.

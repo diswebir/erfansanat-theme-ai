@@ -54,3 +54,9 @@
 - **CRITICAL BUG FOUND & FIXED by smoke test:** es_option()/es_sections()/es_hreflang_tags() were defined inside Admin/Seo namespaces → undefined on front-end. Moved to global inc/helpers.php loaded unconditionally.
 - test-smoke-render.php (wp-stubs.php mini-WP): boots theme, renders front-page/single-product/single-projects/archives/404 + AJAX JSON → ALL PASS.
 - E2E: ALL-PASS. All lint clean.
+
+## Polish — 2026-11-03
+-  reset بعد از push → از remote بازیابی شد (33d6d35).
+- template-parts/content.php + content-none.php اضافه شد (referenziert von index.php).
+- woocommerce cart/checkout با هوک‌های واقعی WC (wc_get_template) اصلاح شد.
+- Smoke test توسعه یافت: search/page/cart/checkout/taxonomy-city/archive-projects/single/index → ALL PASS. E2E: ALL-PASS.

@@ -15,7 +15,12 @@ get_header();
         </div>
     </section>
     <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
-        <?php woocommerce_cart_template() ? do_action('woocommerce_cart') : the_content(); ?>
+        <?php
+        wc_print_notices();
+        do_action('woocommerce_before_cart');
+        wc_get_template('cart/cart.php');
+        do_action('woocommerce_after_cart');
+        ?>
     </section>
 </main>
 <?php get_footer();

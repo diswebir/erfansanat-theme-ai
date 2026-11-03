@@ -78,6 +78,31 @@ check('home.php blog index renders', strlen($out) > 500);
 $out = render('404.php');
 check('404 renders', strpos($out, '404') !== false);
 
+
+$out = render('search.php');
+check('search.php renders results', strpos($out, 'والاشر') !== false && strlen($out) > 500);
+
+$out = render('page.php');
+check('page.php renders', strpos($out, '<main') !== false);
+
+$out = render('woocommerce/cart.php');
+check('cart.php renders wc cart template', strpos($out, 'cart/cart.php') !== false);
+
+$out = render('woocommerce/checkout.php');
+check('checkout.php renders wc checkout template', strpos($out, 'form-checkout.php') !== false);
+
+$out = render('taxonomy-city.php');
+check('taxonomy-city renders count', strpos($out, '3') !== false);
+
+$out = render('archive-projects.php');
+check('archive-projects renders', strpos($out, 'card-glow') !== false);
+
+$out = render('single.php');
+check('single.php renders TOC + counter + related', strpos($out, 'es-toc') !== false && strpos($out, 'بازدید') !== false);
+
+$out = render('index.php');
+check('index.php fallback renders main shell', strpos($out, '<main') !== false && strpos($out, 'data-navbar-header') !== false);
+
 // 3. es_option / es_sections helpers work
 check('es_option returns default', es_option('footer.email') === 'info@erfansanat.com');
 check('es_sections returns array', is_array(es_sections(8146)));
