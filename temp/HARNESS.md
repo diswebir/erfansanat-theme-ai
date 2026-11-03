@@ -1,39 +1,41 @@
-# HARNESS — محیط اجرا و تست (این سندباکس)
+# HARNESS — ابزار اجرای قالب بدون وردپرس نصب‌شده
 
-## ۱. ابزارهای موجود
-| ابزار | نسخه | وضعیت |
-|---|---|---|
-| Node.js | v22.22.3 | ✅ |
-| npm | 10.9.8 | ✅ (فقط `registry.npmjs.org`) |
-| Python 3 | 3.11.2 | ✅ |
-| git / curl / unzip / zip / gcc / make | — | ✅ |
-| **PHP** | 8.3 (wasm, `@php-wasm/node`) | ✅ از طریق `tools/harness/php-cli.mjs` |
-| MySQL / MariaDB | — | ❌ (سرویس‌های apt مسدودند) → **SQLite drop-in** جایگزین شد |
-| WP-CLI | — | ❌ (دانلود release از `objects.githubusercontent.com` مسدود است) |
-| WordPress | 6.7.1 | ✅ در `/home/user/.cache/harness/wpn` (+ `wp-content/db.php` = SQLite) |
-| WooCommerce | — | ⚠️ باید از طریق `downloads.wordpress.org` یا GitHub Release دریافت شود (در حال بررسی) |
+همه ابزارها در `tools/harness/` هستند و روی **php-wasm** (`@php-wasm/node` 3.1.62) اجرا می‌شوند.
+یک نسخه واقعی WordPress 6.7.1 + SQLite در `/home/user/.cache/harness/wpn/` نصب است (خارج از ریپو، در snapshot نمی‌ماند).
 
-## ۲. مسیرهای مهم (خارج از مخزن، پایدار در این سندباکس)
-```
-/home/user/.cache/harness/wpn/          ← WordPress 6.7.1 + SQLite + wp-config.php (WP_DEBUG=true)
-/home/user/.cache/harness/wpn/wp-content/database/.ht.sqlite
-/home/user/.cache/npm/node_modules/@php-wasm/   ← رانتایم PHP
-```
+## راه‌اندازی مجدد (اگر snapshot تازه شد)
 
-## ۳. اجرای PHP
 ```bash
-cd /home/user/.cache/npm
-node php-cli.mjs /path/to/script.php arg1 arg2   # اجرای اسکریپت
-node php-cli.mjs install-wp.php                  # نصب اولیه (یک‌بار انجام شد)
+npm install                       # @php-wasm/node + universal
+bash tools/harness/setup-wp.sh    # ساخت wp-config، drop-in SQLite، نصب وردپرس
+node tools/harness/run-php.mjs tools/harness/setup-site.php  # صفحات پایه + فعال‌سازی قالب
+node tools/harness/run-php.mjs tools/harness/setup-site.php
+ln -sfn "$PWD/theme" /home/user/.cache/harness/wpn/wp-content/themes/erfansanat
 ```
-> هر اجرا ~۲۵–۳۰ ثانیه (بوت wasm). تست‌های یک تسک را در **یک** فایل PHP تجمیع کنید.
 
-## ۴. وضعیت نصب وردپرس
-- `wp_install()` انجام شد: کاربر `admin`، رمز `admin123`، `home/siteurl = http://localhost:8080`
-- نسخه: 6.7.1 — سایت‌آدرس در `wp-config.php` قابل تغییر است
-- `WP_DEBUG=true`, `WP_DEBUG_LOG=true` → لاگ در `wp-content/debug.log`
+## دستورهای روزمره
 
-## ۵. محدودیت‌های شناخته‌شده
-1. بدون وب‌سرور PHP واقعی → رندر HTML کامل فقط با بوت‌استرپ دستی `template-loader` یا `wp_remote` شبیه‌سازی می‌شود (اسکریپت `tools/harness/render.php` در فاز ۱ ساخته می‌شود).
-2. بدون MySQL → تست کوئری‌های MySQL-محور محدود؛ اما لایه SQLite-شده وردپرس برای ۹۵٪ تست‌ها کافی است.
-3. هر پروسه PHP-wasm ~۲۵ ثانیه راه‌اندازی دارد → تست‌ها به‌صورت دسته‌ای.
+| کار | دستور |
+|---|---|
+| رندر یک URL | `node tools/harness/fetch.mjs "/"` |
+| رندر + ذخیره HTML | `node tools/harness/render-check.mjs "/" /tmp/home.html` |
+| سنجش بودجه عملکرد | `node tools/harness/perf.mjs "/" "/contact/"` |
+| بررسی بودجه | `node tools/harness/run-php.mjs tools/harness/gate.php` |
+| اجرای یک تست | `node tools/harness/run-tests.mjs temp/phase-01-core-and-assets/tests/test-task-01.php` |
+| اجرای کل فاز (تک‌پروسه) | `node tools/harness/run-phase.mjs temp/phase-01-core-and-assets/tests` |
+| گیت کامل فاز | `node tools/harness/phase-gate.mjs 01 "/"` |
+| اجرای اسکریپت PHP دلبخواه | `node tools/harness/run-php.mjs /tmp/script.php` |
+| تولید WebP/Png دسته‌ای | ویرایش `tools/harness/img-jobs.json` سپس `node tools/harness/run-php.mjs tools/harness/img-batch.php` |
+
+## قواعد سخت این محیط
+
+1. **بوت هر پروسه PHP-wasm ~۹۰ تا ۱۲۰ ثانیه** طول می‌کشد → `timeout` دستورها را ≥ ۲۶۰ ثانیه بگیرید و تا حد امکان چند تست را در **یک** پروسه اجرا کنید.
+2. `argv` و `getenv()` به اسکریپت PHP نمی‌رسند → پارامترها را در یک فایل JSON بگذارید (`fetch.json`, `phase-run.json`, `img-jobs.json`).
+3. `shell_exec`/`proc_open` در wasm کار نمی‌کند → هر چیزی که به پروسه دیگر نیاز دارد را در **Node** انجام دهید (مثل `perf.mjs`).
+4. مسیرها باید **مطلق** باشند؛ مسیر نسبی در wasm به cwd دیگری حل می‌شود.
+5. `WP_DEBUG=true` است؛ هر Warning/Deprecated در `warnings[]` گزارش می‌شود و بودجه gate صفر است.
+6. سنجه زمان: `theme_ms` (از `template_redirect` تا پایان) سنجه قالب است؛ `time_ms` شامل بوت وردپرس است و در بودجه ۵۰۰ms حساب نمی‌شود.
+
+## mu-plugin هارنس
+
+`wp-content/mu-plugins/es-timing.php` فقط در harness نصب است (بخشی از ریپو نیست) و زمان `template_redirect` و `wp_footer` را برای محاسبه `theme_ms` ثبت می‌کند.

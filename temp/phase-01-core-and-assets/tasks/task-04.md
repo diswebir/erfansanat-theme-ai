@@ -5,7 +5,7 @@
 | فاز | 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک |
 | اندازه | `S` — کوچک (~نیم روز) |
 | وابستگی | `Task 1.3` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED]` |
 | تست | `tests/test-task-04.php` |
 
 ## ۱. هدف
@@ -28,10 +28,10 @@
 
 > هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
 
-- [ ] **P1** — `functions.php` ≤ ۴۰ خط و بدون منطق تجاری
-- [ ] **P2** — `index.php` بدون خطا رندر شود و `get_header`/`get_footer` را صدا بزند
-- [ ] **P3** — وجود `screenshot.png` با ابعاد ۱۲۰۰×۹۰۰
-- [ ] **P4** — هیچ `echo`/`var_dump` در `functions.php` نباشد
+- [x] **P1** — `functions.php` ≤ ۴۰ خط و بدون منطق تجاری
+- [x] **P2** — `index.php` بدون خطا رندر شود و `get_header`/`get_footer` را صدا بزند
+- [x] **P3** — وجود `screenshot.png` با ابعاد ۱۲۰۰×۹۰۰
+- [x] **P4** — هیچ `echo`/`var_dump` در `functions.php` نباشد
 
 ## ۵. تست‌های خودکار
 

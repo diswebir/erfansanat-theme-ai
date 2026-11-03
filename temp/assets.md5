@@ -1,0 +1,6 @@
+fa57792cb884336ef8ef34f0699ccd73  fa57792cb884336ef8ef34f0699ccd73  OK  reference/assets/css/styles.css -> theme/assets/css/styles.css
+1253875641c093936de9b3452b7f8e91  1253875641c093936de9b3452b7f8e91  OK  reference/assets/js/main.js -> theme/assets/js/main.js
+05d9ce2a23d36fa14185b5343d3b43af  05d9ce2a23d36fa14185b5343d3b43af  OK  reference/assets/fonts/vazirmatn-arabic.woff2 -> theme/assets/fonts/vazirmatn-arabic.woff2
+e7eada615dc365ff51b1df9097b4cca7  e7eada615dc365ff51b1df9097b4cca7  OK  reference/assets/fonts/vazirmatn-latin.woff2 -> theme/assets/fonts/vazirmatn-latin.woff2
+2b9f461883fdfc831ba6676dc648f2f2  2b9f461883fdfc831ba6676dc648f2f2  OK  reference/assets/fonts/vazirmatn-latin-ext.woff2 -> theme/assets/fonts/vazirmatn-latin-ext.woff2
+cca791dc480ccc20a4630146bddc929e  cca791dc480ccc20a4630146bddc929e  OK  reference/images/ese-logo.svg -> theme/assets/img/ese-logo.svg

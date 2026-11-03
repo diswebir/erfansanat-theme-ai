@@ -29,18 +29,18 @@
 
 | # | تسک | اندازه | وابستگی | وضعیت | فایل‌های کلیدی |
 |---|---|---|---|---|---|
-| 1.1 | هدر قالب در `style.css` و متادیتای نسخه | `S` | — | `[PENDING]` | `style.css` +1 |
-| 1.2 | Autoloader PSR-4 دستی و Namespace `ErfanSanat\Theme` | `M` | `1.1` | `[PENDING]` | `inc/Autoloader.php` +1 |
-| 1.3 | Kernel قالب و ثبت `add_theme_support`ها | `M` | `1.2` | `[PENDING]` | `inc/Theme.php` +2 |
-| 1.4 | `functions.php` سبک + `index.php` + `screenshot.png` | `S` | `1.3` | `[PENDING]` | `functions.php` +2 |
-| 1.5 | هارنس رندر کامل قالب (`tools/harness/render.php`) | `M` | `1.4` | `[PENDING]` | `tools/harness/render.php` +1 |
-| 1.6 | DeBloat: حذف کامل CSS/JS بلاک‌ها، ایموجی، oEmbed و متاتگ‌های اضافی | `L` | `1.5` | `[PENDING]` | `inc/Performance/DeBloat.php` |
-| 1.7 | انتقال بایت‌به‌بایت Assets استاتیک (CSS/JS/فونت/لوگو) | `L` | `1.6` | `[PENDING]` | `assets/css/styles.css` +5 |
-| 1.8 | انتقال دارایی‌های تصویری + ویدیو + پیش‌compress | `L` | `1.7` | `[PENDING]` | `assets/img/**/*.jpg` +4 |
-| 1.9 | `AssetManager` با Enqueue شرطی و نسخه‌گذاری filemtime | `L` | `1.8` | `[PENDING]` | `inc/Assets/AssetManager.php` +1 |
-| 1.10 | Preload/Preconnect فونت و LCP (شرطی) | `M` | `1.9` | `[PENDING]` | `inc/Assets/Preload.php` |
-| 1.11 | ثبت جایگاه‌های منو و `load_theme_textdomain` | `S` | `1.3` | `[PENDING]` | `inc/Setup/Menus.php` +1 |
-| 1.12 | گیت فاز ۱: اجرای کامل تست‌ها + بودجه عملکرد | `S` | `1.6`، `1.9`، `1.10` | `[PENDING]` | `temp/phase-01-core-and-assets/tests/run-phase-01-tests.sh` |
+| 1.1 | هدر قالب در `style.css` و متادیتای نسخه | `S` | — | `[PASSED]` | `style.css` +1 |
+| 1.2 | Autoloader PSR-4 دستی و Namespace `ErfanSanat\Theme` | `M` | `1.1` | `[PASSED]` | `inc/Autoloader.php` +1 |
+| 1.3 | Kernel قالب و ثبت `add_theme_support`ها | `M` | `1.2` | `[PASSED]` | `inc/Theme.php` +2 |
+| 1.4 | `functions.php` سبک + `index.php` + `screenshot.png` | `S` | `1.3` | `[PASSED]` | `functions.php` +2 |
+| 1.5 | هارنس رندر کامل قالب (`tools/harness/render.php`) | `M` | `1.4` | `[PASSED]` | `tools/harness/render.php` +1 |
+| 1.6 | DeBloat: حذف کامل CSS/JS بلاک‌ها، ایموجی، oEmbed و متاتگ‌های اضافی | `L` | `1.5` | `[PASSED]` | `inc/Performance/DeBloat.php` |
+| 1.7 | انتقال بایت‌به‌بایت Assets استاتیک (CSS/JS/فونت/لوگو) | `L` | `1.6` | `[PASSED]` | `assets/css/styles.css` +5 |
+| 1.8 | انتقال دارایی‌های تصویری + ویدیو + پیش‌compress | `L` | `1.7` | `[PASSED]` | `assets/img/**/*.jpg` +4 |
+| 1.9 | `AssetManager` با Enqueue شرطی و نسخه‌گذاری filemtime | `L` | `1.8` | `[PASSED]` | `inc/Assets/AssetManager.php` +1 |
+| 1.10 | Preload/Preconnect فونت و LCP (شرطی) | `M` | `1.9` | `[PASSED]` | `inc/Assets/Preload.php` |
+| 1.11 | ثبت جایگاه‌های منو و `load_theme_textdomain` | `S` | `1.3` | `[PASSED]` | `inc/Setup/Menus.php` +1 |
+| 1.12 | گیت فاز ۱: اجرای کامل تست‌ها + بودجه عملکرد | `S` | `1.6`، `1.9`، `1.10` | `[PASSED]` | `temp/phase-01-core-and-assets/tests/run-phase-01-tests.sh` |
 
 **گیت فاز:** `tests/run-phase-01-tests.sh`
 
@@ -268,7 +268,7 @@
 | دروازه | شرط عبور | وضعیت |
 |---|---|---|
 | Gate 0 | تأیید اسکن و پاسخ سؤالات ابهام | ✅ PASSED |
-| Gate 1 | تأیید این نقشه راه و فایل‌های تسک | ⏳ WAITING |
+| Gate 1 | پایان فاز ۱ — 164/164 assertion سبز، بودجه عملکرد OK | ⏳ WAITING FOR USER REVIEW |
 | Gate 2..8 | پایان هر فاز: گزارش تست + تأیید | — |
 
 ## وابستگی‌های بحرانی (زنجیره مسیر)

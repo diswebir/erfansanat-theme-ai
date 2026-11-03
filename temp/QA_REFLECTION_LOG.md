@@ -70,3 +70,49 @@
 - پیوستگی شناسه‌ها در هر ۸ فاز: ✅ (`1..N` بدون پرش/تکرار)
 - اعتبار همه وابستگی‌ها: ✅ (بدون ارجاع ناموجود)
 - اجرای سه تست نمونه روی PHP-wasm: بدون Fatal، خروجی `PENDING` و `RESULT: NOT OK` (رفتار درست پیش از پیاده‌سازی)
+
+---
+
+## PHASE 1 GATE — بسته شدن فاز ۱ (زیرساخت هسته و دارایی‌ها)
+
+تاریخ: 2026-11-03 · شاخه: `arena/3730add5-erfansanat-theme-ai`
+
+| سنجه | مقدار اندازه‌گیری‌شده | بودجه | وضعیت |
+|---|---|---|---|
+| فایل‌های تست فاز | 12/12 | 12 | ✅ |
+| Assertion های PASS | 162 | همه | ✅ |
+| Assertion های FAIL | 0 | 0 | ✅ |
+| Assertion های PENDING | 0 | 0 | ✅ |
+| درخواست CSS قالب در `/` | 1 | ≤ 2 | ✅ |
+| درخواست JS قالب در `/` | 1 | ≤ 2 | ✅ |
+| Warning/Deprecated در رندر | 0 | 0 | ✅ |
+| زمان رندر قالب (`theme_ms`) | 72 ms | < 500 | ✅ |
+| زمان کل بوت + رندر | 735 ms | ثبت شده | ℹ️ |
+| تعداد کوئری SQL | 14 | < 60 | ✅ |
+| حجم HTML صفحه `/` | 2033 B | — | ℹ️ |
+
+### چه چیزی واقعاً ساخته شد
+
+- `theme/` با ساختار PSR-4: `ErfanSanat\Theme\{Theme, Contracts, Setup, Assets, Performance}`.
+- `functions.php` ۱۲ خطی → `inc/bootstrap.php` → Constants → Autoloader → `Theme::instance()->boot()`.
+- ماژول‌های ثبت‌شده: `theme-support`, `menus`, `debloat`, `assets`, `preload`.
+- `AssetManager` با نسخه‌گذاری `filemtime` و گارد `is_readable` (هیچ ۴۰۴ در تگ‌ها).
+- `DeBloat` بدون حذف هیچ هوک لازم: block-library، global-styles، emoji، wp-embed، generator، rsd، wlw، shortlink، REST/oEmbed link.
+- `Preload`: یک فونت + یک LCP (`hero.webp`, fetchpriority=high) و فقط در فرانت.
+- دارایی‌های استاتیک بایت‌به‌بایت (md5) منتقل شدند: CSS 188K، JS 112K، ۳ فونت، ۲۱ تصویر، ویدیو ۶.۸M.
+- ۹ تصویر WebP با GD تولید شد (میانگین ۱۹٪ کوچک‌تر) + `screenshot.png` ۱۲۰۰×۹۰۰.
+- هارنس: `tools/harness/fetch.mjs` + `fetch.php` (رندر تک‌URL)، `perf.mjs`، `gate.php`، `run-phase.mjs`.
+
+### باگ‌ها و درس‌ها (فاز ۱)
+
+| # | مشکل | ریشه | اصلاح |
+|---|---|---|---|
+| B6 | `img.php` همیشه exit 64 | argv/env در php-wasm به اسکریپت نمی‌رسد | job-file درون‌خطی (`img-jobs.json`) + `img-batch.php` |
+| B7 | `render.mjs` دو بار ۲۵۰s تایم‌اوت | بوت PHP-wasm ~۱۰۰s + رندر | یک URL در هر پروسه؛ تایم‌اوت ابزار ≥ ۲۶۰s |
+| B8 | `theme_code()` فایل‌ها را پیدا نمی‌کرد | ریشه روی مخزن بود نه `theme/` | ریشه اصلاح شد به `ES_REPO_ROOT/theme` |
+| B9 | تست‌ها `get_file_data` را صدا می‌زدند | WP لود نشده بود | `EsTest\parse_headers()` مستقل از WP |
+| B10 | `GLOB_BRACE` تعریف‌نشده در wasm | build محدود PHP | حلقه `scandir()` |
+| B11 | مسیر reference اشتباه (`assets/img` vs `images`) | گمان به‌جای بررسی | `find` روی mirror و اصلاح نقشه |
+| B12 | runner تست، FAIL را تشخیص نمی‌داد | exit code از PHP CLI نمی‌آمد | تشخیص «RESULT: NOT OK» در stderr/stdout |
+| B13 | سقف ۵۰۰ms با بوت WP شکسته می‌شد | سنجه اشتباه (کل درخواست) | mu-plugin زمان‌سنج + سنجه `theme_ms` |
+| B14 | `wp-embed-responsive` در body_class | DeBloat فقط اسکریپت را حذف می‌کرد | فیلتر `body_class` |

@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Phase 5 test suite — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار
+# Runs the whole phase inside ONE php-wasm boot (~100s of boot time per process).
 set -uo pipefail
-cd "$(dirname "$0")/.."          # temp/
-source ../tools/harness/test-runner.sh
+cd "$(dirname "$0")/../../.."      # repository root
+exec node tools/harness/run-phase.mjs temp/phase-05-homepage-and-sections/tests
 
-echo "########## PHASE 5 — 21 tasks ##########"
-run_test "Task 5.1 — `front-page.php` + حلقه رندر ۱۵ سکشن" "test-task-01.php"
+# --- per-task breakdown (one process per task, slow; kept for reference) ---
+: <<'REFERENCE'
+source tools/harness/test-runner.sh
+cd temp
+run_test "Task 5.1 — front-page.php + حلقه رندر ۱۵ سکشن" "test-task-01.php"
 run_test "Task 5.2 — هیرو واریانت home1 (اسلایدر صحنه + ویدیو" "test-task-02.php"
 run_test "Task 5.3 — معرفی پروژه‌های نورپردازی شهری" "test-task-03.php"
 run_test "Task 5.4 — گالری نمونه‌کارها (تب اسلایدر نمونه‌کاره" "test-task-04.php"
@@ -22,9 +26,9 @@ run_test "Task 5.14 — ویترین مقالات (۴ کارت)" "test-task-14.p
 run_test "Task 5.15 — CTA تماس/استعلام قیمت" "test-task-15.php"
 run_test "Task 5.16 — نقشه موقعیت کارخانه + اطلاعات تماس" "test-task-16.php"
 run_test "Task 5.17 — چرا عرفان صنعت (تمایزها و گواهینامه‌ها)" "test-task-17.php"
-run_test "Task 5.18 — کارت‌های استاندارد: `card-product`, `car" "test-task-18.php"
-run_test "Task 5.19 — لایه کوئری بهینه صفحه اصلی (`HomeQueries" "test-task-19.php"
-run_test "Task 5.20 — واریانت‌های آماده `home2` و `home3` (غیر" "test-task-20.php"
+run_test "Task 5.18 — کارت‌های استاندارد: card-product, card-p" "test-task-18.php"
+run_test "Task 5.19 — لایه کوئری بهینه صفحه اصلی (HomeQueries)" "test-task-19.php"
+run_test "Task 5.20 — واریانت‌های آماده home2 و home3 (غیرفعال" "test-task-20.php"
 run_test "Task 5.21 — گیت فاز ۵: تست رندر و کوئری صفحه اصلی" "test-task-21.php"
-
 phase_summary "Phase 5"
+REFERENCE

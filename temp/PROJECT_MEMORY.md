@@ -72,3 +72,63 @@
 
 **جمع:** ۲۴ → **۱۳۷ تسک** (S=۱۶ · M=۶۸ · L=۵۳). هر تسک اکنون: وابستگی صریح، فایل‌های هدف، مراحل گام‌به‌گام، شروط پاس شماره‌گذاری‌شده (`P1..Pn`)، تست‌های خودکار، و بخش «ضدالگوها».
 **منبع تولید:** `tools/plan/phase01..08.py` → `tools/gen_phase_scaffold.py` (قابل بازتولید و ویرایش ساختاریافته).
+
+---
+
+## §8 — فاز ۱ اجرا شد (زیرساخت هسته و دارایی‌ها) — 2026-11-03
+
+**وضعیت: `PHASE 1 DONE — GATE 1 PENDING USER REVIEW`**
+
+### آنچه ساخته شد (کد واقعی، بدون placeholder)
+
+```
+theme/
+├── style.css                 هدر قالب، صفر قاعده CSS
+├── functions.php             ۱۲ خط: ABSPATH + require inc/bootstrap.php
+├── index.php                 fallback loop + pagination + empty state
+├── header.php                پوسته سند: language_attributes, wp_head, body_class, wp_body_open
+├── footer.php                پوسته سند: wp_footer + </html>
+├── screenshot.png            ۱۲۰۰×۹۰۰
+├── inc/
+│   ├── Constants.php         ES_THEME_VERSION/SLUG/DIR/URI/ASSETS/REWRITE_VERSION
+│   ├── Autoloader.php        PSR-4 دستی، prefix ErfanSanat\Theme\ → inc/, cache + class_alias
+│   ├── bootstrap.php         Constants → Autoloader → Theme::instance()->boot()
+│   ├── Theme.php             singleton kernel + register_module + action es_theme_booted
+│   ├── Contracts/ModuleInterface.php
+│   ├── Setup/ThemeSupport.php    textdomain, title-tag, thumbnails, html5, logo, Woo (شرطی)
+│   ├── Setup/Menus.php       4 جایگاه: main-mega-menu, mobile-menu, tolidat-sherkat, landing
+│   ├── Performance/DeBloat.php  حذف block-library/global-styles/emoji/embed/meta های زائد
+│   └── Assets/{Manifest,AssetManager,Preload}.php
+├── assets/                   css 188K · js 112K · ۳ فونت · ۲۱ تصویر + ۹ webp · ویدیو ۶.۸M
+└── languages/
+```
+
+### جایگاه هدر/فوتر
+`header.php` و `footer.php` در فاز ۱ فقط **پوسته معتبر سند** هستند (برای صفر شدن Warning هسته).
+مارک‌آپ پیکسل‌به‌پیکسل در **Phase 4 / Task 4.2** جایگزین می‌شود؛ تست 1.4 صریحاً تضمین می‌کند این دو فایل «کپی صفحه استاتیک» ندارند.
+
+### نتیجه گیت (اندازه‌گیری‌شده)
+
+| سنجه | مقدار | بودجه |
+|---|---|---|
+| فایل تست سبز | 12/12 | 12 |
+| assertion PASS | 164 | همه |
+| FAIL / PENDING | 0 / 0 | 0 |
+| CSS قالب در هر صفحه | 1 | ≤ 2 |
+| JS قالب در هر صفحه | 1 | ≤ 2 |
+| Warning/Deprecated | 0 | 0 |
+| theme_ms | 72ms | < 500 |
+| کوئری SQL (`/`) | 14–17 | < 60 |
+
+### دستورهای تکرارپذیر
+```bash
+node tools/harness/run-phase.mjs temp/phase-01-core-and-assets/tests   # 164 assertion
+node tools/harness/perf.mjs "/"                                        # بودجه
+node tools/harness/run-php.mjs tools/harness/gate.php                  # GATE BUDGET: OK
+node tools/harness/phase-gate.mjs 01 "/"                               # گیت کامل
+```
+
+### نکات برای فازهای بعد
+- هر قالب جدید **باید** `get_header()`/`get_footer()` بزند؛ وگرنه همان دو deprecated notice برمی‌گردد.
+- `AssetManager` فایل ناموجود را صف نمی‌کند (گارد `is_readable`) → اگر استایل جدید اضافه شد، اول فایل را روی دیسک بگذارید، بعد Manifest را ویرایش کنید.
+- سنجه زمان در gate = `theme_ms`، نه کل درخواست (بوت PHP-wasm ~۱۰۰s است).

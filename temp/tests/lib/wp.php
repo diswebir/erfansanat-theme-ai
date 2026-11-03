@@ -54,11 +54,12 @@ function is_wp(): bool {
 
 /** Convenience: does a relative file exist inside the theme? */
 function theme_has( string $rel ): bool {
-	return is_file( ES_REPO_ROOT . '/' . ltrim( $rel, '/' ) );
+	return is_file( ES_REPO_ROOT . '/theme/' . ltrim( $rel, '/' ) );
 }
 
+/** Read a file inside the theme directory. */
 function theme_code( string $rel ): ?string {
-	$p = ES_REPO_ROOT . '/' . ltrim( $rel, '/' );
+	$p = ES_REPO_ROOT . '/theme/' . ltrim( $rel, '/' );
 	return is_file( $p ) ? (string) file_get_contents( $p ) : null;
 }
 
@@ -96,4 +97,22 @@ function grep_theme( string $pattern, string $ext = '.php', array $skip = [] ): 
 		}
 	}
 	return $hits;
+}
+
+/**
+ * Point the harness WordPress at the theme under test (symlinked into
+ * wp-content/themes/erfansanat by tools/harness/setup-theme.sh).
+ */
+function activate_theme( string $slug = 'erfansanat' ): bool {
+	if ( ! wp_boot() ) {
+		return false;
+	}
+	if ( get_stylesheet() === $slug ) {
+		return true;
+	}
+	if ( ! function_exists( 'switch_theme' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/theme.php';
+	}
+	switch_theme( $slug );
+	return get_stylesheet() === $slug;
 }

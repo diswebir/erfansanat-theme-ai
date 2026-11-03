@@ -7,6 +7,20 @@ $GLOBALS['es_results'] = [ 'PASS' => 0, 'FAIL' => 0, 'PENDING' => 0 ];
 $GLOBALS['es_failures'] = [];
 $GLOBALS['es_pendings'] = [];
 
+function reset_results(): void {
+	$GLOBALS['es_results'] = [ 'PASS' => 0, 'FAIL' => 0, 'PENDING' => 0 ];
+	$GLOBALS['es_failures'] = [];
+	$GLOBALS['es_pendings'] = [];
+}
+
+function counts(): array {
+	return $GLOBALS['es_results'];
+}
+
+function failures(): array {
+	return $GLOBALS['es_failures'];
+}
+
 function banner( string $name ): void {
 	echo "\n\033[1m### {$name}\033[0m\n";
 }
@@ -79,6 +93,20 @@ namespace {
 		function summary(): int { return \EsTest\summary(); }
 	}
 	if ( ! function_exists( 'banner' ) ) {
-		function banner( string $name ): void { \EsTest\banner( $name ); }
+		function reset_results(): void {
+	$GLOBALS['es_results'] = [ 'PASS' => 0, 'FAIL' => 0, 'PENDING' => 0 ];
+	$GLOBALS['es_failures'] = [];
+	$GLOBALS['es_pendings'] = [];
+}
+
+function counts(): array {
+	return $GLOBALS['es_results'];
+}
+
+function failures(): array {
+	return $GLOBALS['es_failures'];
+}
+
+function banner( string $name ): void { \EsTest\banner( $name ); }
 	}
 }

@@ -14,5 +14,6 @@ if ( ! defined( 'ES_REPO_ROOT' ) ) {
 
 require_once __DIR__ . '/lib/assert.php';
 require_once __DIR__ . '/lib/wp.php';
+require_once __DIR__ . '/lib/theme.php';
 
 \EsTest\banner( basename( $_SERVER['argv'][1] ?? 'test' ) );

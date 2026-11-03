@@ -5,7 +5,7 @@
 | فاز | 1 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets استاتیک |
 | اندازه | `M` — متوسط (~۱ روز) |
 | وابستگی | `Task 1.2` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED]` |
 | تست | `tests/test-task-03.php` |
 
 ## ۱. هدف
@@ -31,11 +31,11 @@
 
 > هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
 
-- [ ] **P1** — `after_setup_theme` بدون هیچ خروجی/دامپ اجرا شود
-- [ ] **P2** — `current_theme_supports('title-tag'|'post-thumbnails'|'html5'|'custom-logo')` همه true
-- [ ] **P3** — در نبود WooCommerce هیچ Fatal/Notice رخ ندهد و `woocommerce` support ثبت نشود
-- [ ] **P4** — `align-wide` ثبت نشده باشد
-- [ ] **P5** — ماژول نمونه با `register()` شناسایی و هوک‌هایش ثبت شود
+- [x] **P1** — `after_setup_theme` بدون هیچ خروجی/دامپ اجرا شود
+- [x] **P2** — `current_theme_supports('title-tag'|'post-thumbnails'|'html5'|'custom-logo')` همه true
+- [x] **P3** — در نبود WooCommerce هیچ Fatal/Notice رخ ندهد و `woocommerce` support ثبت نشود
+- [x] **P4** — `align-wide` ثبت نشده باشد
+- [x] **P5** — ماژول نمونه با `register()` شناسایی و هوک‌هایش ثبت شود
 
 ## ۵. تست‌های خودکار
 

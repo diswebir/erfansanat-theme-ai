@@ -20,8 +20,13 @@ for (const f of files) {
 
   const res = await php.run({ scriptPath: abs, argv: [abs] });
   const dec = (v) => (typeof v === 'string' ? v : Buffer.from(v instanceof Uint8Array ? v : Object.values(v)).toString('utf8'));
-  if (res.text) process.stdout.write(dec(res.text));
+  const text = res.text ? dec(res.text) : '';
+  if (text) process.stdout.write(text);
   if (res.errors) { const e = dec(res.errors); if (e.trim()) process.stderr.write('\n[stderr] ' + e + '\n'); }
-  if ((res.exitCode ?? 0) !== 0) failed++;
+  // The test files end with summary(), which prints the verdict; treat "NOT OK",
+  // any FAIL line or a non-zero exit code as a failed suite.
+  const plain = text.replace(/\x1b\[[0-9;]*m/g, '');
+  const verdictBad = /RESULT: .*NOT OK/.test(plain) || /^\s*FAIL\b/m.test(plain);
+  if ((res.exitCode ?? 0) !== 0 || verdictBad) failed++;
 }
 process.exit(failed ? 1 : 0);
