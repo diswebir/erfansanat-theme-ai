@@ -281,3 +281,60 @@
 		transition-duration: .01ms !important;
 	}
 }
+
+.es-admin__settings-tabs {
+	display: flex;
+	gap: 8px;
+	margin: 8px 0 18px;
+	border-bottom: 1px solid var(--es-admin-line);
+}
+
+.es-admin__tab {
+	min-height: 42px;
+	padding: 9px 16px;
+	border: 1px solid transparent;
+	border-bottom: 0;
+	border-radius: 9px 9px 0 0;
+	background: transparent;
+	color: var(--es-admin-muted);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.es-admin__tab[aria-selected="true"] {
+	border-color: var(--es-admin-line);
+	background: #fff;
+	color: var(--es-admin-green-dark);
+}
+
+.es-admin__tab:focus-visible,
+.es-admin__form-actions button:focus-visible {
+	outline: 3px solid #8fd3ae;
+	outline-offset: 2px;
+}
+
+.es-admin__settings-form {
+	padding: 20px;
+	border: 1px solid var(--es-admin-line);
+	border-radius: 12px;
+	background: #fff;
+}
+
+.es-admin__settings-form [role="tabpanel"] {
+	max-width: 820px;
+}
+
+.es-admin__form-actions {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding-top: 16px;
+	border-top: 1px solid var(--es-admin-line);
+}
+
+.es-admin__save-status {
+	margin: 0;
+	color: var(--es-admin-muted);
+	font-size: 13px;
+}

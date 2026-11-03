@@ -9,6 +9,8 @@ namespace ErfanSanat\Theme;
 
 use ErfanSanat\Theme\Admin\AdminMenu;
 use ErfanSanat\Theme\Admin\AjaxSave;
+use ErfanSanat\Theme\Admin\Tabs\FooterTab;
+use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
 use ErfanSanat\Theme\Assets\AssetManager;
 use ErfanSanat\Theme\Assets\Preload;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
@@ -68,6 +70,8 @@ final class Theme {
 
 		$this->register_module( 'theme-support', new ThemeSupport() );
 		$this->register_module( 'admin-menu', new AdminMenu() );
+		$this->register_module( 'header-tab', new HeaderTab() );
+		$this->register_module( 'footer-tab', new FooterTab() );
 		$this->register_module( 'ajax-save', new AjaxSave() );
 		$this->register_module( 'menus', new Menus() );
 		$this->register_module( 'debloat', new DeBloat() );

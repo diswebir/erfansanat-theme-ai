@@ -31,16 +31,25 @@ final class Defaults {
 				'sales_phone'  => '09137976915',
 				'email'        => 'info@erfansanat.com',
 				'logo_id'      => 0,
+				'tagline'      => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE)',
 			),
 			'footer' => array(
 				'address'    => 'اصفهان، شهرستان خمینی‌شهر، شهرک صنعتی برق و الکترونیک، بلوار الکترونیک، فرعی دوم، پلاک ۱۱۹',
 				'work_hours' => 'شنبه تا پنجشنبه — ۷ صبح تا ۴:۳۰ بعدازظهر',
 				'copyright'  => '© تمامی حقوق این وب‌سایت متعلق به شرکت دانش‌بنیان عرفان صنعت اصفهان است.',
+				'show_quick_links' => true,
+				'show_categories'  => true,
+				'back_to_top'      => true,
 			),
 			'social' => array(
 				'instagram' => 'https://instagram.com/erfan_sanat_esfahan',
 				'linkedin'  => 'https://linkedin.com/company/erfansanat',
 				'telegram'  => 'https://t.me/erfansanat',
+				'links'     => array(
+					'item-0' => array( 'name' => 'اینستاگرام', 'icon' => 'instagram', 'url' => 'https://instagram.com/erfan_sanat_esfahan' ),
+					'item-1' => array( 'name' => 'لینکدین', 'icon' => 'linkedin', 'url' => 'https://linkedin.com/company/erfansanat' ),
+					'item-2' => array( 'name' => 'تلگرام', 'icon' => 'telegram', 'url' => 'https://t.me/erfansanat' ),
+				),
 			),
 			'brand' => array(
 				'color'   => '',

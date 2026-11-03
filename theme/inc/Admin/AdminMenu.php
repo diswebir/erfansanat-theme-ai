@@ -7,6 +7,8 @@
 
 namespace ErfanSanat\Theme\Admin;
 
+use ErfanSanat\Theme\Admin\Tabs\FooterTab;
+use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
 
 defined( 'ABSPATH' ) || exit;
@@ -139,9 +141,34 @@ final class AdminMenu implements ModuleInterface {
 		<?php
 	}
 
+	/** Render the editable Header/Footer settings workspace. */
+	public static function render_settings(): string {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return '';
+		}
+		$rtl   = function_exists( 'is_rtl' ) && is_rtl();
+		$nonce = function_exists( 'wp_nonce_field' ) ? wp_nonce_field( 'es_options', 'nonce', false, false ) : '';
+		$html  = '<div class="es-admin es-admin-settings" dir="' . ( $rtl ? 'rtl' : 'ltr' ) . '">';
+		$html .= '<header class="es-admin__section-heading"><p class="es-admin__eyebrow">تنظیمات سراسری</p><h1>هدر و فوتر</h1><p class="es-admin__intro">محتوای تماس و نمایش سایت را ویرایش کنید؛ ساختار و آیتم‌های فهرست همچنان در بخش بومی فهرست‌های وردپرس مدیریت می‌شوند.</p></header>';
+		$html .= '<div class="es-admin__settings-tabs" role="tablist" aria-label="تنظیمات هدر و فوتر">';
+		$html .= '<button class="es-admin__tab" id="es-settings-tab-header" type="button" role="tab" aria-selected="true" aria-controls="es-settings-panel-header" data-es-settings-tab="header">هدر و اطلاعات تماس</button>';
+		$html .= '<button class="es-admin__tab" id="es-settings-tab-footer" type="button" role="tab" aria-selected="false" aria-controls="es-settings-panel-footer" data-es-settings-tab="footer" tabindex="-1">فوتر</button></div>';
+		$html .= '<form class="es-admin__settings-form" data-es-options-form method="post">' . $nonce;
+		$html .= HeaderTab::render();
+		$html .= FooterTab::render();
+		$html .= '<div class="es-admin__form-actions"><button class="button button-primary" type="submit">ذخیره تغییرات</button><p class="es-admin__save-status" data-es-save-status role="status" aria-live="polite"></p></div>';
+		$html .= '</form></div>';
+		return $html;
+	}
+
 	/** Render an accessible, consistent landing screen for a dashboard area. */
 	public static function render_section( string $slug ): void {
 		if ( ! current_user_can( 'manage_options' ) || ! isset( self::PAGES[ $slug ] ) ) {
+			return;
+		}
+
+		if ( 'es-theme-settings' === $slug ) {
+			echo self::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
 			return;
 		}
 

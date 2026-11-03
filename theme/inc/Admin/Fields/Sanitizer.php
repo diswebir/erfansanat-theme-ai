@@ -30,7 +30,14 @@ final class Sanitizer {
 				return is_scalar( $value ) ? wp_kses_post( (string) $value ) : $default;
 
 			case 'url':
-				return is_scalar( $value ) ? esc_url_raw( trim( (string) $value ) ) : $default;
+				if ( ! is_scalar( $value ) ) {
+					return $default;
+				}
+				$url = trim( (string) $value );
+				if ( ! empty( $field['absolute'] ) && '' !== $url && ! preg_match( '~^https?://~i', $url ) ) {
+					return $default;
+				}
+				return esc_url_raw( $url, array( 'http', 'https' ) );
 
 			case 'email':
 				return is_scalar( $value ) ? sanitize_email( (string) $value ) : $default;

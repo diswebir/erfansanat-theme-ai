@@ -196,3 +196,16 @@
 | کل suite فاز تا اینجا | 54 PASS / 0 FAIL / 27 PENDING از 15 فایل؛ 9 فایلِ باقیمانده pending هستند |
 | خوداصلاحی | تست اولیه `$rows` سراسری run-phase.php را shadow می‌کرد و گزارش تجمیعی را خراب می‌ساخت؛ متغیر به `$es_repeater_rows` تغییر کرد؛ تست فاز پس از scaffold از 54 PASS تأیید شد |
 | وضعیت | Task 2.6 `[PASSED]`; بعدی: Task 2.7 |
+
+
+## Phase 2 — Task 2.7 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 8 شرطی پیش از وجود tab classها اجرا شد و **0 PASS / 8 FAIL / 0 PENDING** ثبت کرد (red baseline مورد انتظار) |
+| پیاده‌سازی | Header/Footer schema+tab، Defaults، رندر صفحه تنظیمات، تب‌های دسترس‌پذیر، ذخیره AJAX با nonce موجود، شرط رندر اعلان، و allowlist آیکون/URL |
+| تست اختصاصی نهایی | **11 PASS / 0 FAIL / 0 PENDING**؛ fallbackها، عدم تکرار منوی سفارشی، خروجی tabs/nonce، URL اجتماعی نامعتبر و حذف کامل اعلان خاموش بررسی شدند |
+| Suite Phase 2 | **65 PASS / 0 FAIL / 24 PENDING** در 15 فایل؛ pendingها فقط از Task 2.8–2.15 هستند |
+| Syntax / diff | `node --check theme/assets/admin/admin.js` و `git diff --check` موفق |
+| خوداصلاحی | runner چند تسک در یک PHP process اجرا می‌کند؛ تست مستقل‌سازی options/capability را صریح کرد تا نتیجه به state قبلی Task 2.1/2.2 وابسته نباشد. در تست فاز ابتدا `wp_localize_script` stub نشده بود؛ وابستگی اضافه حذف شد و admin از `ajaxurl` استاندارد وردپرس استفاده می‌کند |
+| وضعیت | Task 2.7 `[PASSED]`; بعدی: Task 2.8 |

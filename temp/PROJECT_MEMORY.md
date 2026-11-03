@@ -186,4 +186,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `assets/admin/repeater.js` is dependency-free: add/remove, native drag/drop, keyboard arrows and up/down buttons all reindex both IDs and `name` attributes. The script enqueues only on theme admin screens.
 - `Sanitizer` now uses `RepeaterCodec` when available and continues to discard empty rows / sanitize schema-defined children.
 - Tests: **7 PASS / 0 FAIL / 0 PENDING**. The Node DOM mock verified reorder, deletion, add and stable posted names. Complete current phase runner: **54 PASS / 0 FAIL / 27 PENDING** (9 remaining tasks not implemented yet).
-- Next: Task 2.7 — header/footer option tabs and exact static fallbacks.
+- Next: Task 2.8 — brand/color tab; no Phase 3 work until Gate 2 review and approval.
+
+
+### Task 2.7 — PASS
+- `HeaderTab` و `FooterTab` در `theme/inc/Admin/Tabs/` فیلدهای سراسری را ثبت می‌کنند: اعلان، شعار، لوگو، تلفن‌ها، ایمیل، شبکه‌های اجتماعی با آیکون‌های allowlist شده، آدرس/ساعات/کپی‌رایت و کنترل نمایش اجزای فوتر.
+- تنظیمات پیوندهای سریع فقط وضعیت نمایش را در Options ذخیره می‌کنند؛ خود آیتم‌ها و ساختار فهرست در Appearance → Menus باقی می‌ماند.
+- تنظیمات سراسری اکنون UI تب‌های Header/Footer قابل‌دسترس، nonce و فرم یکپارچه AJAX دارد؛ `admin.js` کلیک/کلیدهای جهت/Home/End، submit به `es_save_options` و پیام وضعیت را پشتیبانی می‌کند.
+- URLها به HTTP/HTTPS محدودند؛ URL اجتماعی باید مطلق باشد و مقدار نامعتبر پیش از ذخیره در whitelist خالی می‌شود. `HeaderTab::render_announcement()` هنگام خاموش بودن اعلان، کل خروجی را `''` برمی‌گرداند.
+- تست اختصاصی: **11 PASS / 0 FAIL / 0 PENDING**؛ تست syntax جاوااسکریپت موفق. کل suite فاز: **65 PASS / 0 FAIL / 24 PENDING** در 15 فایل؛ 8 تسک آینده عمداً PENDING هستند.
+- ادامه بعدی: Task 2.8؛ پس از اتمام Phase 2 در Gate 2 توقف و برای Phase 3 منتظر تأیید صریح کاربر بمان.
