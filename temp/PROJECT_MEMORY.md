@@ -6,7 +6,7 @@
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.1 — لایه آپشن (9/9 assertions، 0 fail/pending) |
+| آخرین تسک پاس‌شده | 2.2 — منوی ادمین و داشبورد RTL (9/9 assertions؛ مجموع 18 PASS، 0 fail/pending) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -142,4 +142,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Bootstrap، فایل helper را بار می‌کند و hook `es_options_saved` را برای invalidation ثبت می‌کند.
 - تست خودکار: **9 PASS / 0 FAIL / 0 PENDING**؛ 100 خواندن فقط یک بار `get_option` را صدا زد؛ update فقط همان `erfansanat_theme_options` را نوشت.
 - تست canonical: `tools/plan/filled/phase-02/test-task-01.php`; scaffold در `temp/phase-02-custom-admin-dashboard/tests/`.
-- وضعیت بعدی: Task 2.2.
+- وضعیت بعدی: Task 2.3 — Schema/Renderer/Sanitizer فیلدها.
+
+
+### Task 2.2 — PASS
+- `theme/inc/Admin/AdminMenu.php`: صفحه سطح‌بالا «عرفان صنعت» با `manage_options` و پنج زیرصفحه (سراسری، برند، سکشن‌ها، فرم‌ها، ابزارها).
+- Theme kernel ماژول `admin-menu` را ثبت می‌کند.
+- `theme/assets/admin/admin.css` پوسته RTL واکنش‌گرا و scoped؛ `admin.js` فعال‌سازی `aria-current`؛ هر دو فقط روی hookهای صفحه قالب enqueue می‌شوند.
+- صفحه داشبورد و صفحه‌های دسته‌بندی، خروجی Escape شده و بررسی Capability دارند؛ Appearance → Menus و ساختار منوها همچنان منبع بومی باقی می‌ماند.
+- تست: **9 PASS / 0 FAIL / 0 PENDING**؛ suite فعلی برای دو تسک انجام‌شده **18 PASS**؛ 13 تسک باقی‌مانده هنوز `PENDING` و عمداً فاز را سبز نمی‌کنند. `node --check` برای JS نیز موفق است.
+- وضعیت بعدی: Task 2.3.

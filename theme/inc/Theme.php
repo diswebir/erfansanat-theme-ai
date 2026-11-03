@@ -7,6 +7,7 @@
 
 namespace ErfanSanat\Theme;
 
+use ErfanSanat\Theme\Admin\AdminMenu;
 use ErfanSanat\Theme\Assets\AssetManager;
 use ErfanSanat\Theme\Assets\Preload;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
@@ -65,6 +66,7 @@ final class Theme {
 		$this->booted = true;
 
 		$this->register_module( 'theme-support', new ThemeSupport() );
+		$this->register_module( 'admin-menu', new AdminMenu() );
 		$this->register_module( 'menus', new Menus() );
 		$this->register_module( 'debloat', new DeBloat() );
 		$this->register_module( 'assets', new AssetManager() );

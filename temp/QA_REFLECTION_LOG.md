@@ -134,3 +134,16 @@
 | تست نهایی | `node tools/harness/run-tests.mjs temp/phase-02-custom-admin-dashboard/tests/test-task-01.php` → **9 PASS / 0 FAIL / 0 PENDING** |
 | خوداصلاحی | اجرای نخست مسیر bootstrap در تست canonical اشتباه بود؛ مسیر سازگار با canonical و scaffold تعریف شد. همچنین PHP namespace ترکیبی را رد کرد؛ هر دو namespace به فرم bracketed همسان شدند. |
 | وضعیت | Task 2.1 `[PASSED]`; ادامه با Task 2.2 |
+
+
+## Phase 2 — Task 2.2 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | 9 شرط را ابتدا اجرا کردیم؛ هر 9 مورد به‌درستی FAIL شدند چون منو/asset هنوز موجود نبود |
+| پیاده‌سازی | `AdminMenu`، ثبت در Kernel، CSS/JS scoped، صفحه داشبورد و routeهای زیرمنو |
+| تست اختصاصی | **9 PASS / 0 FAIL / 0 PENDING**؛ دسترسی، اسلاگ و capability، زیرمنوها، enqueue شرطی و خروجی RTL |
+| Suite فاز تا اینجا | 18 PASS در تسک‌های 2.1–2.2؛ سایر تست‌های هنوز پیاده‌نشده PENDING هستند |
+| JS syntax | `node --check theme/assets/admin/admin.js` → موفق |
+| اصلاح در مسیر | اندیس اسلاگ/کال‌بک منوی وردپرس در تست با امضای واقعی API (`page_slug` و callback) هم‌تراز شد؛ آزمون رد دسترسی هم پیش از بررسی enqueue تنظیم شد |
+| وضعیت | Task 2.2 `[PASSED]`; بعدی: Task 2.3 |
