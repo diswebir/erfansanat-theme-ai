@@ -10,5 +10,5 @@ for t in "$ROOT"/temp/phase-01-core-and-assets/tests/test-task-*.php; do
   if "$PHP" -f "$t"; then passed=$((passed+1)); else rc=1; fi
   total=$((total+1))
 done
-echo "== فاز 01: {passed}/{total} تسک پاس =="
+echo "== فاز 01: $passed/$total تسک پاس =="
 exit $rc
