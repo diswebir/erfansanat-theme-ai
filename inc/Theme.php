@@ -26,5 +26,12 @@ final class Theme {
             Admin\ThemeOptions::init();
             Admin\OptionsOutput::init();
         }
+
+        if (class_exists(Admin\SectionManager::class)) {
+            Admin\SectionManager::init();
+            if (class_exists(Sections\Registry::class)) {
+                Sections\Registry::init();
+            }
+        }
     }
 }

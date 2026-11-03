@@ -89,3 +89,37 @@
 
 ### نتیجه
 ✅ PHASE 1 PASS — ۸/۸ تسک، ۱۵۴ شرط پاس، ۷ کامیت اتمیک.
+
+---
+
+## 2026-11-03 — PHASE 2 (داشبورد اختصاصی ادمین و SectionManager — ۹ تسک)
+
+### نتایج تست‌ها
+| تسک | تست | نتیجه |
+|---|---|---|
+| 2.1 هسته ThemeOptions | test-task-01 | ۲۳/۲۳ ✅ |
+| 2.2 FieldRenderer + Sanitizer | test-task-02 | ۳۶/۳۶ ✅ |
+| 2.3 تب هدر و لوگو | test-task-03 | ۱۴/۱۴ ✅ |
+| 2.4 تب فوتر و تماس | test-task-04 | ۲۰/۲۰ ✅ |
+| 2.5 برند/اسکریپت/آرشیو | test-task-05 | ۱۱/۱۱ ✅ |
+| 2.6 OptionsOutput | test-task-06 | ۱۳/۱۳ ✅ |
+| 2.7 SectionManager هسته | test-task-07 | ۲۲/۲۲ ✅ |
+| 2.8 فیلدهای سکشن + merge | test-task-08 | ۱۱/۱۱ ✅ |
+| 2.9 رندر سکشن‌ها + Registry | test-task-09 | ۹/۹ ✅ |
+| **تست جامع فاز** | run-phase-02-tests.sh | **۹/۹ — exit 0** ✅ |
+
+### باگ‌ها و خوداصلاحی
+1. **ترتیب اجرا:** 2.1 به 2.2 وابسته بود (Sanitizer/FieldRenderer در ajax_save و render) → 2.2 جلو افتاد (D-014).
+2. **wp_send_json_* با exit(0) تست را می‌کشت** → استاب‌ها به استثنای ES_JsonExitException تبدیل شدند (الگوی استاندارد تست).
+3. **submenu هم‌اسلاگ، ورودی منو را overwrite می‌کرد** (چک type=menu شکست می‌خورد) → استاب اصلاح شد (submenus زیرمجموعه).
+4. **autoload=false ثبت نمی‌شد** → استاب update_option مقدار autoload را ثبت می‌کند.
+5. **Implicit nullable params — deprecation PHP 8.4** در استاب‌ها → typeهای صریح nullable.
+6. **strip_tags محتوای داخل تگ را نگه می‌دارد** → انتظارات تست به رفتار واقعی core اصلاح شد (sanitize text/textarea).
+7. **ajax_save دوبار sanitize مسیر خراب داشت** (پیلود تودرتو با all_fields تخت match نمی‌شد) → گردش per-tab تمیز شد.
+8. **es_render_sections پسوند .php را جا انداخته بود** → همه رندرهای سکشن خالی بودند؛ با تست رندر کشف و رفع شد.
+9. **Registry::init گارد $booted داشت** → فیلتر es_sections_registry باید قبل از بوت ثبت شود (تست اصلاح شد).
+10. **پیش‌فرض‌های اسکیم در رندر اعمال نمی‌شدند** → متد schema_of + ادغام در es_render_sections (شرط «حالت پیش‌فرض = میرور» بلوپرینت).
+11. **رانرهای تست {passed}/{total} چاپ می‌کردند** → در هر ۸ فاز اصلاح شد.
+
+### نتیجه
+✅ PHASE 2 PASS — ۹/۹ تسک، ۱۵۹ شرط پاس.

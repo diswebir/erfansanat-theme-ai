@@ -1,7 +1,7 @@
 # Task 2.3 — تب «هدر و لوگو» + نوار اعلان — فیلدها و Fallback دقیق میرور
 
 **فاز:** 02 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[PASSED]`
 **تست:** `temp/phase-02-custom-admin-dashboard/tests/test-task-03.php`
 
 ## 🎯 هدف
@@ -33,9 +33,9 @@
 - [ ] پیش‌فرض logo به ese-logo.svg اشاره کند
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-02-custom-admin-dashboard/tests/test-task-03.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-02-custom-admin-dashboard/tests/test-task-03.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

@@ -700,6 +700,22 @@ if (!function_exists('get_post_type')) {
     }
 }
 
+
+if (!function_exists('wp_is_post_autosave')) {
+    function wp_is_post_autosave(int|string|object $post): bool
+    {
+        $id = is_object($post) ? ($post->ID ?? 0) : (int) $post;
+        return ($GLOBALS['__es_stub_autosave'] ?? 0) === $id && $id !== 0;
+    }
+}
+
+if (!function_exists('wp_is_post_revision')) {
+    function wp_is_post_revision(int|string|object $post): bool
+    {
+        $id = is_object($post) ? ($post->ID ?? 0) : (int) $post;
+        return ($GLOBALS['__es_stub_revision'] ?? 0) === $id && $id !== 0;
+    }
+}
 if (!function_exists('wp_reset_vars')) {
     function wp_reset_vars(array $vars = []): void {
     }

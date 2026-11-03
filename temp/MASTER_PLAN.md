@@ -53,51 +53,51 @@
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
 ---
-## Phase 02 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder `[PENDING]`
+## Phase 02 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder `[PASSED]`
 **هدف فاز:** جایگزین کامل پنل‌های Elementor/JetEngine: داشبورد تب‌دار RTL با ذخیره AJAX، موتور فیلد و Sanitizer اختصاصی و موتور مدیریت سکشن صفحات
 **پوشه:** `temp/phase-02-custom-admin-dashboard/` · **تست جامع:** `tests/run-phase-02-tests.sh`
 
-### Task 2.1 — هسته ThemeOptions — منوی پیشخوان، صفحه تب‌دار RTL و فریم‌ورک AJAX امن `[PENDING]`
+### Task 2.1 — هسته ThemeOptions — منوی پیشخوان، صفحه تب‌دار RTL و فریم‌ورک AJAX امن `[PASSED]`
 - 🎯 اسکلت پنل ادمین با امنیت کامل (Nonce + Capability) و ذخیره ایجکس در یک آپشن واحد
 - 📤 خروجی: `inc/Admin/ThemeOptions.php`؛ `inc/Admin/AdminAssets.php`؛ `assets/admin/admin.css`؛ `assets/admin/admin.js` · **وابستگی:** Task 1.2
 - ✅ 5 شرط پاس · 🛠 6 گام اجرا
 
-### Task 2.2 — موتور فیلدها (FieldRenderer) و Sanitizer اختصاصی `[PENDING]`
+### Task 2.2 — موتور فیلدها (FieldRenderer) و Sanitizer اختصاصی `[PASSED]`
 - 🎯 کامپوننت‌های رابط ادمین (۸ نوع فیلد + repeater) و sanitize امن هر نوع، قابل استفاده مجدد در تب‌ها و SectionManager
 - 📤 خروجی: `inc/Admin/FieldRenderer.php`؛ `inc/Admin/Sanitizer.php`؛ `بسط assets/admin/admin.js (media picker، color، repeater، switch)` · **وابستگی:** Task 2.1
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 2.3 — تب «هدر و لوگو» + نوار اعلان — فیلدها و Fallback دقیق میرور `[PENDING]`
+### Task 2.3 — تب «هدر و لوگو» + نوار اعلان — فیلدها و Fallback دقیق میرور `[PASSED]`
 - 🎯 مدیریت لوگو، هدر چسبان، دکمه‌های هدر و نوار اعلان با پیش‌فرض‌هایی که عین میرور است
 - 📤 خروجی: `بسط ThemeOptions.php (schema تب header)` · **وابستگی:** Task 2.2
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 2.4 — تب «فوتر، اطلاعات تماس و شبکه‌های اجتماعی» `[PENDING]`
+### Task 2.4 — تب «فوتر، اطلاعات تماس و شبکه‌های اجتماعی» `[PASSED]`
 - 🎯 مدیریت کامل محتوای فوتر سه‌ستونه و اطلاعات تماس با پیش‌فرض‌های دقیق JSON-LD میرور
 - 📤 خروجی: `بسط ThemeOptions.php (schema تب footer)` · **وابستگی:** Task 2.2
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 2.5 — تب «برند/استایل» + «اسکریپت‌های سفارشی» + «تنظیمات آرشیوها» `[PENDING]`
+### Task 2.5 — تب «برند/استایل» + «اسکریپت‌های سفارشی» + «تنظیمات آرشیوها» `[PASSED]`
 - 🎯 رنگ‌های برند، تزریق اسکریپت هدر/فوتر کارفرما و تنظیمات لیست‌بندی آرشیوها
 - 📤 خروجی: `بسط ThemeOptions.php (سه تب)` · **وابستگی:** Task 2.2
 - ✅ 4 شرط پاس · 🛠 4 گام اجرا
 
-### Task 2.6 — هلپر نهایی es_option + تزریق تنظیمات به فرانت‌اند `[PENDING]`
+### Task 2.6 — هلپر نهایی es_option + تزریق تنظیمات به فرانت‌اند `[PASSED]`
 - 🎯 اتصال کامل آپشن‌ها به فرانت: توابع رندر آماده برای فاز ۴ به بعد
 - 📤 خروجی: `بسط inc/Helpers.php`؛ `inc/Frontend/OptionsOutput.php` · **وابستگی:** Task 2.3, Task 2.4, Task 2.5
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 2.7 — SectionManager — متاباکس، UI لیست سکشن‌ها (toggle + Drag & Drop) `[PENDING]`
+### Task 2.7 — SectionManager — متاباکس، UI لیست سکشن‌ها (toggle + Drag & Drop) `[PASSED]`
 - 🎯 اسکلت موتور مدیریت سکشن روی برگه‌ها: ردیف سکشن با کلید روشن/خاموش و جابه‌جایی درگ‌اند‌دراپ
 - 📤 خروجی: `inc/Admin/SectionManager.php`؛ `بسط assets/admin/admin.js (sortable داخلی)` · **وابستگی:** Task 1.2
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 2.8 — SectionManager — رندر فیلدهای داینامیک هر سکشن (media/url/repeater) `[PENDING]`
+### Task 2.8 — SectionManager — رندر فیلدهای داینامیک هر سکشن (media/url/repeater) `[PASSED]`
 - 🎯 پنل هر سکشن بر اساس schema خودش فیلدها را با FieldRenderer بسازد و ذخیره ساختارمند انجام شود
 - 📤 خروجی: `بسط SectionManager.php` · **وابستگی:** Task 2.7, Task 2.2
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 2.9 — SectionManager — API رندر فرانت (es_render_sections) و پیکربندی اولیه صفحات `[PENDING]`
+### Task 2.9 — SectionManager — API رندر فرانت (es_render_sections) و پیکربندی اولیه صفحات `[PASSED]`
 - 🎯 حلقه رندر سکشن‌های فعال به ترتیب ادمین + ثبت schema سکشن‌های home/about/contact/landing (بخش‌های مشترک)؛ سکشن‌های اختصاصی در فازهای ۵ و ۷ اضافه می‌شوند
 - 📤 خروجی: `بسط SectionManager.php (رندر)`؛ `inc/Sections/Registry.php (ثبت سکشن‌های صفحات)` · **وابستگی:** Task 2.8
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا

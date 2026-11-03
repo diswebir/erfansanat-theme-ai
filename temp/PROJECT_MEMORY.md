@@ -3,8 +3,8 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 1 COMPLETED (8/8 TASKS PASSED) — AWAITING USER APPROVAL TO START PHASE 2**
-درخت ۸۲ تسکی اتمیک؛ فاز ۱ کامل و کامیت شد. تسک بعدی: فاز ۲ (داشبورد ادمین) — Task 2.1.
+**PHASE 2 COMPLETED (9/9 TASKS PASSED) — AWAITING USER APPROVAL TO START PHASE 3**
+فاز ۱ (۸/۸) و فاز ۲ (۹/۹) کامل شدند. تسک بعدی: فاز ۳ (CPTها و متاباکس‌ها) — Task 3.1.
 
 ## آخرین رویداد
 - **2026-11-03 — Stage 0 انجام شد:** تجهیز محیط (PHP 8.4 wasm + Node 22)، استخراج میرور (۱۲۸ HTML، ۳۹MB)، اسکن کامل و ساخت ۴ فایل حافظه. کامیت `94d4986`.
@@ -46,6 +46,15 @@
 - قیمت‌ها «تومان» (IRT)؛ RTL؛ JSON-LDها داینامیک شوند.
 - `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
+
+## رویدادهای فاز ۲ (2026-11-03)
+- Task 2.2 (FieldRenderer+Sanitizer) به ابتدای فاز جابه‌جا شد (وابستگی 2.1) — D-014.
+- دارایی‌های ادمین: assets/admin/{admin.css (RTL مدرن), admin.js (تب/AJAX/media/color/repeater با درگ)} — صفر وابستگی خارجی.
+- اسکیمای ۵ تب با پیش‌فرض‌های بایت‌به‌بایت میرور استخراج‌شده (تلفن/آدرس/سوشال/کپی‌رایت/لینک‌های ۸گانه فوتر).
+- SectionManager: متا `_es_sections` [{id,enabled,order,fields}]؛ سفیدلیست ID؛ حفظ کلیدهای legacy خارج اسکیم (merge رو به جلو)؛ es_render_sections با ادغام پیش‌فرض اسکیم (حالت پیش‌فرض = ظاهر میرور).
+- stubهای جدید: add_menu_page/submenu، wp_die/check_ajax_referer (استثنا ES_WpDieException)، wp_send_json_* (استثنا ES_JsonExitException)، post meta، add_meta_box، wp_is_post_autosave/revision، wp_get_attachment_url، wp_kses_post واقعی (strip_tags با لیست مجاز).
+- تصحیح رفتار core در تست‌ها: strip_tags محتوای داخل تگ را نگه می‌دارد (sanitize text/textarea).
+- رانرهای تست همه فازها: باگ {passed}/{total} → $passed/$total اصلاح شد.
 
 ## رویدادهای فاز ۱ (2026-11-03)
 - سان‌باکس بین پیام‌ها ریست شد → ترمیم: ZIP میرور داخل ریپو ذخیره شد (`uploads/erfansanat-static-mirror.zip`، gitignore فقط نسخه استخراج‌شده)؛ PHP wasm بازنصب شد.

@@ -88,3 +88,50 @@ if (!function_exists('es_get_template')) {
         include $file;
     }
 }
+
+if (!function_exists('es_render_sections')) {
+    /**
+     * رندر سکشن‌های فعال یک برگه به ترتیب ادمین (موتور SectionManager)
+     *
+     * @param int                  $post_id   شناسه برگه (مثلاً صفحه اصلی ۸۱۴۶)
+     * @param array<string,mixed>  $extra_args داده‌های اضافی برای همه سکشن‌ها
+     */
+    function es_render_sections(int $post_id, array $extra_args = []): void {
+        if (!class_exists(\ErfanSanat\Theme\Admin\SectionManager::class) || !method_exists(\ErfanSanat\Theme\Admin\SectionManager::class, 'get_sections')) {
+            return;
+        }
+
+        $sections = \ErfanSanat\Theme\Admin\SectionManager::get_sections($post_id);
+
+        /**
+         * فیلتر es_sections_render_args — توسعه‌پذیری خروجی
+         */
+        $extra_args = apply_filters('es_sections_render_args', $extra_args, $post_id);
+        if (!is_array($extra_args)) {
+            $extra_args = [];
+        }
+
+        foreach ($sections as $section) {
+            if ((int) ($section['enabled'] ?? 0) !== 1) {
+                continue; // سکشن غیرفعال رندر نمی‌شود
+            }
+
+            $section_id = (string) ($section['id'] ?? '');
+            $fields     = is_array($section['fields'] ?? null) ? $section['fields'] : [];
+
+            // ادغام پیش‌فرض‌های اسکیم → حالت بدون تنظیم ادمین = ظاهر عین میرور
+            foreach (\ErfanSanat\Theme\Admin\SectionManager::schema_of($section_id) as $schema_field) {
+                if (is_array($schema_field) && isset($schema_field['key']) && !array_key_exists($schema_field['key'], $fields)) {
+                    $fields[$schema_field['key']] = $schema_field['default'] ?? '';
+                }
+            }
+
+            $args = [
+                'section_id' => $section_id,
+                'fields'     => $fields,
+                'post_id'    => $post_id,
+            ];
+            es_get_template('template-parts/sections/' . $section_id . '.php', array_merge($args, $extra_args));
+        }
+    }
+}
