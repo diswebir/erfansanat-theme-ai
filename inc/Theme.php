@@ -33,5 +33,45 @@ final class Theme {
                 Sections\Registry::init();
             }
         }
+
+        if (class_exists(Data\PostTypes::class)) {
+            Data\PostTypes::init();
+        }
+
+        if (class_exists(Data\AdminListFilters::class)) {
+            Data\AdminListFilters::init();
+        }
+
+        if (class_exists(Data\WooRewrite::class)) {
+            Data\WooRewrite::init();
+        }
+
+        if (class_exists(Admin\ProductMetaboxes::class)) {
+            Admin\ProductMetaboxes::init();
+        }
+
+        if (class_exists(Admin\ProjectMetaboxes::class)) {
+            Admin\ProjectMetaboxes::init();
+        }
+
+        if (class_exists(Admin\CategoryTermMeta::class)) {
+            Admin\CategoryTermMeta::init();
+        }
+
+        if (class_exists(Admin\HreflangMeta::class)) {
+            Admin\HreflangMeta::init();
+        }
+
+        if (class_exists(Admin\QuickEdit::class)) {
+            Admin\QuickEdit::init();
+        }
+
+        if (class_exists(Admin\RelatedPicker::class)) {
+            Admin\RelatedPicker::init();
+        }
+
+        if (class_exists(Frontend\ViewCounter::class)) {
+            Frontend\ViewCounter::init();
+        }
     }
 }

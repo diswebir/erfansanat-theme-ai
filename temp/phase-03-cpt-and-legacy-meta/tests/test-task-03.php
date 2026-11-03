@@ -1,13 +1,7 @@
 <?php
 /**
- * Test 3.3 — ثبت CPT services (تصمیم Q2 کارفرما)
- * فاز: 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
- * اجرا: /home/user/tools/php -f phase-03-cpt-and-legacy-meta/tests/test-task-03.php
- *
- * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
- * وردپرس نیاز دارند ابتدا stubها را require کنید:
- *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
- * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
+ * Test 3.3 — ثبت CPT services (تصمیم Q2: CPT اختصاصی با has_archive=false)
+ * اجرا: /home/user/tools/php -f temp/phase-03-cpt-and-legacy-meta/tests/test-task-03.php
  */
 declare(strict_types=1);
 
@@ -20,15 +14,26 @@ function check(bool $cond, string $label): void {
     else       { $failures[] = $label; echo "  FAIL  $label\n"; }
 }
 
-echo "== Test 3.3: ثبت CPT services (تصمیم Q2 کارفرما) ==\n";
+$root = dirname(ES_SCRIPT_PATH, 4);
+echo "== Test 3.3: CPT services ==\n";
 
-/* گام WRITE TEST — شروط Pass Conditions این تسک:
-// check(<expr>, 'پاس شدن php -l');
-// check(<expr>, 'args دقیق (has_archive=false, slug=services, show_in_rest=true)');
-// check(<expr>, 'supports کامل ثبت شود');
-*/
+require $root . '/temp/harness/wp-stubs.php';
+require $root . '/inc/Helpers.php';
+$GLOBALS['__es_theme_dir'] = $root;
+require $root . '/functions.php';
 
-check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 3.3)');
+\ErfanSanat\Theme\Data\PostTypes::register();
+
+$svc = $GLOBALS['__wp_hooks']['post_types']['services'] ?? [];
+check($svc !== [], 'CPT services ثبت شد');
+check(($svc['public'] ?? null) === true, 'services: public=true');
+check(($svc['has_archive'] ?? null) === false, 'services: has_archive=false (بدون تداخل با برگه فهرست — D-005)');
+check(($svc['rewrite']['slug'] ?? '') === 'services' && ($svc['rewrite']['with_front'] ?? null) === false, 'services: rewrite slug=services با with_front=false');
+check(($svc['show_in_rest'] ?? null) === true, 'services: show_in_rest=true');
+$required_supports = ['title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'revisions'];
+check(array_values(array_intersect($required_supports, $svc['supports'] ?? [])) === $required_supports, 'services: supports کامل (title/editor/thumbnail/excerpt/custom-fields/revisions)');
+check(($svc['menu_icon'] ?? '') === 'dashicons-lightbulb', 'services: menu_icon=dashicons-lightbulb');
+check(($svc['labels']['name'] ?? '') === 'خدمات', 'لیبل فارسی خدمات');
 
 echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
-exit((empty($failures) && $passes > 0) ? 0 : 1);
+exit(empty($failures) ? 0 : 1);

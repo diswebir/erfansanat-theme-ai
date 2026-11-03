@@ -716,6 +716,121 @@ if (!function_exists('wp_is_post_revision')) {
         return ($GLOBALS['__es_stub_revision'] ?? 0) === $id && $id !== 0;
     }
 }
+
+/** CPT و تکسونومی */
+if (!function_exists('register_post_type')) {
+    function register_post_type(string $post_type, array $args = []): object|false
+    {
+        $GLOBALS['__wp_hooks']['post_types'][$post_type] = $args;
+        return new \stdClass();
+    }
+}
+
+if (!function_exists('register_taxonomy')) {
+    function register_taxonomy(string $taxonomy, array|string $object_type = [], array $args = []): object|false
+    {
+        $args['object_type'] = (array) $object_type;
+        $GLOBALS['__wp_hooks']['taxonomies'][$taxonomy] = $args;
+        return new \stdClass();
+    }
+}
+
+/** ترم‌متا */
+if (!function_exists('get_term_meta')) {
+    function get_term_meta(int $term_id, string $key = '', bool $single = false): mixed
+    {
+        if ($key === '') {
+            return $GLOBALS['__wp_term_meta'][$term_id] ?? [];
+        }
+        return $GLOBALS['__wp_term_meta'][$term_id][$key] ?? '';
+    }
+}
+
+if (!function_exists('update_term_meta')) {
+    function update_term_meta(int $term_id, string $meta_key, mixed $meta_value, mixed $prev = ''): bool
+    {
+        $GLOBALS['__wp_term_meta'][$term_id][$meta_key] = $meta_value;
+        return true;
+    }
+}
+
+if (!function_exists('get_terms')) {
+    function get_terms(array|string $args = []): array|string
+    {
+        $fixture = $GLOBALS['__es_stub_terms'] ?? [];
+        if (is_string($args)) {
+            $args = ['taxonomy' => $args];
+        }
+        $tax = $args['taxonomy'] ?? '';
+        if ($tax === '' || isset($fixture[$tax])) {
+            return is_array($tax) || $tax === '' ? array_merge(...array_values($fixture ?: [])) : $fixture[$tax];
+        }
+        return [];
+    }
+}
+
+/** شرطی‌های کوئری برای ViewCounter و فیلترهای ادمین */
+if (!function_exists('is_singular')) {
+    function is_singular(array|string $post_types = []): bool
+    {
+        $current = $GLOBALS['__es_stub_current_post_type'] ?? '';
+        if ($post_types === []) {
+            return $current !== '';
+        }
+        return in_array($current, (array) $post_types, true);
+    }
+}
+
+if (!function_exists('is_preview')) {
+    function is_preview(): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_preview'] ?? false);
+    }
+}
+
+if (!function_exists('is_feed')) {
+    function is_feed(string $feeds = ''): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_feed'] ?? false);
+    }
+}
+
+if (!function_exists('is_object_in_taxonomy')) {
+    function is_object_in_taxonomy(string $object_type, string $taxonomy): bool
+    {
+        return in_array($object_type, ['post', 'page'], true) || true; // در تست، همیشه سازگار فرض
+    }
+}
+
+if (!function_exists('is_serialized')) {
+    function is_serialized(mixed $data, bool $strict = true): bool
+    {
+        if (!is_string($data)) {
+            return false;
+        }
+        $data = trim($data);
+        return $data !== '' && preg_match('/^(s|i|d|b|a|O|C):/', $data) === 1;
+    }
+}
+
+if (!function_exists('pre_get_posts_hook_recorder')) {
+    function pre_get_posts_hook_recorder(): void
+    {
+    }
+}
+
+if (!function_exists('update_meta_cache')) {
+    function update_meta_cache(): void
+    {
+    }
+}
+
+if (!function_exists('wp_next_scheduled')) {
+    function wp_next_scheduled(string $hook): bool|int
+    {
+        return false;
+    }
+}
 if (!function_exists('wp_reset_vars')) {
     function wp_reset_vars(array $vars = []): void {
     }
