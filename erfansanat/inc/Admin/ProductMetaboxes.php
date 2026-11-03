@@ -40,6 +40,7 @@ final class ProductMetaboxes {
 	public static function register_metaboxes(): void {
 		add_meta_box( 'es-product-ids', __( 'شناسه‌های صنعتی و قانونی', 'erfansanat' ), array( __CLASS__, 'render_ids' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-titles', __( 'عناوین و وضعیت فروش', 'erfansanat' ), array( __CLASS__, 'render_titles' ), 'product', 'normal', 'default' );
+		add_meta_box( 'es-product-files', __( 'کاتالوگ و گالری', 'erfansanat' ), array( __CLASS__, 'render_files' ), 'product', 'normal', 'default' );
 	}
 
 	/**
@@ -61,6 +62,7 @@ final class ProductMetaboxes {
 
 		self::save_ids( $post_id );
 		self::save_titles( $post_id );
+		self::save_files( $post_id );
 	}
 
 	/**
@@ -179,6 +181,118 @@ final class ProductMetaboxes {
 				update_post_meta( $post_id, 'true_sale', $value );
 			}
 			// AC-02: invalid values are rejected (existing value kept).
+		}
+	}
+
+	/**
+	 * Read the product gallery with the legacy fallback order (P03-T015):
+	 * galerry_produ → _product_image_gallery → gallery-filed → image-2..6.
+	 *
+	 * @return array<int,int> Attachment ids in order.
+	 */
+	public static function get_gallery( $post_id ): array {
+		foreach ( array( 'galerry_produ', '_product_image_gallery', 'gallery-filed' ) as $key ) {
+			$value = (string) get_post_meta( $post_id, $key, true );
+			if ( '' !== trim( $value ) ) {
+				return self::parse_ids( $value );
+			}
+		}
+
+		$ids = array();
+		foreach ( array( 'image-2', 'image-3', 'image-4', 'image-5', 'image-6' ) as $key ) {
+			$id = absint( get_post_meta( $post_id, $key, true ) );
+			if ( $id > 0 ) {
+				$ids[] = $id;
+			}
+		}
+		return $ids;
+	}
+
+	/**
+	 * Parse a comma list (or array) into positive integer ids, preserving order.
+	 *
+	 * @param mixed $value Raw value.
+	 * @return array<int,int>
+	 */
+	public static function parse_ids( $value ): array {
+		$parts = is_array( $value ) ? $value : explode( ',', (string) $value );
+		$ids   = array();
+		foreach ( $parts as $part ) {
+			$id = absint( trim( (string) $part ) );
+			if ( $id > 0 ) {
+				$ids[] = $id;
+			}
+		}
+		return $ids;
+	}
+
+	/**
+	 * Render the catalog / gallery metabox.
+	 *
+	 * @param \WP_Post $post Post.
+	 */
+	public static function render_files( $post ): void {
+		wp_nonce_field( 'es_product_files', 'es_product_files_nonce' );
+
+		$catalog = (string) get_post_meta( $post->ID, 'product-catalog-file', true );
+		$gallery = implode( ',', self::get_gallery( $post->ID ) );
+
+		printf( '<p class="es-field"><label for="es-catalog">%s</label><input type="text" id="es-catalog" name="es_files[product-catalog-file]" value="%s" class="widefat" /></p>', esc_html__( 'فایل کاتالوگ (URL یا شناسه رسانه)', 'erfansanat' ), esc_attr( $catalog ) );
+		printf( '<p class="es-field"><label for="es-gallery">%s</label><input type="text" id="es-gallery" name="es_files[galerry_produ]" value="%s" class="widefat" /></p>', esc_html__( 'گالری (شناسه تصاویر با کاما)', 'erfansanat' ), esc_attr( $gallery ) );
+	}
+
+	/**
+	 * Save catalog (as URL) + gallery (comma ids), syncing the standard Woo
+	 * gallery and any pre-existing legacy keys. Never creates new legacy keys.
+	 *
+	 * @param int $post_id Post id.
+	 */
+	public static function save_files( $post_id ): void {
+		if ( ! isset( $_POST['es_product_files_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['es_product_files_nonce'] ) ), 'es_product_files' ) ) {
+			return;
+		}
+		if ( ! isset( $_POST['es_files'] ) || ! is_array( $_POST['es_files'] ) ) {
+			return;
+		}
+
+		$raw = wp_unslash( $_POST['es_files'] );
+
+		if ( array_key_exists( 'product-catalog-file', $raw ) ) {
+			$value = trim( (string) $raw['product-catalog-file'] );
+			if ( is_numeric( $value ) ) {
+				$url = wp_get_attachment_url( absint( $value ) );
+				$url = $url ? $url : '';
+			} else {
+				$url = esc_url_raw( $value );
+			}
+			update_post_meta( $post_id, 'product-catalog-file', $url ); // AC-01: stored as URL.
+		}
+
+		if ( array_key_exists( 'galerry_produ', $raw ) ) {
+			$ids = self::parse_ids( $raw['galerry_produ'] );
+			$csv = implode( ',', $ids );
+			update_post_meta( $post_id, 'galerry_produ', $csv );          // AC-02: comma id list.
+			update_post_meta( $post_id, '_product_image_gallery', $csv ); // AC-03: standard sync.
+			self::sync_legacy_gallery( $post_id, $ids );
+		}
+	}
+
+	/**
+	 * Update pre-existing legacy gallery keys to match the new order. Keys that
+	 * do not already exist are never created (preserves historical data shape).
+	 *
+	 * @param array<int,int> $ids Ordered attachment ids.
+	 */
+	private static function sync_legacy_gallery( $post_id, array $ids ): void {
+		if ( metadata_exists( 'post', $post_id, 'gallery-filed' ) ) {
+			update_post_meta( $post_id, 'gallery-filed', implode( ',', $ids ) );
+		}
+
+		$keys = array( 'image-2', 'image-3', 'image-4', 'image-5', 'image-6' );
+		foreach ( $keys as $i => $key ) {
+			if ( metadata_exists( 'post', $post_id, $key ) ) {
+				update_post_meta( $post_id, $key, isset( $ids[ $i ] ) ? $ids[ $i ] : '' );
+			}
 		}
 	}
 }
