@@ -146,17 +146,23 @@ final class SectionManager {
 			if ( $section['id'] !== $section_id ) {
 				continue;
 			}
-			$found                     = true;
-			$schema_fields             = Schema::section_fields( $context, $section['type'] );
-			$clean                     = $section['fields'];
+			$found         = true;
+			$schema_fields = Schema::section_fields( $context, $section['type'] );
+			$existing      = $section['fields'];
+			$clean         = array();
 
+			// AC-01: only fields declared by this section's schema are kept.
 			foreach ( $schema_fields as $key => $def ) {
-				if ( ! array_key_exists( $key, $fields ) ) {
-					continue; // Not submitted: keep existing value.
-				}
-				$result = Sanitizer::sanitize_field( $def, $fields[ $key ] );
-				if ( ! is_wp_error( $result ) ) {
-					$clean[ $key ] = $result;
+				if ( array_key_exists( $key, $fields ) ) {
+					$result = Sanitizer::sanitize_field( $def, $fields[ $key ] );
+					// AC-03: invalid media/link/etc. never overwrite a good value.
+					$clean[ $key ] = is_wp_error( $result )
+						? ( $existing[ $key ] ?? $def['default'] )
+						: $result;
+				} elseif ( array_key_exists( $key, $existing ) ) {
+					$clean[ $key ] = $existing[ $key ]; // AC-02: unsubmitted kept.
+				} else {
+					$clean[ $key ] = $def['default'];
 				}
 			}
 
