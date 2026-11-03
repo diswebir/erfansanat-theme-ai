@@ -22,6 +22,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();
 \ErfanSanat\Theme\Core\LegacyRedirects::boot();
+\ErfanSanat\Theme\Admin\ProjectColumns::boot();
 
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
