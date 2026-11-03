@@ -3,8 +3,9 @@
 *.key
 wp-config.php
 
-# مرجع سنگین استاتیک (فقط مرجع خواندنی؛ در Git کامیت نمی‌شود)
-/uploads/
+# میرور استاتیک (نسخه استخراج‌شده نادیده؛ خود ZIP به‌عنوان پشتیبان track می‌شود)
+/uploads/static-mirror/
+!uploads/erfansanat-static-mirror.zip
 
 # ابزار و وابستگی‌های محیط
 node_modules/
