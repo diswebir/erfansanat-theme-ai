@@ -18,9 +18,7 @@ final class Theme {
     public static function boot(): void {
         ThemeSetup::init();
 
-        if (class_exists(Frontend\DeBloat::class)) {
-            Frontend\DeBloat::init();
-        }
+        Frontend\DeBloat::init();
 
         if (class_exists(Frontend\AssetManager::class)) {
             Frontend\AssetManager::init();
