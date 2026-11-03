@@ -21,3 +21,6 @@ require_once ES_INC_DIR . 'Helpers.php';
 
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
+
+// Dashboard option tabs — P02-T010+.
+\ErfanSanat\Theme\Options\Tabs\HeaderTab::boot();
