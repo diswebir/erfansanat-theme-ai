@@ -66,7 +66,13 @@ while (have_posts()) : the_post();
 
             <div class="mt-6 flex flex-wrap items-center gap-3">
                 <?php if ($trueSale) : ?>
-                    <?php woocommerce_template_single_add_to_cart(); ?>
+                    <?php if (function_exists('woocommerce_template_single_add_to_cart')) : ?>
+                        <?php woocommerce_template_single_add_to_cart(); ?>
+                    <?php else : ?>
+                        <form class="cart" method="post" action="<?php echo esc_url(get_permalink($pid)); ?>">
+                            <button type="submit" name="add-to-cart" value="<?php echo esc_attr((string) $pid); ?>" class="rounded-2xl bg-emerald-700 px-6 py-3 text-sm font-black text-white"><?php esc_html_e('افزودن به سبد خرید', 'erfansanat'); ?></button>
+                        </form>
+                    <?php endif; ?>
                 <?php else : ?>
                     <a href="<?php echo esc_url(home_url('/تماس-با-ما/')); ?>" class="rounded-2xl bg-emerald-700 px-6 py-3 text-sm font-black text-white"><?php esc_html_e('استعلام قیمت', 'erfansanat'); ?></a>
                 <?php endif; ?>

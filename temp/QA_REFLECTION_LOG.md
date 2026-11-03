@@ -63,3 +63,6 @@
 
 ## WP API surface — 2026-11-03
 - Cloned WordPress/WordPress (sparse). Built 4690-function list from wp-includes + wp-admin/includes. Scanned 718 function calls in theme: all resolve to WP core / builtins / own helpers / wc_* prefixes. ALL PASS.
+
+## REAL WP integration — 2026-11-03
+- WordPress 7.2 + SQLite on php-wasm: install OK, theme activates (0 errors), CPT/tax registered, legacy meta roundtrip OK, front-page/single-product/single-projects render through real WP. 19/19 ALL PASS. Real bugs fixed: get_template_part .php suffix in front-page.php; woocommerce call guarded by function_exists.

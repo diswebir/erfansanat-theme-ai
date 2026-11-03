@@ -43,7 +43,7 @@ if ($configured) {
 ?>
 <main id="main" class="site-main">
 <?php foreach ($ordered as $sid => $part) : ?>
-    <?php get_template_part($part); ?>
+    <?php get_template_part(preg_replace('/\.php$/', '', $part)); ?>
 <?php endforeach; ?>
 </main>
 <?php

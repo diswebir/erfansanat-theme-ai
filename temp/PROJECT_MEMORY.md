@@ -70,3 +70,7 @@
 ## WP API surface test — 2026-11-03
 - WordPress core از GitHub clone شد (4690 تابع core). تست: ۷۱۸ call تابع در قالب → همه یا تابع واقعی WP یا builtin یا helper خود قالب → ALL PASS.
 - E2E با smoke + api-surface: ALL-PASS
+
+## REAL WordPress integration — 2026-11-03
+- WP 7.2-beta3 (clone از GitHub) + SQLite dropin روی php-wasm بوت شد؛ thme فعال، 19/19 ALL PASS: front-page (279KB, 15 سکشن)، single-product (metaهای legacy)، single-projects.
+- رفع باگ‌های واقعی: get_template_part با .php در front-page.php؛ guard fonksiyon_exists برای woocommerce_template_single_add_to_cart.
