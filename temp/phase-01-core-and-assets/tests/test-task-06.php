@@ -1,13 +1,7 @@
 <?php
 /**
  * Test 1.6 — انتقال بی‌نقص دارایی‌های میرور به assets/ قالب
- * فاز: 01 — زیرساخت هسته قالب، Autoloader و انتقال بی‌نقص Assets
- * اجرا: /home/user/tools/php -f phase-01-core-and-assets/tests/test-task-06.php
- *
- * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
- * وردپرس نیاز دارند ابتدا stubها را require کنید:
- *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
- * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
+ * اجرا: /home/user/tools/php -f temp/phase-01-core-and-assets/tests/test-task-06.php
  */
 declare(strict_types=1);
 
@@ -20,16 +14,51 @@ function check(bool $cond, string $label): void {
     else       { $failures[] = $label; echo "  FAIL  $label\n"; }
 }
 
-echo "== Test 1.6: انتقال بی‌نقص دارایی‌های میرور به assets/ قالب ==\n";
+$root = dirname(ES_SCRIPT_PATH, 4);
+echo "== Test 1.6: انتقال دارایی‌های میرور ==\n";
 
-/* گام WRITE TEST — شروط Pass Conditions این تسک:
-// check(<expr>, 'وجود فیزیکی هر ۳ فونت با نام دقیق در assets/fonts/');
-// check(<expr>, 'styles.css و main.js با اندازه > 100KB موجود باشند');
-// check(<expr>, 'ساختار پوشه assets دقیقاً مطابق میرور باشد (css/js/fonts/images)');
-// check(<expr>, 'هر url(../fonts/X) داخل CSS به فایل موجود در assets/fonts/ برسد (تست path)');
-*/
+$A = $root . '/assets';
 
-check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 1.6)');
+// ---- فایل‌های کلیدی با اندازه واقعی ----
+check(is_file($A . '/css/styles.css') && (filesize($A . '/css/styles.css') ?? 0) > 150000, 'styles.css موجود (>۱۵۰KB)');
+check(is_file($A . '/js/main.js') && (filesize($A . '/js/main.js') ?? 0) > 90000, 'main.js موجود (>۹۰KB)');
+
+// ---- فونت‌ها با نام دقیق ----
+foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin.woff2', 'vazirmatn-latin-ext.woff2'] as $font) {
+    check(is_file($A . '/fonts/' . $font) && (filesize($A . '/fonts/' . $font) ?? 0) > 10000, "فونت {$font} موجود");
+}
+
+// ---- ساختار پوشه‌ها مطابق میرور ----
+check(is_dir($A . '/images'), 'پوشه images موجود');
+check(is_dir($A . '/images/pexels'), 'پوشه images/pexels موجود');
+check(is_dir($A . '/media'), 'پوشه media موجود');
+check(is_file($A . '/media/hero-video.mp4') && (filesize($A . '/media/hero-video.mp4') ?? 0) > 1000000, 'hero-video.mp4 در assets/media منتقل شد (>۱MB)');
+
+// ---- تصاویر ----
+$jpgs = glob($A . '/images/*.jpg') ?: [];
+check(count($jpgs) >= 9, 'هر ۹ تصویر JPG محلی منتقل شده (یافت‌شده: ' . count($jpgs) . ')');
+check(count((glob($A . '/images/*.svg') ?: [])) >= 1, 'SVG لوگو در کنار JPGها منتقل شده');
+check(is_file($A . '/images/ese-logo.svg'), 'لوگوی ese-logo.svg موجود');
+$pexels = glob($A . '/images/pexels/*') ?: [];
+check(count($pexels) >= 10, 'حداقل ۱۰ تصویر pexels منتقل شده (یافت‌شده: ' . count($pexels) . ')');
+
+// ---- تطبیق بایت‌به‌بایت با میرور (انتقال بی‌نقص) ----
+$mirror = $root . '/uploads/static-mirror/assets';
+check(md5_file($A . '/css/styles.css') === md5_file($mirror . '/css/styles.css'), 'styles.css عیناً با میرور یکسان است');
+check(md5_file($A . '/js/main.js') === md5_file($mirror . '/js/main.js'), 'main.js عیناً با میرور یکسان است');
+check(md5_file($A . '/fonts/vazirmatn-arabic.woff2') === md5_file($mirror . '/fonts/vazirmatn-arabic.woff2'), 'فونت عربی عیناً یکسان');
+
+// ---- رزولوشن مسیرهای نسبی url(../fonts/…) داخل CSS ----
+$css = (string) file_get_contents($A . '/css/styles.css');
+preg_match_all('/url\((["\']?)\.\.\/fonts\/([^)"\'#?]+)/', $css, $matches);
+$font_refs = array_values(array_unique($matches[2] ?? []));
+check(count($font_refs) > 0, 'مسیرهای نسبی فونت داخل CSS یافت شد (' . count($font_refs) . ' مرجع)');
+foreach ($font_refs as $ref) {
+    check(is_file($A . '/fonts/' . $ref), "مسیر url(../fonts/{$ref}) به فایل موجود می‌رسد");
+}
+
+// ویدیو نیز عیناً یکسان با میرور
+check(md5_file($A . '/media/hero-video.mp4') === md5_file($root . '/uploads/static-mirror/images/hero-video.mp4'), 'hero-video.mp4 عیناً یکسان');
 
 echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
-exit((empty($failures) && $passes > 0) ? 0 : 1);
+exit(empty($failures) ? 0 : 1);
