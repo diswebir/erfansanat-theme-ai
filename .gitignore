@@ -3,6 +3,8 @@ temp/tools/node_modules/
 temp/tools/bin/
 temp/wp/
 temp/tools/.write-test
+temp/dist/
+temp/asset-http-report.json
 
 # OS / editor noise
 .DS_Store
