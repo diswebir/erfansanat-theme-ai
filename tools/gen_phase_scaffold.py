@@ -32,6 +32,7 @@ DONE_STATUS = {
     "1.1": "[PASSED]", "1.2": "[PASSED]", "1.3": "[PASSED]", "1.4": "[PASSED]",
     "1.5": "[PASSED]", "1.6": "[PASSED]", "1.7": "[PASSED]", "1.8": "[PASSED]",
     "1.9": "[PASSED]", "1.10": "[PASSED]", "1.11": "[PASSED]", "1.12": "[PASSED]",
+    "2.1": "[PASSED]",
 }
 
 
@@ -177,7 +178,7 @@ def master_plan(phases):
     A("| دروازه | شرط عبور | وضعیت |")
     A("|---|---|---|")
     A("| Gate 0 | تأیید اسکن و پاسخ سؤالات ابهام | ✅ PASSED |")
-    A("| Gate 1 | پایان فاز ۱ — 164/164 assertion سبز، بودجه عملکرد OK | ⏳ WAITING FOR USER REVIEW |")
+    A("| Gate 1 | پایان فاز ۱ — 170/170 assertion سبز، بودجه عملکرد OK | ✅ PASSED |")
     A("| Gate 2..8 | پایان هر فاز: گزارش تست + تأیید | — |")
     A("\n## وابستگی‌های بحرانی (زنجیره مسیر)\n")
     A("```text")

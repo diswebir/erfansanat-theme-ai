@@ -1,13 +1,13 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — بازطراحی نقشه راه به تسک‌های اتمیک (137 تسک) — وضعیت: `STAGE 1 REVISED — WAITING FOR GATE 1 APPROVAL`
+**آخرین به‌روزرسانی:** 2026-11-03 — کاربر Gate 1 را تأیید کرد؛ Phase 2 در حال اجرا (Task 2.1 پاس).
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
-| فاز جاری | STAGE 1 — اسکلت ۸ فاز / **۱۳۷ تسک اتمیک**؛ منتظر تأیید Gate 1 |
-| آخرین تسک پاس‌شده | — (همه ۱۳۷ تسک `PENDING`؛ عمداً تست‌ها سبز نمی‌شوند) |
-| دروازه تأیید | Gate 1: در انتظار تأیید `temp/MASTER_PLAN.md` و ۲۴ فایل تسک |
+| فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
+| آخرین تسک پاس‌شده | 2.1 — لایه آپشن (9/9 assertions، 0 fail/pending) |
+| دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
 
@@ -45,11 +45,9 @@
 | G5 | منوها | **ساختار + آیتم‌ها + قابلیت‌های مگامنو همه در Appearance → Menus**؛ فقط تنظیمات نمایشی (خاموش/روشن، hover/click، چسبندگی) در داشبورد اختصاصی |
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
-## ۵. گام بعدی (پس از تأیید Gate 1)
-1. **Task 1.1** — اسکلت قالب (OOP، Autoloader، Kernel، theme supports) + ساخت `tools/harness/render.php` برای رندر کامل قالب در هارنس.
-2. تکمیل تست واقعی `test-task-01.php` (جایگزینی `pending()` با `check()`)، اجرا تا ۱۰۰٪ PASS، سپس کامیت.
-3. ادامه ۱.۲ و ۱.۳ و اجرای `run-phase-01-tests.sh`.
-4. گزارش فاز ۱ → Gate 2.
+## ۵. گام بعدی
+- ادامه Task 2.2: منوی سطح‌بالای ادمین، زیرصفحه‌ها و پوسته RTL با بارگذاری محدود CSS/JS.
+- پس از هر تسک: تست اختصاصی، ثبت نتیجه در QA، به‌روزرسانی این حافظه و کامیت روی شاخه فعال.
 
 ## ۶. وضعیت هارنس تست
 - PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
@@ -132,3 +130,16 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - هر قالب جدید **باید** `get_header()`/`get_footer()` بزند؛ وگرنه همان دو deprecated notice برمی‌گردد.
 - `AssetManager` فایل ناموجود را صف نمی‌کند (گارد `is_readable`) → اگر استایل جدید اضافه شد، اول فایل را روی دیسک بگذارید، بعد Manifest را ویرایش کنید.
 - سنجه زمان در gate = `theme_ms`، نه کل درخواست (بوت PHP-wasm ~۱۰۰s است).
+
+
+## §9 — Phase 2 شروع شد (2026-11-03)
+
+**تأیید کاربر:** «اوکیه ادامه بده» پس از گزارش Gate 1؛ مجوز صریح برای شروع فاز داشبورد.
+
+### Task 2.1 — PASS
+- `theme/inc/Helpers/Defaults.php`: درخت fallback برداشت‌شده از mirror (تلفن کارخانه/مدیر فروش، ایمیل، آدرس، ساعت کاری، کپی‌رایت و شبکه‌ها).
+- `theme/inc/Helpers/Options.php`: `es_option()`, `es_update_option()`, `es_option_reset()`؛ dot-notation، merge fallback، یک option canonical و cache در سطح درخواست.
+- Bootstrap، فایل helper را بار می‌کند و hook `es_options_saved` را برای invalidation ثبت می‌کند.
+- تست خودکار: **9 PASS / 0 FAIL / 0 PENDING**؛ 100 خواندن فقط یک بار `get_option` را صدا زد؛ update فقط همان `erfansanat_theme_options` را نوشت.
+- تست canonical: `tools/plan/filled/phase-02/test-task-01.php`; scaffold در `temp/phase-02-custom-admin-dashboard/tests/`.
+- وضعیت بعدی: Task 2.2.

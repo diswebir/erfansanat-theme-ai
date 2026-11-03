@@ -1,29 +1,58 @@
 <?php
-/**
- * Test — Task 2.1: لایه آپشن: `es_option()` / `es_update_option()` با کش و fallback
- * Phase 2: فریم‌ورک داشبورد اختصاصی ادمین و Section Builder
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-02-custom-admin-dashboard/tests/test-task-01.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
+/** Task 2.1 — option repository, dot paths, defaults and one-option persistence. */
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../tests/bootstrap.php';
+$GLOBALS['es_mock_options'] = array();
+$GLOBALS['es_mock_get_option_calls'] = 0;
+$GLOBALS['es_mock_actions'] = array();
 
-echo "== Task 2.1: لایه آپشن: `es_option()` / `es_update_option()` با کش و fallback ==\n";
-echo "   phase 2 | size M | files: 2 | pass conditions: 4\n";
+function get_option( $name, $default = false ) {
+	$GLOBALS['es_mock_get_option_calls']++;
+	return array_key_exists( $name, $GLOBALS['es_mock_options'] ) ? $GLOBALS['es_mock_options'][ $name ] : $default;
+}
+function update_option( $name, $value, $autoload = null ) {
+	$changed = ! array_key_exists( $name, $GLOBALS['es_mock_options'] ) || $GLOBALS['es_mock_options'][ $name ] !== $value;
+	$GLOBALS['es_mock_options'][ $name ] = $value;
+	return $changed;
+}
+function add_action( $name, $callback ) { $GLOBALS['es_mock_actions'][ $name ][] = $callback; }
+function do_action( $name, ...$args ) {
+	foreach ( $GLOBALS['es_mock_actions'][ $name ] ?? array() as $callback ) { $callback( ...$args ); }
+}
 
-// --- Pass Conditions (4 شرط) -----------------------------------
-// شمارش get_option
-check('شمارش get_option', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// dot-notation
-check('dot-notation', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// تطابق پیش‌فرض با استاتیک
-check('تطابق پیش‌فرض با استاتیک', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// عدم ایجاد آپشن جدید
-check('عدم ایجاد آپشن جدید', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+$bootstrap_candidates = array(
+	__DIR__ . '/../../../../temp/tests/bootstrap.php',
+	__DIR__ . '/../../tests/bootstrap.php',
+);
+foreach ( $bootstrap_candidates as $bootstrap ) {
+	if ( is_file( $bootstrap ) ) { require_once $bootstrap; break; }
+}
+if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', '/wp/' ); }
+require_once ES_REPO_ROOT . '/theme/inc/Helpers/Defaults.php';
+require_once ES_REPO_ROOT . '/theme/inc/Helpers/Options.php';
+\ErfanSanat\Theme\Helpers\Options::register();
 
-// --- summary -----------------------------------------------------------------
+echo "== Task 2.1: options repository ==\n";
+
+es_option_reset();
+$GLOBALS['es_mock_get_option_calls'] = 0;
+$repeated = true;
+for ( $i = 0; $i < 100; $i++ ) { $repeated = $repeated && es_option( 'header.phone' ) === '031-91091011'; }
+check( '100 reads hit get_option once and return the static fallback', fn() => $repeated && 1 === $GLOBALS['es_mock_get_option_calls'] );
+
+$GLOBALS['es_mock_options']['erfansanat_theme_options'] = array( 'social' => array( 'instagram' => 'https://example.test/ig' ) );
+es_option_reset();
+check( 'dot notation reads a nested override', fn() => es_option( 'social.instagram' ) === 'https://example.test/ig' );
+check( 'missing nested override falls back to static defaults', fn() => es_option( 'header.email' ) === 'info@erfansanat.com' );
+check( 'explicit default is returned for unknown paths', fn() => es_option( 'not.registered', 'fallback' ) === 'fallback' );
+check( 'invalid dot paths fail closed', fn() => es_option( 'header..phone', 'safe' ) === 'safe' );
+
+$option_count = count( $GLOBALS['es_mock_options'] );
+es_option_reset();
+es_update_option( 'header.phone', '031-12345678' );
+check( 'update merges the value into the one canonical option', fn() => isset( $GLOBALS['es_mock_options']['erfansanat_theme_options']['header']['phone'] ) && $GLOBALS['es_mock_options']['erfansanat_theme_options']['header']['phone'] === '031-12345678' );
+check( 'update creates no second theme option', fn() => count( $GLOBALS['es_mock_options'] ) === $option_count );
+check( 'the request cache reflects the updated value', fn() => es_option( 'header.phone' ) === '031-12345678' );
+check( 'saved hook is fired for integrations', fn() => isset( $GLOBALS['es_mock_options']['erfansanat_theme_options'] ) && isset( $GLOBALS['es_mock_actions']['es_options_saved'] ) );
+
 summary();

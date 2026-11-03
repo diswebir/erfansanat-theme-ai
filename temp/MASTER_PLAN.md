@@ -54,7 +54,7 @@
 
 | # | تسک | اندازه | وابستگی | وضعیت | فایل‌های کلیدی |
 |---|---|---|---|---|---|
-| 2.1 | لایه آپشن: `es_option()` / `es_update_option()` با کش و fallback | `M` | `1.3` | `[PENDING]` | `inc/Helpers/Options.php` +1 |
+| 2.1 | لایه آپشن: `es_option()` / `es_update_option()` با کش و fallback | `M` | `1.3` | `[PASSED]` | `inc/Helpers/Options.php` +1 |
 | 2.2 | منوی ادمین سطح‌بالا + پوسته RTL داشبورد | `L` | `2.1` | `[PENDING]` | `inc/Admin/AdminMenu.php` +2 |
 | 2.3 | موتور فیلدها: Renderer، Sanitizer، Schema | `L` | `2.2` | `[PENDING]` | `inc/Admin/Fields/Schema.php` +3 |
 | 2.4 | ذخیره AJAX امن (Nonce + Capability + rate) | `L` | `2.3` | `[PENDING]` | `inc/Admin/AjaxSave.php` |
@@ -268,7 +268,7 @@
 | دروازه | شرط عبور | وضعیت |
 |---|---|---|
 | Gate 0 | تأیید اسکن و پاسخ سؤالات ابهام | ✅ PASSED |
-| Gate 1 | پایان فاز ۱ — 164/164 assertion سبز، بودجه عملکرد OK | ⏳ WAITING FOR USER REVIEW |
+| Gate 1 | پایان فاز ۱ — 170/170 assertion سبز، بودجه عملکرد OK | ✅ PASSED |
 | Gate 2..8 | پایان هر فاز: گزارش تست + تأیید | — |
 
 ## وابستگی‌های بحرانی (زنجیره مسیر)

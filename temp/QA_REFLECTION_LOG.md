@@ -80,7 +80,7 @@
 | سنجه | مقدار اندازه‌گیری‌شده | بودجه | وضعیت |
 |---|---|---|---|
 | فایل‌های تست فاز | 12/12 | 12 | ✅ |
-| Assertion های PASS | 162 | همه | ✅ |
+| Assertion های PASS | 170 | همه | ✅ |
 | Assertion های FAIL | 0 | 0 | ✅ |
 | Assertion های PENDING | 0 | 0 | ✅ |
 | درخواست CSS قالب در `/` | 1 | ≤ 2 | ✅ |
@@ -122,3 +122,15 @@
 | B16 | اسکریپت gate فاز با backtick شکسته بود | عنوان تسک داخل «`» در bash | حذف backtick در label و اجرای تک‌پروسه‌ای |
 | B17 | `phase-gate.mjs` در مرحله perf هنگ می‌کرد | `execFileSync` خروجی php-wasm را بافر می‌کرد | `spawnSync` با `stdio: 'inherit'` |
 | B18 | `perf.mjs` بعد از import هیچ خروجی نمی‌داد | `process.exit(0)` سطح-بالا در ماژول importشده اجرا می‌شد | exit فقط در CLI خودِ perf.mjs |
+
+
+## Phase 2 — Task 2.1 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| حافظه و نقشه خوانده شد | Gate 1 پیش‌تر سبز بود؛ تأیید کاربر برای Phase 2 دریافت شد |
+| تست پیش از پیاده‌سازی | تست 9 شرطی برای cache، dot-path، fallback، single-option و hook نوشته شد |
+| پیاده‌سازی | `Defaults.php` + `Options.php` و بارگذاری helper از bootstrap |
+| تست نهایی | `node tools/harness/run-tests.mjs temp/phase-02-custom-admin-dashboard/tests/test-task-01.php` → **9 PASS / 0 FAIL / 0 PENDING** |
+| خوداصلاحی | اجرای نخست مسیر bootstrap در تست canonical اشتباه بود؛ مسیر سازگار با canonical و scaffold تعریف شد. همچنین PHP namespace ترکیبی را رد کرد؛ هر دو namespace به فرم bracketed همسان شدند. |
+| وضعیت | Task 2.1 `[PASSED]`; ادامه با Task 2.2 |
