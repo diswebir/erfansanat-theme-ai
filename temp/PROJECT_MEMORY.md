@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Phase 2 در حال اجرا تا Task 2.6 (همه تست‌های انجام‌شده سبز).
+**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.11 پاس شده‌اند؛ ادامه Phase 2 از Task 2.12.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.6 — Repeater Codec/Editor (7/7 assertions؛ مجموع 54 PASS، 0 FAIL، 27 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.11 — Section Registry/Store (5 PASS / 0 FAIL؛ مجموع Phase 2: 87 PASS، 0 FAIL، 12 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,7 +46,8 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Task 2.2: منوی سطح‌بالای ادمین، زیرصفحه‌ها و پوسته RTL با بارگذاری محدود CSS/JS.
+- ادامه Phase 2 از Task 2.12: رابط Sections Builder با reorder، فعال‌سازی و فرم فیلدهای سکشن.
+- Task 2.11 ذخیره‌سازی را در `_es_sections` روی post meta متمرکز می‌کند؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
 - پس از هر تسک: تست اختصاصی، ثبت نتیجه در QA، به‌روزرسانی این حافظه و کامیت روی شاخه فعال.
 
 ## ۶. وضعیت هارنس تست
@@ -221,4 +222,12 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - type فیلد `code` به Schema/BasicField افزوده شد؛ sanitization ذخیره علاوه بر nonce/capability endpoint، خودش هم `manage_options` را الزام می‌کند. صفحه Tools به فرم nonce/AJAX متصل شد.
 - Task 2.3 renderer suite برای فیلد code به‌روز شد؛ تست اختصاصی Task 2.10: **7 PASS / 0 FAIL / 0 PENDING**.
 - full Phase 2 suite پس از تکمیل: **82 PASS / 0 FAIL / 15 PENDING**؛ pendingها فقط Tasks 2.11–2.15 هستند.
-- ادامه: Task 2.11؛ Phase 3 فقط بعد از Gate 2 و تأیید کاربر.
+- پس از این task، Task 2.11 پیاده‌سازی شد؛ Phase 3 فقط بعد از Gate 2 و تأیید کاربر.
+
+### Task 2.11 — PASS
+- `Registry` اکنون schema صفحه اصلی را دقیقاً با ۱۵ سکشن از ترتیب مرجع ثبت می‌کند و schemaهای مجزا برای برگه‌های درباره، تماس، FAQ، مجوزها، گارانتی و استخدام دارد.
+- هر سکشن دارای `key`, `label`, `template`, تعریف فیلدها و `default_data` است؛ فیلتر `es_sections_registry` امکان تکمیل/تغییر registry را برای توسعه‌دهنده‌ها فراهم می‌کند.
+- `Store` داده `order`, `enabled`, `data` را در post meta با کلید دقیق `_es_sections` ذخیره و می‌خواند؛ نبود متا به ترتیب پیش‌فرض و همه‌فعال برمی‌گردد.
+- Normalization کلیدهای خارج‌شده از schema را حذف می‌کند، سکشن‌های تازه را به انتهای ترتیب اضافه می‌کند، ترتیب تکراری را حذف می‌کند و فقط فیلدهای schemaشده را نگه می‌دارد.
+- تست مستقل: **5 PASS / 0 FAIL / 0 PENDING**؛ full Phase 2 suite: **87 PASS / 0 FAIL / 12 PENDING** (فقط Tasks 2.12–2.15 هنوز pending هستند).
+- ادامه: Task 2.12 — Sections Builder در ادمین؛ Gate 2 پس از Task 2.15 و Phase 3 فقط با تأیید صریح کاربر.

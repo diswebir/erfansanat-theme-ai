@@ -246,3 +246,14 @@
 | امنیت | AJAX endpoint همچنان nonce+manage_options را الزام می‌کند؛ sanitizer محتوای code نیز capability را مستقل بررسی و خروجی در front-end مجدداً KSES می‌شود |
 | Suite Phase 2 | **82 PASS / 0 FAIL / 15 PENDING**؛ pendingها فقط Tasks 2.11–2.15 |
 | وضعیت | Task 2.10 `[PASSED]`; بعدی: Task 2.11 |
+
+## Phase 2 — Task 2.11 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | پنج check شامل وجود module، پیش‌فرض، round-trip، ثبت سکشن تازه و نادیده‌گرفتن سکشن حذف‌شده؛ baseline: **0 PASS / 5 FAIL / 0 PENDING** |
+| پیاده‌سازی | `Registry` با ۱۵ سکشن صفحه اصلی و شش schema برگه ثابت؛ `Store` برای `_es_sections` با normalize کردن order/enabled/data و پشتیبانی schema drift |
+| تست اختصاصی | **5 PASS / 0 FAIL / 0 PENDING**؛ ترتیب پیش‌فرض، نبود meta، round-trip و تغییر Registry بررسی شدند |
+| Suite Phase 2 | **87 PASS / 0 FAIL / 12 PENDING**؛ pendingها فقط Tasks 2.12–2.15 هستند |
+| مرجع/محدوده | تعداد ۱۵ سکشن و ترتیب از `reference/static-mirror/index.html` و `temp/STATIC_TEMPLATE_MAP.md` تأیید شد؛ بدون تغییر markup یا static assets |
+| وضعیت | Task 2.11 `[PASSED]`; بعدی: Task 2.12 |

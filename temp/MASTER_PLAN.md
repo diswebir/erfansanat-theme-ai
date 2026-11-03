@@ -64,7 +64,7 @@
 | 2.8 | تب «برند و رنگ» با متغیرهای CSS | `M` | `2.7` | `[PASSED]` | `inc/Admin/Tabs/BrandTab.php` +1 |
 | 2.9 | تب «آرشیوها» (تعداد ستون، تعداد آیتم، ترتیب، فیلترها) | `M` | `2.4` | `[PASSED]` | `inc/Admin/Tabs/ArchiveTab.php` +1 |
 | 2.10 | تب «اسکریپت‌ها و ابزار» (هدر/فوتر/کدهای سفارشی) | `M` | `2.4` | `[PASSED]` | `inc/Admin/Tabs/ScriptsTab.php` +1 |
-| 2.11 | Section Manager: Schema سکشن‌ها و متای `_es_sections` | `L` | `2.3` | `[PENDING]` | `inc/Sections/Registry.php` +2 |
+| 2.11 | Section Manager: Schema سکشن‌ها و متای `_es_sections` | `L` | `2.3` | `[PASSED]` | `inc/Sections/Registry.php` +8 |
 | 2.12 | ویرایشگر سکشن‌ها در ادمین + Drag&Drop | `L` | `2.11`، `2.6` | `[PENDING]` | `inc/Admin/SectionsPage.php` +2 |
 | 2.13 | Renderer سکشن‌ها در فرانت + fallback | `M` | `2.11` | `[PENDING]` | `inc/Sections/Renderer.php` |
 | 2.14 | صادرات/واردات تنظیمات و `Reset` ایمن | `M` | `2.1` | `[PENDING]` | `inc/Admin/ImportExport.php` |

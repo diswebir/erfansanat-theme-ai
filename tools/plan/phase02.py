@@ -190,7 +190,7 @@ dict(id='2.10', size='M', deps=['2.4'],
 dict(id='2.11', size='L', deps=['2.3'],
   title='Section Manager: Schema سکشن‌ها و متای `_es_sections`',
   desc='موتور سکشن: تعریف Schema برای صفحه اصلی (۱۵ سکشن) و برگه‌های ثابت (درباره/تماس/FAQ/مجوزها/گارانتی/استخدام)، ذخیره ترتیب+فعال‌بودن در متای `_es_sections`.',
-  files=['inc/Sections/Registry.php','inc/Sections/Store.php','inc/Sections/Schema/home.php'],
+  files=['inc/Sections/Registry.php','inc/Sections/Store.php','inc/Sections/Schema/home.php','inc/Sections/Schema/about.php','inc/Sections/Schema/contact.php','inc/Sections/Schema/faq.php','inc/Sections/Schema/licenses.php','inc/Sections/Schema/warranty.php','inc/Sections/Schema/recruitment.php'],
   steps=[
    'هر سکشن: `key`, `label`, `template` (فایل `template-parts/...`), فیلدها, `default_data`.',
    'Store: خواندن/نوشتن `_es_sections` (آرایه `order`, `enabled`, `data`).',
