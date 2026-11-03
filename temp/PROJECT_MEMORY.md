@@ -66,3 +66,7 @@
 - رفع باگ: SectionManager registry فقط ۶ سکشن داشت → به ۱۵ سکشن گسترش یافت.
 - page-templates/service-detail.php برای ۵ صفحه dtail خدمات ساخته شد.
 - E2E: ALL-PASS | Smoke: ALL PASS
+
+## WP API surface test — 2026-11-03
+- WordPress core از GitHub clone شد (4690 تابع core). تست: ۷۱۸ call تابع در قالب → همه یا تابع واقعی WP یا builtin یا helper خود قالب → ALL PASS.
+- E2E با smoke + api-surface: ALL-PASS

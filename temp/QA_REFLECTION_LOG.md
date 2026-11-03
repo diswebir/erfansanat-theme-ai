@@ -60,3 +60,6 @@
 
 ## DOM fidelity test — 2026-11-03
 - test-dom-fidelity.php: rendered vs static comparison → 15/15 sections, 50/50 data-* hooks, all markers. Found & fixed: SectionManager registry had only 6 of 15 home sections. ALL PASS.
+
+## WP API surface — 2026-11-03
+- Cloned WordPress/WordPress (sparse). Built 4690-function list from wp-includes + wp-admin/includes. Scanned 718 function calls in theme: all resolve to WP core / builtins / own helpers / wc_* prefixes. ALL PASS.
