@@ -12,13 +12,11 @@ final class Theme {
 
     /**
      * ثبت هوک‌های ماژول‌های هسته.
-     * هر ماژول با ورود به قالب (فازهای بعدی) در همین متد مستقیم فراخوانی می‌شود؛
+     * هر ماژول با ورود به قالب در همین متد فراخوانی می‌شود؛
      * چک class_exists فقط تا تکمیل فاز جاری به‌عنوان لایه ایمنی باقی است.
      */
     public static function boot(): void {
-        if (class_exists(ThemeSetup::class)) {
-            ThemeSetup::init();
-        }
+        ThemeSetup::init();
 
         if (class_exists(Frontend\DeBloat::class)) {
             Frontend\DeBloat::init();
