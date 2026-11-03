@@ -116,8 +116,8 @@
 - محصول: `data-product-item`, `data-product-category`, `data-product-categories`, `data-product-purchasable`, `data-product-price`, `data-product-ip`, `data-product-voltage`, `data-product-views`, `data-product-rating`, `data-product-search-text`, `data-product-purchase-mode`
 - پروژه: `data-project-item`, `data-project-type`, `data-project-types`, `data-project-location`, `data-project-views`, `data-project-rating`, `data-project-search-text`, `data-project-count`
 
-## ۶) صفحات غایب در میرور (نیاز به تعیین تکلیف)
-`arya` (لندینگ آریا) · `my-account` · `auth` · `search` · `404` · برگه `project` (8366) · تک‌خدمت‌ها به‌عنوان CPT؟ → سوالات Stage 0.
+## ۶) صفحات غایب در میرور (تعیین تکلیف شده)
+`arya` (لندینگ آریا) · `my-account` · `auth` · `search` · `404` با همان design system ساخته می‌شوند (D1). برگه `project` (8366) به `/projects/` ریدایرکت 301 می‌شود (D4). تک‌خدمت‌ها CPT بومی `services` هستند (D2).
 
 ## ۷) یادداشت‌های فنی اسکن
 - هدر/فوتر/مودال‌ها در هر ۱۲۸ فایل **تکرار** شده‌اند (~۱۵۰KB پایه هر صفحه) → یکبار برش به `header.php`/`footer.php`.
@@ -135,3 +135,11 @@
 - **D6:** TOC + دیدگاه وبلاگ با همان سبک طراحی اضافه می‌شود.
 - **D7:** تست ووکامرس با shim در سندباکس + نهایی‌سازی روی استیجینگ.
 - **D8:** سورس قالب در `erfansanat/` (زیپ نهایی فقط همین پوشه).
+
+## ۹) پوشش برنامه اتمیک (Stage 1 بازطراحی‌شده)
+- برنامه از ۲۲ تسک درشت به **۱۷۵ تسک اتمیک** تبدیل شد؛ نگاشت کامل در `temp/LEGACY_TASK_MAP.md` و فهرست در `temp/ATOMIC_TASK_INDEX.md`.
+- هر تسک دارای شناسه پایدار `Pxx-Tyyy`، وابستگی، فایل هدف، منبع استاتیک، کلیدهای داده، شروط پذیرش `AC` و سناریوی تست `SC` است.
+- نکته DOM: `index.html` دارای **۱۵ بلوک سکشن** است؛ ۱۳ بلوک محتوایی صفحه اصلی + CTA تماس (`id=contact`) + بخش اطلاعات فوتر. دو بلوک آخر جهانی‌اند و نباید در front-page تکرار شوند.
+- فاز ۴ هدر/فوتر را به ۲۰ تسک مستقل (topbar، brand-row، مگامنوها، drawer، مودال‌ها، فوتر، CTA، hreflang، walkerها و parity) می‌شکند.
+- فاز ۶ تک‌محصول/آرشیو/سبد/checkout را به ۲۸ تسک مستقل می‌شکند؛ فاز ۷ پروژه/وبلاگ/برگه‌ها را به ۲۸ تسک؛ فاز ۸ جستجو/فیلتر/فرم/ممیزی/استقرار را به ۲۴ تسک.
+- تست‌ها strict هستند: `FAIL` یا `PENDING` مانع پاس شدن فاز می‌شود.

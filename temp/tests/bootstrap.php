@@ -39,6 +39,20 @@ function es_note( string $msg ): void {
 	echo "  [NOTE] {$msg}\n";
 }
 
+/**
+ * Register a required behavioral scenario that has not been automated yet.
+ * Stage-1 skeletons use this so a task cannot silently pass while its real
+ * acceptance scenarios are still untested. Strict summaries treat it as a gap.
+ */
+function es_pending( string $label, string $why = 'behavioral test not automated yet' ): void {
+	$GLOBALS['es_skip']++;
+	echo "  [PENDING] {$label} — {$why}\n";
+}
+
+function es_task( string $id, string $title ): void {
+	echo "== {$id}: {$title} ==\n";
+}
+
 /** File exists (path relative to ES_THEME, or absolute). */
 function es_file( string $rel, string $base = ES_THEME ): bool {
 	$p = ( $rel !== '' && $rel[0] === '/' ) ? $rel : $base . '/' . $rel;
@@ -92,16 +106,18 @@ function es_theme_active(): bool {
 	return es_load_wp() && get_option( 'stylesheet' ) === 'erfansanat';
 }
 
-function es_summary(): void {
+function es_summary( bool $strict = true ): void {
 	$p = $GLOBALS['es_pass'];
 	$f = $GLOBALS['es_fail'];
 	$s = $GLOBALS['es_skip'];
-	echo "\n  RESULT: {$p} passed, {$f} failed, {$s} skipped\n";
+	echo "\n  RESULT: {$p} passed, {$f} failed, {$s} skipped/pending\n";
 	if ( $f > 0 ) {
 		echo "  Failed checks:\n";
 		foreach ( $GLOBALS['es_fail_labels'] as $label ) {
 			echo "   - {$label}\n";
 		}
+	}
+	if ( $f > 0 || ( $strict && $s > 0 ) ) {
 		exit( 1 );
 	}
 	exit( 0 );

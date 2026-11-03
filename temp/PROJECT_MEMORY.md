@@ -4,10 +4,13 @@
 
 ## وضعیت فعلی
 ```
-STAGE 1 COMPLETED — WAITING FOR USER APPROVAL TO START PHASE 1
+STAGE 1 ATOMIC REDESIGN COMPLETED — WAITING FOR USER APPROVAL TO START PHASE 1
 ```
 - Stage 0 ✅ (اسکن + هارنس + ۴ فایل حافظه) — کاربر به همه ۷ سوال پاسخ داد.
-- Stage 1 ✅ (درخت کامل ۸ فاز / ۲۲ تسک / شروط پاس / اسکلت تست‌ها + MASTER_PLAN + QA_LOG).
+- Stage 1 ✅ نسخه اول: ۸ فاز / ۲۲ تسک.
+- **Stage 1 بازطراحی اتمیک ✅ طبق درخواست کاربر:** ۸ فاز / **۱۷۵ تسک اتمیک** با وابستگی، فایل هدف، منبع، کلید داده، شروط پذیرش AC و سناریوی تست SC.
+- شمارش فازها: P1=12، P2=18، P3=24، P4=20، P5=21، P6=28، P7=28، P8=24.
+- نگاشت تسک‌های قبلی: `temp/LEGACY_TASK_MAP.md` · فهرست: `temp/ATOMIC_TASK_INDEX.md` · برنامه: `temp/MASTER_PLAN.md`.
 - **هنوز هیچ کد قالبی نوشته نشده.** ورود به Phase 1 فقط پس از تایید کاربر (دروازه).
 
 ## پاسخ‌های کاربر به سوالات Stage 0 (ثبت قطعی — 2026-11-03)
@@ -27,7 +30,7 @@ STAGE 1 COMPLETED — WAITING FOR USER APPROVAL TO START PHASE 1
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**PHASE 1 / Task 1.1** — اسکلت قالب (`erfansanat/style.css`, `functions.php`, `index.php`) + Autoloader شیءگرا با Namespace `ErfanSanat\Theme`. چرخه ۶ گامی + کامیت.
+**PHASE 1 / P01-T001** — هدر قالب و `erfansanat/style.css` (فقط متادیتا؛ بدون کپی CSS استاتیک). سپس P01-T002 bootstrap، P01-T003 Autoloader و ... به‌صورت اتمیک. چرخه ۶ گامی + کامیت برای هر تسک.
 
 ## نکات یادآوری برای تسک‌های آینده
 - املای تاریخی متاها مقدس است: `foure-image`, `galerry_produ`, `english_titl`, `vaule_of_variable`, `usage_countr`, `mortabet_mahsole_2`, `number2-viewc`.

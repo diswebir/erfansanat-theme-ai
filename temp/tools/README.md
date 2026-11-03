@@ -19,6 +19,12 @@ wp eval 'echo home_url();'              # اجرای کد در contexto WP
 ## فایل‌های gitignore شده (بازتولیدپذیر)
 `node_modules/`, `bin/`, `../wp/` — با `setup-harness.sh` بازسازی می‌شوند.
 
+## برنامه اتمیک
+- داده تسک‌ها: `temp/tools/planning/phase_01.py` .. `phase_08.py`
+- بازتولید برنامه/تست‌ها: `python3 temp/tools/generate_phase_tree.py`
+- خروجی: ۱۷۵ تسک اتمیک + ۱۷۵ اسکلت تست + `MASTER_PLAN.md` + `ATOMIC_TASK_INDEX.md` + `LEGACY_TASK_MAP.md`
+- این جنریتور فقط برنامه‌ریزی است و هیچ کد قالبی تولید نمی‌کند.
+
 ## افزودن ابزارهای بعدی (فازهای آینده)
 - WooCommerce برای تست فاز ۶: از ریپوی گیت‌هاب (نیاز به بررسی بیلد).
 - تست‌ها: اسکریپت‌های plain PHP در `temp/phase-XX/tests/` (بدون نیاز به PHPUnit؛ قابل اجرا با `php`).
