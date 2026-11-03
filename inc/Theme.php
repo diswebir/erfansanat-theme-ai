@@ -20,8 +20,6 @@ final class Theme {
 
         Frontend\DeBloat::init();
 
-        if (class_exists(Frontend\AssetManager::class)) {
-            Frontend\AssetManager::init();
-        }
+        Frontend\AssetManager::init();
     }
 }
