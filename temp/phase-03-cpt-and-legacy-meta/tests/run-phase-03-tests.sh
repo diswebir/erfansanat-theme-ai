@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# تست جامع پایان فاز 03 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
+# تست جامع پایان فاز 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
 # اجرا: bash temp/phase-03-cpt-and-legacy-meta/tests/run-phase-03-tests.sh
 set -u
 PHP=/home/user/tools/php
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
-rc=0
+rc=0; total=0; passed=0
 for t in "$ROOT"/temp/phase-03-cpt-and-legacy-meta/tests/test-task-*.php; do
-  echo "--- Running $(basename "$t")"
-  "$PHP" -f "$t" || rc=1
+  echo "--- $(basename "$t")"
+  if "$PHP" -f "$t"; then passed=$((passed+1)); else rc=1; fi
+  total=$((total+1))
 done
+echo "== فاز 03: {passed}/{total} تسک پاس =="
 exit $rc

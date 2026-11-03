@@ -1,24 +1,44 @@
-# Task 04.02 — Nav Walkers چهارگانه
+# Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس
 
-**فاز:** phase-04-header-footer-navigation · **وضعیت:** `[PENDING]`
+**فاز:** 04 — هدر، مگامنو، منوی موبایل و فوتر
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-04-header-footer-navigation/tests/test-task-02.php`
 
-## شرح تسک
-- `inc/Nav/MegaMenuWalker.php` برای `main-mega-menu` — تبیب محصولات/پروژه‌ها (`mega-prod-tab/panel`, `mega-proj-tab/panel`, `desktop-mega-trigger/panel`) با زیرمنوهای چندسطحی منطبق بر مارک‌آپ میرور
-- `inc/Nav/MobileWalker.php` برای `mobile-menu` — سایدبار off-canvas (`mobile-sidebar`, `mobile-prod/proj-panel`, `mobile-acc-*`)
-- Walker ساده `tolidat-sherkat` (فوتر) و `landing` (اسکرول لندینگ)
-- حفظ کلاس‌ها/کلاس‌های فعال (current-menu-item و…) با فرمت کلاس‌های میرور
+## 🎯 هدف
+هست استاندارد قالب: زبان/charset/body_class/wp_head/wp_body_open + تگ‌های hreflang داینامیک از متا
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 4.1
+- Task 3.14
+- Task 1.7
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] خروجی HTML منو با مارک‌آپ مرجع میرور match است (تست DOM walker با آیتم‌های fixture)
-- [ ] باز/بسته شدن مگامنو و منوی موبایل با main.js موجود کار کند (hookها حفظ شده)
+## 📎 مراجع (منابع برش/استخراج)
+- head میرور (متاهای hreflang ساختار)
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `header.php`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. header.php با doctype و html language_attributes و bloginfo charset
+2. تگ‌های hreflang: خواندن hrefmeta_fa/en/ar صفحه جاری (یا ترم جاری) + x-default؛ رندر فقط اگر مقدار موجود و افزونه hreflangpch تکراری نسازد (فیلتر es_disable_builtin_hreflang برای هماهنگی)
+3. body_class() + wp_body_open() بلافاصله بعد از body
+4. فراخوانی wp_head() در جای صحیح؛ آیکون‌های SVG sprite میرور (اگر جداست) داخل body ابتدای هدر
+5. بخش data-navbar-header شروع — ادامه در 4.3
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- هیچ استایل/اسکریپت دستی — فقط wp_head
+- hreflang فقط وقتی متا پر است
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] پاس شدن php -l
+- [ ] سه فراخوانی language_attributes/body_class/wp_body_open و wp_head موجود
+- [ ] تگ link hreflang فقط برای متاهای پر تولید شود (تست شرطی)
+- [ ] فیلتر غیرفعال‌سازی داخلی موجود باشد
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-04-header-footer-navigation/tests/test-task-02.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

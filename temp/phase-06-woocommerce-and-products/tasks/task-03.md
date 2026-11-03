@@ -1,24 +1,43 @@
-# Task 06.03 — سبد خرید، پرداخت و حساب کاربری با پوسته میرور
+# Task 6.3 — single-product — تب‌های مشخصات و جدول ۱۸ ویژگی فنی (pa_*)
 
-**فاز:** phase-06-woocommerce-and-products · **وضعیت:** `[PENDING]`
+**فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-03.php`
 
-## شرح تسک
-- استایل cart/checkout/thank-you ووکامرس با کامپوننت‌های cart.html/checkout.html میرور (جدول، خلاصه، buyer-type برای فیلد شخص/شرکت checkout)
-- حساب کاربری ووکامرس + صفحه auth (voorodak) با استایل فرم‌های میرور
-- بدون تداخل اسکریپت ووکامرس ( dequeue دستی نشود؛ فقط پوسته)
-- محصول استعلامی در cart نباید quantity/purchase بگیرد (اطلاع‌رسانی استعلام)
+## 🎯 هدف
+تب‌بندی prod-tab میرور با جدول کامل اتریبیوت‌ها + شناسه‌های قانونی
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 6.2
+- Task 3.5
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] چرخه افزودن به سبد→checkout بدون خطای JS
-- [ ] قابلیت تست رندر سه وضعیت: سبد خالی/پر/کوپن (markup میرور)
+## 📎 مراجع (منابع برش/استخراج)
+- product/wall-washer.html prod-tabs-container/prod-tab-btn/panel/icon
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `template-parts/single-product/specs-tabs.php`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. کپی ساختار تب‌ها؛ تب‌ها: مشخصات فنی، ویژگی‌ها، کاربردها، سوالات متداول (فقط تب‌های دارای محتوا رندر شوند)
+2. جدول مشخصات: همه attributes ووکامرس (pa_*) مقدار-دار با لیبل فارسی ثبت‌شده + اضافه‌کردن ۶ شناسه قانونی (gs1_id، national_code، hs_id، isic_id، cpc_id، product_id) با لیبل‌های میرور
+3. دکمه scroll-to-specs حفظ شود
+4. تب خالی → دکمه تب هم رندر نشود
+5. خروجی جدول با کلاس‌های میرور (table spec)
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- اتریبیوت خالی در جدول نیاید
+- لیبل از taxonomy labels ووکامرس (نه هاردکد)
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] فقط اتریبیوت‌های مقدار-دار در جدول (fixture)
+- [ ] شناسه‌های قانونی در جدول باشند
+- [ ] تب‌های خالی مخفی
+- [ ] ساختار tabs مطابق ref
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-03.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

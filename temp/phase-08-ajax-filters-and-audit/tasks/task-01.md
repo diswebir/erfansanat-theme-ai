@@ -1,25 +1,42 @@
-# Task 08.01 — موتور جستجوی زنده و فیلترهای هوشمند AJAX
+# Task 8.1 — زیرساخت AJAX امن (Router + Nonce + Rate Limit + Response استاندارد)
 
-**فاز:** phase-08-ajax-filters-and-audit · **وضعیت:** `[PENDING]`
+**فاز:** 08 — جایگزینی Native JetSearch/JetSmartFilters، فرم‌ها و ممیزی نهایی
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-08-ajax-filters-and-audit/tests/test-task-01.php`
 
-## شرح تسک
-- `inc/Ajax/LiveSearch.php` — جستجوی زنده (product/projects/post) با Nonce + rate limit + escaping کامل؛ اتصال به data-hookهای search-modal میرور
-- `inc/Ajax/SmartFilters.php` — فیلتر محصولات: متن، product_cat، محدوده قیمت (_price)، true_sale، pa_* انتخابی، sort، per-page؛ فیلتر پروژه‌ها: project_type، city + شمارنده تعداد
-- رندر سمت سرور همان کارت‌های template-parts (partial response) — بدون رفرش صفحه
-- هدف پرفورمنس: پاسخ < ۲۰۰ms روی داده تستی (cache transients)
+## 🎯 هدف
+پایه مشترک همه سرویس‌های ایجکس با امنیت کامل و قالب پاسخ ثابت
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 1.7
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] تست امنیت: SQLi/XSS/Nonce/Capability (آبجکت‌های WP_Query با escaping)
-- [ ] تست پاسخ JSON/partial و به‌روزرسانی گرید با hookهای موجود
-- [ ] بنچمارک ساده روی دیتاست fixture
+## 📎 مراجع (منابع برش/استخراج)
+- agent.md §Phase8 (امنیت)
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `inc/Ajax/Router.php`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. Router: ثبت اکشن‌های wp_ajax + nopriv با مپ به هندلرها؛ nonce سراسری (ES.ajaxNonce از 1.7) با چک در هر هندلر
+2. Rate limit: transient شمارنده بر (user_id|ip) با سقف تنظیم‌پذیر (پیش‌فرض ۶۰/دقیقه) و پاسخ 429 JSON
+3. قالب پاسخ: {success, html, counts, found, filters} + هدرهای content-type صحیح
+4. امنیت ورودی: همه پارامترها sanitize شده (text/number/tax/meta)؛ هیچ SQL خام
+5. لاگ خطا با WP_DEBUG فقط
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- هیچ هندلری بدون nonce اجرا نشود
+- کاربر مهمان هم پشتیبانی (nopriv)
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] پاس شدن php -l
+- [ ] درخواست بدون nonce رد شود (تست)
+- [ ] rate limit بعد از سقف رد کند (تست با transient stub)
+- [ ] ساختار پاسخ JSON استاندارد
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-08-ajax-filters-and-audit/tests/test-task-01.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

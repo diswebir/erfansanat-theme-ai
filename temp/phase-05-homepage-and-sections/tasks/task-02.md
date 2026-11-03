@@ -1,27 +1,41 @@
-# Task 05.02 — اتصال داینامیک سکشن‌ها به کوئری‌ها
+# Task 5.2 — سکشن هیرو طرح ۱ (hero-home1) — نوتچ، scene switcher و ویدیو
 
-**فاز:** phase-05-homepage-and-sections · **وضعیت:** `[PENDING]`
+**فاز:** 05 — تبدیل صفحه اصلی و کامپوننت‌های ماژولار
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-05-homepage-and-sections/tests/test-task-02.php`
 
-## شرح تسک
-- سکشن دسته‌بندی‌ها → WP_Term_Query از `product_cat` (با thumbnail ترم)
-- محصولات ویژه/جدید → WP_Query روی `product` (منبع انتخابی در ادمین)
-- پروژه‌های اخیر → WP_Query روی `projects` + متاهای گالری
-- مقالات اخیر → WP_Query روی `post`
-- آمار/مشتریان/کاتالوگ → فیلدهای داشبورد (Repeater)
-- کارت‌های استاندارد: `template-parts/cards/card-product.php`, `card-project.php`, `card-post.php` (+ card-service.php برای فاز ۷) — منطبق بر کارت میرور
+## 🎯 هدف
+برش سکشن #home شامل سوییچر صحنه‌ها و ویدیو درون‌خطی با حفظ همه hookهای JS
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 5.1
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] صفر محتوای هاردکد داینامیک‌پذیر در سکشن‌ها (تست جستجوی رشته‌های نمونه میرور)
-- [ ] کوئری‌ها بهینه (no_found_rows در جایی که صفحه‌بندی نیست، transients در صورت نیاز)
-- [ ] کارت‌ها در حالت خالی، خود را مخفی می‌کنند
+## 📎 مراجع (منابع برش/استخراج)
+- index.html سکشن #home (home1-scene-btn/img/title/cta/link، home1-inline-video/play/mute/close، home1-bottom-fillet/tab، home1-atmosphere)
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `template-parts/home/section-hero.php`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. کپی عین مارک‌آپ سکشن به فایل؛ جایگزینی: عنوان/زیرعنوان/متون از fields سکشن (schema 5.1)
+2. Repeater صحنه‌ها: هر scene → home1-scene-btn + home1-scene-img + home1-scene-title + home1-scene-cta + home1-scene-link (پیش‌فرض: صحنه‌های میرور با تصاویر assets)
+3. ویدیو: فیلد media ویدیو (پیش‌فرض hero-video.mp4) + اتریبیوت‌های حفظ‌شده برای کنترل‌های mute/close/play
+4. لینک‌های CTA هر صحنه → فیلد url (پیش‌فرض میرور)
+5. تصاویر با es_media_url() از آیدی media
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- هیچ data-hookی حذف نشود
+- تصاویر پیش‌فرض از assets/images میرور
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] مقایسه ساختار سکشن رندرشده با ref (کلاس‌ها/hookها)
+- [ ] Repeater صحنه‌ها به تعداد دلخواه کار کند (تست ۳ صحنه)
+- [ ] ویدیو فیلد داینامیک داشته باشد
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-05-homepage-and-sections/tests/test-task-02.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

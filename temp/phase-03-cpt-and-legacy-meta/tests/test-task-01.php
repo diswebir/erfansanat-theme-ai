@@ -1,11 +1,13 @@
 <?php
 /**
- * Test 03.01 — ثبت CPTها و تکسونومی‌ها با Rewrite دقیق
- * فاز: phase-03-cpt-and-legacy-meta
- * اجرا: /home/user/tools/php -f temp/phase-03-cpt-and-legacy-meta/tests/test-task-01.php
+ * Test 3.1 — ثبت CPT projects و تکسونومی‌های project_type و city
+ * فاز: 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
+ * اجرا: /home/user/tools/php -f phase-03-cpt-and-legacy-meta/tests/test-task-01.php
  *
- * اسکلت تست — در گام WRITE TEST تسک کامل می‌شود.
- * توجه (D-001): PHP 8.4 wasm — کل تست‌های تسک در همین یک فایل اجرا شود.
+ * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
+ * وردپرس نیاز دارند ابتدا stubها را require کنید:
+ *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
+ * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
  */
 declare(strict_types=1);
 
@@ -15,13 +17,19 @@ $passes   = 0;
 function check(bool $cond, string $label): void {
     global $failures, $passes;
     if ($cond) { $passes++; echo "  PASS  $label\n"; }
-    else { $failures[] = $label; echo "  FAIL  $label\n"; }
+    else       { $failures[] = $label; echo "  FAIL  $label\n"; }
 }
 
-echo "== Test 03.01: ثبت CPTها و تکسونومی‌ها با Rewrite دقیق ==\n";
+echo "== Test 3.1: ثبت CPT projects و تکسونومی‌های project_type و city ==\n";
 
-// TODO(test): در گام WRITE TEST، شروط Pass Conditions بالا به check() نگاشت می‌شوند.
-check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (در گام WRITE TEST تکمیل شود)');
+/* گام WRITE TEST — شروط Pass Conditions این تسک:
+// check(<expr>, 'پاس شدن php -l');
+// check(<expr>, 'آرایه args ثبت projects دقیقاً شامل همه کلیدهای بلوپرینت باشد');
+// check(<expr>, 'هر دو تکسونومی با slug صحیح و hierarchical=true ثبت شوند');
+// check(<expr>, 'object_type هر دو تکسونومی = projects باشد');
+*/
 
-echo "\nResult: {$passes} passed, " . count($failures) . " failed\n";
-exit(empty($failures) && $passes > 0 ? 0 : 1);
+check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 3.1)');
+
+echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
+exit((empty($failures) && $passes > 0) ? 0 : 1);

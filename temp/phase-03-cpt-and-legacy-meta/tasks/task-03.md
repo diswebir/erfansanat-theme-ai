@@ -1,24 +1,41 @@
-# Task 03.03 — متاباکس پروژه‌ها، FAQ دسته‌بندی، Hreflang و بازدید
+# Task 3.3 — ثبت CPT services (تصمیم Q2 کارفرما)
 
-**فاز:** phase-03-cpt-and-legacy-meta · **وضعیت:** `[PENDING]`
+**فاز:** 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-03-cpt-and-legacy-meta/tests/test-task-03.php`
 
-## شرح تسک
-- متاباکس پروژه: گالری `second-image`…`six-image` (املای دقیق foure-image) + گالری مدرن چندتصویری همگام با همین کلیدها + `finish-pro-time` (text) + `mortabet_mahsole_2` (انتخاب چند محصول)
-- متاباکس ترم `product_cat`: `thumbnail` (media) + Repeater `faq` (name_question/answer_question)
-- متاباکس Hreflang روی post/page/product/projects/services و ترم‌های اصلی: hrefmeta_fa/en/ar + same_key_hrefl + ستون ادمین مرتب‌سازی
-- شمارنده بازدید `number2-viewc` (+ fallback `number-viewc`) روی post/projects/product/services با هوک `template_redirect` + ستون ادمین
+## 🎯 هدف
+پست‌تایپ خدمات به‌صورت Native — مطابق تصمیم ثبت‌شده D-005
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 1.3
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] roundtrip خواندن/نوشتن روی تمام کلیدهای این تسک (post و term fixture)
-- [ ] افزایش بازدید فقط برای بازدیدکننده واقعی (بدون بات/پرلود) و بدون افزایش در پیشخوان
+## 📎 مراجع (منابع برش/استخراج)
+- تصمیم کارفرما Q2 (temp/PROJECT_MEMORY.md D-005)
+- services.html و services/* میرور
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `بسط inc/Data/PostTypes.php`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. register_post_type('services'): public=true، has_archive=false (فهرست از برگه با قالب listing در فاز ۷)، rewrite slug=services with_front=false، show_in_rest=true
+2. supports: title، editor، thumbnail، excerpt، custom-fields، revisions
+3. menu_icon=dashicons-lightbulb + لیبل فارسی «خدمات»
+4. اتصال متاهای سراسری hreflang/بازدید به این CPT (فاز 3.14 به آن ارجاع می‌دهد)
+5. بدون تکسونومی اختصاصی در این تسک (در صورت نیاز بعدی، فیلتر توسعه)
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- has_archive=false تا با برگه فهرست خدمات تداخل rewrite نداشته باشد
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] پاس شدن php -l
+- [ ] args دقیق (has_archive=false, slug=services, show_in_rest=true)
+- [ ] supports کامل ثبت شود
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-03-cpt-and-legacy-meta/tests/test-task-03.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

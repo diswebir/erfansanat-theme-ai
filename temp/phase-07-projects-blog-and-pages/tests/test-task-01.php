@@ -1,11 +1,13 @@
 <?php
 /**
- * Test 07.01 — قالب‌های پروژه‌ها
- * فاز: phase-07-projects-blog-and-pages
- * اجرا: /home/user/tools/php -f temp/phase-07-projects-blog-and-pages/tests/test-task-01.php
+ * Test 7.1 — single-projects.php — سینگل کامل پروژه
+ * فاز: 07 — پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها
+ * اجرا: /home/user/tools/php -f phase-07-projects-blog-and-pages/tests/test-task-01.php
  *
- * اسکلت تست — در گام WRITE TEST تسک کامل می‌شود.
- * توجه (D-001): PHP 8.4 wasm — کل تست‌های تسک در همین یک فایل اجرا شود.
+ * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
+ * وردپرس نیاز دارند ابتدا stubها را require کنید:
+ *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
+ * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
  */
 declare(strict_types=1);
 
@@ -15,13 +17,19 @@ $passes   = 0;
 function check(bool $cond, string $label): void {
     global $failures, $passes;
     if ($cond) { $passes++; echo "  PASS  $label\n"; }
-    else { $failures[] = $label; echo "  FAIL  $label\n"; }
+    else       { $failures[] = $label; echo "  FAIL  $label\n"; }
 }
 
-echo "== Test 07.01: قالب‌های پروژه‌ها ==\n";
+echo "== Test 7.1: single-projects.php — سینگل کامل پروژه ==\n";
 
-// TODO(test): در گام WRITE TEST، شروط Pass Conditions بالا به check() نگاشت می‌شوند.
-check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (در گام WRITE TEST تکمیل شود)');
+/* گام WRITE TEST — شروط Pass Conditions این تسک:
+// check(<expr>, 'رندر fixture با همه بخش‌ها');
+// check(<expr>, 'متاهای پروژه صحیح نمایش داده شوند');
+// check(<expr>, 'محصولات مرتبط از متا');
+// check(<expr>, 'گالری lightbox کار کند');
+*/
 
-echo "\nResult: {$passes} passed, " . count($failures) . " failed\n";
-exit(empty($failures) && $passes > 0 ? 0 : 1);
+check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 7.1)');
+
+echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
+exit((empty($failures) && $passes > 0) ? 0 : 1);

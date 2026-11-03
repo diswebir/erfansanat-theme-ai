@@ -1,0 +1,35 @@
+<?php
+/**
+ * Test 3.4 — Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی
+ * فاز: 03 — معماری داده‌ها: CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده
+ * اجرا: /home/user/tools/php -f phase-03-cpt-and-legacy-meta/tests/test-task-04.php
+ *
+ * نحوه کار: PHP 8.4 wasm بدون وردپرس اجرا می‌شود؛ برای تست کلاس‌هایی که به توابع
+ * وردپرس نیاز دارند ابتدا stubها را require کنید:
+ *   require '/home/user/erfansanat-theme-ai/temp/harness/wp-stubs.php';
+ * (بعد از Task 1.8) — رفتار stubها مستند: temp/harness/README.md
+ */
+declare(strict_types=1);
+
+error_reporting(E_ALL);
+$failures = [];
+$passes   = 0;
+function check(bool $cond, string $label): void {
+    global $failures, $passes;
+    if ($cond) { $passes++; echo "  PASS  $label\n"; }
+    else       { $failures[] = $label; echo "  FAIL  $label\n"; }
+}
+
+echo "== Test 3.4: Rewrite تکسونومی‌های ووکامرس (product_cat با with_front=true) و Flush نهایی ==\n";
+
+/* گام WRITE TEST — شروط Pass Conditions این تسک:
+// check(<expr>, 'پاس شدن php -l');
+// check(<expr>, 'فیلتر product_cat دقیقاً with_front=true و slug=product_cat');
+// check(<expr>, 'فیلتر product_tag با slug=product-tag');
+// check(<expr>, 'flush در activation زنجیره‌شده باشد');
+*/
+
+check(false, 'PLACEHOLDER — این تست هنوز پیاده‌سازی نشده است (گام WRITE TEST تسک 3.4)');
+
+echo "\nنتیجه: {$passes} پاس، " . count($failures) . " رد\n";
+exit((empty($failures) && $passes > 0) ? 0 : 1);

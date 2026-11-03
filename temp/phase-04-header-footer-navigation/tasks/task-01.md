@@ -1,25 +1,42 @@
-# Task 04.01 — برش header.php و footer.php
+# Task 4.1 — استخراج فایل‌های مرجع هدر/فوتر و سند نقشه برش
 
-**فاز:** phase-04-header-footer-navigation · **وضعیت:** `[PENDING]`
+**فاز:** 04 — هدر، مگامنو، منوی موبایل و فوتر
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-04-header-footer-navigation/tests/test-task-01.php`
 
-## شرح تسک
-- برش دقیق بلوک `<header data-navbar-header=…>` میرور به `header.php` و بلوک `<footer>` به `footer.php`
-- تعویض مقادیر هاردکد با تنظیمات داشبورد (لوگو، تلفن، آدرس، سوشال، متن فوتر، لینک‌های ستون‌ها) + Fallback میرور
-- تگ‌های Hreflang در `<head>` از متاهای hrefmeta_* (هماهنگ با hreflangpch)
-- فراخوانی استاندارد wp_head(), language_attributes(), body_class(), wp_body_open(), wp_footer()
-- لوگو: custom-logo یا تنظیم داشبورد با fallback ese-logo.svg میرور
+## 🎯 هدف
+قبل از برش، مرجع ثابت DOM و نقشه بلوک‌ها مستند شود تا تست‌های مقایسه‌ای فاز معیار داشته باشند
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- (تسک شروع‌کننده — بدون وابستگی)
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] تطابق ۱۰۰٪ DOM هدر/فوتر خروجی با میرور (مقایسه خط‌به‌خط ساختار، صرف‌نظر از محتوای داینامیک)
-- [ ] بدون خطای PHP؛ حفظ همه data-hookها
+## 📎 مراجع (منابع برش/استخراج)
+- uploads/static-mirror/index.html (هدر ~۶۷KB، فوتر ~۷KB)
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `temp/phase-04-header-footer-navigation/refs/header-ref.html`
+- `temp/phase-04-header-footer-navigation/refs/footer-ref.html`
+- `temp/phase-04-header-footer-navigation/refs/HEADER_MAP.md`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. استخراج بلوک header کامل از index.html به header-ref.html و footer به footer-ref.html
+2. مستند HEADER_MAP.md: فهرست بلوک‌ها به ترتیب (نوار بالا؟ — بررسی، لوگو، ناو دسکتاپ، اکشن‌ها، سایدبار موبایل، مودال جستجو) + هر data-hook و نقطه داینامیک‌سازی (لینک‌ها، شمارنده سبد، متن‌ها)
+3. مستند کلاس‌های CSS کلیدی مورد نیاز آیتم‌های منو (برای CSS Classes در فهرست‌های وردپرس)
+4. ثبت تصمیم نقاط جایگزینی با آپشن/منو (جدول جایگزینی)
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- ref دقیقاً از میرور (byte-exact بلوک)
+- هیچ تغییر ظاهری در ref
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] دو فایل ref موجود و با میرور یکسان باشند
+- [ ] HEADER_MAP.md همه data-hookهای هدر/فوتر را فهرست کند
+- [ ] جدول نقاط داینامیک کامل باشد
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-04-header-footer-navigation/tests/test-task-01.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

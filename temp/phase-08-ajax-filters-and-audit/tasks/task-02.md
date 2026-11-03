@@ -1,23 +1,43 @@
-# Task 08.02 — سیستم مدیریت فرم‌ها
+# Task 8.2 — جستجوی زنده (Live Search) جایگزین JetSearch
 
-**فاز:** phase-08-ajax-filters-and-audit · **وضعیت:** `[PENDING]`
+**فاز:** 08 — جایگزینی Native JetSearch/JetSmartFilters، فرم‌ها و ممیزی نهایی
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-08-ajax-filters-and-audit/tests/test-task-02.php`
 
-## شرح تسک
-- فرم‌ها: تماس با ما، استعلام قیمت (پاپ‌آپ)، recruitment، client-feedback — با Honeypot + Nonce + rate limit
-- ذخیره امن ورودی‌ها (CPT داخلی غیرعمومی یا آپشن امن) + لیست/وضعیت خوانده‌شده در ادمین + ایمیل اطلاع‌رسانی (wp_mail)
-- اتصال به contact-form میرور و فرم استعلام سینگل محصول
+## 🎯 هدف
+جستجوی اینستنت محصولات/پروژه‌ها/مقالات در مودال جستجوی هدر با رندر partial سمت سرور
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 8.1
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] ثبت فرم از فرانت با اعتبارسنجی/هانی‌پات (تست امنیتی)
-- [ ] نمایش پیام‌ها در منوی اختصاصی ادمین + علامت‌گذاری خوانده‌شده
+## 📎 مراجع (منابع برش/استخراج)
+- مودال جستجوی هدر میرور (search-modal، global-search-input، search-item)
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `inc/Ajax/LiveSearch.php`
+- `assets/js/live-search.js (نازک روی hookهای میرور)`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. هندلر es_live_search: پارامتر q + type — کوئری سه‌گانه (product/projects/post) هرکدام سقف ۵ با no_found_rows؛ highlight کلیدواژه با esc (بدون تزریق HTML کاربر)
+2. رندر ردیف‌های search-item میرور سمت سرور (تصویر/عنوان/قیمت/نوع) — partial HTML
+3. live-search.js: اتصال debounce ۲۵۰ms به input موجود (hook حفظ)، نمایش/پنهان مودال مطابق JS میرور؛ نتیجه خالی → پیام میرور
+4. کش کوتاه transient برای کوئری‌های تکراری (۶۰ ثانیه)
+5. هدف < ۲۰۰ms روی دیتاست تستی (بنچمارک در تست)
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- همه خروجی escaping
+- بدون افزودن کتابخانه
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] پاسخ partial شامل markup میرور search-item
+- [ ] XSS ورودی q ایمن (تست payload)
+- [ ] کش کار کند
+- [ ] بنچمارک < ۲۰۰ms روی fixture
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-08-ajax-filters-and-audit/tests/test-task-02.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

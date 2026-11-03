@@ -1,26 +1,41 @@
-# Task 02.03 — موتور SectionManager برای برگه‌ها
+# Task 2.3 — تب «هدر و لوگو» + نوار اعلان — فیلدها و Fallback دقیق میرور
 
-**فاز:** phase-02-custom-admin-dashboard · **وضعیت:** `[PENDING]`
+**فاز:** 02 — فریم‌ورک داشبورد اختصاصی ادمین و Section Builder
+**وضعیت:** `[PENDING]`
+**تست:** `temp/phase-02-custom-admin-dashboard/tests/test-task-03.php`
 
-## شرح تسک
-- ساخت `inc/Admin/SectionManager.php` — متاباکس روی برگه‌ها: لیست سکشن‌ها با toggle فعال/غیرفعال، Drag & Drop ترتیب، ویرایش فیلدها
-- پشتیبانی فیلدهای: media, url, text, textarea, color, icon, select, repeater
-- ذخیره ساختارمند در post meta (کلید اختصاصی `es_sections_{page_slug}`) + سازگار با JSON
-- API رندر: تابع `es_render_sections($post_id)` که بر اساس ترتیب/وضعیت، template-parts را include می‌کند
-- پیکربندی سکشن‌های صفحه اصلی، درباره ما، تماس با ما و لندینگ‌ها
+## 🎯 هدف
+مدیریت لوگو، هدر چسبان، دکمه‌های هدر و نوار اعلان با پیش‌فرض‌هایی که عین میرور است
 
-## فایل‌های هدف
-- (در گام THINK & PLAN دقیق می‌شود)
+## 🔗 وابستگی‌ها
+- Task 2.2
 
-## Pass Conditions (چک‌لیست پاس شدن)
-- [ ] ذخیره/خواندن متا بدون از دست رفتن Repeaterها
-- [ ] تغییر ترتیب در ادمین → ترتیب رندر فرانت عوض می‌شود (تست واحد روی آرایه سکشن)
-- [ ] سکشن غیرفعال رندر نمی‌شود
+## 📎 مراجع (منابع برش/استخراج)
+- uploads/static-mirror/index.html بلوک header (لوگو/دکمه‌ها)
+- ese-logo.svg
 
-## چرخه اجرا
-- [ ] READ MEMORY
-- [ ] THINK & PLAN
-- [ ] WRITE TEST
-- [ ] IMPLEMENT
-- [ ] RUN TEST & CHECK CONDITIONS
-- [ ] UPDATE MEMORY + COMMIT
+## 📤 فایل‌های خروجی
+- `بسط ThemeOptions.php (schema تب header)`
+
+## 🛠 مراحل پیاده‌سازی (گام به گام)
+1. schema تب header: logo (media)، logo_alt_text، sticky_header (switch، پیش‌فرض on مطابق data-navbar-header)، search_toggle (switch on)، cart_toggle (switch on)
+2. نوار اعلان: announcement_enabled (پیش‌فرض off — میرور نوار ندارد)، announcement_text، announcement_link، announcement_bg_color
+3. اتصال پیش‌فرض‌ها از طریق فیلتر es_default_options (مقدار logo پیش‌فرض = مسیر assets/images/ese-logo.svg)
+4. مستند هر فیلد با help_text فارسی
+
+## ⛔ محدودیت‌ها و خط‌قرمزها
+- پیش‌فرض‌ها باید دقیقاً ظاهر/رفتار میرور را بازتولید کنند
+
+## ✅ Pass Conditions (چک‌لیست پاس شدن)
+- [ ] پاس شدن php -l
+- [ ] schema تب header شامل همه فیلدهای فوق باشد
+- [ ] پیش‌فرض sticky_header و search/cart toggle = on باشد
+- [ ] پیش‌فرض logo به ese-logo.svg اشاره کند
+
+## 🔄 چرخه اجرای الزامی (۶ گام)
+- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [ ] WRITE TEST — تکمیل temp/phase-02-custom-admin-dashboard/tests/test-task-03.php
+- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
