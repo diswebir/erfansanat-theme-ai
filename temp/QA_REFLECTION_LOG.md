@@ -171,3 +171,16 @@
 | تست کل Phase تا اینجا | 42 PASS / 0 FAIL / 35 PENDING در 15 فایل؛ 11 فایل pending مربوط به کارهای آینده است |
 | باگ تست/اصلاح | نام متغیرهای تست (`$files`/`$file`) با متغیر حلقه‌ی `run-phase.php` تصادم داشت و گزارش را به‌هم می‌ریخت؛ به `$dependency_files`/`$dep_file` تغییر کرد |
 | وضعیت | Task 2.4 `[PASSED]`; بعدی: Task 2.5 |
+
+
+## Phase 2 — Task 2.5 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | 5 assertion ابتدا fail شد (template, JS, validation, CSV, clear) |
+| پیاده‌سازی | `wp.media` picker تک/چندتایی، server attachment validation، media template و enqueue مشروط |
+| تست PHP | **5 PASS / 0 FAIL / 0 PENDING**؛ در کنارش Tasks 2.2 و 2.3 هم سبز شدند |
+| تست رفتاری JS | `node tools/harness/test-media-picker.mjs` → انتخاب ID، پیش‌نمایش، حذف، CSV چندتایی، جلوگیری از `javascript:` PASS |
+| Syntax | `node --check theme/assets/admin/media.js` → موفق |
+| خوداصلاحی | Media preview ابتدا صرفاً CSV را parse می‌کرد و attachment ناموجود را هم نگه می‌داشت؛ اکنون renderer و sanitizer هر دو post_type و در صورت نیاز MIME را اعتبارسنجی می‌کنند |
+| وضعیت | Task 2.5 `[PASSED]`; بعدی: Task 2.6 |

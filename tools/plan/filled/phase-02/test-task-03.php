@@ -13,12 +13,13 @@ if ( ! function_exists( 'esc_url' ) ) { function esc_url( $s ) { return htmlspec
 if ( ! function_exists( 'sanitize_key' ) ) { function sanitize_key( $s ) { return preg_replace('/[^a-z0-9_\\-]/', '', strtolower((string)$s)); } }
 if ( ! function_exists( 'sanitize_html_class' ) ) { function sanitize_html_class( $s ) { return preg_replace('/[^a-zA-Z0-9_-]/', '', (string)$s); } }
 if ( ! function_exists( 'absint' ) ) { function absint( $v ) { return abs((int)$v); } }
+if ( ! function_exists( 'get_post' ) ) { function get_post( $id ) { return 12 === (int) $id ? (object) array( 'ID' => 12, 'post_type' => 'attachment' ) : null; } }
+if ( ! function_exists( 'wp_attachment_is_image' ) ) { function wp_attachment_is_image( $id ) { return 12 === (int) $id; } }
 if ( ! function_exists( 'wp_nonce_field' ) ) { function wp_nonce_field( $action, $name ) { return '<input type="hidden" name="' . esc_attr( $name ) . '" value="nonce">'; } }
 if ( ! function_exists( 'sanitize_text_field' ) ) { function sanitize_text_field( $v ) { return is_scalar( $v ) ? trim(strip_tags((string)$v)) : ''; } }
 if ( ! function_exists( 'wp_kses_post' ) ) { function wp_kses_post( $v ) { return strip_tags((string)$v, '<p><a><strong><em><br>'); } }
 if ( ! function_exists( 'esc_url_raw' ) ) { function esc_url_raw( $v ) { return preg_match('~^https?://~i', (string)$v) ? filter_var($v, FILTER_SANITIZE_URL) : ''; } }
 if ( ! function_exists( 'sanitize_email' ) ) { function sanitize_email( $v ) { return filter_var((string)$v, FILTER_SANITIZE_EMAIL) ?: ''; } }
-if ( ! function_exists( 'absint' ) ) { function absint( $v ) { return abs((int)$v); } }
 if ( ! function_exists( 'sanitize_hex_color' ) ) { function sanitize_hex_color( $v ) { return preg_match('/^#[a-f0-9]{3}(?:[a-f0-9]{3})?$/i', (string)$v) ? $v : null; } }
 
 $fields_dir = ES_REPO_ROOT . '/theme/inc/Admin/Fields/';
@@ -62,7 +63,7 @@ if ( $files_exist ) {
 	check( 'select rejects a value outside its whitelist', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'select', array( 'options' => array( 'a' => 'A', 'b' => 'B' ), 'default' => 'a' ) ), 'javascript:' ) === 'a' );
 	check( 'toggle stores only a boolean', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'toggle' ), 'yes' ) === true && \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'toggle' ), '0' ) === false );
 	check( 'checkbox-group whitelists and deduplicates values', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'checkbox-group', array( 'options' => array( 'a' => 'A', 'b' => 'B' ) ) ), array( 'a', 'bad', 'a' ) ) === array( 'a' ) );
-	check( 'media sanitization accepts only a positive attachment identifier', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media' ), '12abc' ) === 12 && \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media' ), '-1' ) === 1 );
+	check( 'media sanitization accepts only a positive attachment identifier', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media', array( 'default' => 0 ) ), '12' ) === 12 && \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'media', array( 'default' => 0 ) ), '999999' ) === 0 );
 	check( 'repeater sanitizer filters nested fields and drops empty rows', fn() => \ErfanSanat\Theme\Admin\Fields\Sanitizer::sanitize( es_test_field( 'x', 'repeater', array( 'fields' => array( array( 'id' => 'label', 'type' => 'text', 'label' => 'Label' ) ) ) ), array( 'item-0' => array( 'label' => 'ok<script>', 'surprise' => 'bad' ), 'item-1' => array( 'label' => '' ) ) ) === array( 'item-0' => array( 'label' => 'ok' ) ) );
 } else {
 	for ( $i = 1; $i < 13; $i++ ) { check( 'field framework condition ' . $i, fn() => false ); }

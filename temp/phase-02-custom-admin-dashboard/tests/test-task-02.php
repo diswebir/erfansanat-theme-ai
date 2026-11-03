@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', '/wp/' ); }
 $GLOBALS['es_mock_user_can'] = true;
 $GLOBALS['es_mock_admin_pages'] = array();
 $GLOBALS['es_mock_enqueued'] = array();
+$GLOBALS['es_wp_media_enqueued'] = 0;
+if ( ! function_exists( 'wp_enqueue_media' ) ) { function wp_enqueue_media() { $GLOBALS['es_wp_media_enqueued']++; } }
 $GLOBALS['es_mock_actions'] = $GLOBALS['es_mock_actions'] ?? array();
 if ( ! function_exists( 'add_action' ) ) { function add_action( $name, $callback ) { $GLOBALS['es_mock_actions'][ $name ][] = $callback; } }
 if ( ! function_exists( 'current_user_can' ) ) { function current_user_can( $cap ) { return ! empty( $GLOBALS['es_mock_user_can'] ) && 'manage_options' === $cap; } }
@@ -58,9 +60,9 @@ if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' )
 	$GLOBALS['es_mock_user_can'] = true;
 
 	$class::enqueue_assets( 'plugins.php' );
-	check( 'assets are not enqueued on unrelated admin pages', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 0 );
+	check( 'theme assets and media library stay off unrelated admin pages', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 0 && $GLOBALS['es_wp_media_enqueued'] === 0 );
 	$class::enqueue_assets( 'toplevel_page_erfansanat-theme' );
-	check( 'CSS and JS enqueue on the theme dashboard screen', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 2 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][1][0] === 'script' );
+	check( 'CSS, dashboard JS and media JS enqueue on the theme dashboard screen only', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 3 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][1][0] === 'script' && $GLOBALS['es_mock_enqueued'][2][1][0] === 'es-admin-media' && $GLOBALS['es_wp_media_enqueued'] === 1 );
 	$callback = $top[0]['args'][4] ?? null;
 	if ( is_callable( $callback ) ) { ob_start(); $callback(); $html = ob_get_clean(); } else { $html = ''; }
 	check( 'dashboard renderer outputs an escaped RTL admin shell', fn() => str_contains( $html, 'class="es-admin' ) && str_contains( $html, 'dir="rtl"' ) );

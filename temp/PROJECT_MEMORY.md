@@ -6,7 +6,7 @@
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.4 — ذخیره امن AJAX (9/9 assertions؛ مجموع 42 PASS، 0 FAIL، 35 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.5 — Media Picker (5/5 assertions؛ مجموع 47 PASS، 0 FAIL، 31 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -169,3 +169,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `Options::update_many()` چند مقدار را در یک `update_option('erfansanat_theme_options', ...)` ذخیره می‌کند؛ پاسخ `wp_send_json_success/error` و hook `es_options_changed` ارائه می‌شود.
 - تست: **9 PASS / 0 FAIL / 0 PENDING**؛ suite 15 فایلی فعلی: **42 PASS / 0 FAIL / 35 PENDING** (تسک‌های هنوز پیاده‌نشده).
 - وضعیت بعدی: Task 2.5 — Media Picker مبتنی بر `wp.media` و اعتبارسنجی attachment.
+
+
+### Task 2.5 — PASS
+- Media control واقعی در `inc/Admin/Fields/types/media.php` + adapter سازگار با autoloader؛ hidden field برای ID یا CSV، پیش‌نمایش، انتخاب/حذف و `aria-live`.
+- `assets/admin/media.js` با wp.media، تک‌انتخاب و چندانتخاب، ساخت DOM از nodeها (نه HTML ناامن)، eventهای input/change، و allowlist آدرس‌های http/https برای preview/link.
+- `wp_enqueue_media()` و `media.js` فقط در صفحه‌های داشبورد قالب enqueue می‌شوند.
+- Sanitizer رسانه اکنون attachment واقعی را بررسی می‌کند، در حالت image نوع تصویر را الزام می‌کند و CSV چندتایی را یکتا/پاک می‌سازد؛ URL اختیاری برای فیلد تک‌رسانه پشتیبانی می‌شود.
+- تست PHP: **5 PASS / 0 FAIL / 0 PENDING**؛ harness رفتاری JS با DOM mock: تک/چند انتخاب، پیش‌نمایش، پاک‌کردن، reject کردن `javascript:` همگی PASS؛ `node --check` موفق.
+- تست قدیمی Task 2.3 به‌روزرسانی شد تا media validation فعلی را با fixture attachment واقعی بسنجد.
+- وضعیت بعدی: Task 2.6 — Repeater Codec و drag-and-drop بی‌وابستگی.

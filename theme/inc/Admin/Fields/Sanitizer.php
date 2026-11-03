@@ -84,13 +84,55 @@ final class Sanitizer {
 				return $clean;
 
 			case 'media':
-				return is_scalar( $value ) ? absint( $value ) : 0;
+				return self::sanitize_media( $field, $value, $default );
 
 			case 'repeater':
 				return self::sanitize_repeater( $field, $value );
 		}
 
 		return $default;
+	}
+
+	/** Validate attachment IDs and return either one ID or a CSV for multiple media. */
+	private static function sanitize_media( array $field, $value, $default ) {
+		$raw_ids = is_array( $value ) ? $value : ( is_scalar( $value ) ? explode( ',', (string) $value ) : array() );
+		$ids     = array();
+		foreach ( $raw_ids as $raw_id ) {
+			if ( ! is_scalar( $raw_id ) || ! preg_match( '/^[1-9][0-9]*$/', trim( (string) $raw_id ) ) ) {
+				continue;
+			}
+			$id = (int) $raw_id;
+			if ( self::valid_attachment( $id, $field ) && ! in_array( $id, $ids, true ) ) {
+				$ids[] = $id;
+			}
+			if ( empty( $field['multiple'] ) ) {
+				break;
+			}
+		}
+		if ( ! $ids ) {
+			return $default;
+		}
+		if ( ! empty( $field['multiple'] ) ) {
+			return implode( ',', $ids );
+		}
+		if ( 'url' === ( $field['return'] ?? '' ) && function_exists( 'wp_get_attachment_url' ) ) {
+			$url = wp_get_attachment_url( $ids[0] );
+			return $url ? esc_url_raw( $url ) : $default;
+		}
+		return $ids[0];
+	}
+
+	/** An attachment must exist; image fields additionally require image MIME. */
+	private static function valid_attachment( int $id, array $field ): bool {
+		if ( $id < 1 || ! function_exists( 'get_post' ) ) {
+			return false;
+		}
+		$post = get_post( $id );
+		if ( ! $post || 'attachment' !== ( $post->post_type ?? '' ) ) {
+			return false;
+		}
+		return 'image' !== ( $field['media_kind'] ?? '' )
+			|| ( function_exists( 'wp_attachment_is_image' ) && wp_attachment_is_image( $id ) );
 	}
 
 	/** Sanitize nested repeater rows while preserving JetEngine item-N keys. */

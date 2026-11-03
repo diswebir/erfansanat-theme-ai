@@ -95,8 +95,10 @@ final class AdminMenu implements ModuleInterface {
 
 		$base    = function_exists( 'get_template_directory_uri' ) ? get_template_directory_uri() : '';
 		$version = defined( 'ES_THEME_VERSION' ) ? ES_THEME_VERSION : '1.0.0';
+		wp_enqueue_media();
 		wp_enqueue_style( 'es-admin', $base . '/assets/admin/admin.css', array(), $version );
 		wp_enqueue_script( 'es-admin', $base . '/assets/admin/admin.js', array(), $version, true );
+		wp_enqueue_script( 'es-admin-media', $base . '/assets/admin/media.js', array(), $version, true );
 	}
 
 	/** Check a complete WordPress hook suffix, not a loose substring. */
