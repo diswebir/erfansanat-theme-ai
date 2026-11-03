@@ -209,3 +209,15 @@
 | Syntax / diff | `node --check theme/assets/admin/admin.js` و `git diff --check` موفق |
 | خوداصلاحی | runner چند تسک در یک PHP process اجرا می‌کند؛ تست مستقل‌سازی options/capability را صریح کرد تا نتیجه به state قبلی Task 2.1/2.2 وابسته نباشد. در تست فاز ابتدا `wp_localize_script` stub نشده بود؛ وابستگی اضافه حذف شد و admin از `ajaxurl` استاندارد وردپرس استفاده می‌کند |
 | وضعیت | Task 2.7 `[PASSED]`; بعدی: Task 2.8 |
+
+
+## Phase 2 — Task 2.8 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 5 شرطی در نبود tab/inline CSS ابتدا **0 PASS / 5 FAIL / 0 PENDING** داد |
+| پیاده‌سازی | `BrandTab`, `InlineCss`, اتصال route صفحه برند و hook `wp_head`; CSS فقط در صورت override معتبر |
+| تست نهایی | **5 PASS / 0 FAIL / 0 PENDING**؛ default بدون style، color form/nonce، CSS scoped، رد ورودی نامعتبر و حفظ مقدار قبلی |
+| Suite Phase 2 | **70 PASS / 0 FAIL / 21 PENDING**؛ pendingها Tasks 2.9–2.15 |
+| محافظت | محدودسازی خروجی به `sanitize_hex_color`; override روی wrapper موجود `#es-page.es-site`, بدون تغییر stylesheet یا `!important` |
+| وضعیت | Task 2.8 `[PASSED]`; بعدی: Task 2.9 |

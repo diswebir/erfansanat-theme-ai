@@ -7,6 +7,7 @@
 
 namespace ErfanSanat\Theme\Admin;
 
+use ErfanSanat\Theme\Admin\Tabs\BrandTab;
 use ErfanSanat\Theme\Admin\Tabs\FooterTab;
 use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
@@ -169,6 +170,10 @@ final class AdminMenu implements ModuleInterface {
 
 		if ( 'es-theme-settings' === $slug ) {
 			echo self::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
+			return;
+		}
+		if ( 'es-theme-brand' === $slug ) {
+			echo BrandTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
 			return;
 		}
 

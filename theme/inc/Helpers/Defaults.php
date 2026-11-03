@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Defaults {
 
+	public const BRAND_COLOR = '#047857';
+
 	/**
 	 * Return the default option tree.
 	 *
@@ -52,7 +54,7 @@ final class Defaults {
 				),
 			),
 			'brand' => array(
-				'color'   => '',
+				'color'   => self::BRAND_COLOR,
 				'heading' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE)',
 			),
 		);

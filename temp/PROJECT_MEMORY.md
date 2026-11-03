@@ -186,7 +186,7 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `assets/admin/repeater.js` is dependency-free: add/remove, native drag/drop, keyboard arrows and up/down buttons all reindex both IDs and `name` attributes. The script enqueues only on theme admin screens.
 - `Sanitizer` now uses `RepeaterCodec` when available and continues to discard empty rows / sanitize schema-defined children.
 - Tests: **7 PASS / 0 FAIL / 0 PENDING**. The Node DOM mock verified reorder, deletion, add and stable posted names. Complete current phase runner: **54 PASS / 0 FAIL / 27 PENDING** (9 remaining tasks not implemented yet).
-- Next: Task 2.8 — brand/color tab; no Phase 3 work until Gate 2 review and approval.
+- Next: Task 2.9 — archive settings; no Phase 3 work until Gate 2 review and approval.
 
 
 ### Task 2.7 — PASS
@@ -195,4 +195,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - تنظیمات سراسری اکنون UI تب‌های Header/Footer قابل‌دسترس، nonce و فرم یکپارچه AJAX دارد؛ `admin.js` کلیک/کلیدهای جهت/Home/End، submit به `es_save_options` و پیام وضعیت را پشتیبانی می‌کند.
 - URLها به HTTP/HTTPS محدودند؛ URL اجتماعی باید مطلق باشد و مقدار نامعتبر پیش از ذخیره در whitelist خالی می‌شود. `HeaderTab::render_announcement()` هنگام خاموش بودن اعلان، کل خروجی را `''` برمی‌گرداند.
 - تست اختصاصی: **11 PASS / 0 FAIL / 0 PENDING**؛ تست syntax جاوااسکریپت موفق. کل suite فاز: **65 PASS / 0 FAIL / 24 PENDING** در 15 فایل؛ 8 تسک آینده عمداً PENDING هستند.
-- ادامه بعدی: Task 2.8؛ پس از اتمام Phase 2 در Gate 2 توقف و برای Phase 3 منتظر تأیید صریح کاربر بمان.
+- ادامه بعدی پس از تکمیل Task 2.8: Task 2.9؛ پس از اتمام Phase 2 در Gate 2 توقف و برای Phase 3 منتظر تأیید صریح کاربر بمان.
+
+
+### Task 2.8 — PASS
+- `BrandTab` گزینه رنگ را در صفحه اختصاصی برند/رنگ ثبت می‌کند؛ `AdminMenu::render_section()` به این فرم متصل است و فرم nonce/AJAX دارد.
+- رنگ زمردی ثابت `#047857` از Defaults به‌عنوان پالت پایه است؛ بدون override هیچ `<style>` اضافه‌ای منتشر نمی‌شود.
+- `InlineCss` فقط رنگ hex معتبر و متفاوت از پالت پایه را روی wrapper موجود `#es-page.es-site` در متغیر `--es-brand` اعمال می‌کند؛ `styles.css` و کلاس‌های DOM دست‌نخورده‌اند و هیچ `!important` تولید نمی‌شود.
+- payload رنگ نامعتبر با `reject_invalid_save` از whitelist حذف می‌شود تا مقدار ذخیره‌شده قبلی باقی بماند.
+- تست اختصاصی: **5 PASS / 0 FAIL / 0 PENDING**؛ کل Suite Phase 2: **70 PASS / 0 FAIL / 21 PENDING**؛ pendingها فقط Tasks 2.9–2.15 هستند.
+- ادامه: Task 2.9؛ پس از Task 2.15 در Gate 2 توقف و برای Phase 3 منتظر تأیید کاربر بمان.

@@ -9,11 +9,13 @@ namespace ErfanSanat\Theme;
 
 use ErfanSanat\Theme\Admin\AdminMenu;
 use ErfanSanat\Theme\Admin\AjaxSave;
+use ErfanSanat\Theme\Admin\Tabs\BrandTab;
 use ErfanSanat\Theme\Admin\Tabs\FooterTab;
 use ErfanSanat\Theme\Admin\Tabs\HeaderTab;
 use ErfanSanat\Theme\Assets\AssetManager;
 use ErfanSanat\Theme\Assets\Preload;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
+use ErfanSanat\Theme\Frontend\InlineCss;
 use ErfanSanat\Theme\Performance\DeBloat;
 use ErfanSanat\Theme\Setup\Menus;
 use ErfanSanat\Theme\Setup\ThemeSupport;
@@ -70,6 +72,8 @@ final class Theme {
 
 		$this->register_module( 'theme-support', new ThemeSupport() );
 		$this->register_module( 'admin-menu', new AdminMenu() );
+		$this->register_module( 'brand-tab', new BrandTab() );
+		$this->register_module( 'inline-css', new InlineCss() );
 		$this->register_module( 'header-tab', new HeaderTab() );
 		$this->register_module( 'footer-tab', new FooterTab() );
 		$this->register_module( 'ajax-save', new AjaxSave() );

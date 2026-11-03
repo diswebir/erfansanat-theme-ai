@@ -65,6 +65,9 @@ final class AjaxSave implements ModuleInterface {
 			$exists = false;
 			$value  = self::read_path( $payload, explode( '.', $id ), $exists );
 			if ( $exists ) {
+				if ( ! empty( $field['reject_invalid_save'] ) && 'color' === ( $field['type'] ?? '' ) && ( ! is_scalar( $value ) || null === sanitize_hex_color( (string) $value ) ) ) {
+					continue;
+				}
 				$values[ $id ] = Sanitizer::sanitize( $field, $value );
 			}
 		}
