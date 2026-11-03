@@ -14,6 +14,7 @@ define( 'ERFANSANAT_THEME_DIR', get_template_directory() );
 define( 'ERFANSANAT_THEME_URI', get_template_directory_uri() );
 
 require_once ERFANSANAT_THEME_DIR . '/inc/Autoloader.php';
+require_once ERFANSANAT_THEME_DIR . '/inc/helpers.php';
 
 ErfanSanat\Theme\Autoloader::register();
 

@@ -13,7 +13,7 @@
 - Task 1.1: [PASSED] — ۹ تست PHPUnit/۵۳ assertion و ۱۴ بررسی HTTP.
 - Task 1.2: [PASSED] — ۱۱ تست PHPUnit/۴۵ assertion و ۳۲ بررسی HTTP.
 - Task 1.3: [PASSED] — ۱۲ تست PHPUnit/۶۹۰ assertion؛ ۳۷ بررسی HTTP اختصاصی.
-- Task 2.1: [PENDING] — هنوز اجرا نشده است.
+- Task 2.1: [PASSED] — ۹ تست PHPUnit/۴۲ assertion و ۱۴ بررسی HTTP.
 - Task 2.2: [PENDING] — هنوز اجرا نشده است.
 - Task 2.3: [PENDING] — هنوز اجرا نشده است.
 - Task 3.1: [PENDING] — هنوز اجرا نشده است.
@@ -89,3 +89,15 @@
   6. `media()` برای مسیر نامعتبر آرایه برمی‌گرداند نه رشته؛ assertion تست اصلاح شد.
 - شواهد نهایی: `run-phase-01-tests.sh` → ۹+۱۱+۱۲ تست PHPUnit با ۵۳+۴۵+۶۹۰ assertion و ۸۳/۸۳ بررسی HTTP؛ `tools/test-local.sh` و `tools/test-stage0.sh` هم دوباره پاس شدند.
 - محدودیت: آزمایش واقعی روی LiteSpeed، CDN و کش مرورگر انجام نشده؛ `filemtime` در استقرار چندسروره باید با نسخهٔ ثابت جایگزین یا همگام شود.
+
+## 2026-11-03 — Task 2.1 (زیرساخت تنظیمات و ذخیره AJAX)
+
+- افزوده شد: `inc/Settings.php`، `inc/helpers.php`، `inc/Admin/ThemeOptions.php`، `assets/admin/options.{js,css}`.
+- باگ‌های واقعی که آزمون گرفت:
+  1. `wp_ajax_*` هنگام بارگذاری قالب ثبت می‌شد، در حالی که مدیریت hooks را بعد از `admin_init` لازم دارد؛ endpoint عملاً در دسترس نبود. ثبت به `admin_init` منتقل شد.
+  2. مقدارهای ذخیره‌شده فقط از نظر «کلید» فیلتر می‌شدند؛ یک ردیف دست‌کاری‌شده می‌توانست آرایه را به template بدهد. `is_valid_stored_value()` اضافه شد و در خواندن fallback می‌دهد.
+  3. تست اولیه `self::factory()` را صدا می‌زد که در بوت‌استرپ ساده وجود ندارد؛ کاربر آزمایشی با `wp_insert_user` ساخته می‌شود.
+  4. `check-http.py` اولین nonce صفحه را برمی‌داشت (nonce مربوط به Heartbeat)؛ اکنون فقط payload اختصاصی `erfansanatAdmin` را می‌خواند.
+  5. آزمون PHPUnit برای endpoint نیاز به جایگزینی `wp_send_json_*` داشت؛ یک «sender» تزریقی در کلاس اضافه شد تا `handle_save()` بدون هدر و exit واقعی اجرا شود.
+- شواهد: PHPUnit «OK (9 tests, 42 assertions)» و ۱۴/۱۴ بررسی HTTP؛ PHPCS بدون خطا/هشدار.
+- محدودیت: رفتار واقعی شبکه/مرورگر برای AJAX در PHP-Wasm آزمون نشده و `fetch`/Media Library فقط با بازبینی کد و رندر بررسی شده‌اند.

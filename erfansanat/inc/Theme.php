@@ -45,6 +45,11 @@ final class Theme {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 		$this->boot_modules();
+
+		if ( is_admin() ) {
+			\ErfanSanat\Theme\Admin\ThemeOptions::register();
+			add_action( 'admin_init', array( \ErfanSanat\Theme\Admin\ThemeOptions::class, 'register_ajax' ) );
+		}
 	}
 
 	/**
