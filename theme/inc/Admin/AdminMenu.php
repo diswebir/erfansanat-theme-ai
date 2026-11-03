@@ -109,6 +109,10 @@ final class AdminMenu implements ModuleInterface {
 		wp_enqueue_script( 'es-admin', $base . '/assets/admin/admin.js', array(), $version, true );
 		wp_enqueue_script( 'es-admin-media', $base . '/assets/admin/media.js', array(), $version, true );
 		wp_enqueue_script( 'es-admin-repeater', $base . '/assets/admin/repeater.js', array(), $version, true );
+		if ( 'erfansanat-theme_page_es-theme-sections' === $hook_suffix ) {
+			wp_enqueue_style( 'es-admin-sections', $base . '/assets/admin/sections.css', array( 'es-admin' ), $version );
+			wp_enqueue_script( 'es-admin-sections', $base . '/assets/admin/sections.js', array( 'es-admin-repeater' ), $version, true );
+		}
 	}
 
 	/** Check a complete WordPress hook suffix, not a loose substring. */
@@ -188,6 +192,10 @@ final class AdminMenu implements ModuleInterface {
 		}
 		if ( 'es-theme-tools' === $slug ) {
 			echo ScriptsTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
+			return;
+		}
+		if ( 'es-theme-sections' === $slug ) {
+			echo SectionsPage::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes schema-backed fields and admin markup.
 			return;
 		}
 

@@ -257,3 +257,15 @@
 | Suite Phase 2 | **87 PASS / 0 FAIL / 12 PENDING**؛ pendingها فقط Tasks 2.12–2.15 هستند |
 | مرجع/محدوده | تعداد ۱۵ سکشن و ترتیب از `reference/static-mirror/index.html` و `temp/STATIC_TEMPLATE_MAP.md` تأیید شد؛ بدون تغییر markup یا static assets |
 | وضعیت | Task 2.11 `[PASSED]`; بعدی: Task 2.12 |
+
+## Phase 2 — Task 2.12 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 4 شرطی پیش از ساخت UI/assetها **0 PASS / 4 FAIL / 0 PENDING** بود |
+| پیاده‌سازی | `SectionsPage`، endpoint امن `es_save_sections`، builder drag/drop + keyboard، پنل editor و فیلدهای schema-backed؛ asset enqueue محدود به صفحه Sections |
+| تست PHP اختصاصی | **4 PASS / 0 FAIL / 0 PENDING**: پوشش ۱۵ کارت، nonce، active/available، ترتیب ذخیره‌شده، field render و keyboard controls |
+| تست رفتاری JS | `node tools/harness/test-sections-builder.mjs` → add/remove/move/toggle/disclosure/state serialization موفق؛ بدون خطای کنسول؛ `node --check` موفق |
+| Suite Phase 2 | **92 PASS / 0 FAIL / 9 PENDING**؛ pendingها فقط Tasks 2.13–2.15 هستند |
+| اصلاح مدل UI | برای حفظ تمایز «حذف از چیدمان» و toggle خاموش، `Store` حالا کلید محدود `available` را هم normalize می‌کند؛ `order` همچنان ترتیب همه Registry sections را برای Renderer نگه می‌دارد |
+| وضعیت | Task 2.12 `[PASSED]`; بعدی: Task 2.13 |

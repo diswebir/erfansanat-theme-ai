@@ -65,7 +65,7 @@
 | 2.9 | تب «آرشیوها» (تعداد ستون، تعداد آیتم، ترتیب، فیلترها) | `M` | `2.4` | `[PASSED]` | `inc/Admin/Tabs/ArchiveTab.php` +1 |
 | 2.10 | تب «اسکریپت‌ها و ابزار» (هدر/فوتر/کدهای سفارشی) | `M` | `2.4` | `[PASSED]` | `inc/Admin/Tabs/ScriptsTab.php` +1 |
 | 2.11 | Section Manager: Schema سکشن‌ها و متای `_es_sections` | `L` | `2.3` | `[PASSED]` | `inc/Sections/Registry.php` +8 |
-| 2.12 | ویرایشگر سکشن‌ها در ادمین + Drag&Drop | `L` | `2.11`، `2.6` | `[PENDING]` | `inc/Admin/SectionsPage.php` +2 |
+| 2.12 | ویرایشگر سکشن‌ها در ادمین + Drag&Drop | `L` | `2.11`، `2.6` | `[PASSED]` | `inc/Admin/SectionsPage.php` +6 |
 | 2.13 | Renderer سکشن‌ها در فرانت + fallback | `M` | `2.11` | `[PENDING]` | `inc/Sections/Renderer.php` |
 | 2.14 | صادرات/واردات تنظیمات و `Reset` ایمن | `M` | `2.1` | `[PENDING]` | `inc/Admin/ImportExport.php` |
 | 2.15 | گیت فاز ۲: تست امنیتی + عملکرد پنل | `S` | `2.1`، `2.2`، `2.3`، `2.4`، `2.5`، `2.6`، `2.7`، `2.8`، `2.9`، `2.10`، `2.11`، `2.12`، `2.13`، `2.14` | `[PENDING]` | `temp/phase-02-custom-admin-dashboard/tests/run-phase-02-tests.sh` |

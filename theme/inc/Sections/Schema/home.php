@@ -27,10 +27,26 @@ $section = static function ( string $key, string $label, string $template, array
 	);
 };
 
+$hero = $section( 'hero', 'بخش آغازین', 'template-parts/home/section-hero.php' );
+$hero['fields'][] = array( 'id' => 'button_label', 'type' => 'text', 'label' => 'متن دکمه', 'default' => '' );
+$hero['fields'][] = array( 'id' => 'button_url', 'type' => 'url', 'label' => 'پیوند دکمه', 'default' => '' );
+$hero['default_data']['button_label'] = '';
+$hero['default_data']['button_url'] = '';
+
+$gallery = $section( 'gallery', 'گالری نمونه‌کارها', 'template-parts/home/section-gallery.php' );
+$gallery['fields'][] = array(
+	'id' => 'items', 'type' => 'repeater', 'label' => 'موارد گالری', 'default' => array(),
+	'fields' => array(
+		array( 'id' => 'title', 'type' => 'text', 'label' => 'عنوان', 'default' => '' ),
+		array( 'id' => 'url', 'type' => 'url', 'label' => 'پیوند', 'default' => '' ),
+	),
+);
+$gallery['default_data']['items'] = array();
+
 return array(
-	'hero'          => $section( 'hero', 'بخش آغازین', 'template-parts/home/section-hero.php' ),
+	'hero'          => $hero,
 	'projects'      => $section( 'projects', 'پروژه‌های منتخب', 'template-parts/home/section-projects-intro.php' ),
-	'gallery'       => $section( 'gallery', 'گالری نمونه‌کارها', 'template-parts/home/section-gallery.php' ),
+	'gallery'       => $gallery,
 	'about'         => $section( 'about', 'درباره عرفان صنعت', 'template-parts/home/section-about.php' ),
 	'establishment' => $section( 'establishment', 'درباره تأسیس شرکت', 'template-parts/home/section-about-establishment.php' ),
 	'timeline'      => $section( 'timeline', 'تاریخچه شرکت', 'template-parts/home/section-timeline.php' ),

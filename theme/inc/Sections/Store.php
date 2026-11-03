@@ -42,7 +42,7 @@ final class Store {
 			$enabled[ $key ] = true;
 			$data[ $key ] = is_array( $section['default_data'] ?? null ) ? $section['default_data'] : array();
 		}
-		return array( 'order' => $order, 'enabled' => $enabled, 'data' => $data );
+		return array( 'order' => $order, 'enabled' => $enabled, 'data' => $data, 'available' => array() );
 	}
 
 	/** Merge and clean stored state; unregistered keys are discarded. */
@@ -66,19 +66,26 @@ final class Store {
 			}
 		}
 
+		$available_values = is_array( $state['available'] ?? null ) ? $state['available'] : array();
+		$available = array();
+		foreach ( $available_values as $key ) {
+			if ( is_string( $key ) && isset( $keys[ $key ] ) && ! in_array( $key, $available, true ) ) {
+				$available[] = $key;
+			}
+		}
 		$enabled_values = is_array( $state['enabled'] ?? null ) ? $state['enabled'] : array();
 		$data_values = is_array( $state['data'] ?? null ) ? $state['data'] : array();
 		$enabled = array();
 		$data = array();
 		foreach ( $sections as $key => $section ) {
-			$enabled[ $key ] = array_key_exists( $key, $enabled_values )
+			$enabled[ $key ] = in_array( $key, $available, true ) ? false : ( array_key_exists( $key, $enabled_values )
 				? self::to_bool( $enabled_values[ $key ] )
-				: true;
+				: true );
 			$defaults_for_section = $defaults['data'][ $key ];
 			$submitted = is_array( $data_values[ $key ] ?? null ) ? $data_values[ $key ] : array();
 			$data[ $key ] = self::sanitize_data( $section, $defaults_for_section, $submitted );
 		}
-		return array( 'order' => $order, 'enabled' => $enabled, 'data' => $data );
+		return array( 'order' => $order, 'enabled' => $enabled, 'data' => $data, 'available' => $available );
 	}
 
 	/** Sanitize known fields and preserve defaults for absent or invalid data. */

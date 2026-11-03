@@ -208,7 +208,7 @@ dict(id='2.11', size='L', deps=['2.3'],
 dict(id='2.12', size='L', deps=['2.11','2.6'],
   title='ویرایشگر سکشن‌ها در ادمین + Drag&Drop',
   desc='رابط پنل برای صفحه اصلی: لیست سکشن‌ها با Drag&Drop، toggle فعال‌بودن، `aria-expanded` برای ویرایش درجا، و فرم فیلدهای همان سکشن (متون/تصویر/دکمه/Repeater).',
-  files=['inc/Admin/SectionsPage.php','assets/admin/sections.js','assets/admin/sections.css'],
+  files=['inc/Admin/SectionsPage.php','assets/admin/sections.js','assets/admin/sections.css','inc/Admin/AdminMenu.php','inc/Theme.php','inc/Sections/Store.php','inc/Sections/Schema/home.php'],
   steps=[
    'لیست با دستگیره جابه‌جایی و ذخیره ترتیب از طریق همان AJAX.',
    'Toggle فعال/غیرفعال بدون رفرش.',

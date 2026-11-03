@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.11 پاس شده‌اند؛ ادامه Phase 2 از Task 2.12.
+**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.12 پاس شده‌اند؛ ادامه Phase 2 از Task 2.13.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.11 — Section Registry/Store (5 PASS / 0 FAIL؛ مجموع Phase 2: 87 PASS، 0 FAIL، 12 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.12 — Section Builder admin UI (4 PASS / 0 FAIL؛ مجموع Phase 2: 92 PASS، 0 FAIL، 9 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,8 +46,8 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 2 از Task 2.12: رابط Sections Builder با reorder، فعال‌سازی و فرم فیلدهای سکشن.
-- Task 2.11 ذخیره‌سازی را در `_es_sections` روی post meta متمرکز می‌کند؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
+- ادامه Phase 2 از Task 2.13: فرانت‌اند Renderer برای ترتیب/وضعیت سکشن‌ها و fallback قالب.
+- `Store` داده هر صفحه را در `_es_sections` روی post meta نگه می‌دارد؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
 - پس از هر تسک: تست اختصاصی، ثبت نتیجه در QA، به‌روزرسانی این حافظه و کامیت روی شاخه فعال.
 
 ## ۶. وضعیت هارنس تست
@@ -231,3 +231,12 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Normalization کلیدهای خارج‌شده از schema را حذف می‌کند، سکشن‌های تازه را به انتهای ترتیب اضافه می‌کند، ترتیب تکراری را حذف می‌کند و فقط فیلدهای schemaشده را نگه می‌دارد.
 - تست مستقل: **5 PASS / 0 FAIL / 0 PENDING**؛ full Phase 2 suite: **87 PASS / 0 FAIL / 12 PENDING** (فقط Tasks 2.12–2.15 هنوز pending هستند).
 - ادامه: Task 2.12 — Sections Builder در ادمین؛ Gate 2 پس از Task 2.15 و Phase 3 فقط با تأیید صریح کاربر.
+
+### Task 2.12 — PASS
+- `SectionsPage` اکنون یک builder RTL برای ۱۵ سکشن خانه دارد: ترتیب قابل drag-and-drop، دکمه‌های بالا/پایین، toggle فعال‌بودن، و پنل‌های ویرایش با `aria-expanded` و schema-backed fields.
+- دکمه‌های حذف/افزودن، کارت را بین چیدمان و قفسه آماده‌افزودن جابه‌جا می‌کنند؛ حالت قفسه به‌صورت `available` در `_es_sections` نگه داشته می‌شود تا بعد از بارگذاری مجدد هم باقی بماند.
+- فیلدهای hero شامل متن/URL دکمه و گالری شامل Repeater نمونه است؛ داده‌ها با همان `Store` و sanitizerهای schema ذخیره می‌شوند.
+- AJAX `es_save_sections` فقط با nonce معتبر، `manage_options`، شناسه front page و مجوز `edit_post` مجاز است؛ CSS/JS فقط در صفحه سکشن‌ها بارگذاری می‌شوند.
+- تست PHP اختصاصی: **4 PASS / 0 FAIL / 0 PENDING**؛ Node DOM mock عملیات افزودن/حذف/ترتیب کیبورد/toggle/editor/serialize را PASS کرد؛ `node --check` موفق.
+- کل suite Phase 2: **92 PASS / 0 FAIL / 9 PENDING** (فقط Tasks 2.13–2.15 pending هستند).
+- ادامه: Task 2.13 — Renderer سکشن‌ها در فرانت‌اند؛ Gate 2 و Phase 3 فقط پس از Task 2.15 و تأیید صریح کاربر.
