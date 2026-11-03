@@ -4,47 +4,37 @@
 
 ## وضعیت فعلی
 ```
-STAGE 0 COMPLETED — WAITING FOR USER CLARIFICATION
+STAGE 1 COMPLETED — WAITING FOR USER APPROVAL TO START PHASE 1
 ```
-- فاز جاری: **Stage 0 (Discovery & Bootstrapping)** — تمام شده؛ در انتظار پاسخ کاربر به سوالات ابهام‌زدایی.
-- آخرین تسک پاس‌شده: اسکن کامل استاتیک + تجهیز هارنس + ساخت ۴ فایل حافظه.
-- **هیچ فایل قالب وردپرسی ساخته نشده** (مطابق قانون Stage 0). ورود به Stage 1 فقط پس از تایید کاربر.
+- Stage 0 ✅ (اسکن + هارنس + ۴ فایل حافظه) — کاربر به همه ۷ سوال پاسخ داد.
+- Stage 1 ✅ (درخت کامل ۸ فاز / ۲۲ تسک / شروط پاس / اسکلت تست‌ها + MASTER_PLAN + QA_LOG).
+- **هنوز هیچ کد قالبی نوشته نشده.** ورود به Phase 1 فقط پس از تایید کاربر (دروازه).
 
-## کارهای انجام‌شده در Stage 0
-1. فایل پیوست کاربر (`erfansanat-static-mirror.zip.png`) در واقع **ZIP** بود → استخراج به `static-mirror/` (۱۲۸ HTML، ۳۹MB).
-2. هارنس تجهیز شد:
-   - **PHP 8.4.27** (WASM از `@php-wasm/node@3.1.62` روی Node 22) — `php -l` و اجرای اسکریپپت تست OK. اکستنشن‌های موجود: sqlite/pdo_sqlite, mbstring, dom, xml, simplexml, curl, gd, zip, mysqli, openssl.
-   - **WP-CLI 2.12.0** (`temp/tools/bin/wp-cli.phar`).
-   - **WordPress 7.1.4** نصب‌شده روی SQLite در `temp/wp/` (فقط محیط تست؛ gitignore شده). `wp core install` موفق؛ `wp eval` سالم.
-   - ابزارهای موجود سیستم: node 22, npm, git, curl, python3, gcc/make.
-   - ⚠️ محدودیت شبکه سندباکس: فقط github.com / api.github.com / codeload.github.com / registry.npmjs.org / pypi.org در دسترس‌اند (apt و wordpress.org بسته‌اند).
-   - ⚠️ php-wasm: `proc_open` ندارد → برخی دستورات subprocess-محور wp-cli کار نمی‌کنند (هشدار بی‌ضرر در `--info`).
-   - بازسازی هارنس: `bash temp/tools/setup-harness.sh`
-3. اسکن کامل ۱۲۸ صفحه HTML + ساختار هدر/فوتر/سکشن‌ها + ماژول‌های main.js → `temp/STATIC_TEMPLATE_MAP.md`.
-4. فایل‌های حافظه ساخته شد: `PROJECT_GOAL.md`, `DATA_BLUEPRINT.md`, `STATIC_TEMPLATE_MAP.md`, `PROJECT_MEMORY.md`.
+## پاسخ‌های کاربر به سوالات Stage 0 (ثبت قطعی — 2026-11-03)
+1. **صفحات غایب** (`arya`, `my-account`, `auth`, `search`, `404`): ✅ ساخته شوند با همان design system.
+2. **خدمات:** ✅ `services.html` = برگه `smartelement` (11984). ۵ تک‌خدمت → **CPT بومی `services`** (پیش‌فرضِ گزینه اول؛ اسلاگ `services`، آرشیو مستقل ندارد — آرشیو همان برگه smartelement).
+3. **Aliasها:** ساختار اصلی حفظ می‌شود. ⚠️ نکته حیاتی کاربر: در سایت لایو اسلاگ ترم‌ها **فارسی** است (مثال: `https://erfansanat.com/city/اصفهان/`). پس قالب‌ها باید **slug-agnostic** باشند؛ اسلاگ‌های انگلیسی میرور فقط مرجع DOM هستند. مسیرهای قدیمی → **ریدایرکت 301** به ساختار اصلی (نگاشت اسلاگ هنگام استقرار از دیتابیس لایو).
+4. **برگه `project` (8366):** ✅ همان آرشیو پروژه‌ها → **ریدایرکت 301 به `/projects/`**.
+5. **هیرو صفحه اصلی:** ✅ در تنظیمات قالب قابل تنظیم؛ **ویدیوی اصلی جداگانه** (Media) و **بقیه اسلایدها از بین پروژه‌ها انتخاب‌شدنی** (Repeater آیدی پروژه).
+6. **وبلاگ:** ✅ TOC + بخش دیدگاه **با همان سبک طراحی** اضافه شود (مجوز طراحی جدید فقط برای این دو کامپوننت).
+7. **تست ووکامرس:** ✅ اوکی — تلاش از گیت‌هاب؛ در صورت عدم امکان، shim/stub + نهایی‌سازی روی استیجینگ.
 
-## تصمیمات فنی مهم (تاکنون)
-- محیط تست WP با SQLite (drop-in `wp-sqlite-db`) چون MySQL در سندباکس نیست.
-- `static-mirror/` در Git کامیت می‌شود (منبع طراحی + مرجع تست‌های مقایسه DOM). `temp/wp/`, `temp/tools/node_modules/`, `temp/tools/bin/` در `.gitignore` (سنگین، بازتولیدپذیر).
-- Aliasهای میرور (`products/*`≡`product/*` و...) فقط در متاهای canonical تفاوت دارند → پیشنهاد ریدایرکت 301 (در انتظار تایید).
-- هارنس PHP از طریق `temp/tools/php` و `temp/tools/wp` (wrapper) — نیاز به `export PATH="$PWD/temp/tools:$PATH"`.
-
-## سوالات در انتظار پاسخ کاربر (Stage 0 Gate)
-1. صفحات غایب در میرور: `arya`, `my-account`, `auth`, `search`, `404` — ساخته شوند با همان design system؟
-2. `services.html` و ۵ تک‌خدمت: برگه `smartelement` + CPT `services` یا برگه‌های فرزند؟
-3. Aliasهای قدیمی (`products/*`, `projects/city-*`, `projects/type-*`, `products.html`): ریدایرکت 301 به ساختار اصلی؟
-4. برگه `project` (ID 8366 «پروژه‌های برگزیده») چه قالبی بگیرد؟
-5. هیرو صفحه اصلی: دستی از Section Manager یا کوئری خودکار؟ (+ ویدیوی 7MB: assets قالب یا Media؟)
-6. وبلاگ: TOC + دیدگاه‌ها اضافه شود (طبق MASTER_PLAN) یا وفادار به استاتیک (بدون آنها)؟
-7. WooCommerce برای تست‌های فاز ۶: تلاش برای نصب از GitHub در سندباکس؛ در صورت عدم امکان، تست‌ها با stub انجام و روی سایت واقعی نهایی شود — مورد تایید؟
+## تصمیمات فنی (تاکنون)
+- **D8 — محل سورس قالب:** پوشه `erfansanat/` در ریشه ریپو (نه خود ریشه). دلیل: ریشه شامل `static-mirror/` و `temp/` است که نباید در zip قالب بروند. یک mu-plugin در محیط تست، ریشه ریپو را به‌عنوان theme directory ثبت می‌کند (`register_theme_directory`) تا قالب بدون کپی کشف شود. بیلد/زیپ نهایی فقط `erfansanat/` را بسته‌بندی می‌کند.
+- محیط تست WP 7.1.4 + PHP 8.4.27 (WASM) + SQLite در `temp/wp/` (gitignore). بازسازی: `bash temp/tools/setup-harness.sh`.
+- `static-mirror/` در Git (مرجع طراحی + تست DOM). سنگین‌ها (`temp/wp`, `node_modules`, `bin`) gitignore.
+- **ووکامرس:** دانلود zip بیلدشده از release گیت‌هاب ممکن نشد (asset به هاست مسدود `objects.githubusercontent.com` ریدایرکت می‌شود؛ TLS EOF). → فاز ۶ با **shim سازگاری** (ثبت `product`/`product_cat`/`product_tag` + stub توابع WC موردنیاز قالب) تست می‌شود؛ نهایی‌سازی روی استیجینگ واقعی.
+- تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**STAGE 1:** ساخت `MASTER_PLAN.md` + `QA_REFLECTION_LOG.md` + درخت کامل ۸ فاز با `tasks/task-XX.md` (شروط پاس) و اسکلت `tests/test-task-XX.php` در `temp/phase-XX-name/`. سپس توقف برای تایید (Stage 2 gate طبق منشور).
+**PHASE 1 / Task 1.1** — اسکلت قالب (`erfansanat/style.css`, `functions.php`, `index.php`) + Autoloader شیءگرا با Namespace `ErfanSanat\Theme`. چرخه ۶ گامی + کامیت.
 
 ## نکات یادآوری برای تسک‌های آینده
 - املای تاریخی متاها مقدس است: `foure-image`, `galerry_produ`, `english_titl`, `vaule_of_variable`, `usage_countr`, `mortabet_mahsole_2`, `number2-viewc`.
-- `product_cat` اسلاگ واقعی است (نه `product-category`)؛ `with_front=true` فقط برای همین تکسونومی.
-- هدر/فوتر تماماً با `data-*` و کلاس Tailwind کار می‌کند (id ندارد) → Walkerها باید همان DOM را تولید کنند.
-- کارت‌های آرشیو باید `data-product-*`/`data-project-*` را داینامیک پر کنند تا JS فیلتر/جستجو کار کند.
-- تگ `<title>` دو صفحه category در میرور `undefined` است (باگ میرور، نه الگو).
-- هر تسک = ۶ گام + کامیت Git روی برنچ `arena/7378effd-erfansanat-theme-ai`.
+- `product_cat` اسلاگ واقعی (نه `product-category`)؛ `with_front=true` فقط همین تکسونومی.
+- اسلاگ ترم‌های لایو فارسی است → هیچ کوئری/لینکی نباید به اسلاگ انگلیسی میرور هاردکد شود.
+- هدر/فوتر تماماً `data-*` + کلاس Tailwind (بدون id) → Walkerها همان DOM را تولید کنند.
+- کارت‌های آرشیو `data-product-*`/`data-project-*` را داینامیک پر کنند.
+- هیرو: ویدیوی اصلی جدا + اسلایدهای انتخابی از پروژه‌ها (D5).
+- وبلاگ: TOC + دیدگاه با همان سبک (D6). برگه `project` → 301 به `/projects/` (D4).
+- هر تسک = ۶ گام + کامیت روی برنچ `arena/7378effd-erfansanat-theme-ai`.

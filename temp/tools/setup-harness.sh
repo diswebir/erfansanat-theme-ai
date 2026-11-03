@@ -50,6 +50,9 @@ fi
 if [ ! -f "$ROOT_DIR/temp/wp/wp-config.php" ]; then
   cp "$TOOLS_DIR/wp-config.php" "$ROOT_DIR/temp/wp/wp-config.php"
 fi
+# mu-plugin: register repo root as a theme directory (discovers erfansanat/ theme)
+mkdir -p "$ROOT_DIR/temp/wp/wp-content/mu-plugins"
+cp "$TOOLS_DIR/es-harness-mu-plugin.php" "$ROOT_DIR/temp/wp/wp-content/mu-plugins/es-harness.php"
 
 echo "==> [4/4] Install WordPress (SQLite) if not installed"
 export PATH="$TOOLS_DIR:$PATH"

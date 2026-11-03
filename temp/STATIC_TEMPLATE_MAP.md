@@ -1,7 +1,7 @@
 # STATIC_TEMPLATE_MAP — گزارش اسکن و نگاشت قالب استاتیک به وردپرس
 
 > تاریخ اسکن: 2026-11-03 · منبع: `static-mirror/` (استخراج از `erfansanat-static-mirror.zip.png`)
-> وضعیت: **پیشنهادی — در انتظار تایید کاربر (Stage 0 Gate)**
+> وضعیت: **تاییدشده توسط کاربر (2026-11-03)** — تصمیمات در §۸
 
 ## ۱) موجودی کامل فایل‌ها (Inventory)
 
@@ -72,19 +72,19 @@
 | `licenses-and-honors.html` | `page-templates/licenses.php` → برگه 7583 | 7 |
 | `recruitment.html` | `page-templates/recruitment.php` → برگه 17898 (۴ تب شغلی + فرم) | 7+8 |
 | `refund_returns.html` | `page-templates/warranty.php` → برگه 14922 | 7 |
-| `services.html` | `page-templates/services.php` → برگه `smartelement` (11984) ❓ | 7 |
-| `services/*.html` (۵) | ❓ CPT `services` یا برگه فرزند با `page-templates/service-single.php` (سوال ۲) | 7 |
-| Aliasهای `products/*`, `projects/city-*`, `projects/type-*` | ❓ ریدایرکت 301 به ساختار اصلی (سوال ۳) | 3+8 |
-| — (غایب) `my-account`, `auth` | `woocommerce/myaccount/*` + صفحه `auth` (voorodak/fl-panel) ❓ | 6 |
-| — (غایب) لندینگ `arya` | `page-templates/landing-arya.php` ❓ (سوال ۱) | 7 |
-| — (غایب) `search`, `404` | `search.php`, `404.php` با همان design system ❓ | 7 |
-| — (غایب) برگه `project` (8366) | ❓ آرشیو پروژه‌ها یا برگه «پروژه‌های برگزیده» جدا؟ (سوال ۴) | 7 |
+| `services.html` | `page-templates/services.php` → برگه `smartelement` (11984) ✅ | 7 |
+| `services/*.html` (۵) | CPT بومی `services` + `single-services.php` (تصمیم D2) | 7 |
+| Aliasهای `products/*`, `projects/city-*`, `projects/type-*` | ریدایرکت 301 به ساختار اصلی؛ اسلاگ لایو فارسی است (D3) | 3+8 |
+| — (غایب) `my-account`, `auth` | `woocommerce/myaccount/*` + صفحه `auth` (voorodak/fl-panel) ✅ ساخته شود (D1) | 6 |
+| — (غایب) لندینگ `arya` | `page-templates/landing-arya.php` با کامپوننت‌های موجود + منوی `landing` (D1) | 7 |
+| — (غایب) `search`, `404` | `search.php`, `404.php` با همان design system ✅ (D1) | 7 |
+| — (غایب) برگه `project` (8366) | ریدایرکت 301 به آرشیو `/projects/` (D4) | 3 |
 
 ## ۴) نگاشت ۱۵ سکشن صفحه اصلی (`index.html`)
 
 | # | id | محتوا | فایل پیشنهادی `template-parts/home/` | منبع داینامیک |
 |---|---|---|---|---|
-| 1 | `home` | هیرو: ویدیو/اسلایدر چندصحنه‌ای (`data-scene-*`)، متن دایره‌ای `eseCircleTextPath`, دسته‌بندی‌ها `home1-categories` | `section-hero.php` | Section Manager (دستی) ❓ سوال ۵ |
+| 1 | `home` | هیرو: ویدیو/اسلایدر چندصحنه‌ای (`data-scene-*`)، متن دایره‌ای `eseCircleTextPath`, دسته‌بندی‌ها `home1-categories` | `section-hero.php` | تنظیمات قالب: ویدیوی اصلی جدا + اسلایدهای انتخابی از پروژه‌ها (D5) |
 | 2 | `projects` | کارت انواع پروژه (تونل، گوی، درخت...) | `section-project-types.php` | ترم‌های `project_type` |
 | 3 | — | نمونه‌کارهای اجراشده در کلان‌شهرها | `section-featured-projects.php` | `WP_Query projects` |
 | 4 | `about` | معرفی + آمار ۲۵ سال تجربه (شمارنده) | `section-about.php` | Options + counters |
@@ -92,7 +92,7 @@
 | 6 | — | تاریخچه و دستاوردها (تایم‌لاین ۱۳۸۰–۱۴۰۵) | `section-history.php` | Repeater |
 | 7 | `products` | منتخب محصولات (درختان، خورشیدنما...) | `section-products.php` | `WP_Query product` + `card-product.php` |
 | 8 | — | CTA کاتالوگ جامع ۱۴۰۴ | `section-catalog.php` | Options (فایل کاتالوگ) |
-| 9 | `services` | تب‌های خدمات تخصصی | `section-services.php` | Options/Services ❓ |
+| 9 | `services` | تب‌های خدمات تخصصی | `section-services.php` | `WP_Query services` (CPT مصوب D2) |
 | 10 | — | استانداردهای کیفیت (ISO، تزریق مستقیم...) | `section-standards.php` | Repeater |
 | 11 | — | پشتیبانی فنی و گارانتی تعویض | `section-support.php` | Options |
 | 12 | — | مشتریان و سازمان‌های همکار (لوگوها) | `section-clients.php` | Repeater (Media) |
@@ -125,3 +125,13 @@
 - تک‌مقاله‌های وبلاگ در میرور **TOC و بخش دیدگاه ندارند** (اما MASTER_PLAN فاز 7 آنها را می‌خواهد) → سوال ۶.
 - فونت‌ها و همه Assetها محلی‌اند؛ هیچ وابستگی خارجی (CDN) وجود ندارد. ✅
 - تصاویر میرور placeholder هستند (Pexels)؛ در قالب نهایی از Media Library سایت زنده استفاده می‌شود و تصاویر میرور فقط fallback پیش‌فرض Options خواهند بود.
+
+## ۸) تصمیمات نهایی کاربر (Stage 0 → Stage 1)
+- **D1:** صفحات غایب (`arya`, `my-account`, `auth`, `search`, `404`) با همان design system ساخته می‌شوند.
+- **D2:** `services.html` = برگه `smartelement` (11984)؛ ۵ تک‌خدمت = CPT بومی `services` (اسلاگ `services`، بدون آرشیو مستقل).
+- **D3:** ساختار اصلی تاکسونومی‌ها حفظ؛ اسلاگ ترم‌های لایو **فارسی** است (`/city/اصفهان/`) → قالب‌ها slug-agnostic؛ aliasهای قدیمی → 301.
+- **D4:** برگه `project` (8366) → ریدایرکت 301 به `/projects/`.
+- **D5:** هیرو در تنظیمات قالب: ویدیوی اصلی جداگانه + اسلایدهای دیگر قابل انتخاب از بین پروژه‌ها.
+- **D6:** TOC + دیدگاه وبلاگ با همان سبک طراحی اضافه می‌شود.
+- **D7:** تست ووکامرس با shim در سندباکس + نهایی‌سازی روی استیجینگ.
+- **D8:** سورس قالب در `erfansanat/` (زیپ نهایی فقط همین پوشه).
