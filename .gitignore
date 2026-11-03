@@ -1,0 +1,10 @@
+# QA harness — reproducible via temp/tools/setup-harness.sh (do not commit)
+temp/tools/node_modules/
+temp/tools/bin/
+temp/wp/
+temp/tools/.write-test
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# WP-CLI wrapper bound to the QA harness WordPress install (temp/wp).
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec node "$DIR/php-cli.mjs" "$DIR/bin/wp-cli.phar" --path="$DIR/../wp" --allow-root "$@"
