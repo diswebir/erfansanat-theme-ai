@@ -126,6 +126,25 @@ final class Schema {
 				'label'   => 'مگامنوی شرکتی',
 				'tab'     => 'megamenu',
 			),
+			// Corporate panel editable image/text — added by P04-T008 (AC-03).
+			'mega_corporate_title'     => array(
+				'type'    => 'text',
+				'default' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان',
+				'label'   => 'عنوان پنل شرکتی',
+				'tab'     => 'megamenu',
+			),
+			'mega_corporate_text'      => array(
+				'type'    => 'textarea',
+				'default' => 'طراح و تولیدکننده تخصصی المان‌های نوری شهری، درختان هوشمند، ریسه‌های ضدآب IP68 و سازه‌های خورشیدی در ایران.',
+				'label'   => 'متن پنل شرکتی',
+				'tab'     => 'megamenu',
+			),
+			'mega_corporate_image_id'  => array(
+				'type'    => 'media',
+				'default' => 0,
+				'label'   => 'تصویر پنل شرکتی (رسانه)',
+				'tab'     => 'megamenu',
+			),
 
 			// ── Footer / contact / social ───────────────────────────────────.
 			'footer_description'  => array(
