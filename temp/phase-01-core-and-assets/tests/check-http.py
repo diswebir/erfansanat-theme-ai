@@ -192,7 +192,16 @@ def task_1_2(base: str) -> None:
     check("1.2", "WooCommerce front-end assets survive clean-up", "woocommerce" in shop and "woocommerce-js" in shop)
     check("1.2", "WooCommerce block stylesheet is kept", "wc-blocks" in shop)
     check("1.2", "shop keeps add-to-cart behaviour", "add-to-cart" in shop or "add_to_cart" in shop)
-    check("1.2", "shop renders product cards", 'class="product' in shop or "woocommerce-loop-product" in shop)
+    # The theme renders its own archive cards (data-product-item) instead of
+    # WooCommerce's loop template, so the assertion must accept either markup:
+    # what task 1.2 owns is that clean-up did not leave the shop empty.
+    check(
+        "1.2",
+        "shop renders product cards",
+        'class="product' in shop
+        or "woocommerce-loop-product" in shop
+        or shop.count("data-product-item=") >= 1,
+    )
 
     cart_status, _, cart = curl("/cart/", base)
     check("1.2", "cart page still renders with WooCommerce script", cart_status == 200 and "woocommerce" in cart, f"status={cart_status}")
