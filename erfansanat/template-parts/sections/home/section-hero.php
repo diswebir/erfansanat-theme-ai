@@ -36,15 +36,28 @@ $es_video_url = $es_video_id > 0 ? (string) wp_get_attachment_url( $es_video_id 
 $es_poster   = HomeTab::hero_video_poster_url();
 $es_preload  = HomeTab::hero_video_preload();
 $es_fallback = HomeTab::hero_video_fallback_url();
+
+// Project slides (P05-T006): per-page section override, else global HomeTab.
+// Only published projects resolve; order is preserved (AC-01/02/03/04).
+$es_slides_raw = isset( $es_fields['slides'] ) && is_array( $es_fields['slides'] ) ? $es_fields['slides'] : array();
+if ( empty( $es_slides_raw ) ) {
+	$es_slides_raw = HomeTab::hero_slides();
+}
+$es_slides = HomeTab::resolve_slides( $es_slides_raw );
 ?>
 <section id="home" aria-label="بخش آغازین" class="es-section es-section--hero relative bg-[#f6f8f7] pt-28 pb-10 sm:pt-32 sm:pb-12 lg:pt-36 lg:pb-14" data-es-section="<?php echo esc_attr( $es_id ); ?>" data-es-section-type="<?php echo esc_attr( $es_type ); ?>">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="relative overflow-hidden rounded-[2.25rem] sm:rounded-[2.75rem]">
 			<div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[2.25rem] sm:rounded-[2.75rem]">
+				<?php if ( ! empty( $es_slides ) ) : ?>
+					<?php foreach ( $es_slides as $es_i => $es_slide ) : ?>
+						<img src="<?php echo esc_url( $es_slide['image'] ); ?>" alt="<?php echo esc_attr( $es_slide['title'] ); ?>" data-home1-scene-img="<?php echo (int) $es_i; ?>" class="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-center transition-all duration-700 ease-out <?php echo 0 === $es_i ? 'z-10 scale-105 opacity-100' : 'z-0 scale-100 opacity-0'; ?>"/>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<img src="<?php echo esc_url( $es_fallback ); ?>" alt="<?php echo esc_attr( $es_heading ); ?>" data-home1-scene-img="0" class="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-center transition-all duration-700 ease-out z-10 scale-105 opacity-100"/>
+				<?php endif; ?>
 				<?php if ( '' !== $es_video_url ) : ?>
 					<video src="<?php echo esc_url( $es_video_url ); ?>" poster="<?php echo esc_url( $es_poster ); ?>" autoplay muted loop playsinline preload="<?php echo esc_attr( $es_preload ); ?>" data-home1-inline-video="true" class="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ease-out z-10 opacity-100"></video>
-				<?php else : ?>
-					<img src="<?php echo esc_url( $es_fallback ); ?>" alt="<?php echo esc_attr( $es_heading ); ?>" class="absolute inset-0 h-full w-full select-none object-cover object-center" />
 				<?php endif; ?>
 			</div>
 			<div class="relative flex min-h-[26rem] flex-col justify-end gap-4 p-8 sm:p-12 lg:p-16">

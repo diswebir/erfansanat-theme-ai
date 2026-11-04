@@ -422,6 +422,18 @@ final class Schema {
 				'label'   => 'تصویر جایگزین هیرو (وقتی ویدیو خالی است)',
 				'tab'     => 'home',
 			),
+			'hero_slides'             => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'اسلایدهای هیرو (صحنه‌های پروژه‌ای)',
+				'tab'       => 'home',
+				'subfields' => array(
+					'project_id' => array( 'type' => 'number', 'default' => 0 ),
+					'image'      => array( 'type' => 'media', 'default' => 0 ),
+				),
+				'min'       => 0,
+				'max'       => 8,
+			),
 		);
 	}
 
