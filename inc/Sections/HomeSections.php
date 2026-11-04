@@ -438,19 +438,46 @@ final class HomeSections {
         ];
     }
 
-    /** اسکیم مزیت‌ها: رپیتر کارت‌ها */
+    /** اسکیم مزیت‌های رقابتی: دو رپیتر ویژگی/گام */
     private static function quality_schema(): array {
         return [
-            ['key' => 'kicker', 'type' => 'text', 'label' => __('سرنویس', 'erfansanat'), 'default' => ''],
-            ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => ''],
-            ['key' => 'body', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => ''],
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مزیت‌های رقابتی کارخانه'],
+            ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'استانداردهای '],
+            ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'کیفیت و ماندگاری'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'تجهیزات نورپردازی شهری سرمایه‌گذاری بلندمدت هستند؛ هر محصول عرفان صنعت برای سال‌ها کارکرد مداوم در فضای باز مهندسی شده است.'],
             [
-                'key' => 'cards', 'type' => 'repeater', 'label' => __('کارت‌های مزیت', 'erfansanat'), 'add_label' => __('افزودن کارت', 'erfansanat'),
+                'key' => 'features', 'type' => 'repeater', 'label' => __('ویژگی‌ها', 'erfansanat'), 'add_label' => __('افزودن ویژگی', 'erfansanat'),
                 'fields' => [
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ['key' => 'badge', 'type' => 'text', 'label' => __('برچسب مونو', 'erfansanat')],
                     ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
-                    ['key' => 'body', 'type' => 'textarea', 'label' => __('متن', 'erfansanat')],
+                    ['key' => 'desc', 'type' => 'textarea', 'label' => __('توضیح', 'erfansanat')],
                 ],
-                'default' => [],
+                'default' => [
+                    ['icon' => 'badge-check', 'badge' => 'ISO 9001:2015', 'title' => 'مدیریت کیفیت بین‌المللی', 'desc' => 'کنترل کیفیت دقیق در تمامی مراحل قالب‌سازی، تزریق پلیمر و مونتاژ بردهای الکترونیکی'],
+                    ['icon' => 'cloud-rain', 'badge' => 'IP67 / IP68', 'title' => 'عایق‌بندی تزریق مستقیم', 'desc' => 'مقاومت کامل در برابر نفوذ آب، رطوبت شدید، گرد و غبار و تابش مستقیم UV خورشید'],
+                    ['icon' => 'radio-tower', 'badge' => 'NRF + WiFi', 'title' => 'کنترل و همگام‌سازی هوشمند', 'desc' => 'مدیریت بی‌سیم افکت‌های نوری و طیف ۱۶ میلیون رنگ بدون نیاز به سیم‌کشی دیتا بین المان‌ها'],
+                    ['icon' => 'shield-check', 'badge' => '۲۴ ماه گارانتی', 'title' => 'گارانتی تعویض + ۵ سال خدمات', 'desc' => 'ضمانت رسمی تعویض کارخانه و تامین پایدار قطعات یدکی برای شهرداری‌ها و پیمانکاران'],
+                ],
+            ],
+            ['key' => 'process_pre', 'type' => 'text', 'label' => __('فرآیند — بخش اول', 'erfansanat'), 'default' => 'فرآیند اجرای پروژه در عرفان صنعت؛'],
+            ['key' => 'process_hl', 'type' => 'text', 'label' => __('فرآیند — بخش سبز', 'erfansanat'), 'default' => 'از ایده تا درخشش در شهر'],
+            ['key' => 'process_label', 'type' => 'text', 'label' => __('برچسب گام‌ها', 'erfansanat'), 'default' => '۵ گام استاندارد مهندسی و اجرایی'],
+            [
+                'key' => 'steps', 'type' => 'repeater', 'label' => __('گام‌های اجرا', 'erfansanat'), 'add_label' => __('افزودن گام', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ['key' => 'step', 'type' => 'text', 'label' => __('برچسب گام', 'erfansanat')],
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                    ['key' => 'sub', 'type' => 'text', 'label' => __('زیرنویس', 'erfansanat')],
+                ],
+                'default' => [
+                    ['icon' => 'search', 'step' => 'گام ۱', 'title' => 'مشاوره و نیازسنجی', 'sub' => 'بررسی ابعاد و اقلیم پروژه'],
+                    ['icon' => 'pencil-ruler', 'step' => 'گام ۲', 'title' => 'طراحی سه‌بعدی اختصاصی', 'sub' => 'شبیه‌سازی قبل از ساخت'],
+                    ['icon' => 'wrench', 'step' => 'گام ۳', 'title' => 'تولید صنعتی در کارخانه', 'sub' => 'متریال پلی‌کربنات و IP68'],
+                    ['icon' => 'hard-hat', 'step' => 'گام ۴', 'title' => 'نصب و اجرای ایمن', 'sub' => 'توسط تیم فنی مجرب'],
+                    ['icon' => 'lightbulb', 'step' => 'گام ۵', 'title' => 'پشتیبانی و گارانتی', 'sub' => '۲۴ ماه ضمانت تعویض'],
+                ],
             ],
         ];
     }
