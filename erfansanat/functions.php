@@ -27,6 +27,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Core\Rewrites::boot();
 \ErfanSanat\Theme\Core\LegacyRedirects::boot();
 \ErfanSanat\Theme\Core\ViewCounter::boot();
+\ErfanSanat\Theme\Core\Hreflang::boot();
 \ErfanSanat\Theme\Admin\ProjectColumns::boot();
 \ErfanSanat\Theme\Admin\ProductMetaboxes::boot();
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
