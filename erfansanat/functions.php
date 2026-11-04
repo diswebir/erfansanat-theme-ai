@@ -226,3 +226,11 @@ add_action(
 	10,
 	1
 );
+add_action(
+	'es_project_details',
+	static function ( $project_id ) {
+		get_template_part( 'template-parts/project/meta', null, array( 'project_id' => (int) $project_id ) );
+	},
+	10,
+	1
+);
