@@ -7,7 +7,7 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - Disposable WordPress 7.2-beta4 / build 65250 + SQLite via PHP WASM. The generated test configuration sets `WP_DEBUG=true` and writes to the ignored test workspace.
 - `temp/run-all-phases-e2e.sh` is the repeatable gate for all eight phase runners, the jsdom UI E2E, bundled headless Chromium E2E, PHP/JavaScript/shell syntax checks, whitespace checks, and an empty `WP_DEBUG` log.
 - The Chromium binary and its Linux runtime libraries are supplied by the locked `@sparticuz/chromium` dev dependency and unpacked under `/tmp` by the E2E script; no system-installed browser is required.
-- The integrated full runner passed in approximately 150 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
+- The latest integrated full runner (including the axe-core browser audit) passed in approximately 171 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
 - The real Chromium E2E exercised 390px and 1280px viewports, layout overflow/grid behavior, form labels, AJAX payload/nonces, success/error/reset states, and private-error non-disclosure. The API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
 - Phase 8.1 fixture endpoint timing: maximum **3.00 ms** in the latest complete regression run (an earlier full run measured 2.00 ms) and **4.00 ms** in a focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
 
@@ -46,5 +46,15 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - **PASS** jsdom and bundled headless Chromium E2E.
 - **PASS** PHP syntax audit over theme/test PHP files, JavaScript and shell syntax, `git diff --check`, and empty `WP_DEBUG` log.
 - **PASS** final audit contract; latest Phase 8.1 fixture maximum 3.00 ms excluding network (focused repeat maximum 4.00 ms).
+
+## Remaining staging sign-off (blocked; requires the deployed site)
+
+These are operational checks, not failures of the local implementation. The sandbox has no staging URL, production plugin stack, SMTP delivery path, CDN/cache configuration, or assistive-technology session, so they cannot be truthfully marked complete here.
+
+- [ ] With the actual SEO/WooCommerce plugins enabled, inspect canonical, hreflang, and rendered JSON-LD/schema on representative product, project, and page routes.
+- [ ] Send one test submission for each form through the configured SMTP/`wp_mail` transport; verify receipt and the stored notification status.
+- [ ] Verify page/object/CDN cache behavior and nonce freshness for logged-out visitors, including after nonce expiry.
+- [ ] Measure representative production p95 response times and record cache state and methodology.
+- [ ] Perform keyboard and real screen-reader checks on theme settings, section builder, inbox, and public forms; visually review screenshots at mobile and desktop sizes.
 
 No production deployment, production performance benchmark, live-mail delivery, plugin-rendered schema validation, assistive-technology audit, or screenshot-based visual review is claimed by this run.

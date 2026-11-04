@@ -11,7 +11,7 @@ $checks = [
     'header.php' => ['wp_head()'],
     'footer.php' => ['wp_footer()'],
     'temp/phase-08-ajax-filters-and-audit/audit-report.md' => [
-        'Rollout', 'Rollback', 'SEOPress', 'WP_DEBUG', 'browser', 'latency',
+        'Rollout', 'Rollback', 'SEOPress', 'WP_DEBUG', 'browser', 'latency', 'Remaining staging sign-off', 'SMTP', 'p95',
     ],
 ];
 $failed = 0;
