@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace ErfanSanat\Theme\Forms;
 
+use ErfanSanat\Theme\Contracts\ServiceInterface;
 use WP_Error;
 
-final class FormManager
+final class FormManager implements ServiceInterface
 {
     public const NONCE_ACTION = 'erfan_sanat_form';
     private const RATE_LIMIT = 3;
     private const RATE_WINDOW = 600;
+
+    public function register(): void
+    {
+        add_action('wp_enqueue_scripts', [$this, 'addFormNonce'], 22);
+    }
+
+    /** Add a distinct form nonce after the shared AJAX runtime config. */
+    public function addFormNonce(): void
+    {
+        $inline = 'window.esThemeData=window.esThemeData||{};window.esThemeData.formNonce=' . wp_json_encode(wp_create_nonce(self::NONCE_ACTION)) . ';';
+        wp_add_inline_script('erfansanat-main', $inline, 'before');
+    }
 
     /** @param array<string,mixed> $request @return true|WP_Error */
     public function checkSubmission(array $request): true|WP_Error
@@ -33,7 +46,7 @@ final class FormManager
         return true;
     }
 
-    /** @param array<string,mixed> $request @param array<string,mixed> $fields @return int|WP_Error */
+    /** @param array<string,mixed> $fields @param array<string,mixed> $request @return int|WP_Error */
     public function saveSubmission(string $formType, array $fields, array $request = []): int|WP_Error
     {
         $checked = $this->checkSubmission($request);

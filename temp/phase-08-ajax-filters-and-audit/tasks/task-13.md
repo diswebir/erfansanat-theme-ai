@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[PASSED]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -23,6 +23,9 @@
 ## فایل‌های هدف (Target Files)
 - `inc/Forms/ContactForm.php`
 - `inc/Forms/ProductInquiryForm.php`
+- `inc/Core/Plugin.php` (register services)
+- `inc/Ajax/AjaxController.php` (map safe `WP_Error` responses)
+- `assets/js/main.js` (submit the existing contact form via AJAX)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** contact.html, تک‌محصول استعلامی

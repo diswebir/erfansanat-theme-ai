@@ -1356,17 +1356,43 @@
      13. Contact & Recruitment Form Submission & Reset
      ─────────────────────────────────────────────── */
   function initContactForm() {
-    var form = document.querySelector('[data-contact-form="true"]');
+    var form = document.querySelector('[data-contact-form="true"], [data-contact-form-slot="true"]');
     var successBox = document.querySelector('[data-contact-success="true"]');
     var resetBtn = document.querySelector('[data-contact-reset="true"]');
 
-    if (form && successBox) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        form.classList.add("hidden");
-        form.classList.remove("flex");
-        successBox.classList.remove("hidden");
-        successBox.classList.add("flex");
+    if (form) {
+      form.addEventListener("submit", function (event) {
+        if (!window.esThemeData || !window.esThemeData.ajaxUrl || !window.esThemeData.ajaxNonce || !window.esThemeData.formNonce) return;
+        event.preventDefault();
+        var status = form.querySelector("p");
+        var submitButton = form.querySelector('[type="submit"]');
+        var payload = new URLSearchParams(new FormData(form));
+        payload.set("action", "erfan_sanat_ajax");
+        payload.set("nonce", window.esThemeData.ajaxNonce);
+        payload.set("form_nonce", window.esThemeData.formNonce);
+        payload.set("website", "");
+        var productId = "";
+        try { productId = new URLSearchParams(window.location.search).get("product") || ""; } catch (_e) {}
+        var route = /^\d+$/.test(productId) ? "product_inquiry" : "contact_submission";
+        payload.set("route", route);
+        if (route === "product_inquiry") payload.set("product_id", productId);
+        if (submitButton) submitButton.disabled = true;
+        if (status) { status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite"); }
+        fetch(window.esThemeData.ajaxUrl, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+          body: payload.toString()
+        }).then(function (response) { return response.json(); }).then(function (result) {
+          var message = result && result.data && result.data.message ? result.data.message : "در ثبت درخواست خطایی رخ داد.";
+          if (status) status.textContent = message;
+          if (result && result.success) {
+            form.reset();
+            if (successBox) { successBox.textContent = message; successBox.classList.remove("hidden"); successBox.classList.add("flex"); }
+          }
+        }).catch(function () {
+          if (status) status.textContent = "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.";
+        }).then(function () { if (submitButton) submitButton.disabled = false; });
       });
     }
     if (resetBtn && form && successBox) {

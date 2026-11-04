@@ -58,6 +58,10 @@ final class AjaxController implements ServiceInterface
             wp_send_json($this->errorResponse('در پردازش درخواست خطایی رخ داد.'), 500);
         }
 
+        if ($result instanceof \WP_Error) {
+            $status = $result->get_error_code() === 'form_rate_limited' ? 429 : 400;
+            wp_send_json($this->errorResponse($result->get_error_message()), $status);
+        }
         if (!is_array($result)) {
             wp_send_json($this->errorResponse('پاسخ سرویس معتبر نیست.'), 500);
         }
