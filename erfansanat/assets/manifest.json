@@ -2,6 +2,22 @@
   "generated_by": "tools/build-asset-manifest.py",
   "reference": "static-mirror/",
   "files": {
+    "admin/options.css": {
+      "sha256": "81b0c0346fcda84c2f732a49f32dd53d85dba824ff52dd87bcc18330fb6d601a",
+      "bytes": 4550,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
+    "admin/options.js": {
+      "sha256": "0a51d1ce62ee9630e8fcd01619b889f9b623358ace650cd463600c2182593d1e",
+      "bytes": 14867,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
     "css/styles.css": {
       "sha256": "d05ea048277bd2942f7559107d77beb008fb9df4f4a4a1453b5a8539149b5bcb",
       "bytes": 190867,
@@ -178,11 +194,13 @@
       "identical_to_source": true
     },
     "js/main.js": {
-      "sha256": "00591a32a85619b2997e625f2a769bb178be443f07f94fcb0763d294e4b15f0d",
-      "bytes": 112885,
+      "sha256": "8d492a48854fb621eb522e36976e59042ec0313284a7e5a1202e348f25bbcced",
+      "bytes": 113304,
       "source": "assets/js/main.js",
       "source_sha256": "00591a32a85619b2997e625f2a769bb178be443f07f94fcb0763d294e4b15f0d",
-      "identical_to_source": true
+      "identical_to_source": false,
+      "patched": true,
+      "patch_note": "Phase 6.2: the approved archive markup marks its pager with data-pagination-root / data-page-num and records server-side paging, while the copied script only looked for data-page-btn and the string \"true\". Without the fix the client pager never bound, so paging was dead on every shop archive."
     },
     "video/hero-video.mp4": {
       "sha256": "b41de43d298c7ceeeaa18ca3bd236315e43d116949943b84f37929484eae2063",

@@ -34,6 +34,20 @@ SOURCES = {
 }
 
 
+# Files the theme intentionally edits after copying. A deliberate edit must be
+# listed here with its reason, so a byte-for-byte contract never silently rots
+# and a later revert is caught just as loudly.
+PATCHED = {
+    "js/main.js": (
+        "Phase 6.2: the approved archive markup marks its pager with "
+        "data-pagination-root / data-page-num and records server-side paging, "
+        "while the copied script only looked for data-page-btn and the string "
+        "\"true\". Without the fix the client pager never bound, so paging was "
+        "dead on every shop archive."
+    ),
+}
+
+
 def digest(path: Path) -> str:
     """SHA-256 of a file."""
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -55,6 +69,9 @@ def build() -> dict:
             entry["source"] = SOURCES[relative]
             entry["source_sha256"] = digest(source) if source.exists() else None
             entry["identical_to_source"] = entry["source_sha256"] == entry["sha256"]
+            if relative in PATCHED:
+                entry["patched"] = True
+                entry["patch_note"] = PATCHED[relative]
         else:
             # Images keep their directory layout under images/.
             source = REFERENCE / "images" / relative.removeprefix("images/")
@@ -63,9 +80,12 @@ def build() -> dict:
                 entry["source_sha256"] = digest(source)
                 entry["identical_to_source"] = entry["source_sha256"] == entry["sha256"]
             else:
+                # Theme-authored assets have no reference counterpart at all, so
+                # they are not drift: only files copied from the mirror can drift.
                 entry["source"] = None
                 entry["source_sha256"] = None
                 entry["identical_to_source"] = False
+                entry["authored"] = True
         files[relative] = entry
     return {
         "generated_by": "tools/build-asset-manifest.py",
@@ -90,20 +110,35 @@ def main() -> int:
         if MANIFEST.read_text(encoding="utf-8") != serialized:
             print("manifest.json is stale; run python3 tools/build-asset-manifest.py", file=sys.stderr)
             return 1
-        drift = [name for name, meta in data["files"].items() if not meta["identical_to_source"]]
-        if drift:
-            print("Assets differ from the reference: " + ", ".join(drift), file=sys.stderr)
+        unpatched = [
+            name
+            for name, meta in data["files"].items()
+            if not meta["identical_to_source"] and not meta.get("patched") and not meta.get("authored")
+        ]
+        if unpatched:
+            print("Assets differ from the reference without a documented patch: " + ", ".join(unpatched), file=sys.stderr)
             return 1
-        print(f"manifest.json is current: {len(data['files'])} assets, all identical to the reference.")
+        patched = [name for name, meta in data["files"].items() if meta.get("patched")]
+        print(
+            f"manifest.json is current: {len(data['files'])} assets, "
+            f"{len(patched)} with a documented patch"
+            + (f" ({', '.join(patched)})" if patched else "")
+            + "."
+        )
         return 0
 
     MANIFEST.write_text(serialized, encoding="utf-8")
     drift = [name for name, meta in data["files"].items() if not meta["identical_to_source"]]
     print(f"Wrote {MANIFEST.relative_to(ROOT)} with {len(data['files'])} assets.")
-    if drift:
-        print("Warning, differs from reference: " + ", ".join(drift), file=sys.stderr)
+    unpatched = [
+        name
+        for name, meta in data["files"].items()
+        if not meta["identical_to_source"] and not meta.get("patched") and not meta.get("authored")
+    ]
+    if unpatched:
+        print("Warning, differs from reference without a documented patch: " + ", ".join(unpatched), file=sys.stderr)
         return 1
-    print("All assets are byte-identical to the static reference.")
+    print("All assets match the static reference, except documented patches.")
     return 0
 
 

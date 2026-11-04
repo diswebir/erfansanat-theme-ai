@@ -71,11 +71,37 @@ final class TaskP01T03Test extends TestCase {
 		);
 		$reference = $this->reference_root();
 
+		$manifest = json_decode( (string) file_get_contents( get_template_directory() . '/assets/manifest.json' ), true );
+
 		foreach ( $pairs as $source => $target ) {
 			$from = $reference . '/' . $source;
 			$to = get_template_directory() . '/' . $target;
 			$this->assertFileExists( $from, 'Reference file is missing: ' . $source );
 			$this->assertFileExists( $to, 'Transferred file is missing: ' . $target );
+
+			// A copied file may only stop being byte-identical when the manifest
+			// records the edit and why. Undocumented drift must still fail.
+			$meta     = $manifest['files'][ substr( $target, strlen( 'assets/' ) ) ] ?? null;
+			$is_patch = is_array( $meta ) && ! empty( $meta['patched'] );
+
+			if ( $is_patch ) {
+				$this->assertNotEmpty(
+					$meta['patch_note'] ?? '',
+					'A patched asset must record why it was edited: ' . $target
+				);
+				$this->assertSame(
+					$from_hash = hash_file( 'sha256', $from ),
+					$meta['source_sha256'],
+					'The patched asset must still be based on the reference file: ' . $target
+				);
+				$this->assertNotSame(
+					$from_hash,
+					hash_file( 'sha256', $to ),
+					'A file marked patched must actually differ from the reference: ' . $target
+				);
+				continue;
+			}
+
 			$this->assertSame(
 				hash_file( 'sha256', $from ),
 				hash_file( 'sha256', $to ),
