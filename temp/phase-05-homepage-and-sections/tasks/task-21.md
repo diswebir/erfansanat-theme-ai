@@ -8,7 +8,7 @@
 | وضعیت | `[PENDING]` |
 | تست | `tests/test-task-21.php` |
 
-> وضعیت شواهد: Task 5.19 یک رندر mock هر ۱۵ سکشن بدون warning و حداکثر ۳۰ درخواست mock از نوع `WP_Query`/`get_terms` را می‌سنجد؛ این تعداد، SQL واقعی `$wpdb` نیست. هنوز structural diff یکپارچه‌ی تمام صفحه، اجرای `main.js` در jsdom، و شمارش SQL در WordPress زنده انجام نشده؛ این Gate تا آن زمان pending است.
+> وضعیت شواهد: Task 5.19 رندر mock هر ۱۵ سکشن را بدون warning می‌سنجد؛ fixture فعلی ۶ درخواست سطح `WP_Query`/`get_terms` دارد، نه SQL واقعی `$wpdb`. `npm run phase5:js`، `main.js` را با jsdom روی همین خروجی اجرا و hookهای اصلی را کلیک می‌کند؛ خطای runtime صفر و شرط JS پاس است، اما اجرا live WordPress/browser نیست. در structural report، gallery و services به‌ترتیب 76.37% و 91.04% هستند (محتوای تکرارشونده‌ی پویا با mirror فرق دارد)، بنابراین P1 پاس نشده؛ P3 هم تا شمارش SQL معتبر باز می‌ماند.
 
 ## ۱. هدف
 

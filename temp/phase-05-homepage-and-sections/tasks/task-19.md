@@ -8,7 +8,7 @@
 | وضعیت | `[PASSED — 7 PASS with WP query mocks; live DB/browser smoke unverified]` |
 | تست | `tests/test-task-19.php` |
 
-> پیشرفت: helperهای bounded/cached projects و project-type tabs، posts, products و product_cat با versioned keys و invalidation پیاده شده‌اند. رندر mock صفحه کامل هر ۱۵ سکشن بدون warning است؛ درخواست‌های `WP_Query` و `get_terms` زیر سقف ۳۰ می‌مانند و رندر دوم query جدید نمی‌سازد. این سنجه تعداد SQL واقعی `$wpdb` نیست؛ اجرای live DB/browser همچنان تأیید نشده است.
+> پیشرفت: helperهای bounded/cached projects و project-type tabs، posts, products و product_cat با versioned keys و invalidation پیاده شده‌اند. رندر mock صفحه کامل هر ۱۵ سکشن بدون warning است؛ در fixture مرجع‌مانند، ۶ درخواست mock از نوع `WP_Query`/`get_terms` در رندر اول دیده می‌شود و رندر دوم query جدید نمی‌سازد. این سنجه تعداد SQL واقعی `$wpdb` نیست؛ اجرای live DB/browser همچنان تأیید نشده است.
 
 ## ۱. هدف
 

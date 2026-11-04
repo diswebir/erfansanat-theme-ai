@@ -5,10 +5,15 @@
   "type": "module",
   "scripts": {
     "test": "node tools/harness/run-tests.mjs",
-    "setup": "npm install --no-audit --no-fund"
+    "setup": "npm install --no-audit --no-fund",
+    "phase5:js": "node tools/harness/jscheck.mjs --mock",
+    "phase5:tests": "npm run phase5:js && node tools/harness/run-phase-isolated.mjs temp/phase-05-homepage-and-sections/tests"
   },
   "dependencies": {
     "@php-wasm/node": "3.1.62",
     "@php-wasm/universal": "3.1.62"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
   }
 }
