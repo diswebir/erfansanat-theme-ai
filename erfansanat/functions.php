@@ -213,3 +213,16 @@ add_filter(
 		return $template;
 	}
 );
+
+/**
+ * Single-project section callbacks (P07-T002..T005). The single-projects.php
+ * shell fires es_project_* actions; each specialised part attaches here.
+ */
+add_action(
+	'es_project_gallery',
+	static function ( $project_id ) {
+		get_template_part( 'template-parts/project/gallery', null, array( 'project_id' => (int) $project_id ) );
+	},
+	10,
+	1
+);
