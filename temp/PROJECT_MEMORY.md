@@ -136,3 +136,8 @@
 - Phase 1 Task 1.3's PHP built-in server/cURL subsection was skipped only because PHP-WASM cannot spawn the native host server; separately fetched 10 live WordPress/static asset endpoints via Node and all returned HTTP 200.
 - Fixed Phase 7 Task 7.20's environment-bound expected URL: the template correctly emits the configured relative `/contact/`; the test formerly hard-coded `http://localhost:8080/contact/`. Updated assertion and reran Task 7.20 successfully; no product code changed.
 - Native `temp/run-all-phases-e2e.sh` still exits 127 at Phase 1 (`php: command not found`); do not claim that script passed. Native Chromium verification remains unavailable.
+
+### ادغام Vazirmatn در داشبورد قالب — 2026-11-04
+- `assets/admin/css/admin-dashboard.css` اکنون سه زیرمجموعه محلی `vazirmatn-arabic`, `vazirmatn-latin`, `vazirmatn-latin-ext` را با `@font-face`, وزن متغیر 100–900، `font-display: swap` و Unicode ranges معتبر بار می‌کند. فونت روی کل محتوای صفحه داشبورد قالب، فیلدها/دکمه‌ها و مدیال کتابخانه رسانه اعمال می‌شود و کلاس‌های Dashicons/media icon از override فونت محفوظ می‌مانند.
+- `AdminAssets` از قبل استایل را فقط روی `toplevel_page_erfansanat-theme` enqueue می‌کرد؛ همین محدودیت حفظ شد. فایل‌ها تغییر URL ثابت ندارند؛ نسخه‌گذاری `filemtime` موجود CSS نیز cache busting را انجام می‌دهد.
+- تست Task 2.4 توسعه یافت و Phase 2 پس از تغییر 15/15 پاس شد (Tasks 2.1–2.2 از کپی موقت برای حذف فقط shell `php -l` استفاده کردند). Prettier CSS را parse کرد؛ stylesheet و هر سه WOFF2 از endpoint زنده با HTTP 200 و بایت‌های غیرخالی دریافت شدند. Native Chromium هنوز در محیط موجود نیست، پس بررسی بصری واقعی مرورگر ادعا نمی‌شود.

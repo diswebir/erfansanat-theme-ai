@@ -161,3 +161,8 @@
 - Phase 1 Tasks 1.1–1.3 passed through temporary copies; native `php -l`, WP-CLI activation, and the test's PHP built-in server/cURL segment cannot run in PHP-WASM. The theme runtime assertions passed; all 279 PHP files parsed independently, and the 10 live homepage/archive/static-asset HTTP endpoints returned 200 via Node fetch. Phase 2 Tasks 2.1–2.2 likewise used temporary copies to replace only external `php -l`; runtime assertions passed and syntax parsing was performed separately.
 - Phase 7 Task 7.20 first exposed an environment-specific assertion hard-coded to `http://localhost:8080/contact/`. The template correctly preserves the configured `/contact/` relative URL. Updated only the test expectation to assert the relative contract and reran the task successfully. No production code changed.
 - The unmodified `temp/run-all-phases-e2e.sh` remains blocked at Phase 1 with exit 127 because host `php` is unavailable. Therefore, this is a manually orchestrated, phase-by-phase refresh—not a successful run of the native all-phase script. Native Chromium visual verification also remains unavailable; do not describe jsdom checks as browser-engine verification.
+
+## ادغام فونت Vazirmatn در پنل پیشخوان — 2026-11-04
+- RED/GREEN در Task 2.4: ابتدا assertionهای سه فایل فونت محلی، scope داشبورد و مدیال رسانه اضافه شد و روی کد موجود شکست خورد؛ سپس سه `@font-face` با unicode-range صحیح و استایل scope‌شده برای متن/فرم‌ها/مدیال افزوده شد. استثناهای Dashicons و آیکن‌های رسانه حفظ شدند.
+- اجرای دوباره Phase 2: **15/15 پاس** تحت Playground PHP 8.5. CSS با Prettier parse شد؛ stylesheet مدیریت و سه فایل WOFF2 از سرور زنده HTTP 200 دادند.
+- محدودیت: در این محیط Chromium بومی نصب نیست؛ صحت selectorها و دریافت فایل‌ها تست شد، اما ادعای مرور بصری بومی نمی‌شود.

@@ -29,7 +29,7 @@
 - `[PASSED]` **Task 2.1 (`task-01.md` / `test-task-01.php`):** ثبت منوی ادمین و پوسته صفحه داشبورد
 - `[PASSED]` **Task 2.2 (`task-02.md` / `test-task-02.php`):** مخزن آپشن واحد و رجیستری مقادیر پیش‌فرض
 - `[PASSED]` **Task 2.3 (`task-03.md` / `test-task-03.php`):** تابع es_option() و کش درون‌حافظه‌ای
-- `[PASSED]` **Task 2.4 (`task-04.md` / `test-task-04.php`):** دارایی‌های ادمین (CSS/JS) و Enqueue مشروط
+- `[PASSED]` **Task 2.4 (`task-04.md` / `test-task-04.php`):** دارایی‌های ادمین و ادغام کامل فونت محلی Vazirmatn در داشبورد، کنترل‌ها و پنجره رسانه.
 - `[PASSED]` **Task 2.5 (`task-05.md` / `test-task-05.php`):** ذخیره‌سازی AJAX امن تنظیمات
 - `[PASSED]` **Task 2.6 (`task-06.md` / `test-task-06.php`):** بازنشانی (Reset) و خروجی/ورودی JSON تنظیمات
 - `[PASSED]` **Task 2.7 (`task-07.md` / `test-task-07.php`):** موتور رندر فیلدها — فیلدهای پایه
@@ -206,3 +206,7 @@
 - Task 7.20 initially exposed a brittle test expectation hard-coded to `http://localhost:8080/contact/`. The rendered link for configured relative input is correctly `/contact/`; the test now asserts that host-independent contract, and the rerun passed. No production behavior changed.
 - Final syntax/runtime checks: all 279 tracked/unignored PHP files parsed with `php-parser` (0 errors); 10 live WordPress and static-asset endpoints returned HTTP 200.
 - Environment caveat: `temp/run-all-phases-e2e.sh` itself is still blocked at Phase 1 by absent native PHP CLI (`php: command not found`, exit 127). Its direct all-phase execution is **not** claimed as passing. Native Chromium visual review remains unavailable and is distinct from the jsdom checks.
+
+### تکمیل ادغام فونت پنل مدیریت — 2026-11-04
+- داشبورد اختصاصی قالب از فونت محلی Vazirmatn برای متن، فرم‌ها، کنترل‌ها و پنجره رسانه استفاده می‌کند؛ سه زیرمجموعه عربی/فارسی، لاتین و لاتینِ توسعه‌یافته با `font-display: swap` و `unicode-range` در CSS مدیریت ثبت شده‌اند. بارگذاری CSS همچنان مشروط به صفحه داشبورد قالب است و به فونت آیکن‌های WordPress دست نمی‌زند.
+- تست Task 2.4 گسترش یافت و کل سوئیت Phase 2 پس از تغییر دوباره اجرا شد: **15/15 پاس**. CSS با Prettier parse شد و فایل CSS و هر سه فونت از HTTP با پاسخ 200 دریافت شدند.

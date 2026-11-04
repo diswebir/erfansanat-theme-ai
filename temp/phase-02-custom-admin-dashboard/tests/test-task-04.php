@@ -5,8 +5,16 @@ $failures=[];$assert=static function(bool $c,string $l)use(&$failures):void{echo
 require_once $wpRoot.'/wp-load.php';
 echo "=== [TEST] Task 2.4 Admin Assets ===\n";
 use ErfanSanat\Theme\Admin\{AdminAssets,ThemeOptions};
-$assert(is_file("$themeRoot/assets/admin/css/admin-dashboard.css"),'admin css exists');
+$adminCssPath = "$themeRoot/assets/admin/css/admin-dashboard.css";
+$assert(is_file($adminCssPath),'admin css exists');
 $assert(is_file("$themeRoot/assets/admin/js/admin-dashboard.js"),'admin js exists');
+$adminCss = is_file($adminCssPath) ? (string) file_get_contents($adminCssPath) : '';
+$assert(substr_count($adminCss, '@font-face') === 3, 'Admin CSS declares all three local Vazirmatn subsets');
+foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin.woff2', 'vazirmatn-latin-ext.woff2'] as $fontFile) {
+    $assert(str_contains($adminCss, $fontFile), "Admin CSS loads local font subset: $fontFile");
+}
+$assert(str_contains($adminCss, 'body.toplevel_page_erfansanat-theme') && str_contains($adminCss, "font-family: 'Vazirmatn'"), 'Vazirmatn is applied to the theme dashboard and controls');
+$assert(str_contains($adminCss, '.media-modal') && str_contains($adminCss, 'font-family: inherit'), 'Media library dialog inherits Vazirmatn without replacing icon fonts');
 $a=new AdminAssets(); $a->enqueue('plugins.php');
 $assert(!wp_style_is('erfansanat-admin','enqueued'),'Not enqueued on unrelated admin page');
 $a->enqueue('toplevel_page_'.ThemeOptions::PAGE_SLUG);

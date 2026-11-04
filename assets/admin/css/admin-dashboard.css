@@ -1,9 +1,113 @@
-.es-admin-wrap{direction:rtl;font-family:Vazirmatn,Tahoma,sans-serif}
-.es-admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.es-admin-tab{padding:8px 14px;background:#fff;border:1px solid #dcdcde;border-radius:8px;text-decoration:none;color:#1e293b}
-.es-admin-tab.is-active{background:#0e7a5f;color:#fff;border-color:#0e7a5f}
-.es-admin-panel{background:#fff;border:1px solid #dcdcde;border-radius:12px;padding:20px}
-.es-field{margin-bottom:16px}.es-field label{display:block;font-weight:600;margin-bottom:6px}
-.es-field input[type=text],.es-field input[type=url],.es-field input[type=email],.es-field textarea,.es-field select{width:100%;max-width:560px}
-.es-repeater-item{border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px}
-.es-section-item{border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px;background:#f8fafc;cursor:move}
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-arabic.woff2') format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* The stylesheet is only enqueued on the theme dashboard. Include the full
+   dashboard content and its WordPress media dialog, while preserving icon fonts. */
+body.toplevel_page_erfansanat-theme #wpbody-content,
+body.toplevel_page_erfansanat-theme #wpbody-content :not(.dashicons),
+body.toplevel_page_erfansanat-theme .media-modal,
+body.toplevel_page_erfansanat-theme .media-modal :not(.dashicons):not(.media-modal-icon) {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+body.toplevel_page_erfansanat-theme #wpbody-content button,
+body.toplevel_page_erfansanat-theme #wpbody-content input,
+body.toplevel_page_erfansanat-theme #wpbody-content select,
+body.toplevel_page_erfansanat-theme #wpbody-content textarea,
+body.toplevel_page_erfansanat-theme .media-modal button,
+body.toplevel_page_erfansanat-theme .media-modal input,
+body.toplevel_page_erfansanat-theme .media-modal select,
+body.toplevel_page_erfansanat-theme .media-modal textarea {
+    font-family: inherit;
+}
+
+.es-admin-wrap {
+    direction: rtl;
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+.es-admin-wrap .es-admin-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+}
+
+.es-admin-wrap .es-admin-tab {
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1e293b;
+}
+
+.es-admin-wrap .es-admin-tab.is-active {
+    background: #0e7a5f;
+    color: #fff;
+    border-color: #0e7a5f;
+}
+
+.es-admin-wrap .es-admin-panel {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.es-admin-wrap .es-field {
+    margin-bottom: 16px;
+}
+
+.es-admin-wrap .es-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.es-admin-wrap .es-field input[type='text'],
+.es-admin-wrap .es-field input[type='url'],
+.es-admin-wrap .es-field input[type='email'],
+.es-admin-wrap .es-field textarea,
+.es-admin-wrap .es-field select {
+    width: 100%;
+    max-width: 560px;
+    font-family: inherit;
+}
+
+.es-admin-wrap .es-repeater-item,
+.es-admin-wrap .es-section-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.es-admin-wrap .es-section-item {
+    background: #f8fafc;
+    cursor: move;
+}
