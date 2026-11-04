@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[PASSED]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -23,6 +23,7 @@ CPT/جدول پیام‌ها، nonce، honeypot، rate-limit پایه، وضعی
 ## فایل‌های هدف (Target Files)
 - `inc/Forms/FormManager.php`
 - `inc/Forms/FormSubmissions.php`
+- `inc/Core/Plugin.php` (register the admin submission service)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** فرم‌های استاتیک [data-contact-form]

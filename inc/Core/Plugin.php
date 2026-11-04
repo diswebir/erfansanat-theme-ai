@@ -86,6 +86,7 @@ final class Plugin
             \ErfanSanat\Theme\Ajax\ProductFilterEndpoint::class,
             \ErfanSanat\Theme\Ajax\ProjectFilterEndpoint::class,
             \ErfanSanat\Theme\Ajax\BlogFilterEndpoint::class,
+            \ErfanSanat\Theme\Forms\FormSubmissions::class,
             DeBloat::class,
             AssetManager::class,
             \ErfanSanat\Theme\Admin\ThemeOptions::class,
