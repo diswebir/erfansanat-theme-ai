@@ -166,7 +166,7 @@
 ### Phase 8: جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`) — 17 تسک
 
 - `[PASSED]` **Task 8.1 (`task-01.md` / `test-task-01.php`):** زیرساخت AJAX قالب
-- `[PENDING]` **Task 8.2 (`task-02.md` / `test-task-02.php`):** جستجوی زنده محصولات
+- `[PASSED]` **Task 8.2 (`task-02.md` / `test-task-02.php`):** جستجوی زنده محصولات
 - `[PENDING]` **Task 8.3 (`task-03.md` / `test-task-03.php`):** جستجوی زنده پروژه‌ها و مقالات
 - `[PENDING]` **Task 8.4 (`task-04.md` / `test-task-04.php`):** Query Builder فیلتر محصولات
 - `[PENDING]` **Task 8.5 (`task-05.md` / `test-task-05.php`):** فیلتر وضعیت خرید آنلاین (true_sale)
