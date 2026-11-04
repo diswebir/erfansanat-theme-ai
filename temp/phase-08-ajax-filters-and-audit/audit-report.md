@@ -9,7 +9,7 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - The Chromium binary and its Linux runtime libraries are supplied by the locked `@sparticuz/chromium` dev dependency and unpacked under `/tmp` by the E2E script; no system-installed browser is required.
 - The integrated full runner passed in approximately 150 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
 - The real Chromium E2E exercised 390px and 1280px viewports, layout overflow/grid behavior, form labels, AJAX payload/nonces, success/error/reset states, and private-error non-disclosure. The API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
-- Phase 8.1 fixture endpoint timing: maximum **2.00 ms** in the complete regression run and **4.00 ms** in the focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
+- Phase 8.1 fixture endpoint timing: maximum **3.00 ms** in the latest complete regression run (an earlier full run measured 2.00 ms) and **4.00 ms** in a focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
 
 ## Compatibility and SEO review
 
@@ -21,7 +21,7 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 
 - Public forms require POST + form nonce, bounded allowlisted schemas, server-side validation/sanitization, honeypot, and a short hashed-IP rate limit. They store private records; inbox/status/settings actions require `manage_options` and nonce checks. Mail transport failures do not expose recipient or message details to visitors.
 - Publicly rendered data is escaped. Integration tests cover SQL/XSS probes, invalid nonce/method, invalid URLs/ratings, status allowlists, and filter query bounds.
-- Form controls have explicit labels and required constraints, status/error live regions, and keyboard-operable submit/reset controls. Browser E2E confirms the rendered labels and responsive 390px/1280px layout does not horizontally overflow and uses the expected desktop columns. A screen-reader/assistive-technology audit and pixel-level visual review are not represented as completed.
+- Form controls have explicit labels and required constraints, status/error live regions, and keyboard-operable submit/reset controls. Browser E2E confirms the rendered labels and responsive 390px/1280px layout does not horizontally overflow and uses the expected desktop columns. axe-core reports zero WCAG 2.0/2.1 A/AA violations in the test form and synthetic admin/editor typography fixtures. This automated check does not replace a real screen-reader/assistive-technology audit; pixel-level visual review is also not represented as completed.
 - The local Vazirmatn WOFF2 subsets are enqueued throughout WordPress admin, theme controls, and classic/block editor content; icon-font classes are excluded from the inherited font override. The Phase 2 integration test verifies all three local font assets, the admin enqueue hook, and editor-style support. Chromium E2E loads the actual local font data, verifies Persian glyph rendering and computed font-family on admin/editor content, and confirms Dashicons retain their icon font.
 - The fixture latency above gives a local regression check only. Production p95 latency, cache behavior, email deliverability, and plugin-specific SEO/schema output require staging measurements.
 
@@ -45,6 +45,6 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - **PASS** Task 8.2 validation, honeypot, nonce, rate limit, private inbox/status controls, optional email notification, escaping, and form placement integration tests.
 - **PASS** jsdom and bundled headless Chromium E2E.
 - **PASS** PHP syntax audit over theme/test PHP files, JavaScript and shell syntax, `git diff --check`, and empty `WP_DEBUG` log.
-- **PASS** final audit contract; Phase 8.1 fixture maximum 2.00 ms excluding network.
+- **PASS** final audit contract; latest Phase 8.1 fixture maximum 3.00 ms excluding network (focused repeat maximum 4.00 ms).
 
 No production deployment, production performance benchmark, live-mail delivery, plugin-rendered schema validation, assistive-technology audit, or screenshot-based visual review is claimed by this run.

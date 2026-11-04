@@ -3,7 +3,7 @@
 $root = dirname(__DIR__, 3);
 $checks = [
     'temp/run-all-phases-e2e.sh' => [
-        'phase-01-core-and-assets', 'phase-08-ajax-filters-and-audit', 'e2e-ui.test.js', 'browser-e2e.test.js', 'WP_DEBUG', 'diff --check',
+        'phase-01-core-and-assets', 'phase-08-ajax-filters-and-audit', 'e2e-ui.test.js', 'browser-e2e.test.js', 'axe-core', 'WP_DEBUG', 'diff --check',
     ],
     'temp/setup-wordpress-test.sh' => ['define(\'WP_DEBUG\', true)', 'WP_DEBUG_LOG'],
     'inc/TemplateParts.php' => ['seopress_is_active', 'hreflang_markup'],
@@ -42,6 +42,7 @@ $e2eFiles = [
     $root . '/node_modules/jsdom/package.json',
     $root . '/node_modules/puppeteer-core/package.json',
     $root . '/node_modules/@sparticuz/chromium/package.json',
+    $root . '/node_modules/axe-core/package.json',
 ];
 foreach ($e2eFiles as $e2eFile) {
     if (!is_file($e2eFile)) {

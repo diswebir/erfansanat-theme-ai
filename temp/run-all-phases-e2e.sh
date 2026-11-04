@@ -19,7 +19,7 @@ if [ ! -x "$PHP_BIN" ]; then
   echo "PHP WASM CLI is unavailable at $PHP_BIN" >&2
   exit 2
 fi
-for package in jsdom puppeteer-core @sparticuz/chromium; do
+for package in jsdom puppeteer-core @sparticuz/chromium axe-core; do
   if [ ! -f "$ROOT/node_modules/$package/package.json" ]; then
     echo "$package is missing; install the locked dependencies with npm ci." >&2
     exit 2

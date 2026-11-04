@@ -10,7 +10,7 @@ const puppeteer = require("puppeteer-core");
 
 const root = path.resolve(__dirname, "../../..");
 const html = `<!doctype html>
-<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>فرم تماس</title></head>
 <body class="bg-slate-50">
   <main class="mx-auto max-w-3xl px-4 py-8">
     <section class="rounded-3xl border border-emerald-100 bg-white p-5 sm:p-8">
@@ -57,6 +57,7 @@ let browser;
     };
   });
   await page.addScriptTag({ path: path.join(root, "assets/js/main.js") });
+  await page.addScriptTag({ path: require.resolve("axe-core") });
   const mobileLayout = await page.evaluate(() => ({
     width: window.innerWidth,
     scrollWidth: document.documentElement.scrollWidth,
@@ -69,6 +70,11 @@ let browser;
   assert.ok(mobileLayout.scrollWidth <= mobileLayout.width, `mobile layout overflows: ${JSON.stringify(mobileLayout)}`);
   assert.equal(mobileLayout.columns, 1, "mobile form should use one column");
   assert.equal(mobileLayout.labels, true, "visible controls should have associated labels");
+  const formA11y = await page.evaluate(async () => {
+    const result = await axe.run(document, { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] } });
+    return result.violations.map(({ id, impact, nodes }) => ({ id, impact, targets: nodes.map((node) => node.target) }));
+  });
+  assert.deepEqual(formA11y, [], `form WCAG accessibility violations: ${JSON.stringify(formA11y)}`);
 
   await page.locator("form button[type=submit]").click();
   await page.waitForFunction(() => document.querySelector("form").classList.contains("hidden"));
@@ -108,9 +114,10 @@ let browser;
     /url\([\"']\.\.\/fonts\/([^\"']+)[\"']\)/g,
     (_match, fontFile) => `url(data:font/woff2;base64,${fs.readFileSync(path.join(root, "assets/fonts", fontFile)).toString("base64")})`
   );
-  await page.setContent('<!doctype html><html lang="fa" dir="rtl"><body class="wp-admin"><main id="admin-copy">پنل پیشخوان فارسی</main><span id="admin-icon" class="dashicons">\uF111</span><div class="editor-styles-wrapper"><p id="editor-copy">متن ویرایشگر فارسی</p></div></body></html>');
+  await page.setContent('<!doctype html><html lang="fa" dir="rtl"><head><title>پیشخوان آزمایشی</title></head><body class="wp-admin"><main id="admin-copy">پنل پیشخوان فارسی</main><span id="admin-icon" class="dashicons">\uF111</span><div class="editor-styles-wrapper"><p id="editor-copy">متن ویرایشگر فارسی</p></div></body></html>');
   await page.addStyleTag({ content: '.dashicons { font-family: dashicons; }' });
   await page.addStyleTag({ content: adminFontCss });
+  await page.addScriptTag({ path: require.resolve("axe-core") });
   const adminTypography = await page.evaluate(async () => {
     await document.fonts.load('400 16px Vazirmatn', 'پنل فارسی');
     return {
@@ -124,9 +131,14 @@ let browser;
   assert.match(adminTypography.editorFamily, /Vazirmatn/);
   assert.equal(adminTypography.iconFamily, "dashicons", "admin font must preserve WordPress icon fonts");
   assert.equal(adminTypography.fontLoaded, true, "local Vazirmatn font should load Persian glyphs");
+  const adminA11y = await page.evaluate(async () => {
+    const result = await axe.run(document, { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] } });
+    return result.violations.map(({ id, impact, nodes }) => ({ id, impact, targets: nodes.map((node) => node.target) }));
+  });
+  assert.deepEqual(adminA11y, [], `admin/editor WCAG accessibility violations: ${JSON.stringify(adminA11y)}`);
   assert.deepEqual(pageErrors, [], `browser runtime errors: ${pageErrors.join(" | ")}`);
   await browser.close();
-  console.log("PASS Chromium E2E: responsive form flows and layout, admin/editor Vazirmatn font loading, icon preservation, and internal-error concealment");
+  console.log("PASS Chromium E2E: responsive form flows, admin/editor Vazirmatn, icon preservation, WCAG 2A/AA axe checks, and internal-error concealment");
 })().catch(async (error) => {
   console.error(error.stack || error);
   if (browser) await browser.close();
