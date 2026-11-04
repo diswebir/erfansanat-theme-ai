@@ -7,8 +7,8 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - Disposable WordPress 7.2-beta4 / build 65250 + SQLite via PHP WASM. The generated test configuration sets `WP_DEBUG=true` and writes to the ignored test workspace.
 - `temp/run-all-phases-e2e.sh` is the repeatable gate for all eight phase runners, the jsdom UI E2E, bundled headless Chromium E2E, PHP/JavaScript/shell syntax checks, whitespace checks, and an empty `WP_DEBUG` log.
 - The Chromium binary and its Linux runtime libraries are supplied by the locked `@sparticuz/chromium` dev dependency and unpacked under `/tmp` by the E2E script; no system-installed browser is required.
-- The latest integrated full runner (including the axe-core browser audit) passed in approximately 171 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
-- The real Chromium E2E exercised 390px and 1280px viewports, layout overflow/grid behavior, form labels, AJAX payload/nonces, success/error/reset states, and private-error non-disclosure. The API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
+- The latest integrated full runner (including the axe-core browser audit and the admin-dashboard follow-up) passed in approximately 142 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
+- The real Chromium E2E exercised 390px and 1280px viewports, public-form layout/labels/AJAX states, and the new RTL admin dashboard widget's responsive stats/action grids, keyboard focus, and WCAG checks. The public form API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
 - Phase 8.1 fixture endpoint timing: maximum **3.00 ms** in the latest complete regression run (an earlier full run measured 2.00 ms) and **4.00 ms** in a focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
 
 ## Independent audit follow-up — 2026-11-04
@@ -23,6 +23,12 @@ The separate source review found concrete defects beyond the original phase chec
 
 These findings are a scoped review result, not an exhaustive proof that the theme has exactly three defects or that the user's stated 80 are confirmed. Other visually plausible issues remain findings only after reproducible evidence.
 
+## Admin dashboard and typography follow-up — 2026-11-04
+
+- Added a native WordPress Dashboard overview widget with localized greeting, published product/project/page counts, administrator-only submission count, and capability-gated shortcuts. Its responsive stylesheet is enqueued only on the Dashboard screen.
+- Extended the local Vazirmatn family to consistently cover admin chrome, controls, editor content, and common icon-font exceptions. Asset cache versions now hash the CSS and all three WOFF2 files, so replacing a font file cannot leave a stale version just because its timestamp is lower than another asset's.
+- WordPress integration tests cover widget output, administrator shortcuts, page-scoped asset enqueueing, and font contracts; the link builder itself applies capability checks. Chromium tests check the widget at mobile/desktop widths and axe-core finds no WCAG 2.0/2.1 A/AA violations in the dashboard fixture. This remains a synthetic dashboard fixture, not a production screenshot or live-admin deployment review.
+
 ## Compatibility and SEO review
 
 - Theme-owned legacy `hreflang` output escapes URLs and is suppressed when SEOPress is detected, avoiding duplicate alternates. Phase 3/4 integration tests cover post/term output and the SEOPress guard.
@@ -33,7 +39,7 @@ These findings are a scoped review result, not an exhaustive proof that the them
 
 - Public forms require POST + form nonce, bounded allowlisted schemas, server-side validation/sanitization, honeypot, and a short hashed-IP rate limit. They store private records; inbox/status/settings actions require `manage_options` and nonce checks. Mail transport failures do not expose recipient or message details to visitors.
 - Publicly rendered data is escaped. Integration tests cover SQL/XSS probes, invalid nonce/method, invalid URLs/ratings, status allowlists, and filter query bounds.
-- Form controls have explicit labels and required constraints, status/error live regions, and keyboard-operable submit/reset controls. Browser E2E confirms the rendered labels and responsive 390px/1280px layout does not horizontally overflow and uses the expected desktop columns. axe-core reports zero WCAG 2.0/2.1 A/AA violations in the test form and synthetic admin/editor typography fixtures. This automated check does not replace a real screen-reader/assistive-technology audit; pixel-level visual review is also not represented as completed.
+- Form controls have explicit labels and required constraints, status/error live regions, and keyboard-operable submit/reset controls. Browser E2E confirms the rendered labels and responsive 390px/1280px layout does not horizontally overflow and uses the expected desktop columns. axe-core reports zero WCAG 2.0/2.1 A/AA violations in the test form, synthetic admin/editor typography, and responsive admin-dashboard widget fixtures. This automated check does not replace a real screen-reader/assistive-technology audit; pixel-level visual review is also not represented as completed.
 - The local Vazirmatn WOFF2 subsets are enqueued throughout WordPress admin, theme controls, and classic/block editor content; icon-font classes are excluded from the inherited font override. The Phase 2 integration test verifies all three local font assets, the admin enqueue hook, and editor-style support. Chromium E2E loads the actual local font data, verifies Persian glyph rendering and computed font-family on admin/editor content, and confirms Dashicons retain their icon font.
 - The fixture latency above gives a local regression check only. Production p95 latency, cache behavior, email deliverability, and plugin-specific SEO/schema output require staging measurements.
 

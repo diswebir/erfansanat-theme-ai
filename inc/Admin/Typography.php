@@ -35,19 +35,24 @@ final class Typography
             return;
         }
 
-        $versions = [filemtime($cssPath) ?: 0];
-        foreach (self::FONT_FILES as $fontFile) {
-            $fontPath = get_theme_file_path($fontFile);
-            if (is_file($fontPath)) {
-                $versions[] = filemtime($fontPath) ?: 0;
+        $assets = array_merge([self::STYLE_FILE], self::FONT_FILES);
+        $fingerprints = [];
+        foreach ($assets as $asset) {
+            $assetPath = get_theme_file_path($asset);
+            if (!is_file($assetPath)) {
+                $fingerprints[] = $asset . ':missing';
+                continue;
             }
+            $hash = hash_file('sha256', $assetPath);
+            $fingerprints[] = $asset . ':' . (false !== $hash ? $hash : (string) filemtime($assetPath));
         }
+        $version = substr(hash('sha256', implode('|', $fingerprints)), 0, 12);
 
         wp_enqueue_style(
             self::STYLE_HANDLE,
             $cssUrl,
             [],
-            (string) max($versions)
+            $version
         );
     }
 }

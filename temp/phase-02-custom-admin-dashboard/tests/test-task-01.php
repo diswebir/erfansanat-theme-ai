@@ -96,7 +96,43 @@ foreach (['dir="rtl"', 'nav-tab', 'es-theme-options', 'data-option-path'] as $ne
         $failed++;
     }
 }
+require_once $wpRoot . '/wp-admin/includes/class-wp-screen.php';
+require_once $wpRoot . '/wp-admin/includes/screen.php';
+require_once $wpRoot . '/wp-admin/includes/template.php';
+set_current_screen('dashboard');
+require_once $wpRoot . '/wp-admin/includes/dashboard.php';
+$dashboardClass = 'ErfanSanat\\Theme\\Admin\\Dashboard';
+if (!class_exists($dashboardClass) || !has_action('wp_dashboard_setup', [$dashboardClass, 'register_widget'])) {
+    fwrite(STDERR, "FAIL branded admin dashboard widget was not registered\n");
+    $failed++;
+} else {
+    $dashboardClass::register_widget();
+    ob_start();
+    $dashboardClass::render_widget();
+    $dashboardHtml = (string) ob_get_clean();
+    foreach (['ese-dashboard-overview', 'دسترسی سریع', 'تنظیمات قالب', 'صندوق درخواست‌ها'] as $needle) {
+        if (false === strpos($dashboardHtml, $needle)) {
+            fwrite(STDERR, "FAIL admin dashboard overview missing `{$needle}`\n");
+            $failed++;
+        }
+    }
+    $dashboardClass::enqueue_assets('index.php');
+    if (!wp_style_is('erfansanat-admin-dashboard', 'enqueued')) {
+        fwrite(STDERR, "FAIL responsive dashboard stylesheet was not enqueued on the Dashboard screen\n");
+        $failed++;
+    }
+    wp_dequeue_style('erfansanat-admin-dashboard');
+    $dashboardClass::enqueue_assets('edit.php');
+    if (wp_style_is('erfansanat-admin-dashboard', 'enqueued')) {
+        fwrite(STDERR, "FAIL dashboard stylesheet was enqueued on a non-Dashboard screen\n");
+        $failed++;
+    }
+    if (!is_file($root . '/assets/css/admin-dashboard.css')) {
+        fwrite(STDERR, "FAIL dashboard stylesheet asset is missing\n");
+        $failed++;
+    }
+}
 if ($failed !== 0) {
     exit(1);
 }
-fwrite(STDOUT, "PASS ThemeOptions capability/nonce/sanitization/helper/admin UI integration\n");
+fwrite(STDOUT, "PASS ThemeOptions, branded dashboard, capability/nonce/sanitization, and admin UI integration\n");

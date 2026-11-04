@@ -5,12 +5,20 @@ $themeSource = $root . '/inc/Theme.php';
 $typographySource = $root . '/inc/Admin/Typography.php';
 $stylesheet = $root . '/assets/css/admin-vazirmatn.css';
 $checks = [
+    [$themeSource, 'Admin\\Dashboard::register()'],
     [$themeSource, 'Admin\\Typography::register()'],
     [$themeSource, "add_theme_support('editor-styles')"],
     [$themeSource, "add_editor_style('assets/css/admin-vazirmatn.css')"],
     [$typographySource, "add_action('admin_enqueue_scripts'"],
     [$typographySource, 'wp_enqueue_style('],
+    [$typographySource, "hash_file('sha256'"],
     [$stylesheet, '@font-face'],
+    [$stylesheet, '#wpadminbar'],
+    [$stylesheet, 'body.wp-admin input'],
+    [$stylesheet, '[class*="fa-"]'],
+    [$root . '/inc/Admin/Dashboard.php', 'register_widget'],
+    [$root . '/assets/css/admin-dashboard.css', '.ese-dashboard-action-grid'],
+
     [$stylesheet, 'vazirmatn-arabic.woff2'],
     [$stylesheet, 'vazirmatn-latin-ext.woff2'],
     [$stylesheet, 'vazirmatn-latin.woff2'],

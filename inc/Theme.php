@@ -26,6 +26,7 @@ final class Theme
         Ajax\Filters::register();
         Forms\Submission::register();
         Admin\Forms::register();
+        Admin\Dashboard::register();
         Admin\Typography::register();
         Admin\ThemeOptions::register();
         Admin\SectionManager::register();

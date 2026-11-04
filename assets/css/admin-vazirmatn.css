@@ -29,12 +29,62 @@
   --ese-admin-font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
 }
 
-/* WordPress admin chrome, screens, form controls, and theme/plugin settings. */
+/* Apply the local Persian-capable family throughout WordPress administration. */
 body.wp-admin,
-body.wp-admin *:not(.dashicons):not(.dashicons-before):not(.ab-icon):not(.fa):not(.fas):not(.far):not(.fab):not(.material-icons):not(.material-symbols-outlined):not(.eicon):not(.icon):not([class*=" icon-"]):not([class^="icon-"]):not(pre):not(code):not(kbd):not(samp),
-/* Classic-editor and block-editor content canvases. */
+body.wp-admin *:not(.dashicons):not(.dashicons-before):not(.ab-icon):not(.fa):not(.fas):not(.far):not(.fab):not([class*="fa-"]):not([class~="fa"]):not(.material-icons):not([class*="material-icons"]):not([class*="material-symbols"]):not(.eicon):not([class*="eicon"]):not(.icon):not([class*=" icon-"]):not([class^="icon-"]):not(pre):not(code):not(kbd):not(samp),
 body.mce-content-body,
+body.mce-content-body *:not(.dashicons):not(.dashicons-before):not(.ab-icon):not(.fa):not(.fas):not(.far):not(.fab):not([class*="fa-"]):not([class~="fa"]):not(.material-icons):not([class*="material-icons"]):not([class*="material-symbols"]):not(.eicon):not([class*="eicon"]):not(.icon):not([class*=" icon-"]):not([class^="icon-"]):not(pre):not(code):not(kbd):not(samp),
 .editor-styles-wrapper,
-.editor-styles-wrapper *:not(.dashicons):not(.dashicons-before):not(.ab-icon):not(.fa):not(.fas):not(.far):not(.fab):not(.material-icons):not(.material-symbols-outlined):not(.eicon):not(.icon):not([class*=" icon-"]):not([class^="icon-"]):not(pre):not(code):not(kbd):not(samp) {
+.editor-styles-wrapper *:not(.dashicons):not(.dashicons-before):not(.ab-icon):not(.fa):not(.fas):not(.far):not(.fab):not([class*="fa-"]):not([class~="fa"]):not(.material-icons):not([class*="material-icons"]):not([class*="material-symbols"]):not(.eicon):not([class*="eicon"]):not(.icon):not([class*=" icon-"]):not([class^="icon-"]):not(pre):not(code):not(kbd):not(samp) {
   font-family: var(--ese-admin-font);
+}
+
+body.wp-admin {
+  font-size: 13px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.wp-admin input,
+body.wp-admin select,
+body.wp-admin textarea,
+body.wp-admin button,
+body.wp-admin .button,
+body.wp-admin .button-primary,
+body.wp-admin .button-secondary {
+  font-family: var(--ese-admin-font);
+  line-height: 1.55;
+}
+
+body.wp-admin #adminmenu,
+body.wp-admin #adminmenu .wp-submenu,
+body.wp-admin #wpadminbar,
+body.wp-admin .wrap h1,
+body.wp-admin .wrap h2,
+body.wp-admin .wrap h3,
+body.wp-admin .postbox-header,
+body.wp-admin .notice,
+.editor-styles-wrapper {
+  font-family: var(--ese-admin-font);
+}
+
+body.mce-content-body,
+.editor-styles-wrapper {
+  line-height: 1.8;
+}
+
+/* Preserve WordPress and plugin icon fonts when the Persian font is inherited. */
+body.wp-admin .dashicons,
+body.wp-admin .dashicons::before,
+body.wp-admin .dashicons-before::before,
+body.wp-admin .ab-icon,
+body.wp-admin .ab-icon::before,
+body.wp-admin [class*="fa-"],
+body.wp-admin [class~="fa"],
+body.wp-admin .material-icons,
+body.wp-admin [class*="material-icons"],
+body.wp-admin [class*="material-symbols"],
+body.wp-admin [class*="eicon"] {
+  font-synthesis: none;
 }
