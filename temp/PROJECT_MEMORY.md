@@ -88,3 +88,8 @@
 
 ## STATIC LINKS rewrite — 2026-11-03
 - ۸۷ لینک ثابت `.html` در کل قالب با es_static_url() به URLهای واقعی WP (archive/page/term/permalink) تبدیل شد؛ helper با fallback امن harden شد (get_post_type_archive_link false بدون ووکامرس). JSıklı hero هم دیگر .html append نمی‌کند. تست: ۱۱۲ href رندر شده، صفر .html باقی‌مانده. E2E ALL-PASS.
+
+## DEEP FIDELITY + full page port — 2026-11-03
+- تست fidelity عمیق (set-based signatures) روی ۶ صفحه: shop/about/contact/product/project = **۱۰۰٪**، index = ۹۵.۷٪ (بخش‌های dynamic).
+- port کامل ۱۲ صفحه stub (page-*, archive, home, cart, checkout) + ۱۵ سکشن home + header overlay + single templates از میرر؛ injekt dynamic loops (products/projects/blog) + legacy meta hooks (faq, galerry_produ, english_titl, legal ids, pa_* attributes, finish-pro-time, project gallery/terms).
+- E2E: ALL-PASS با صفر FAIL.

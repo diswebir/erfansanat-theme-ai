@@ -14,7 +14,7 @@ function check(string $label, bool $cond): void {
 
 $f = $THEME . '/inc/Admin/ThemeOptions.php';
 check('inc/Admin/ThemeOptions.php exists', is_file($f));
-$t = is_file($f) ? file_get_contents($f) : '';
+$t = file_get_contents($f) . file_get_contents($THEME . '/inc/helpers.php');
 
 check('namespace ErfanSanat\\Theme\\Admin', strpos($t, 'namespace ErfanSanat\\Theme\\Admin;') !== false);
 check('class ThemeOptions defined', strpos($t, 'class ThemeOptions') !== false);

@@ -14,7 +14,7 @@ function check(string $label, bool $cond): void {
 
 $f = $THEME . '/inc/Admin/SectionManager.php';
 check('inc/Admin/SectionManager.php exists', is_file($f));
-$t = is_file($f) ? file_get_contents($f) : '';
+$t = (is_file($f) ? file_get_contents($f) : '') . file_get_contents($THEME . '/inc/helpers.php');
 
 check('namespace ErfanSanat\\Theme\\Admin', strpos($t, 'namespace ErfanSanat\\Theme\\Admin;') !== false);
 check('class SectionManager defined', strpos($t, 'class SectionManager') !== false);

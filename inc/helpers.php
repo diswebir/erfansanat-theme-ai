@@ -78,11 +78,13 @@ if (!function_exists('es_hreflang_tags')) {
     function es_static_url(string $path): string
     {
         $path = trim($path, "/ \t");
+        $path = preg_replace('#^(\.\./)+#', '', $path);
         if ($path === '') { return home_url('/'); }
         $base = preg_replace('/\.html$/i', '', $path);
 
         // top-level static pages -> WP pages (by slug or page template)
         $topMap = [
+            'index' => fn() => home_url('/'),
             'shop' => fn() => (string) (function_exists('get_post_type_archive_link') ? get_post_type_archive_link('product') : false) ?: home_url('/shop/'),
             'projects' => fn() => (string) get_post_type_archive_link('projects') ?: home_url('/projects/'),
             'blog' => fn() => (string) get_permalink((int) get_option('page_for_posts')) ?: home_url('/blog/'),
@@ -117,6 +119,16 @@ if (!function_exists('es_hreflang_tags')) {
         if (count($parts) === 2 && $parts[0] === 'city') {
             $link = get_term_link($parts[1], 'city');
             return is_wp_error($link) ? home_url('/' . $path) : $link;
+        }
+        // blog single posts
+        if (count($parts) === 2 && $parts[0] === 'blog') {
+            $p = get_page_by_path($parts[1], OBJECT, 'post');
+            return $p ? ((string) get_permalink($p) ?: home_url('/' . $path)) : home_url('/blog/' . $parts[1] . '/');
+        }
+        // service detail pages
+        if (count($parts) === 2 && $parts[0] === 'services') {
+            $p = get_page_by_path($parts[1], OBJECT, 'page');
+            return $p ? ((string) get_permalink($p) ?: home_url('/' . $path)) : home_url('/services/' . $parts[1] . '/');
         }
         // single content by slug
         if (count($parts) === 2 && $parts[0] === 'product') {

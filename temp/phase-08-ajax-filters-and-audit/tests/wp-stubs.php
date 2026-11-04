@@ -171,3 +171,17 @@ function the_permalink() { echo esc_url(get_permalink()); }
 function the_excerpt() { echo esc_html(get_the_excerpt()); }
 function wc_print_notices() { echo '<!-- wc notices -->'; }
 function wc_get_template($f) { echo '<!-- wc template: ' . esc_html($f) . ' -->'; }
+
+if (!function_exists('get_page_by_path')) {
+    if (!defined("OBJECT")) { define("OBJECT", "OBJECT"); }
+function get_page_by_path($path, $output = "OBJECT", $post_type = 'page') { return $GLOBALS['__page_by_path'][$post_type . ':' . $path] ?? null; }
+}
+if (!function_exists('get_term_link')) {
+    function get_term_link($term, $taxonomy = '') { return 'https://example.test/' . ($taxonomy ?: 'tax') . '/' . (is_object($term) ? $term->slug : $term) . '/'; }
+}
+if (!function_exists('get_post_type_archive_link')) {
+    function get_post_type_archive_link($pt) { return 'https://example.test/' . $pt . '/'; }
+}
+if (!function_exists('wc_get_page_id')) {
+    function wc_get_page_id($page) { return 0; }
+}

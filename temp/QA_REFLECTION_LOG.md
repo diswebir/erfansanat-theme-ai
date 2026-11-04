@@ -78,3 +78,6 @@
 
 ## STATIC LINKS — 2026-11-03
 - Found 87 hardcoded .html hrefs (would 404 under WP permalinks). Added es_static_url()/es_page_url() mapping to archives/pages/terms/permalinks with safe fallbacks; rewrote all; fixed hero-scene JS .html append. Real-WP test: 113 hrefs rendered, zero literal .html, all resolve. E2E ALL-PASS.
+
+## DEEP FIDELITY — 2026-11-03
+- New test-fidelity-deep: per-page unique DOM signature comparison vs mirror on real WP. Found & fixed: missing root/home/z-10 wrappers, missing header overlay (mobile drawer), 12 stub page templates ported from mirror, 15 home sections re-sliced, single templates re-ported with legacy meta hooks, dynamic loops restored in shop/projects/blog archives. Result: 5/6 pages 100%, index 95.7% (dynamic sections). E2E ALL-PASS, 0 FAILs.

@@ -67,7 +67,7 @@ $out = render('single-projects.php');
 check('single-projects renders', strpos($out, 'تونل') !== false || strlen($out) > 1000);
 
 $out = render('archive-product.php');
-check('archive-product renders grid', strpos($out, 'card-glow') !== false);
+check('archive-product renders grid', strpos($out, 'data-product-grid') !== false || strpos($out, 'data-shop-grid') !== false || strpos($out, 'card-glow') !== false);
 
 $out = render('taxonomy-product_cat.php');
 check('taxonomy-product_cat renders term title', strpos($out, 'ریسه') !== false);

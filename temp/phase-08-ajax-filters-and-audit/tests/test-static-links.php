@@ -14,15 +14,17 @@ $pid = wp_insert_post(['post_type'=>'page','post_title'=>'خانه','post_status
 update_option('page_on_front', $pid); update_option('show_on_front', 'page');
 register_taxonomy('product_cat', 'product');
 register_taxonomy('project_type', 'projects');
-foreach (['point-light','light-tree','urban-lighting-elements','needle-thread','wall-washer','acorn-thread','hazelnut-thread','control-box','sun-light-elements','strings-and-lighting-decorations','light-chandelier'] as $s) {
+register_taxonomy('city', 'projects');
+foreach (['esfahan','tehran','alborz','qom','ahvaz','kerman','shiraz','mashhad','kermanshah','birjand','iraq','khorsand','shiraz'] as $s) { wp_insert_term($s, 'city', ['slug'=>$s]); }
+foreach (['point-light','rise-point-lite-pixel','finger-thread','star-lamp-thread','light-chandelier','led-lamp','acorn-thread','hazelnut-thread','wall-washer','control-box','sun-light-elements','urban-lighting-elements','strings-and-lighting-decorations','light-tree','needle-thread','light-tree','urban-lighting-elements','needle-thread','wall-washer','acorn-thread','hazelnut-thread','control-box','sun-light-elements','strings-and-lighting-decorations','light-chandelier'] as $s) {
     wp_insert_term($s, 'product_cat', ['slug'=>$s]);
 }
-wp_insert_term('light-tunnel', 'project_type', ['slug'=>'light-tunnel']);
+foreach (['light-tunnel','square-lighting','luminous-elements','bridge-lighting','building-lighting','tunnel-lighting','park-lighting','ball-of-light','lighting-building','urban-lighting','light-tree'] as $s) { wp_insert_term($s, 'project_type', ['slug'=>$s]); }
 $prod = wp_insert_post(['post_type'=>'product','post_title'=>'پوینت','post_status'=>'publish','post_name'=>'point-light-pixel']);
-foreach (['needle-string-lights','wall-washer','finger-string-lights','fandoghi-string','point-light-pixel-6cm','baloti-string'] as $s) {
+foreach (['needle-string-lights','wall-washer','finger-string-lights','fandoghi-string','point-light-pixel-6cm','baloti-string','artam-light-tree','delsa-light-tree','foroogh-chandelier','illumina','industrial-led-bulb','lighting-ball','linear-light-facade','pixel-point-string','shamse-chandelier','smart-control-box','star-lamp-string','sun-light-32','sun-light-48'] as $s) {
     wp_insert_post(['post_type'=>'product','post_title'=>$s,'post_status'=>'publish','post_name'=>$s]);
 }
-foreach (['half-arch-tunnel-alborz','esfahan-shohada-square','ahvaz-semi-pyramid-light','artam-tree-midan','tunnel-90-alborz','heart-tunnel-khorsand','tehran-commercial-facade-lighting','kerman-arch-light-tunnel','bridge-fullcolor-qom'] as $s) {
+foreach (['half-arch-tunnel-alborz','birjand-smart-light-trees','iraq-karbala-urban-lighting','mashhad-pilgrim-boulevard-lighting','esfahan-shohada-square','ahvaz-semi-pyramid-light','artam-tree-midan','tunnel-90-alborz','heart-tunnel-khorsand','tehran-commercial-facade-lighting','kerman-arch-light-tunnel','bridge-fullcolor-qom'] as $s) {
     wp_insert_post(['post_type'=>'projects','post_title'=>$s,'post_status'=>'publish','post_name'=>$s]);
 }
 add_filter('locale', fn() => 'fa_IR'); $GLOBALS['wp_locale']->text_direction = 'rtl';

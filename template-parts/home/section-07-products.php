@@ -1,17 +1,11 @@
 <?php
-/**
- * Home section: products (cut from static index.html, DOM preserved)
- * @package ErfanSanat\\Theme
- */
-
+/** home section 07 — sliced from index.html. */
 if (!defined('ABSPATH')) { exit; }
 ?>
-<section id="products" class="relative z-10 py-12 sm:py-16 lg:py-20" style="scroll-margin-top:5rem"><div class="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8"><div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"><div class="flex max-w-2xl flex-col gap-3 items-start text-right"><div custom="0"><div class="inline-flex items-center gap-2 text-xs font-extrabold tracking-wide text-emerald-700 sm:text-[13px]"><span aria-hidden="true" class="h-3.5 w-1 rounded-full bg-emerald-600"></span><span>تولیدات تخصصی کارخانه</span></div></div><div custom="0.06"><h2 class="text-2xl font-black leading-[1.32] tracking-tight text-slate-900 [text-wrap:balance] sm:text-3xl lg:text-[2.25rem]">منتخب محصولات <span class="text-emerald-700">عرفان صنعت اصفهان</span></h2></div><div custom="0.12"><p class="text-sm leading-7 font-medium text-slate-600 sm:text-[15px] sm:leading-8">تولید صنعتی تجهیزات نورپردازی شهری با عایق‌بندی تزریق مستقیم، بدنه پلی‌کربنات نشکن و کنترلرهای مرکزی بی‌سیم.</p></div></div><div class="shrink-0" custom="0.12"><div class="inline-flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white px-4 py-3 shadow-2xs"><span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wifi h-5 w-5" aria-hidden="true"><path d="M12 20h.01"></path><path d="M2 8.82a15 15 0 0 1 20 0"></path><path d="M5 12.859a10 10 0 0 1 14 0"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path></svg></span><div class="leading-tight"><div class="text-xs font-extrabold text-slate-900">کنترل هوشمند یکپارچه</div><div class="mt-0.5 text-[11px] font-medium text-slate-500">پشتیبانی از پروتکل بی‌سیم NRF و WiFi</div></div></div></div></div><div class="mt-8 sm:mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4"><?php
-$q = \ErfanSanat\Theme\Queries::featured_products(8);
-if ($q->have_posts()) :
-    while ($q->have_posts()) : $q->the_post();
-        get_template_part('template-parts/cards/card', 'product');
-    endwhile;
-    wp_reset_postdata();
-endif;
-?></div></section>
+<section id="products" class="relative z-10 py-12 sm:py-16 lg:py-20" style="scroll-margin-top:5rem"><div class="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8"><div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"><div class="flex max-w-2xl flex-col gap-3 items-start text-right"><div custom="0"><div class="inline-flex items-center gap-2 text-xs font-extrabold tracking-wide text-emerald-700 sm:text-[13px]"><span aria-hidden="true" class="h-3.5 w-1 rounded-full bg-emerald-600"></span><span>تولیدات تخصصی کارخانه</span></div></div><div custom="0.06"><h2 class="text-2xl font-black leading-[1.32] tracking-tight text-slate-900 [text-wrap:balance] sm:text-3xl lg:text-[2.25rem]">منتخب محصولات <span class="text-emerald-700">عرفان صنعت اصفهان</span></h2></div><div custom="0.12"><p class="text-sm leading-7 font-medium text-slate-600 sm:text-[15px] sm:leading-8">تولید صنعتی تجهیزات نورپردازی شهری با عایق‌بندی تزریق مستقیم، بدنه پلی‌کربنات نشکن و کنترلرهای مرکزی بی‌سیم.</p></div></div><div class="shrink-0" custom="0.12"><div class="inline-flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white px-4 py-3 shadow-2xs"><span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wifi h-5 w-5" aria-hidden="true"><path d="M12 20h.01"></path><path d="M2 8.82a15 15 0 0 1 20 0"></path><path d="M5 12.859a10 10 0 0 1 14 0"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path></svg></span><div class="leading-tight"><div class="text-xs font-extrabold text-slate-900">کنترل هوشمند یکپارچه</div><div class="mt-0.5 text-[11px] font-medium text-slate-500">پشتیبانی از پروتکل بی‌سیم NRF و WiFi</div></div></div></div></div><div class="mt-8 sm:mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+<?php $q = new WP_Query(['post_type' => 'product', 'posts_per_page' => 6, 'meta_key' => 'featured_products', 'meta_value' => '1']);
+if (!$q->have_posts()) { $q = new WP_Query(['post_type' => 'product', 'posts_per_page' => 6]); }
+if ($q->have_posts()) : while ($q->have_posts()) : $q->the_post(); ?>
+<?php get_template_part('template-parts/cards/card', 'product'); ?>
+<?php endwhile; wp_reset_postdata(); endif; ?>
+</div></section>
