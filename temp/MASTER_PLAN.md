@@ -17,7 +17,7 @@
 | **Phase 5** | تبدیل صفحه اصلی (۱۵ سکشن) و کارت‌های استاندارد | `temp/phase-05-homepage-and-sections` | 20 | `[PASSED]` |
 | **Phase 6** | تبدیل قالب‌های ووکامرس، تک‌محصول، آرشیو و سبد/پرداخت | `temp/phase-06-woocommerce-and-products` | 20 | `[PASSED]` |
 | **Phase 7** | پروژه‌ها، وبلاگ، برگه‌های عمومی، خدمات و لندینگ آریا | `temp/phase-07-projects-blog-and-pages` | 20 | `[PASSED]` |
-| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — Tasks 8.1–8.16 runtime tests pass; native-browser visual review pending for 8.11/8.14/8.15]` |
+| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[PASSED] — 17/17; WordPress runtime, regressions, user-approved preview, and final status gate pass` |
 
 **جمع کل تسک‌های اجرایی: 123 تسک** (۳ تسک پاس‌شده فاز ۱ + 120 تسک اتمیک فازهای ۲ تا ۸)
 
@@ -159,7 +159,7 @@
 - `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PASSED]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
 - `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
-- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Phase 7 approval was subsequently given; Phase 8 is blocked at final sign-off by the missing static sources for Tasks 8.11, 8.14, and 8.15.
+- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Phase 7 approval was subsequently given; Phase 8 proceeded with the user-approved native-theme exception for missing UI sources in Tasks 8.11, 8.14, and 8.15.
 
 ---
 
@@ -177,14 +177,14 @@
 - `[PASSED]` **Task 8.8 (`task-08.md` / `test-task-08.php`):** اتصال JS فیلتر محصولات بدون تغییر URL
 - `[PASSED]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
 - `[PASSED]` **Task 8.10 (`task-10.md` / `test-task-10.php`):** فیلتر وبلاگ (دسته و جستجو)
-- `[TESTING]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور بومی برای محصول/پروژه/وبلاگ؛ تست WordPress روی PHP 8.5 و 33 assertion تعاملی DOM با `main.js` واقعی پاس شد (باز/بستن، sync، clear/reset، apply، Escape و backdrop). فقط بازبینی بصری در مرورگر native باقی است.
+- `[PASSED]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور بومی محصول/پروژه/وبلاگ؛ تست WordPress و تعاملات باز/بستن، sync، clear/reset، apply، Escape و backdrop پاس شد؛ کاربر پیش‌نمایش زنده را تأیید کرد.
 - `[PASSED]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PASSED]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
-- `[TESTING]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم رزومه بومی؛ تست‌های MIME/extension/size پاس شدند و یک PDF از فرم DOM به‌صورت multipart واقعی از HTTP به WordPress ارسال، اعتبارسنجی و ذخیره شد. خطای deprecation مربوط به `finfo_close()` برای PHP 8.5 رفع شد؛ بازبینی بصری در مرورگر native باقی است.
-- `[TESTING]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم native صفحه اصلی؛ تست WordPress و ارسال واقعی AJAX به route/CPT با دریافت شناسه ذخیره‌سازی پاس شد؛ بازبینی بصری در مرورگر native باقی است.
+- `[PASSED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم رزومه بومی؛ اعتبارسنجی MIME/پسوند/حجم و ارسال multipart واقعی PDF از HTTP به WordPress پاس شد؛ deprecation در PHP 8.5 رفع و پیش‌نمایش زنده توسط کاربر تأیید شد.
+- `[PASSED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد native؛ تست WordPress و ارسال واقعی AJAX به route/CPT با شناسه ذخیره‌سازی پاس شد؛ کاربر پیش‌نمایش زنده را تأیید کرد.
 - `[PASSED]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
-- `[BLOCKED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** گیت نهایی فقط وقتی آماده است که همه تسک‌های 8.1 تا 8.16 `[PASSED]` باشند؛ موارد در حال تست نیز مانع اعلام آمادگی‌اند.
-- `[TESTING]` **Phase 8 Suite:** تست‌های 8.1–8.16 روی WordPress 7.2/PHP 8.5 با WooCommerce 11.2.1 پاس شدند؛ Task 8.17 contract نیز اجرا شد و Bash syntax check در host جداگانه پاس است. 33 تست تعاملی DOM، AJAX feedback و آپلود PDF واقعی multipart پاس شدند. مرور بصری با Chromium واقعی هنوز در دسترس نیست؛ گیت نهایی تا بازبینی native-browser و تغییر وضعیت 8.11/8.14/8.15 به PASSED بسته می‌ماند.
+- `[PASSED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** همه پیش‌نیازهای 8.1 تا 8.16 به‌صراحت `[PASSED]` هستند؛ تست گیت نهایی و اسکن وضعیت pass شدند.
+- `[PASSED]` **Phase 8 Suite:** Tasks 8.1–8.16 روی WordPress 7.2/PHP 8.5 و WooCommerce 11.2.1 پاس؛ 33 assertion تعاملی DOM و HTTP/AJAX واقعی برای بازخورد و آپلود PDF پاس؛ `WP_DEBUG=true` بدون warning؛ تست Task 8.17 و اسکن وضعیت نهایی پاس. پیش‌نمایش توسط کاربر تأیید شد. یادداشت محیطی: Chromium native نصب‌پذیر نبود و `run-all-phases-e2e.sh` به PHP CLI بومی وابسته است؛ suites مرتبط جداگانه با Playground اجرا شدند.
 
 ---
 

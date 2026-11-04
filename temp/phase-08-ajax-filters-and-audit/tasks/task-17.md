@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[BLOCKED — requires every Phase 8 task to be PASSED]`
+- **وضعیت:** [PASSED] — all Phase 8 prerequisites passed and final status gate is clear
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -57,4 +57,4 @@ escaping/sanitization sweep، WP_DEBUG صفر خطا، LiteSpeed-friendly (بد�
 `feat(phase-8): task 8.17 — ممیزی امنیت، کارایی و E2E نهایی`
 
 ## Outcome / Blocker
-The readiness gate rejects every Phase 8 task not explicitly marked PASSED. Tasks 8.1–8.16 and the Task 8.17 gate contract were run under the isolated WordPress Playground PHP runtime; the Phase 6 WooCommerce regression suite also passed 20/20. The host `bash -n temp/run-all-phases-e2e.sh` check passes. The PHP gate test now skips its internal Bash invocation when the isolated PHP runtime has no Bash binary and delegates that syntax check to the host. Release readiness remains BLOCKED until Tasks 8.11, 8.14, and 8.15 receive native-browser visual review and are explicitly marked PASSED.
+The readiness gate rejects every Phase 8 task not explicitly marked PASSED. Tasks 8.1–8.16 and the Task 8.17 gate contract were run under the isolated WordPress Playground PHP runtime; the Phase 6 WooCommerce regression suite also passed 20/20. The host `bash -n temp/run-all-phases-e2e.sh` check passes. The PHP gate test now skips its internal Bash invocation when the isolated PHP runtime has no Bash binary and delegates that syntax check to the host. Tasks 8.11, 8.14, and 8.15 have since been marked PASSED after the user approved the live preview. The final status scan is clear. The full all-phases shell runner was not invoked because native PHP CLI is absent; Phase 8 tests and the relevant WooCommerce regression were run through isolated Playground PHP instead.

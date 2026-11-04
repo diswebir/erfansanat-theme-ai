@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[TESTING — live AJAX/CPT submission and DOM interaction tests pass; native-browser visual review pending]`
+- **وضعیت:** [PASSED] — live AJAX/CPT submission verified; user approved the live preview
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -58,4 +58,4 @@
 `feat(phase-8): task 8.15 — فرم بازخورد مشتریان (client-feedback)`
 
 ## Blocker
-User approved the narrow native-theme implementation; Elementor remains excluded. The accessible feedback form is rendered in the existing homepage clients section and uses the established nonce-protected `client_feedback` route and message CPT. WordPress 7.2/PHP 8.5 task tests passed; a DOM harness loaded the actual homepage and theme JavaScript, validated required fields, submitted a real AJAX request to WordPress, and verified a stored submission ID/status response. Native-browser visual review remains pending because no compatible browser binary is available in the sandbox.
+User approved the narrow native-theme implementation; Elementor remains excluded. The accessible feedback form is rendered in the existing homepage clients section and uses the established nonce-protected `client_feedback` route and message CPT. WordPress 7.2/PHP 8.5 task tests passed; a DOM harness loaded the actual homepage and theme JavaScript, validated required fields, submitted a real AJAX request to WordPress, and verified a stored submission ID/status response. The user approved the live preview, closing visual acceptance. No native Chromium screenshot was captured because compatible browser libraries are unavailable.

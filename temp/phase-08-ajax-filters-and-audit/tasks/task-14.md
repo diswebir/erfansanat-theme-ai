@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[TESTING — live multipart upload/storage and DOM interaction tests pass; native-browser visual review pending]`
+- **وضعیت:** [PASSED] — live multipart upload/storage verified; user approved the live preview
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -59,4 +59,4 @@
 `feat(phase-8): task 8.14 — فرم استخدام و آپلود رزومه`
 
 ## Blocker
-User approved native theme UI for this component; Elementor remains excluded. The native required multipart resume form (PDF/DOC/DOCX, max 5 MB) is wired to `recruitment_submission`, with nonce/honeypot and Persian/Arabic phone normalization. WordPress 7.2/PHP 8.5 tests passed for valid and invalid MIME/extension/size. A DOM harness loaded the actual recruitment page and `main.js`, sent a real multipart PDF over HTTP to WordPress, and verified the route stored a private resume submission successfully. `WP_DEBUG=true` checks exposed PHP 8.5 deprecation of `finfo_close()`; removed the redundant close (finfo objects are released automatically), then reran clean. Native-browser visual review remains pending because no compatible browser binary is available in the sandbox.
+User approved native theme UI for this component; Elementor remains excluded. The native required multipart resume form (PDF/DOC/DOCX, max 5 MB) is wired to `recruitment_submission`, with nonce/honeypot and Persian/Arabic phone normalization. WordPress 7.2/PHP 8.5 tests passed for valid and invalid MIME/extension/size. A DOM harness loaded the actual recruitment page and `main.js`, sent a real multipart PDF over HTTP to WordPress, and verified the route stored a private resume submission successfully. `WP_DEBUG=true` checks exposed PHP 8.5 deprecation of `finfo_close()`; removed the redundant close (finfo objects are released automatically), then reran clean. The user approved the live preview, closing visual acceptance. No native Chromium screenshot was captured because compatible browser libraries are unavailable.

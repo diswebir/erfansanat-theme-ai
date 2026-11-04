@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[TESTING — WordPress 7.2/PHP 8.5 suite and 33 DOM interaction assertions pass; native-browser visual review pending]`
+- **وضعیت:** [PASSED] — runtime and 33 DOM assertions pass; user approved the live preview
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -57,4 +57,4 @@ initArchiveDrawer: یک وضعیت فیلتر واحد برای دسکتاپ/م�
 `feat(phase-8): task 8.11 — دراور فیلتر موبایل و همگام‌سازی وضعیت`
 
 ## Blocker
-User approved the narrow native-theme exception; Elementor remains excluded. The product/project/blog drawer uses the shared existing selectors and emerald/slate utility style. Verified on WordPress 7.2/PHP 8.5: Task 8.11 test passes, and the actual served `main.js` passed drawer open/close, Escape/backdrop, control synchronization, clear/reset and apply interactions in a jsdom DOM harness using PHP-rendered drawer markup. The remaining check is visual review in a native browser engine; the sandbox Chromium package cannot launch because `libnspr4.so`/compatible NSS are unavailable.
+User approved the narrow native-theme exception; Elementor remains excluded. The product/project/blog drawer uses the shared existing selectors and emerald/slate utility style. Verified on WordPress 7.2/PHP 8.5: Task 8.11 test passes, and the actual served `main.js` passed drawer open/close, Escape/backdrop, control synchronization, clear/reset and apply interactions in a jsdom DOM harness using PHP-rendered drawer markup. The user approved the live preview, closing the visual acceptance gate. A native Chromium screenshot was unavailable because `libnspr4.so`/compatible NSS are absent; the 33 DOM assertions are recorded separately and are not described as pixel verification.
