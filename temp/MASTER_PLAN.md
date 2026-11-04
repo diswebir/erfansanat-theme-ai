@@ -168,7 +168,7 @@
 - `[PASSED]` **Task 8.1 (`task-01.md` / `test-task-01.php`):** زیرساخت AJAX قالب
 - `[PASSED]` **Task 8.2 (`task-02.md` / `test-task-02.php`):** جستجوی زنده محصولات
 - `[PASSED]` **Task 8.3 (`task-03.md` / `test-task-03.php`):** جستجوی زنده پروژه‌ها و مقالات
-- `[PENDING]` **Task 8.4 (`task-04.md` / `test-task-04.php`):** Query Builder فیلتر محصولات
+- `[PASSED]` **Task 8.4 (`task-04.md` / `test-task-04.php`):** Query Builder فیلتر محصولات
 - `[PENDING]` **Task 8.5 (`task-05.md` / `test-task-05.php`):** فیلتر وضعیت خرید آنلاین (true_sale)
 - `[PENDING]` **Task 8.6 (`task-06.md` / `test-task-06.php`):** فیلترهای ۱۸ ویژگی pa_*
 - `[PENDING]` **Task 8.7 (`task-07.md` / `test-task-07.php`):** رندر نتایج فیلتر و صفحه‌بندی AJAX محصولات
