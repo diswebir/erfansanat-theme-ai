@@ -46,7 +46,7 @@ $output = render_front_page();
 $rendered_order = array_map( static fn( $call ) => $call['args']['section'] ?? '', $GLOBALS['es_p5_template_calls'] );
 $expected_order = array_keys( \ErfanSanat\Theme\Sections\Registry::get( 'home' ) );
 check( 'front-page فاقد مارک‌آپ سکشن است و فقط رندرر را فراخوانی می‌کند', fn() => ! str_contains( $source, '<section' ) && ! str_contains( $source, '<article' ) && ! str_contains( $source, '<div' ) && str_contains( $source, "Renderer::render( 'home' )" ) );
-check( '۱۵ سکشن پیش‌فرض به ترتیب دقیق Registry رندر می‌شوند', fn() => 15 === count( $rendered_order ) && $rendered_order === $expected_order && str_contains( $output, 'data-test-section="hero"' ) );
+check( '۱۶ سکشن (با مجوز Task 5.17) به ترتیب دقیق Registry رندر می‌شوند', fn() => 16 === count( $rendered_order ) && $rendered_order === $expected_order && str_contains( $output, 'data-test-section="hero"' ) );
 $GLOBALS['es_p5_variant'] = 'home2';
 $variant_output = render_front_page();
 $hero_call = $GLOBALS['es_p5_template_calls'][0] ?? array();

@@ -5,10 +5,10 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 2.11`، `Task 2.13` |
-| وضعیت | `[IN PROGRESS — P1–P6 mock criteria verified; per-service destination URL unresolved under reference button/JS constraints]` |
+| وضعیت | `[PASSED — 11 PHP-WASM/jsdom assertions; live WordPress/browser unverified]` |
 | تست | `tests/test-task-10.php` |
 
-> پیشرفت: پنج خدمت اکنون در Repeater ویرایش‌پذیرند؛ عنوان/توضیح/تصویر و counterها به JS hooks متصل و تست شده‌اند. شرط لینک‌دهی به صفحه خدمت هنوز باز است، چون reference برای ردیف‌ها `<button>` تعاملی دارد و URL ردیف در DOM/مرجع موجود نیست.
+> پیاده‌سازی: پنج خدمت در Repeater ویرایش‌پذیرند. URL هر ردیف هم در همان تنظیمات قالب قابل تغییر است؛ مسیر پیش‌فرض هر خدمت از مسیرهای مرجع می‌آید و adapter جداگانه پس از کلیک ناوبری می‌کند. markup button/classes و hookهای `main.js` حفظ شده‌اند؛ `main.js`/CSS دست‌نخورده‌اند.
 
 ## ۱. هدف
 
@@ -17,7 +17,8 @@
 ## ۲. فایل‌های هدف
 
 - `template-parts/home/section-services.php`
-- `inc/Sections/Schema/home/services.php`
+- `inc/Sections/Schema/home.php` + `home-content/services.json`
+- `assets/js/home-service-links.js` (adapter; protected `main.js` unchanged)
 
 ## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
 
@@ -31,7 +32,7 @@
 
 ## ۴. شروط پاس شدن (Pass Conditions)
 
-> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
+> هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ وضعیت حاضر فقط بر پایه PHP-WASM/jsdom است.
 
 - [ ] **P1** — مقایسه ساختاری DOM با استاتیک ≥ ۹۹٪
 - [ ] **P2** — هیچ متن هاردکدی در فایل سکشن نمانده باشد (همه از Schema)

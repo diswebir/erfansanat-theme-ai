@@ -27,6 +27,7 @@ final class HomeSectionMarkup {
 		if ( 'timeline' === $section ) { self::apply_timeline_repeater( $html, $defaults, $values, $data ); }
 		if ( 'gallery' === $section && class_exists( \ErfanSanat\Theme\Query\HomeQueries::class ) ) { self::apply_gallery_projects( $html, $defaults, $values ); }
 		if ( 'services' === $section ) { self::apply_services_repeater( $html, $defaults, $values, $data ); }
+		if ( 'why-ese' === $section ) { self::apply_why_ese_features( $html, $data ); }
 		if ( 'clients' === $section && is_array( $overrides ) && empty( $overrides ) ) { return; }
 		if ( 'blog-preview' === $section && class_exists( \ErfanSanat\Theme\Query\HomeQueries::class ) ) {
 			$articles = \ErfanSanat\Theme\Query\HomeQueries::articles( 4 );
@@ -243,7 +244,36 @@ final class HomeSectionMarkup {
 			if ( '' !== $image ) { self::set_value( $values, $defaults, $tokens[1], $image ); }
 			$counter = self::persian_digits( sprintf( '%02d', $index + 1 ) . ' / ' . (string) $total );
 			self::set_value( $values, $defaults, $tokens[6], $counter );
+			$url = is_scalar( $row['url'] ?? null ) ? trim( (string) $row['url'] ) : '';
+			if ( '' !== $url ) {
+				$safe_url = self::escape_value( $url, 'url' );
+				$html = (string) preg_replace_callback( '/<button\\b(?=[^>]*data-service-row="' . $index . '")[^>]*>/i', static function ( $match ) use ( $safe_url ) {
+					$tag = (string) preg_replace( '/\\sdata-service-url="[^"]*"/i', '', $match[0] );
+					return substr( $tag, 0, -1 ) . ' data-service-url="' . $safe_url . '">';
+				}, $html, 1 );
+			}
 		}
+	}
+
+	/** Render editable company-differentiator rows with a fixed, safe SVG icon map. */
+	private static function apply_why_ese_features( string &$html, array $data ): void {
+		$rows = is_array( $data['features'] ?? null ) ? array_slice( array_values( $data['features'] ), 0, 4 ) : array();
+		$icons = array(
+			'award' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-6 w-6"><circle cx="12" cy="8" r="6"></circle><path d="M8.2 13.4 7 22l5-3 5 3-1.2-8.6"></path></svg>',
+			'factory' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-6 w-6"><path d="M2 22h20"></path><path d="M4 22V9l6 4V9l6 4V5h4v17"></path><path d="M18 8h2"></path><path d="M8 17h.01M12 17h.01M16 17h.01"></path></svg>',
+			'badge-check' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-6 w-6"><path d="M12 3 14.5 5l3.2-.2.8 3.1 2.5 2-1.2 3 1.2 3-2.5 2-.8 3.1-3.2-.2L12 23l-2.5-2-3.2.2-.8-3.1-2.5-2 1.2-3-1.2-3 2.5-2 .8-3.1 3.2.2z"></path><path d="m8.5 12 2.3 2.3 4.8-4.8"></path></svg>',
+			'shield-check' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-6 w-6"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"></path><path d="m9 12 2 2 4-4"></path></svg>',
+		);
+		$cards = array();
+		foreach ( $rows as $row ) {
+			if ( ! is_array( $row ) ) { continue; }
+			$title = is_scalar( $row['title'] ?? null ) ? (string) $row['title'] : '';
+			$description = is_scalar( $row['description'] ?? null ) ? (string) $row['description'] : '';
+			$icon_key = is_scalar( $row['icon'] ?? null ) ? (string) $row['icon'] : 'award';
+			$icon = $icons[ $icon_key ] ?? $icons['award'];
+			$cards[] = '<article class="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6" data-why-ese-feature="true"><span class="grid h-12 w-12 place-items-center rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-700">' . $icon . '</span><h3 class="text-sm font-extrabold leading-6 text-slate-900 sm:text-base">' . self::escape_value( $title, 'text' ) . '</h3><p class="text-xs font-medium leading-6 text-slate-600 sm:text-[13px]">' . self::escape_value( $description, 'text' ) . '</p></article>';
+		}
+		$html = str_replace( '__ES_FEATURES__', implode( '', $cards ), $html );
 	}
 
 	/** Only expose the catalog download action when a Media Library file is configured. */

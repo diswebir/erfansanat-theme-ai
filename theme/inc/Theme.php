@@ -34,6 +34,7 @@ use ErfanSanat\Theme\Frontend\ArchiveConfig;
 use ErfanSanat\Theme\Frontend\CustomCode;
 use ErfanSanat\Theme\Frontend\InlineCss;
 use ErfanSanat\Theme\Frontend\Head;
+use ErfanSanat\Theme\Frontend\HomeServiceLinks;
 use ErfanSanat\Theme\Frontend\NavConfig;
 use ErfanSanat\Theme\Admin\Tabs\NavTab;
 use ErfanSanat\Theme\Meta\MetaRepository;
@@ -119,6 +120,7 @@ final class Theme {
 		$this->register_module( 'custom-code', new CustomCode() );
 		$this->register_module( 'head', new Head() );
 		$this->register_module( 'nav-config', new NavConfig() );
+		$this->register_module( 'home-service-links', new HomeServiceLinks() );
 		$this->register_module( 'nav-tab', new NavTab() );
 		$this->register_module( 'menu-item-fields', new MenuItemFields() );
 		$this->register_module( 'brand-tab', new BrandTab() );

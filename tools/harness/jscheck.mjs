@@ -52,6 +52,8 @@ if (useMock) {
 }
 
 const source = fs.readFileSync(jsPath, 'utf8');
+const serviceLinksPath = path.join(root, 'theme/assets/js/home-service-links.js');
+const serviceLinksSource = fs.readFileSync(serviceLinksPath, 'utf8');
 const errors = [];
 const virtualConsole = new VirtualConsole();
 virtualConsole.on('jsdomError', (error) => errors.push(`jsdom: ${error.message}`));
@@ -91,12 +93,16 @@ window.addEventListener('unhandledrejection', (event) => errors.push(`promise: $
 
 try {
   window.eval(source);
+  const serviceNavigations = [];
+  window.__esNavigate = (url) => serviceNavigations.push(url);
+  window.eval(serviceLinksSource);
   window.document.dispatchEvent(new window.Event('DOMContentLoaded', { bubbles: true }));
 
   const serviceRow = window.document.querySelector('[data-service-row]');
   const serviceTitle = window.document.querySelector('[data-service-preview-title="true"]');
   if (serviceRow) serviceRow.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
   interactionChecks.services = Boolean(serviceRow && serviceTitle && serviceTitle.textContent === serviceRow.getAttribute('data-service-title'));
+  if (useMock) interactionChecks.serviceLinkNavigation = Boolean(serviceRow?.getAttribute('data-service-url') && serviceNavigations[0] === serviceRow.getAttribute('data-service-url'));
 
   const tunnelTab = [...window.document.querySelectorAll('[data-home2-port-tab]')]
     .find((tab) => tab.getAttribute('data-home2-port-tab') === 'tunnel');
@@ -132,8 +138,8 @@ try {
 }
 
 await new Promise((resolve) => window.setTimeout(resolve, 10));
-if (useMock && window.document.querySelectorAll('section').length < 15) {
-  errors.push(`expected >=15 homepage sections, found ${window.document.querySelectorAll('section').length}`);
+if (useMock && window.document.querySelectorAll('section').length < 16) {
+  errors.push(`expected >=16 homepage sections, found ${window.document.querySelectorAll('section').length}`);
 }
 const sectionSimilarities = [];
 if (useMock) {
@@ -182,6 +188,7 @@ const summary = {
   homeSections: window.document.querySelectorAll('section').length,
   htmlSha256: sha256(html),
   mainJsSha256: sha256(source),
+  serviceLinksSha256: sha256(serviceLinksSource),
   phpMockAssertions,
   queryReport: mockQueryReport,
   sectionSimilarities,

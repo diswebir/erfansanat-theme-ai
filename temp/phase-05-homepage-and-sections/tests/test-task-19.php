@@ -81,10 +81,11 @@ ob_start(); \ErfanSanat\Theme\Sections\Renderer::render( 'home', 42 ); $homepage
 $query_count_once = count( $GLOBALS['es_p5_query_args'] ); $terms_count_once = $GLOBALS['es_p5_terms_calls'];
 ob_start(); \ErfanSanat\Theme\Sections\Renderer::render( 'home', 42 ); $homepage_twice = (string) ob_get_clean();
 restore_error_handler();
-check( 'رندر یکپارچه تمام ۱۵ سکشن بدون warning انجام می‌شود و مسیرهای query-aware خروجی می‌سازند', fn() => substr_count( $homepage_once, '<section' ) >= 15 && str_contains( $homepage_once, 'data-home2-port-panel="all"' ) && str_contains( $homepage_once, 'Fixture 1' ) && str_contains( $homepage_once, 'data-home2-history-panel="0"' ) && empty( $warnings ) );
+check( 'رندر یکپارچه تمام ۱۶ سکشن بدون warning انجام می‌شود و مسیرهای query-aware خروجی می‌سازند', fn() => substr_count( $homepage_once, '<section' ) >= 16 && str_contains( $homepage_once, 'data-home2-port-panel="all"' ) && str_contains( $homepage_once, 'Fixture 1' ) && str_contains( $homepage_once, 'data-home2-history-panel="0"' ) && empty( $warnings ) );
 check( 'رندر کامل در سقف ۳۰ query می‌ماند و رندر دوم بدون query جدید از cache می‌آید', fn() => $query_count_once > 0 && ( $query_count_once + $terms_count_once ) <= 30 && $query_count_once === count( $GLOBALS['es_p5_query_args'] ) && $terms_count_once === $GLOBALS['es_p5_terms_calls'] && '' !== $homepage_twice );
 $query_report = array(
 	'home_sections' => substr_count( $homepage_once, '<section' ),
+	'measurement' => 'mock request-level WP_Query/get_terms calls; not $wpdb SQL',
 	'bounded_request_calls' => $query_count_once + $terms_count_once,
 	'cache_hit' => $query_count_once === count( $GLOBALS['es_p5_query_args'] ) && $terms_count_once === $GLOBALS['es_p5_terms_calls'],
 	'warnings' => count( $warnings ),

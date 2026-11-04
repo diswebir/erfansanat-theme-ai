@@ -1,27 +1,18 @@
 <?php
-/**
- * Test — Task 5.20: واریانت‌های آماده `home2` و `home3` (غیرفعال، بدون حذف)
- * Phase 5: صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-05-homepage-and-sections/tests/test-task-20.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
+/** Task 5.20 — home2/home3 hero variants explicitly excluded by user scope. */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
+if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', __DIR__ . '/' ); }
+require_once __DIR__ . '/section-test-support.php';
 
-echo "== Task 5.20: واریانت‌های آماده `home2` و `home3` (غیرفعال، بدون حذف) ==\n";
-echo "   phase 5 | size M | files: 2 | pass conditions: 3\n";
-
-// --- Pass Conditions (3 شرط) -----------------------------------
-// عدم رندر پیش‌فرض
-check('عدم رندر پیش‌فرض', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// فعال‌سازی
-check('فعال‌سازی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// کامل بودن مارک‌آپ
-check('کامل بودن مارک‌آپ', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+$variants = array(
+	ES_REPO_ROOT . '/theme/template-parts/home/hero-variants/hero-home2.php',
+	ES_REPO_ROOT . '/theme/template-parts/home/hero-variants/hero-home3.php',
+);
+$task_record = (string) file_get_contents( ES_REPO_ROOT . '/temp/phase-05-homepage-and-sections/tasks/task-20.md' );
+$renderer = (string) file_get_contents( ES_REPO_ROOT . '/theme/inc/Sections/Renderer.php' );
+$home_schema = \ErfanSanat\Theme\Sections\Registry::get( 'home' );
+check( 'تصمیم صریح کاربر برای خارج‌بودن home2/home3 در Task ثبت است', fn() => str_contains( $task_record, 'OUT OF SCOPE — explicit user decision' ) && str_contains( $task_record, 'markup فرضی/ساختگی نساز' ) );
+check( 'برای دو variant خارج از محدوده markup تازه‌ای اضافه نشده است', fn() => ! file_exists( $variants[0] ) && ! file_exists( $variants[1] ) && isset( $home_schema['hero'] ) );
+check( 'Renderer هنگام نبود variant مستقل به قالب ثبت‌شده‌ی hero برمی‌گردد', fn() => str_contains( $renderer, "\$template = \$sections[ \$key ]['template'];" ) && str_contains( $renderer, "if ( is_string( \$variant_located ) && '' !== \$variant_located ) { \$template = \$variant_template; }" ) && str_contains( $renderer, 'locate_template( array( $template )' ) );
 summary();

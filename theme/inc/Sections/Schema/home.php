@@ -86,12 +86,14 @@ $services_content = is_file( $services_content_path ) ? json_decode( (string) fi
 $service_token_map = array(
 	array( 'A000', 'A001', 'T006' ), array( 'A003', 'A004', 'T009' ), array( 'A006', 'A007', 'T012' ), array( 'A009', 'A010', 'T015' ), array( 'A012', 'A013', 'T018' ),
 );
+$service_urls = array( '/services/square-lighting/', '/services/street-lighting/', '/services/bridge-lighting/', '/services/element-lighting/', '/services/building-lighting/' );
 $service_rows = array();
-foreach ( $service_token_map as $tokens ) {
+foreach ( $service_token_map as $index => $tokens ) {
 	$service_rows[] = array(
 		'title' => (string) ( $services_content[ $tokens[0] ]['value'] ?? '' ),
 		'image' => (string) ( $services_content[ $tokens[1] ]['value'] ?? '' ),
 		'description' => (string) ( $services_content[ $tokens[2] ]['value'] ?? '' ),
+		'url' => $service_urls[ $index ] ?? '',
 	);
 }
 $services['fields'][] = array(
@@ -100,6 +102,7 @@ $services['fields'][] = array(
 		array( 'id' => 'title', 'type' => 'text', 'label' => 'عنوان خدمت', 'default' => '' ),
 		array( 'id' => 'description', 'type' => 'textarea', 'label' => 'توضیح خدمت', 'default' => '' ),
 		array( 'id' => 'image', 'type' => 'media', 'label' => 'تصویر پیش‌نمایش', 'default' => '', 'return' => 'url', 'media_kind' => 'image' ),
+		array( 'id' => 'url', 'type' => 'url', 'label' => 'پیوند صفحه خدمت', 'default' => '' ),
 	),
 );
 $services['default_data']['services'] = $service_rows;
@@ -139,6 +142,23 @@ $about['fields'][] = array( 'id' => 'use_project_count', 'type' => 'toggle', 'la
 $about['default_data']['stats'] = $about_stats;
 $about['default_data']['use_project_count'] = false;
 
+$why_ese = $section( 'why-ese', 'چرا عرفان صنعت؟', 'template-parts/home/section-why-ese.php' );
+$why_features = array(
+	array( 'title' => 'بیش از ۲۵ سال تجربه مهندسی', 'description' => 'تجربه تخصصی در طراحی و تولید سازه‌های نوری شهری و راهکارهای متناسب با نیاز هر پروژه.', 'icon' => 'award' ),
+	array( 'title' => 'طراحی، تولید و اجرای یکپارچه', 'description' => 'همراهی از طراحی اولیه تا ساخت کارخانه‌ای و اجرای نهایی در محل پروژه.', 'icon' => 'factory' ),
+	array( 'title' => 'کیفیت و استانداردهای مستند', 'description' => 'گواهینامه ISO 9001:2015، کدهای GS1 و حضور در سامانه تدارکات الکترونیکی دولت (ستاد).', 'icon' => 'badge-check' ),
+	array( 'title' => 'پشتیبانی پس از تحویل', 'description' => '۲۴ ماه گارانتی تعویض و ۵ سال خدمات پس از فروش برای همراهی بلندمدت پروژه.', 'icon' => 'shield-check' ),
+);
+$why_ese['fields'][] = array(
+	'id' => 'features', 'type' => 'repeater', 'label' => 'مزیت‌های عرفان صنعت', 'default' => $why_features,
+	'fields' => array(
+		array( 'id' => 'title', 'type' => 'text', 'label' => 'عنوان مزیت', 'default' => '' ),
+		array( 'id' => 'description', 'type' => 'textarea', 'label' => 'توضیح مزیت', 'default' => '' ),
+		array( 'id' => 'icon', 'type' => 'select', 'label' => 'نماد', 'default' => 'award', 'options' => array( 'award' => 'تجربه', 'factory' => 'تولید', 'badge-check' => 'استاندارد', 'shield-check' => 'پشتیبانی' ) ),
+	),
+);
+$why_ese['default_data']['features'] = $why_features;
+
 $sections = array(
 	'hero'          => $hero,
 	'projects'      => $section( 'projects', 'پروژه‌های منتخب', 'template-parts/home/section-projects-intro.php' ),
@@ -155,6 +175,7 @@ $sections = array(
 	'blog-preview'  => $section( 'blog-preview', 'ویترین مقالات', 'template-parts/home/section-blog-preview.php' ),
 	'contact-cta'   => $section( 'contact-cta', 'دعوت به تماس', 'template-parts/home/section-contact-cta.php' ),
 	'map-contact'   => $section( 'map-contact', 'موقعیت کارخانه و اطلاعات تماس', 'template-parts/home/section-map-contact.php' ),
+	'why-ese'       => $why_ese,
 );
 
 foreach ( $sections as $key => &$definition ) {
