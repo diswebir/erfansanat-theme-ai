@@ -2526,7 +2526,7 @@
           if (h1CtaEl && sCta) h1CtaEl.textContent = sCta;
           if (h1LinkEl && sHref) {
             var cleanHref = sHref.replace(/^\/+/, "");
-            h1LinkEl.setAttribute("href", cleanHref.endsWith(".html") ? cleanHref : cleanHref + ".html");
+            h1LinkEl.setAttribute("href", (cleanHref.indexOf("/") !== -1 || cleanHref.indexOf("://") !== -1 || cleanHref.endsWith(".html")) ? cleanHref : cleanHref + ".html");
           }
         }
       };

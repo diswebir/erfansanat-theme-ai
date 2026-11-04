@@ -85,3 +85,6 @@
 
 ## ADMIN+A11Y+PERF audit — 2026-11-03
 - test-admin-a11y-perf: admin save با nonce/cap → meta legacy `_erfansanat_sections` roundtrip OK، nonce坏 reject می‌شود؛ rtl/lang با locale fa_IR OK؛ skip-link و aria-label search اضافه شد؛ ۶۵ img همگی alt دارند؛ code assets ۴۰۲KB (css ۱۹۲ + js ۱۲۴ + fonts ۱۰۸) vs استاتیک ۲۹۶KB؛ front-page ۲۷۱KB. ALL PASS.
+
+## STATIC LINKS rewrite — 2026-11-03
+- ۸۷ لینک ثابت `.html` در کل قالب با es_static_url() به URLهای واقعی WP (archive/page/term/permalink) تبدیل شد؛ helper با fallback امن harden شد (get_post_type_archive_link false بدون ووکامرس). JSıklı hero هم دیگر .html append نمی‌کند. تست: ۱۱۲ href رندر شده، صفر .html باقی‌مانده. E2E ALL-PASS.

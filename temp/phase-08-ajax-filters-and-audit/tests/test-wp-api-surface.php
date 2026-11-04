@@ -38,7 +38,7 @@ check('WP core function list built (' . count($wpFuncs) . ' functions)', count($
 $wcPrefixes = ['wc_', 'woocommerce_'];
 
 // theme's own global helpers
-$ownFuncs = ['es_option', 'es_sections', 'es_hreflang_tags'];
+$ownFuncs = ['es_option', 'es_sections', 'es_hreflang_tags', 'es_static_url', 'es_page_url'];
 
 // 2. Scan theme PHP files for called functions
 $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($THEME, FilesystemIterator::SKIP_DOTS));

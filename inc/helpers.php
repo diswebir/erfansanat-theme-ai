@@ -70,6 +70,80 @@ if (!function_exists('es_hreflang_tags')) {
     /**
      * Template tag used by header.php — echoes hreflang <link> tags.
      */
+
+    /**
+     * Map a legacy static-mirror path (e.g. "product/x.html", "shop.html")
+     * to the correct WordPress URL. Falls back to home_url('/'.$path).
+     */
+    function es_static_url(string $path): string
+    {
+        $path = trim($path, "/ \t");
+        if ($path === '') { return home_url('/'); }
+        $base = preg_replace('/\.html$/i', '', $path);
+
+        // top-level static pages -> WP pages (by slug or page template)
+        $topMap = [
+            'shop' => fn() => (string) (function_exists('get_post_type_archive_link') ? get_post_type_archive_link('product') : false) ?: home_url('/shop/'),
+            'projects' => fn() => (string) get_post_type_archive_link('projects') ?: home_url('/projects/'),
+            'blog' => fn() => (string) get_permalink((int) get_option('page_for_posts')) ?: home_url('/blog/'),
+            'cart' => fn() => function_exists('wc_get_page_id') ? ((string) get_permalink(wc_get_page_id('cart')) ?: home_url('/cart/')) : home_url('/cart/'),
+            'checkout' => fn() => function_exists('wc_get_page_id') ? ((string) get_permalink(wc_get_page_id('checkout')) ?: home_url('/checkout/')) : home_url('/checkout/'),
+            'about' => fn() => es_page_url('about'),
+            'contact' => fn() => es_page_url('contact'),
+            'faq' => fn() => es_page_url('faq'),
+            'services' => fn() => es_page_url('services'),
+            'recruitment' => fn() => es_page_url('recruitment'),
+            'refund_returns' => fn() => es_page_url('refund-returns'),
+            'licenses-and-honors' => fn() => es_page_url('licenses-and-honors'),
+        ];
+        $parts = explode('/', $base);
+        $top = $parts[0];
+        if (count($parts) === 1 && isset($topMap[$top])) {
+            return ($topMap[$top])();
+        }
+        // taxonomy archives
+        if (count($parts) === 2 && $parts[0] === 'product_cat') {
+            $link = get_term_link($parts[1], 'product_cat');
+            return is_wp_error($link) ? home_url('/' . $path) : $link;
+        }
+        if (count($parts) === 2 && $parts[0] === 'product_tag') {
+            $link = get_term_link($parts[1], 'product_tag');
+            return is_wp_error($link) ? home_url('/' . $path) : $link;
+        }
+        if (count($parts) === 2 && $parts[0] === 'project_type') {
+            $link = get_term_link($parts[1], 'project_type');
+            return is_wp_error($link) ? home_url('/' . $path) : $link;
+        }
+        if (count($parts) === 2 && $parts[0] === 'city') {
+            $link = get_term_link($parts[1], 'city');
+            return is_wp_error($link) ? home_url('/' . $path) : $link;
+        }
+        // single content by slug
+        if (count($parts) === 2 && $parts[0] === 'product') {
+            $p = get_page_by_path($parts[1], OBJECT, 'product');
+            return $p ? ((string) get_permalink($p) ?: home_url('/' . $path)) : home_url('/' . $path);
+        }
+        if (count($parts) === 2 && $parts[0] === 'projects') {
+            $p = get_page_by_path($parts[1], OBJECT, 'projects');
+            return $p ? ((string) get_permalink($p) ?: home_url('/' . $path)) : home_url('/' . $path);
+        }
+        return home_url('/' . $path);
+    }
+
+    /** URL of a static page by its WP slug (tries several slug candidates). */
+    function es_page_url(string $slug): string
+    {
+        $candidates = [$slug, str_replace('-', '_', $slug)];
+        foreach ($candidates as $c) {
+            $page = get_page_by_path($c);
+            if ($page) { return (string) get_permalink($page) ?: home_url('/' . $c . '/'); }
+        }
+        // try page template match (page-<slug>.php)
+        $q = new \WP_Query(['post_type' => 'page', 'posts_per_page' => 1, 'meta_key' => '_wp_page_template', 'meta_value' => 'page-' . $slug . '.php']);
+        if ($q->have_posts()) { return (string) get_permalink($q->posts[0]) ?: home_url('/' . $slug . '/'); }
+        return home_url('/' . $slug . '/');
+    }
+
     function es_hreflang_tags(): void
     {
         \ErfanSanat\Theme\Seo::hreflang();

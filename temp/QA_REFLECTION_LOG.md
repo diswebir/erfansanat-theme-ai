@@ -75,3 +75,6 @@
 
 ## ADMIN+A11Y+PERF — 2026-11-03
 - Real-WP admin dashboard test (SectionManager save + nonce rejection + legacy meta roundtrip), a11y (skip-link added, aria-label on search input, all 65 imgs have alt, rtl/lang via fa_IR), performance budget (402KB code assets vs 296KB static mirror, 271KB rendered page). ALL PASS, in E2E.
+
+## STATIC LINKS — 2026-11-03
+- Found 87 hardcoded .html hrefs (would 404 under WP permalinks). Added es_static_url()/es_page_url() mapping to archives/pages/terms/permalinks with safe fallbacks; rewrote all; fixed hero-scene JS .html append. Real-WP test: 113 hrefs rendered, zero literal .html, all resolve. E2E ALL-PASS.
