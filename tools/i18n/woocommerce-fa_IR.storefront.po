@@ -1,0 +1,163 @@
+# Persian (fa_IR) additions for the WooCommerce storefront screens.
+#
+# The Persian catalogue shipped with WooCommerce (Persian-WooCommerce on
+# translate.wordpress.org) does not yet cover the block-cart/checkout screens or
+# several account strings, so those pages fall back to English on a Persian
+# store. This file holds only the strings the theme's own screens actually
+# render; tools/patch-woocommerce-translations.php merges them into the
+# installed catalogue. Nothing here overrides an existing translation.
+msgid ""
+msgstr ""
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: woocommerce\n"
+
+# ── Cart block ────────────────────────────────────────────────────────────────
+msgid "Your cart is currently empty!"
+msgstr "سبد خرید شما در حال حاضر خالی است!"
+
+msgid "Your cart is currently empty."
+msgstr "سبد خرید شما در حال حاضر خالی است."
+
+msgid "New in store"
+msgstr "تازه‌های فروشگاه"
+
+msgid "Browse store"
+msgstr "مشاهده فروشگاه"
+
+msgid "Return to shop"
+msgstr "بازگشت به فروشگاه"
+
+msgid "Proceed to checkout"
+msgstr "ادامه جهت تسویه‌حساب"
+
+msgid "Start shopping"
+msgstr "شروع خرید"
+
+# ── Cart line items and totals ────────────────────────────────────────────────
+msgid "Product"
+msgstr "محصول"
+
+msgid "Price"
+msgstr "قیمت"
+
+msgid "Quantity"
+msgstr "تعداد"
+
+msgid "Subtotal"
+msgstr "جمع جزء"
+
+msgid "Total"
+msgstr "مبلغ کل"
+
+msgid "Remove item"
+msgstr "حذف کالا"
+
+msgid "Coupon code"
+msgstr "کد تخفیف"
+
+msgid "Apply coupon"
+msgstr "اعمال کد تخفیف"
+
+msgid "Order summary"
+msgstr "خلاصه سفارش"
+
+msgid "Quantity of %s in your cart."
+msgstr "تعداد %s در سبد خرید شما."
+
+msgid "Includes %s tax"
+msgstr "شامل %s مالیات"
+
+# ── Checkout block ────────────────────────────────────────────────────────────
+msgid "Checkout"
+msgstr "تسویه‌حساب"
+
+msgid "Billing address"
+msgstr "نشانی صورت‌حساب"
+
+msgid "Shipping address"
+msgstr "نشانی تحویل"
+
+msgid "Contact information"
+msgstr "اطلاعات تماس"
+
+msgid "Payment options"
+msgstr "روش‌های پرداخت"
+
+msgid "Place order"
+msgstr "ثبت سفارش"
+
+msgid "First name"
+msgstr "نام"
+
+msgid "Last name"
+msgstr "نام خانوادگی"
+
+msgid "Company (optional)"
+msgstr "نام شرکت (اختیاری)"
+
+msgid "Street address"
+msgstr "نشانی خیابان"
+
+msgid "Town / City"
+msgstr "شهر"
+
+msgid "State / County"
+msgstr "استان"
+
+msgid "Postcode / ZIP"
+msgstr "کد پستی"
+
+msgid "Phone"
+msgstr "تلفن"
+
+msgid "Email address"
+msgstr "نشانی رایانامه"
+
+msgid "Order notes (optional)"
+msgstr "یادداشت سفارش (اختیاری)"
+
+msgid "Cash on delivery"
+msgstr "پرداخت در محل"
+
+# ── My account ────────────────────────────────────────────────────────────────
+msgid "Dashboard"
+msgstr "پیشخوان"
+
+msgid "Orders"
+msgstr "سفارش‌ها"
+
+msgid "Downloads"
+msgstr "دانلودها"
+
+msgid "Addresses"
+msgstr "نشانی‌ها"
+
+msgid "Account details"
+msgstr "اطلاعات حساب"
+
+msgid "Log out"
+msgstr "خروج از حساب"
+
+msgid "Log in"
+msgstr "ورود به حساب"
+
+msgid "Register"
+msgstr "ثبت‌نام"
+
+msgid "Username or email address"
+msgstr "نام کاربری یا نشانی رایانامه"
+
+msgid "Password"
+msgstr "گذرواژه"
+
+msgid "Remember me"
+msgstr "مرا به یاد بسپار"
+
+msgid "Lost your password?"
+msgstr "گذرواژه را فراموش کرده‌اید؟"
+
+msgid "Hello %1$s (not %1$s? <a href=\"%2$s\">Log out</a>)"
+msgstr "سلام %1$s (خودتان نیستید؟ <a href=\"%2$s\">خروج</a>)"

@@ -109,6 +109,13 @@
 
 - **Task 5.1 PASSED**: پانزده سکشن S01–S15 از `index.html` برش خوردند (`template-parts/home/section-*.php`) و `inc/Frontend/SectionParts.php` بلوک تکرارشوندهٔ eyebrow/title/subtitle را مشترک کرد. صفحهٔ اصلی ۲۱۷KB مارک‌آپ مرجع را با ترتیب ثبت‌شده چاپ می‌کند. PHPUnit ۱۳/۱۵۳، HTTP ۴۰/۴۰.
 - **Task 5.2 PASSED**: `inc/Queries.php` + سه کارت مشترک (`card-product`/`card-project`/`card-post`). محصولات از `wc_get_products()` با قیمت واقعی، پروژه‌ها از CPT با ترم‌های شهر/نوع، مقالات تازه‌ترین. PHPUnit ۱۴/۹۱، HTTP ۱۷/۱۷.
+
+## فاز ۶ — ووکامرس و محصولات (2026-11-04)
+
+- **Task 6.1 PASSED** (`d343bd7`): `single-product.php` در ریشه قالب + `inc/WooCommerce.php` + هفت بخش `template-parts/product/*` + `card-product-tile.php`. صفحه محصول از دادهٔ واقعی ووکامرس و کلیدهای متای تاریخی ساخته می‌شود؛ حالت خرید روی `true_sale` × موجودی شاخه می‌گیرد و هرگز روی `is_purchasable()` تنها. PHPUnit ۱۷/۱۳۹، HTTP ۷۵/۷۵ روی هر ۲۰ محصول.
+- **Task 6.2 PASSED** (`b380776`): `archive-product.php` + `taxonomy-product_cat.php` + `taxonomy-product_tag.php` + هفت بخش `template-parts/archive/*`. صفحه‌بندی واقعی سرور (`?page=N` روی کوئری اصلی، ۹ محصول در صفحه)، payload کامل `data-product-*` در هر کارت، فیلترها از کاتالوگ واقعی، FAQ/تصویر ترم از متای تاریخی. دو ناسازگاری قرارداد JS/مارک‌آپ (`data-pagination-root`، `data-page-num`) اصلاح و قفل شد. PHPUnit ۱۳/۱۶۵، HTTP ۱۳۴/۱۳۴، ۱۹ آرشیو ترم پاک.
+- **Task 6.3 PASSED**: `page.php` + `inc/Commerce.php` + `tools/compile-po.py` + `tools/patch-woocommerce-translations.py` + `tools/i18n/`. سبد/پرداخت با بلاک خود ووکامرس می‌مانند، مسیر بدون JS با فرم کلاسیک داخل `<noscript>`، پیام تأیید از سفارش واقعی (هیچ رسید جعلی، برخلاف مرجع)، بستهٔ ترجمهٔ فارسی ووکامرس با ۲۳ رشتهٔ گمشده تکمیل شد. سفارش واقعی `processing` با `cod` ثبت و پاک شد. PHPUnit ۱۲/۶۹، HTTP ۱۹۸/۱۹۸.
+- وضعیت کل فاز ۶: PHPUnit ۴۲ تست / ۳۷۳ ادعا، HTTP ۱۹۸/۱۹۸، PHPCS روی کل قالب پاک، فاز ۵ همچنان ۵۷/۵۷.
 - **باگ N+1 واقعی و اصلاح آن**: رندر ۱۲ کارت پروژه ۲۴ کوئری اضافه می‌خورد (۲ به‌ازای هر کارت) چون `get_the_post_thumbnail_url()` و `get_the_terms()` کش دیگری می‌خوانند. با `update_post_thumbnail_cache()` + `update_post_caches(..., true, true)` به **۰ کوئری** رسید و یک تست آن را قفل می‌کند.
 - **باگ متغیر تعریف‌نشده**: `$erfansanat_video` در هیرو پیش از تعریف استفاده می‌شد؛ آزمون با `display-warnings` آن را گرفت.
 - **تصمیم دوم درباره ID**: `anchor_in_part` اضافه شد؛ `home`/`projects`/`services` شناسه را داخل قالب خودشان می‌نویسند تا هیچ ID تکراری نباشد و هر هفت انکر مرجع روی عنصر درست بمانند.

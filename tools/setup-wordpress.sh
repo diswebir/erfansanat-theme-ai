@@ -30,6 +30,9 @@ tools/wp --path="$WP" plugin activate woocommerce sqlite-database-integration/lo
 tools/wp --path="$WP" theme activate twentytwentyfive
 tools/wp --path="$WP" option update WPLANG fa_IR
 tools/wp --path="$WP" user update "$ADMIN_USER" --locale=fa_IR
+# The Persian WooCommerce catalogue is incomplete on the storefront screens;
+# extend it before seeding so the seeded block pages hold Persian markup.
+python3 tools/patch-woocommerce-translations.py
 tools/wp --path="$WP" eval-file tools/local/seed.php
 # Permalink structure and rewrite rules are set by the idempotent seeder;
 # the PHP-Wasm router does not use Apache .htaccess files.

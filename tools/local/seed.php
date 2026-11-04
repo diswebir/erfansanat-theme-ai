@@ -19,6 +19,28 @@ $data = json_decode(file_get_contents(__DIR__ . '/fixture-data.json'), true, 512
 define('ES_FIXTURE_SOURCE_ROOT', dirname(__DIR__, 2) . '/static-mirror');
 $fixture_meta = '_es_fixture';
 
+/**
+ * The block markup WooCommerce's own installer writes for a page.
+ *
+ * A bare `<!-- wp:woocommerce/cart /-->` is not enough: the cart block renders
+ * by filling the inner block tree that the installer's template already
+ * contains, so a self-closing tag produces an empty page. Reusing the exact
+ * installer string keeps the fixture faithful to a real store, and the theme is
+ * then tested against the block markup it has to support.
+ *
+ * @param string $block Either `cart` or `checkout`.
+ * @return string
+ */
+function es_woocommerce_block_page(string $block): string {
+    if (!class_exists('WC_Install')) {
+        include_once WC_ABSPATH . 'includes/class-wc-install.php';
+    }
+    $method = new ReflectionMethod('WC_Install', $block === 'checkout' ? 'get_checkout_block_content' : 'get_cart_block_content');
+    $method->setAccessible(true);
+    $content = $method->invoke(null);
+    return is_string($content) && $content !== '' ? $content : '';
+}
+
 function es_fixture_post(string $type, string $slug, string $title, string $content, array $extra = []): int {
     $existing = get_page_by_path($slug, OBJECT, $type);
     $args = array_merge([
@@ -175,12 +197,10 @@ $pages = [
 $page_ids = [];
 foreach ($pages as $slug => $title) {
     $content = "<!-- wp:paragraph --><p>این برگه برای آزمون محیط محلی ساخته شده است. هیچ داده واقعی، قیمت واقعی یا سفارش واقعی در آن وجود ندارد.</p><!-- /wp:paragraph -->";
-    if ($slug === 'cart') {
-        $content = '<!-- wp:woocommerce/cart /-->';
-    } elseif ($slug === 'checkout') {
-        $content = '<!-- wp:woocommerce/checkout /-->';
+    if ($slug === 'cart' || $slug === 'checkout') {
+        $content = es_woocommerce_block_page($slug);
     } elseif ($slug === 'my-account') {
-        $content = '[woocommerce_my_account]';
+        $content = '<!-- wp:shortcode -->[woocommerce_my_account]<!-- /wp:shortcode -->';
     }
     $page_ids[$slug] = es_fixture_post('page', $slug, $title, $content);
 }
@@ -399,6 +419,24 @@ foreach ($data['posts'] as $i => $p) {
         update_comment_meta((int) $comment_id, '_es_fixture', 1);
     }
 }
+
+/*
+ * A local test payment method.
+ *
+ * The cart and checkout blocks refuse to render a gateway-less checkout, so
+ * without one the fixture cannot place an order at all and task 6.3 could not
+ * be tested. Cash on delivery is WooCommerce's own offline gateway, enabled
+ * only in this local fixture and labelled as a test method; no real gateway,
+ * credential or payment is involved, and nothing here can charge anyone.
+ */
+update_option('woocommerce_cod_settings', [
+    'enabled' => 'yes',
+    'title' => 'پرداخت در محل (روش آزمایشی محیط محلی)',
+    'description' => 'این روش فقط برای آزمون محلی است و هیچ پرداختی انجام نمی‌دهد.',
+    'instructions' => '',
+    'enable_for_methods' => [],
+    'enable_for_virtual' => 'yes',
+]);
 
 // Synthetic customer, orders and product reviews.
 $creds = json_decode(file_get_contents(dirname(__DIR__, 2) . '/.local/credentials.json'), true);

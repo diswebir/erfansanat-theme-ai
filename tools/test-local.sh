@@ -10,6 +10,9 @@ tools/php -l tools/local/fixture-types.php
 tools/php -l tools/local/seed.php
 tools/php -l tools/local/test-runtime.php
 
+echo '[2/4] WooCommerce storefront translations'
+python3 tools/patch-woocommerce-translations.py --check
+
 echo '[2/4] WordPress runtime acceptance'
 tools/wp --path="$WP" eval-file tools/local/test-runtime.php
 

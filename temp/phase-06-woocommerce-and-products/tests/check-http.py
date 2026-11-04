@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import http.cookiejar
+import json
 import re
 import subprocess
 import sys
@@ -148,7 +149,9 @@ def task_6_1(_: str) -> None:
     _, priced = fetch(f"{BASE}/product/illumina/")
     check("6.1", "factory price label present", "قیمت مصوب کارخانه" in priced)
     check("6.1", "minimum order line present", "حداقل سفارش" in priced)
-    check("6.1", "quote-only product hides the factory price label", "قیمت مصوب کارخانه" not in page)
+    _, quoted = fetch(f"{BASE}/product/foroogh-chandelier/")
+    check("6.1", "quote-only product hides the factory price label", "قیمت مصوب کارخانه" not in quoted)
+    check("6.1", "quote-only product offers the phone instead", 'href="tel:' in quoted)
     check("6.1", "consult phone is a real tel link", 'href="tel:' in page)
     check("6.1", "spec summary chips are printed", page.count("چکیده مشخصات") == 1 and page.count("مشخصات کامل") >= 1)
 
@@ -189,7 +192,7 @@ def task_6_1(_: str) -> None:
 
 def task_6_2(_: str) -> None:
     """Purchase modes: inquiry, in stock, and out of stock must differ."""
-    status, inquiry = fetch(f"{BASE}/product/wall-washer/")
+    status, inquiry = fetch(f"{BASE}/product/foroogh-chandelier/")
     check("6.2", "inquiry product answers 200", status == 200)
     check("6.2", "inquiry product has no add-to-cart form", 'name="add-to-cart"' not in inquiry)
     check("6.2", "inquiry product offers the quote CTA", 'href="tel:' in inquiry)
@@ -440,14 +443,297 @@ def task_6_7(_: str) -> None:
     check("6.7", "the script reads the reference page-number attribute", "data-page-num" in script)
 
 
+def store_api(opener, path: str, payload=None, token: str | None = None):
+    """Call the store API the way the cart/checkout blocks do."""
+    import json
+
+    page = opener.open(BASE + "/cart/", timeout=60).read().decode("utf-8", "replace")
+    nonce = re.search(r"storeApiNonce: '([a-f0-9]+)'", page)
+    stamp = re.search(r"wcStoreApiNonceTimestamp: '(\d+)'", page)
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "erfansanat-phase6-check",
+        "Nonce": nonce.group(1) if nonce else "",
+        "Nonce-Timestamp": stamp.group(1) if stamp else "",
+        "User-ID": "0",
+    }
+    if token:
+        headers["Cart-Token"] = token
+    request = urllib.request.Request(
+        BASE + "/wp-json/wc/store/v1/" + path,
+        data=json.dumps(payload).encode() if payload is not None else None,
+        headers=headers,
+    )
+    try:
+        with opener.open(request, timeout=90) as response:
+            return json.loads(response.read()), dict(response.headers)
+    except urllib.error.HTTPError as error:
+        return {"__error": error.code, "__body": error.read().decode("utf-8", "replace")[:400]}, dict(error.headers)
+
+
+def task_6_8(_: str) -> None:
+    """The cart page is WooCommerce's cart, with real maths and a no-JS path."""
+    import http.cookiejar
+
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    opener.addheaders = [("User-Agent", "erfansanat-phase6-check")]
+
+    status, cart_page = fetch(BASE + "/cart/")
+    check("6.8", "cart page answers 200", status == 200, f"status={status}")
+    check("6.8", "cart page uses the WooCommerce block", "wc-block-cart" in cart_page or "wp-block-woocommerce-cart" in cart_page)
+    check("6.8", "cart has a no-JavaScript fallback", 'erfansanat-nojs' in cart_page and "<noscript" in cart_page)
+    check("6.8", "the fallback renders the classic cart shortcode",
+          'class="woocommerce"' in cart_page and "woocommerce-cart-form" in cart_page
+          or "wc-empty-cart-message" in cart_page)
+    check("6.8", "cart empty state is Persian", "سبد خرید شما در حال حاضر خالی است" in cart_page,
+          "the Persian catalogue must cover the block cart")
+    check("6.8", "cart page has one <main>", cart_page.count("<main") == 1)
+    check("6.8", "cart page has one <h1>", cart_page.count("<h1") == 1)
+
+    # Add a real product through the store API, the way the block does.
+    pid = wp("post", "list", "--post_type=product", "--name=illumina", "--format=ids").split()
+    check("6.8", "fixture product exists", bool(pid))
+    if not pid:
+        return
+
+    cart, headers = store_api(opener, "cart/add-item", {"id": int(pid[0]), "quantity": 3})
+    token = headers.get("Cart-Token")
+
+    if "items" not in cart:
+        check("6.8", "store API accepted the item", False, str(cart)[:120])
+        return
+
+    check("6.8", "store API accepted the item", True)
+    line = cart["items"][0]
+    check("6.8", "quantity is what was asked for", line["quantity"] == 3, str(line["quantity"]))
+
+    unit = int(re.sub(r"\D", "", str(line["prices"]["price"])) or 0)
+    total = int(re.sub(r"\D", "", str(cart["totals"]["total_price"])) or 0)
+    check("6.8", "the cart total is price times quantity", unit > 0 and total == unit * 3, f"{unit}x3 vs {total}")
+
+    check("6.8", "the cart reports that payment is needed", cart["needs_payment"] is True)
+    # The API returns either gateway ids or gateway objects depending on version;
+    # normalise both so the assertion tests the store, not the payload shape.
+    gateways: list[str] = []
+    for method in cart.get("payment_methods") or []:
+        if isinstance(method, str):
+            gateways.append(method)
+        elif isinstance(method, dict) and "id" in method:
+            gateways.append(str(method["id"]))
+        elif isinstance(method, list):
+            for nested in method:
+                if isinstance(nested, str):
+                    gateways.append(nested)
+                elif isinstance(nested, dict) and "id" in nested:
+                    gateways.append(str(nested["id"]))
+    check("6.8", "a payment method is offered", bool(gateways), str(cart.get("payment_methods"))[:80])
+
+    # Removing the item must empty the cart again.
+    for item in cart["items"]:
+        emptied, _ = store_api(opener, "cart/remove-item", {"key": item["key"]}, token=token)
+        if "items" in emptied:
+            cart = emptied
+    check("6.8", "removing every item empties the cart", len(cart.get("items", [])) == 0, str(len(cart.get("items", []))))
+
+
+def task_6_9(_: str) -> None:
+    """Checkout places a real order, and the confirmation comes from the server."""
+    import http.cookiejar
+
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    opener.addheaders = [("User-Agent", "erfansanat-phase6-check")]
+
+    import http.cookiejar as _cj
+
+    class _NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *args, **kwargs):
+            return None
+
+    empty_opener = urllib.request.build_opener(_NoRedirect)
+    try:
+        with empty_opener.open(BASE + "/checkout/", timeout=60) as response:
+            empty_status = response.status
+    except urllib.error.HTTPError as error:
+        empty_status = error.code
+    check("6.9", "empty checkout redirects instead of rendering", empty_status in (301, 302), f"status={empty_status}")
+
+    pid = wp("post", "list", "--post_type=product", "--name=illumina", "--format=ids").split()
+    if not pid:
+        check("6.9", "fixture product exists", False)
+        return
+
+    cart, headers = store_api(opener, "cart/add-item", {"id": int(pid[0]), "quantity": 2})
+    token = headers.get("Cart-Token")
+    if "items" not in cart:
+        check("6.9", "product added before checkout", False, str(cart)[:120])
+        return
+    check("6.9", "product added before checkout", True)
+
+    try:
+        with opener.open(BASE + "/checkout/", timeout=90) as response:
+            status = response.status
+            checkout_page = response.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as error:
+        status, checkout_page = error.code, error.read().decode("utf-8", "replace")
+
+    check("6.9", "checkout renders with a filled cart", status == 200, f"status={status}")
+    check("6.9", "checkout uses the WooCommerce block", "wc-block-checkout" in checkout_page)
+    check("6.9", "checkout has a no-JavaScript fallback", "erfansanat-nojs" in checkout_page and "woocommerce-checkout" in checkout_page)
+    check("6.9", "checkout shows the three-step strip", "بررسی سبد خرید" in checkout_page and "اطلاعات ارسال و نوع فاکتور" in checkout_page)
+    check("6.9", "checkout numbered steps are not duplicated", checkout_page.count("۱. ۱.") == 0)
+
+    # No fake receipt may exist anywhere on the page.
+    for fake in ["data-checkout-receipt", "data-receipt-code", "ESE-1403"]:
+        check("6.9", f"no fabricated receipt marker {fake}", fake not in checkout_page)
+    check("6.9", "checkout does not claim success before ordering", "سفارش شما با موفقیت" not in checkout_page)
+
+    before = wp("eval", "echo count(wc_get_orders(['limit'=>-1,'return'=>'ids']));")
+
+    address = {
+        "first_name": "مشتری",
+        "last_name": "آزمایشی",
+        "company": "",
+        "address_1": "نشانی ساختگی ۱۲",
+        "address_2": "",
+        "city": "اصفهان",
+        "state": "ESF",
+        "postcode": "00000",
+        "country": "IR",
+    }
+    order, _ = store_api(
+        opener,
+        "checkout",
+        {
+            "billing_address": dict(address, email="customer@example.invalid", phone="0000000000"),
+            "shipping_address": address,
+            "payment_method": "cod",
+            "payment_data": [],
+            "customer_note": "آزمون ثبت سفارش محلی — پاک‌سازی می‌شود",
+        },
+        token=token,
+    )
+
+    if "order_id" not in order:
+        check("6.9", "the checkout placed an order", False, str(order)[:200])
+        return
+
+    order_id = int(order["order_id"])
+    check("6.9", "the checkout placed an order", True, f"#{order_id}")
+    check("6.9", "the order has a real status", order.get("status") in ("processing", "on-hold", "pending", "completed"), str(order.get("status")))
+    check("6.9", "the order reports the chosen gateway", order.get("payment_method") == "cod", str(order.get("payment_method")))
+
+    after = wp("eval", "echo count(wc_get_orders(['limit'=>-1,'return'=>'ids']));")
+    check("6.9", "the order is stored in the database", int(after or 0) == int(before or 0) + 1, f"{before} -> {after}")
+
+    # The confirmation is WooCommerce's own order-received page, driven by the order key.
+    order_key = order.get("order_key", "")
+    received_status, received = fetch(BASE + "/checkout/order-received/" + str(order_id) + "/?key=" + order_key)
+    check("6.9", "the order-received page answers 200", received_status == 200, f"status={received_status}")
+    check("6.9", "the confirmation names the real order", str(order_id) in received)
+    check("6.9", "the confirmation does not invent a payment",
+          received.count("پرداخت آن تایید شد") == 0 or "processing" == order.get("status"))
+
+    # Clean up: a test order must never linger in the fixture.
+    removed = wp("eval", "print wc_get_order(%d) instanceof WC_Order ? (int) wc_get_order(%d)->delete(true) : 0;" % (order_id, order_id))
+    check("6.9", "the test order is removed again", removed.strip() == "1", removed[:40])
+
+
+def task_6_10(_: str) -> None:
+    """My account works with WooCommerce's own forms, in the store language."""
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    opener.addheaders = [("User-Agent", "erfansanat-phase6-check")]
+
+    status, account = fetch(BASE + "/my-account/")
+    check("6.10", "account page answers 200", status == 200, f"status={status}")
+    check("6.10", "account prints WooCommerce's login form", "woocommerce-form-login" in account)
+    check("6.10", "the login form is in Persian", "نام کاربری" in account and "گذرواژه" in account)
+    check("6.10", "account page has one <main>", account.count("<main") == 1)
+    check("6.10", "account page has one <h1>", account.count("<h1") == 1)
+
+    credentials = json.loads((ROOT / ".local" / "credentials.json").read_text(encoding="utf-8"))
+    nonce = re.search(r'name="woocommerce-login-nonce" value="([a-f0-9]+)"', account)
+    check("6.10", "the login form carries its nonce", nonce is not None)
+    if not nonce:
+        return
+
+    body = urllib.parse.urlencode(
+        {
+            "username": credentials["customer_user"],
+            "password": credentials["customer_password"],
+            "woocommerce-login-nonce": nonce.group(1),
+            "_wp_http_referer": "/my-account/",
+            "login": "ورود",
+        }
+    ).encode()
+    try:
+        with opener.open(BASE + "/my-account/", body, timeout=90) as response:
+            status = response.status
+            dashboard = response.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as error:
+        status, dashboard = error.code, error.read().decode("utf-8", "replace")
+
+    check("6.10", "login succeeds", status == 200, f"status={status}")
+    check("6.10", "the dashboard is shown after login", "woocommerce-MyAccount-navigation" in dashboard)
+    check("6.10", "the dashboard greets in Persian", "سلام" in dashboard and "Hello" not in dashboard)
+    check("6.10", "the orders tab exists", "woocommerce-MyAccount-navigation-link--orders" in dashboard)
+
+    try:
+        with opener.open(BASE + "/my-account/orders/", timeout=90) as response:
+            status = response.status
+            orders = response.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as error:
+        status, orders = error.code, error.read().decode("utf-8", "replace")
+
+    check("6.10", "the orders screen answers 200", status == 200, f"status={status}")
+    check("6.10", "the fixture customer's orders are listed", "woocommerce-orders-table" in orders)
+
+    # Log out through WooCommerce's own endpoint.
+    logout = re.search(r'href="([^"]*customer-logout[^"]*)"', dashboard)
+    check("6.10", "the dashboard offers a real logout link", logout is not None)
+    if logout:
+        try:
+            with opener.open(logout.group(1), timeout=90) as response:
+                status = response.status
+                after = response.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as error:
+            status, after = error.code, error.read().decode("utf-8", "replace")
+        check("6.10", "logout returns the visitor to the login form",
+              status == 200 and "woocommerce-form-login" in after, f"status={status}")
+
+
+def task_6_11(_: str) -> None:
+    """No commerce page fakes a cart, a receipt or a price."""
+    pages = ["/cart/", "/my-account/", "/shop/"]
+    for page in pages:
+        status, body = fetch(BASE + page)
+        check("6.11", f"{page} answers 200", status == 200, f"status={status}")
+        check("6.11", f"{page} has no localStorage cart", "localStorage" not in body)
+        check("6.11", f"{page} invents no tracking code", "ESE-1403" not in body)
+        check("6.11", f"{page} has no placeholder text", "لورم" not in body and "Lorem" not in body)
+        check("6.11", f"{page} has no PHP error",
+              not any(t in body for t in ("Fatal error", "Parse error", "Warning: ", "Notice: ")))
+
+    # The reference's fake receipt must not have been copied into the theme.
+    theme_php = list((ROOT / "erfansanat").rglob("*.php"))
+    offenders = [
+        str(path.relative_to(ROOT))
+        for path in theme_php
+        if "data-checkout-receipt" in path.read_text(encoding="utf-8", errors="replace")
+    ]
+    check("6.11", "no template ships the reference's fabricated receipt", not offenders, ",".join(offenders[:3]))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8080")
-    parser.add_argument("--task", action="append", choices=["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"])
+    parser.add_argument("--task", action="append", choices=["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"])
     args = parser.parse_args()
     global BASE
     BASE = args.base
-    tasks = args.task or ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"]
+    tasks = args.task or ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"]
     for task in tasks:
         print(f"\n== task {task} ==\n")
         globals()["task_" + task.replace(".", "_")](args.base)
