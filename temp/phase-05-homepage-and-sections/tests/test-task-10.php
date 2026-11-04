@@ -20,4 +20,13 @@ check( 'Repeater تغییر عنوان، توضیح و تصویر را هم در
 $args['data']['services'] = array_slice( $service_data['services'], 0, 3 );
 ob_start(); include ES_REPO_ROOT . '/theme/template-parts/home/section-services.php'; $short = (string) ob_get_clean();
 check( 'تعداد ردیف/شمارنده با Repeater کوتاه‌شده هماهنگ می‌شود', fn() => 3 === substr_count( $short, 'data-service-row="' ) && str_contains( $short, 'data-service-counter="۰۱ / ۳"' ) && ! str_contains( $short, 'data-service-row="4"' ) );
+check( 'jsdom click روی ردیف خدمات، preview را همگام می‌کند', function () {
+	$report_path = ES_REPO_ROOT . '/tools/harness/jscheck-report.json';
+	if ( ! is_file( $report_path ) ) { return null; }
+	$report = json_decode( (string) file_get_contents( $report_path ), true );
+	if ( ! is_array( $report ) ) { return null; }
+	$generated = strtotime( (string) ( $report['generatedAt'] ?? '' ) );
+	if ( false === $generated || time() - $generated > 3600 || hash_file( 'sha256', ES_REPO_ROOT . '/theme/assets/js/main.js' ) !== ( $report['mainJsSha256'] ?? '' ) ) { return null; }
+	return empty( $report['errors'] ) && ! empty( $report['interactionChecks']['services'] );
+});
 summary();

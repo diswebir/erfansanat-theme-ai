@@ -17,7 +17,18 @@ echo "   phase 5 | size S | files: 2 | pass conditions: 4\n";
 
 // --- Pass Conditions (4 شرط) -----------------------------------
 // انطباق ۱۵ سکشن
-check('انطباق ۱۵ سکشن', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
+check('انطباق ساختاری هر ۱۵ سکشن با static mirror', function () {
+	$report_path = ES_REPO_ROOT . '/tools/harness/jscheck-report.json';
+	if ( ! is_file( $report_path ) ) { return null; }
+	$report = json_decode( (string) file_get_contents( $report_path ), true );
+	if ( ! is_array( $report ) ) { return null; }
+	$generated = strtotime( (string) ( $report['generatedAt'] ?? '' ) );
+	if ( false === $generated || time() - $generated > 3600 || hash_file( 'sha256', ES_REPO_ROOT . '/theme/assets/js/main.js' ) !== ( $report['mainJsSha256'] ?? '' ) ) { return null; }
+	$similarities = $report['sectionSimilarities'] ?? null;
+	if ( ! is_array( $similarities ) || 15 !== count( $similarities ) ) { return false; }
+	foreach ( $similarities as $similarity ) { if ( ! is_numeric( $similarity ) || (float) $similarity < 99.0 ) { return false; } }
+	return 15 === (int) ( $report['homeSections'] ?? 0 ) && empty( $report['errors'] );
+});
 // خطای JS
 check('خطای JS روی خروجی کامل PHP-WASM در jsdom', function () {
 	$report_path = ES_REPO_ROOT . '/tools/harness/jscheck-report.json';

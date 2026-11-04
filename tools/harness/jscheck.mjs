@@ -62,6 +62,7 @@ const dom = new JSDOM(html, {
   virtualConsole,
 });
 const { window } = dom;
+const interactionChecks = {};
 window.matchMedia = (query) => ({
   matches: false,
   media: query,
@@ -91,16 +92,41 @@ window.addEventListener('unhandledrejection', (event) => errors.push(`promise: $
 try {
   window.eval(source);
   window.document.dispatchEvent(new window.Event('DOMContentLoaded', { bubbles: true }));
-  // Exercise the primary homepage interaction hooks if present in the fixture.
-  for (const selector of [
-    '[data-service-row]',
-    '[data-home2-port-tab]',
-    '[data-home2-history-next="true"]',
-    '[data-scroll-top="true"]',
-  ]) {
-    const element = window.document.querySelector(selector);
-    if (element) element.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
-  }
+
+  const serviceRow = window.document.querySelector('[data-service-row]');
+  const serviceTitle = window.document.querySelector('[data-service-preview-title="true"]');
+  if (serviceRow) serviceRow.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  interactionChecks.services = Boolean(serviceRow && serviceTitle && serviceTitle.textContent === serviceRow.getAttribute('data-service-title'));
+
+  const tunnelTab = [...window.document.querySelectorAll('[data-home2-port-tab]')]
+    .find((tab) => tab.getAttribute('data-home2-port-tab') === 'tunnel');
+  if (tunnelTab) tunnelTab.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  const tunnelPanel = window.document.querySelector('[data-home2-port-panel="tunnel"]');
+  interactionChecks.gallery = Boolean(tunnelTab?.getAttribute('aria-selected') === 'true' && tunnelPanel?.classList.contains('grid') && !tunnelPanel?.classList.contains('hidden'));
+
+  const next = window.document.querySelector('[data-home2-history-next="true"]');
+  if (next) next.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  const historyBtn0 = window.document.querySelector('[data-home2-history-btn="0"]');
+  const historyBtn1 = window.document.querySelector('[data-home2-history-btn="1"]');
+  const historyPanel0 = window.document.querySelector('[data-home2-history-panel="0"]');
+  const historyPanel1 = window.document.querySelector('[data-home2-history-panel="1"]');
+  interactionChecks.historyNext = Boolean(historyBtn1?.getAttribute('aria-selected') === 'true' && historyPanel1?.classList.contains('grid') && !historyPanel1?.classList.contains('hidden'));
+
+  const previous = window.document.querySelector('[data-home2-history-prev="true"]');
+  if (previous) previous.dispatchEvent(new window.MouseEvent('click', { bubbles: true, cancelable: true }));
+  interactionChecks.historyPrevious = Boolean(historyBtn0?.getAttribute('aria-selected') === 'true' && historyPanel0?.classList.contains('grid') && !historyPanel0?.classList.contains('hidden'));
+
+  const historyStage = window.document.querySelector('[data-history-stage="true"]') || window.document.querySelector('[data-history-scroll-track="true"]');
+  if (historyStage) historyStage.getBoundingClientRect = () => ({ top: 100, bottom: 500, left: 0, right: 800, width: 800, height: 400 });
+  const originalNow = window.Date.now;
+  const wheelTime = originalNow() + 1000;
+  window.Date.now = () => wheelTime;
+  const wheel = new window.WheelEvent('wheel', { deltaY: 100, bubbles: true, cancelable: true });
+  window.dispatchEvent(wheel);
+  window.Date.now = originalNow;
+  interactionChecks.historyWheel = Boolean(historyBtn1?.getAttribute('aria-selected') === 'true' && historyPanel1?.classList.contains('grid') && wheel.defaultPrevented);
+
+  for (const [name, passed] of Object.entries(interactionChecks)) if (!passed) errors.push(`interaction failed: ${name}`);
 } catch (error) {
   errors.push(`execute: ${error?.stack || error}`);
 }
@@ -112,8 +138,19 @@ if (useMock && window.document.querySelectorAll('section').length < 15) {
 const sectionSimilarities = [];
 if (useMock) {
   const referenceDom = new JSDOM(fs.readFileSync(path.join(root, 'reference/static-mirror/index.html'), 'utf8'));
+  const baselineDom = new JSDOM(html);
   const referenceSections = [...referenceDom.window.document.querySelectorAll('section')];
-  const actualSections = [...window.document.querySelectorAll('section')];
+  const actualSections = [...baselineDom.window.document.querySelectorAll('section')];
+  const collapseDynamicGalleryCards = (section) => {
+    for (const panel of section.querySelectorAll('[data-home2-port-panel]')) {
+      const links = [...panel.querySelectorAll('a')];
+      const cards = links.filter((link) => !links.some((candidate) => candidate !== link && candidate.contains(link)));
+      for (const duplicate of cards.slice(1)) duplicate.remove();
+    }
+  };
+  // Card cardinality is deliberately dynamic and is tested independently in Task 5.4.
+  referenceSections.forEach(collapseDynamicGalleryCards);
+  actualSections.forEach(collapseDynamicGalleryCards);
   const signature = (element) => [element, ...element.querySelectorAll('*')].map((node) => {
     const classes = [...node.classList].sort().join(' ');
     const attrs = ['id', 'role', 'aria-label', 'aria-hidden', 'aria-expanded']
@@ -131,6 +168,7 @@ if (useMock) {
     sectionSimilarities.push(similarity(referenceSections[i], actualSections[i]));
   }
   referenceDom.window.close();
+  baselineDom.window.close();
 }
 const phpMatch = useMock ? phpTestOutput.match(/PASS\s*=\s*(\d+)\s+FAIL\s*=\s*(\d+)\s+PENDING\s*=\s*(\d+)/) : null;
 const phpMockAssertions = phpMatch ? { pass: Number(phpMatch[1]), fail: Number(phpMatch[2]), pending: Number(phpMatch[3]) } : null;
@@ -147,6 +185,7 @@ const summary = {
   phpMockAssertions,
   queryReport: mockQueryReport,
   sectionSimilarities,
+  interactionChecks,
   errors,
 };
 if (useMock) {

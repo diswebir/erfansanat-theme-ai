@@ -25,4 +25,14 @@ $args['data']['history'] = array_slice( $history_rows, 0, 3 );
 ob_start(); include ES_REPO_ROOT . '/theme/template-parts/home/section-timeline.php'; $short_history = (string) ob_get_clean();
 preg_match_all( '/data-home2-history-btn="(\\d+)"/', $short_history, $short_buttons ); preg_match_all( '/data-home2-history-panel="(\\d+)"/', $short_history, $short_panels );
 check( 'Repeater row count controls matching history buttons, panels and total', fn() => 3 === count( $short_buttons[1] ) && 3 === count( $short_panels[1] ) && str_contains( $short_history, 'data-history-total="3"' ) && ! str_contains( $short_history, 'data-home2-history-panel="3"' ) );
+check( 'jsdom timeline next/previous buttons and wheel event change the active milestone', function () {
+	$report_path = ES_REPO_ROOT . '/tools/harness/jscheck-report.json';
+	if ( ! is_file( $report_path ) ) { return null; }
+	$report = json_decode( (string) file_get_contents( $report_path ), true );
+	if ( ! is_array( $report ) ) { return null; }
+	$generated = strtotime( (string) ( $report['generatedAt'] ?? '' ) );
+	if ( false === $generated || time() - $generated > 3600 || hash_file( 'sha256', ES_REPO_ROOT . '/theme/assets/js/main.js' ) !== ( $report['mainJsSha256'] ?? '' ) ) { return null; }
+	$interactions = $report['interactionChecks'] ?? array();
+	return empty( $report['errors'] ) && ! empty( $interactions['historyNext'] ) && ! empty( $interactions['historyPrevious'] ) && ! empty( $interactions['historyWheel'] );
+});
 summary();

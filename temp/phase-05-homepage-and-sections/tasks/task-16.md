@@ -5,7 +5,7 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `M` — متوسط (~۱ روز) |
 | وابستگی | `Task 2.11`، `Task 2.13` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED — reference-limited contact section; no map markup/source in mirror, no third-party iframe added]` |
 | تست | `tests/test-task-16.php` |
 
 ## ۱. هدف

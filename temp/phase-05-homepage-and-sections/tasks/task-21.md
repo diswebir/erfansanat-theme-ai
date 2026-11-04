@@ -5,10 +5,10 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `S` — کوچک (~نیم روز) |
 | وابستگی | `Task 5.2`، `Task 5.3`، `Task 5.4`، `Task 5.5`، `Task 5.6`، `Task 5.7`، `Task 5.8`، `Task 5.9`، `Task 5.10`، `Task 5.11`، `Task 5.12`، `Task 5.13`، `Task 5.14`، `Task 5.15`، `Task 5.16`، `Task 5.17`، `Task 5.18`، `Task 5.19`، `Task 5.20` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[IN PROGRESS — P1/P2 pass on PHP-WASM/jsdom fixtures; P3 real SQL count and P4 phase gate pending]` |
 | تست | `tests/test-task-21.php` |
 
-> وضعیت شواهد: Task 5.19 رندر mock هر ۱۵ سکشن را بدون warning می‌سنجد؛ fixture فعلی ۶ درخواست سطح `WP_Query`/`get_terms` دارد، نه SQL واقعی `$wpdb`. `npm run phase5:js`، `main.js` را با jsdom روی همین خروجی اجرا و hookهای اصلی را کلیک می‌کند؛ خطای runtime صفر و شرط JS پاس است، اما اجرا live WordPress/browser نیست. در structural report، gallery و services به‌ترتیب 76.37% و 91.04% هستند (محتوای تکرارشونده‌ی پویا با mirror فرق دارد)، بنابراین P1 پاس نشده؛ P3 هم تا شمارش SQL معتبر باز می‌ماند.
+> وضعیت شواهد: Task 5.19 رندر mock هر ۱۵ سکشن را بدون warning می‌سنجد؛ fixture فعلی ۶ درخواست سطح `WP_Query`/`get_terms` دارد، نه SQL واقعی `$wpdb`. `npm run phase5:js`، `main.js` را با jsdom روی همین خروجی اجرا و hookهای اصلی را کلیک می‌کند؛ خطای runtime صفر است. Structural report هر ۱۵ سکشن را با static mirror مقایسه و فقط تعداد کارت‌های تکراری گالری را normalize می‌کند (تعداد واقعی کارت‌ها جداگانه در Task 5.4 assert می‌شود)؛ اکنون هر ۱۵ امتیاز ≥۹۹٪ است. P1/P2 بر پایه‌ی fixture PHP-WASM پاس می‌شوند؛ P3 و اجرای زنده‌ی WordPress/browser هنوز تأیید نشده‌اند.
 
 ## ۱. هدف
 

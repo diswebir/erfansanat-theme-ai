@@ -5,7 +5,7 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 2.11`، `Task 2.13` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[IN PROGRESS — P1–P6 mock criteria verified; per-service destination URL unresolved under reference button/JS constraints]` |
 | تست | `tests/test-task-10.php` |
 
 > پیشرفت: پنج خدمت اکنون در Repeater ویرایش‌پذیرند؛ عنوان/توضیح/تصویر و counterها به JS hooks متصل و تست شده‌اند. شرط لینک‌دهی به صفحه خدمت هنوز باز است، چون reference برای ردیف‌ها `<button>` تعاملی دارد و URL ردیف در DOM/مرجع موجود نیست.
