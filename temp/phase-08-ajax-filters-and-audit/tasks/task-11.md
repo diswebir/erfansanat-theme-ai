@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[BLOCKED — missing static drawer markup]`
+- **وضعیت:** `[TESTING — native drawer implemented; WordPress integration runtime unavailable]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -57,4 +57,4 @@ initArchiveDrawer: یک وضعیت فیلتر واحد برای دسکتاپ/م�
 `feat(phase-8): task 8.11 — دراور فیلتر موبایل و همگام‌سازی وضعیت`
 
 ## Blocker
-The repository has no `data-archive-drawer` markup in the product, project, or blog archive templates. Under the static-to-dynamic constraint, this task adds only JS behavior for the documented drawer hooks and does not invent the missing drawer DOM/CSS; browser-level drawer behavior cannot be considered complete until the static markup is restored/provided.
+User approved a narrow exception to the static-source rule for Tasks 8.11, 8.14, and 8.15: implement native theme markup using the existing emerald/slate utility style; do not restore Elementor. Added a shared responsive drawer for product, project, and blog archives, with cloned data-contract controls, backdrop, close/apply/clear actions, and reset behavior. PHP/WordPress integration tests cannot currently run because this sandbox has no PHP CLI or `/opt/wp-testbed`; JS syntax, PHP parser syntax, and static source assertions pass. Keep task in TESTING until the targeted WordPress suite and browser interaction checks run.

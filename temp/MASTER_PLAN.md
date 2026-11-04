@@ -17,7 +17,7 @@
 | **Phase 5** | تبدیل صفحه اصلی (۱۵ سکشن) و کارت‌های استاندارد | `temp/phase-05-homepage-and-sections` | 20 | `[PASSED]` |
 | **Phase 6** | تبدیل قالب‌های ووکامرس، تک‌محصول، آرشیو و سبد/پرداخت | `temp/phase-06-woocommerce-and-products` | 20 | `[PASSED]` |
 | **Phase 7** | پروژه‌ها، وبلاگ، برگه‌های عمومی، خدمات و لندینگ آریا | `temp/phase-07-projects-blog-and-pages` | 20 | `[PASSED]` |
-| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — 13 passed; 8.11/8.14/8.15 static sources missing]` |
+| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — 13 passed; 8.11 testing, 8.14/8.15 not yet passed]` |
 
 **جمع کل تسک‌های اجرایی: 123 تسک** (۳ تسک پاس‌شده فاز ۱ + 120 تسک اتمیک فازهای ۲ تا ۸)
 
@@ -165,6 +165,8 @@
 
 ### Phase 8: جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`) — 17 تسک
 
+> **تصمیم جدید کاربر:** برای همین سه UI گمشده (8.11، 8.14، 8.15) اجازه پیاده‌سازی بومی با کلاس‌ها و سبک موجود داده شد؛ Elementor بازگردانده نمی‌شود و قانون استاتیک برای سایر بخش‌ها برقرار است.
+
 - `[PASSED]` **Task 8.1 (`task-01.md` / `test-task-01.php`):** زیرساخت AJAX قالب
 - `[PASSED]` **Task 8.2 (`task-02.md` / `test-task-02.php`):** جستجوی زنده محصولات
 - `[PASSED]` **Task 8.3 (`task-03.md` / `test-task-03.php`):** جستجوی زنده پروژه‌ها و مقالات
@@ -175,14 +177,14 @@
 - `[PASSED]` **Task 8.8 (`task-08.md` / `test-task-08.php`):** اتصال JS فیلتر محصولات بدون تغییر URL
 - `[PASSED]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
 - `[PASSED]` **Task 8.10 (`task-10.md` / `test-task-10.php`):** فیلتر وبلاگ (دسته و جستجو)
-- `[BLOCKED]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل و همگام‌سازی وضعیت — آرشیوها فاقد markup استاتیک `data-archive-drawer` هستند؛ طبق Strict Static-to-Dynamic Rule هیچ DOM/CSS جدیدی طراحی نشده است.
+- `[TESTING]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل با تمپلیت بومی و کلاس‌های موجود برای محصولات/پروژه‌ها/وبلاگ ساخته شد؛ JS همگام‌سازی، پاک‌کردن، اعمال، بستن و reset را پوشش می‌دهد. استثنای محدود را کاربر تأیید کرد؛ اجرای WordPress/browser test در محیط فعلی ممکن نیست.
 - `[PASSED]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PASSED]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
 - `[BLOCKED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه — مسیر امن و اعتبارسنجی فایل آماده است، اما template استخدام فاقد فرم/ورودی فایل است و طبق قانون استاتیک، markup جدید طراحی نشده است.
 - `[BLOCKED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback) — handler سمت سرور آماده است، اما هیچ markup/class استاتیک فرم موجود نیست و طبق قانون پروژه UI جدید ساخته نشده است.
 - `[PASSED]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
-- `[BLOCKED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** ممیزی امنیت، کارایی و E2E نهایی — همه تست‌های خودکار سبزند، اما گیت آمادگی به‌دلیل ۳ blocker استاتیک exit 2 می‌دهد.
-- `[BLOCKED]` **Phase 8 Suite:** تست‌های خودکار 17 تسک اجرا و سبز شدند؛ تکمیل واقعی فاز تا رفع blockerهای 8.11، 8.14 و 8.15 قابل اعلام نیست.
+- `[BLOCKED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** گیت نهایی فقط وقتی آماده است که همه تسک‌های 8.1 تا 8.16 `[PASSED]` باشند؛ موارد در حال تست نیز مانع اعلام آمادگی‌اند.
+- `[TESTING]` **Phase 8 Suite:** تغییرات جدید 8.11 در محیط فعلی به دلیل نبود PHP/WordPress testbed قابل اجرای کامل نیست؛ 8.14 و 8.15 هنوز پیاده‌سازی UI لازم دارند. فاز کامل اعلام نمی‌شود.
 
 ---
 

@@ -460,7 +460,7 @@
     var clearBtns = archiveRoot.querySelectorAll('[data-archive-drawer-clear], [data-filter-clear]');
     var applyBtns = archiveRoot.querySelectorAll('[data-archive-drawer-apply]');
     var backdrop = archiveRoot.querySelector('[data-archive-drawer-backdrop="true"]');
-    var controlSelector = '[data-product-search], [data-product-purchase-mode], [data-product-price-range], [data-product-category-filter], [data-product-attribute-filter], [data-project-search], [data-project-type-filter], [data-project-location-filter], [data-project-sort], [data-blog-search]';
+    var controlSelector = '[data-product-search], [data-product-purchase-mode], [data-product-price-range], [data-product-category-filter], [data-product-attribute-filter], [data-product-sort], [data-project-search], [data-project-type-filter], [data-project-location-filter], [data-project-sort], [data-blog-search]';
     var syncing = false;
 
     function setOpen(openState) {
@@ -481,7 +481,7 @@
     function controlKey(control) {
       var explicit = control.getAttribute("data-archive-filter-control");
       if (explicit) return "custom:" + explicit;
-      var attrs = ["data-product-search", "data-product-purchase-mode", "data-product-price-range", "data-product-category-filter", "data-product-attribute-filter", "data-project-search", "data-project-type-filter", "data-project-location-filter", "data-project-sort", "data-blog-search"];
+      var attrs = ["data-product-search", "data-product-purchase-mode", "data-product-price-range", "data-product-category-filter", "data-product-attribute-filter", "data-product-sort", "data-project-search", "data-project-type-filter", "data-project-location-filter", "data-project-sort", "data-blog-search"];
       for (var i = 0; i < attrs.length; i++) {
         if (!control.hasAttribute(attrs[i])) continue;
         var value = control.getAttribute(attrs[i]) || "";
@@ -521,10 +521,13 @@
         if (control.type === "checkbox") control.checked = false;
         else if (control.type === "radio") control.checked = (control.getAttribute("data-product-purchase-mode") === "all") || control.defaultChecked;
         else if (control.tagName === "SELECT") control.selectedIndex = 0;
+        else if (control.type === "range") control.value = control.defaultValue || control.max || "0";
         else if (control.tagName === "INPUT") control.value = "";
       }
       syncing = false;
       for (var j = 0; j < controls.length; j++) controls[j].dispatchEvent(new Event(controls[j].type === "range" ? "input" : "change", { bubbles: true }));
+      var blogReset = archiveRoot.querySelector('[data-blog-reset="true"]');
+      if (blogReset) blogReset.click();
       setOpen(false);
     }
 
@@ -1178,6 +1181,7 @@
   function initBlogArchive() {
     var archive = document.querySelector('[data-blog-archive="true"]');
     if (!archive) return;
+    initArchiveDrawer(archive);
     var searchInput = archive.querySelector('[data-blog-search="true"]');
     var catBtns = archive.querySelectorAll("[data-blog-cat-btn]");
     var resetBtn = archive.querySelector('[data-blog-reset="true"]');

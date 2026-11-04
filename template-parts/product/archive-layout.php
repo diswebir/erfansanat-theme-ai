@@ -16,8 +16,9 @@ $categoryTerms = taxonomy_exists('product_cat') && \ErfanSanat\Theme\Filters\Fil
 ?>
 <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8" data-products-archive="true">
     <?php if (empty($GLOBALS['es_archive_hide_header'])) : ?><header class="mb-8 rounded-3xl bg-white p-6"><p class="mb-2 text-xs font-bold text-emerald-700">عرفان صنعت اصفهان</p><h1 class="text-2xl font-black text-slate-900 md:text-3xl"><?php echo esc_html($title); ?></h1><?php if ($description !== '') : ?><div class="mt-3 max-w-4xl text-sm leading-7 text-slate-600"><?php echo wp_kses_post(wpautop($description)); ?></div><?php endif; ?></header><?php endif; ?>
-    <div class="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <aside class="h-fit rounded-3xl border border-slate-200 bg-white p-5" aria-label="فیلتر محصولات">
+    <div class="mb-4 flex justify-end lg:hidden"><button type="button" data-archive-drawer-open="true" aria-expanded="false" aria-controls="product-archive-filter-drawer" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 shadow-sm">فیلتر محصولات</button></div>
+    <div class="grid gap-6 es-product-archive-columns">
+        <aside class="hidden rounded-3xl border border-slate-200 bg-white p-5 lg:block" aria-label="فیلتر محصولات">
             <?php if (\ErfanSanat\Theme\Filters\FilterRegistry::isEnabled('search')) : ?><label class="mb-5 block text-sm font-bold">جستجو در محصولات<input type="search" data-product-search="true" class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" placeholder="نام محصول یا ویژگی"></label><?php endif; ?>
             <?php if (\ErfanSanat\Theme\Filters\FilterRegistry::isEnabled('true_sale')) : ?><fieldset class="mb-5 space-y-2"><legend class="mb-2 text-sm font-black">نوع خرید</legend><?php foreach (['all' => 'همه محصولات', 'online' => 'خرید آنلاین', 'call' => 'استعلام قیمت'] as $mode => $label) : ?><label class="flex items-center gap-2 text-xs font-semibold"><input type="radio" name="purchase-mode" data-product-purchase-mode="<?php echo esc_attr($mode); ?>" value="<?php echo esc_attr($mode); ?>" <?php checked($mode, 'all'); ?>><?php echo esc_html($label); ?></label><?php endforeach; ?></fieldset><?php endif; ?>
             <?php if (\ErfanSanat\Theme\Filters\FilterRegistry::isEnabled('price')) : ?><div class="mb-5"><label class="flex items-center justify-between text-sm font-black" for="product-price-range">حداکثر قیمت <span data-product-price-label="true">۳,۰۰۰,۰۰۰ تومان</span></label><input id="product-price-range" type="range" min="0" max="3000000" step="50000" value="3000000" data-product-price-range="true" class="mt-3 w-full accent-emerald-700"></div><?php endif; ?>
@@ -33,4 +34,5 @@ $categoryTerms = taxonomy_exists('product_cat') && \ErfanSanat\Theme\Filters\Fil
             <?php if ($query->max_num_pages > 1) : ?><nav class="mt-8" aria-label="صفحه‌بندی محصولات"><?php echo wp_kses_post(paginate_links(['total' => (int) $query->max_num_pages, 'current' => max(1, (int) get_query_var('paged')), 'type' => 'list'])); ?></nav><?php endif; ?>
         </div>
     </div>
+    <?php get_template_part('template-parts/global/archive-filter-drawer', null, ['type' => 'product', 'category_terms' => $categoryTerms, 'attribute_filters' => $attributeFilters]); ?>
 </section>

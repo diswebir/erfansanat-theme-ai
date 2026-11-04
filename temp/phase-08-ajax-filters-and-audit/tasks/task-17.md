@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[BLOCKED — depends on 8.11, 8.14, 8.15]`
+- **وضعیت:** `[BLOCKED — requires every Phase 8 task to be PASSED]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -57,4 +57,4 @@ escaping/sanitization sweep، WP_DEBUG صفر خطا، LiteSpeed-friendly (بد�
 `feat(phase-8): task 8.17 — ممیزی امنیت، کارایی و E2E نهایی`
 
 ## Outcome / Blocker
-The full automated runner executed Phases 01–08, PHP lint, JS syntax, and the TODO/FIXME scan successfully. It intentionally exited 2 after the checks because Tasks 8.11, 8.14, and 8.15 require missing static drawer/resume/feedback UI sources. Task 8.17 cannot be marked passed until those strict static-to-dynamic blockers are resolved.
+The readiness gate was strengthened to reject any Phase 8 task not explicitly marked PASSED, including tasks in TESTING, rather than only scanning for static-source BLOCKED labels. User has since approved native theme UI for Tasks 8.11, 8.14, and 8.15. The all-phase suite has not been rerun after this UI work because the current sandbox has neither PHP CLI nor `/opt/wp-testbed`; Task 8.17 remains blocked pending complete integration tests and every underlying task being PASSED.
