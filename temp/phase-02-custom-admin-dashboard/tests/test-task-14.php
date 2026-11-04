@@ -5,11 +5,18 @@ $failures=[];$assert=static function(bool $c,string $l)use(&$failures):void{echo
 require_once $wpRoot.'/wp-load.php';
 echo "=== [TEST] Task 2.14 SectionMetabox UI ===\n";
 use ErfanSanat\Theme\Admin\SectionManager\{SectionMetabox,SectionStorage};
+use ErfanSanat\Theme\Admin\Tabs\SectionsTab;
 $assert(is_file("$themeRoot/assets/admin/js/section-manager.js"),'section-manager.js exists');
 $js=(string)file_get_contents("$themeRoot/assets/admin/js/section-manager.js"); $assert(str_contains($js,'sortable'),'drag & drop sortable initialized');
 $pid=wp_insert_post(['post_type'=>'page','post_title'=>'QA Metabox','post_status'=>'publish']);
 SectionStorage::save($pid,[['id'=>'hero','type'=>'hero','enabled'=>true,'order'=>0,'fields'=>['title'=>'سلام']]]);
 $post=get_post($pid); $m=new SectionMetabox(); ob_start(); $m->render($post); $h=(string)ob_get_clean();
 $assert(str_contains($h,'data-es-sections-list'),'sections list rendered'); $assert(str_contains($h,'data-es-section="hero"'),'section item rendered'); $assert(str_contains($h,'es_sections[0][fields][title]'),'field input rendered'); $assert(str_contains($h,'checked'),'enabled toggle checked');
+$sectionsTab=\ErfanSanat\Theme\Core\Plugin::instance()->getService(SectionsTab::class);
+$assert($sectionsTab instanceof SectionsTab,'Sections overview tab service is registered');
+wp_set_current_user(1);
+ob_start(); $sectionsTab->render(); $overview=(string)ob_get_clean();
+$assert(str_contains($overview,'data-es-sections-overview')&&str_contains($overview,'data-es-page-row'),'Sections dashboard lists editable pages');
+$assert(str_contains($overview,'ویرایش سکشن‌ها')&&str_contains($overview,'1 / 1'),'Sections dashboard shows edit action and active/total counts');
 wp_delete_post($pid,true);
 if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED] Task 2.14\n";

@@ -102,6 +102,8 @@ final class Plugin
             \ErfanSanat\Theme\Admin\Tabs\FooterContactTab::class,
             \ErfanSanat\Theme\Admin\Tabs\AppearanceTab::class,
             \ErfanSanat\Theme\Admin\Tabs\FiltersTab::class,
+            \ErfanSanat\Theme\Admin\Tabs\ToolsTab::class,
+            \ErfanSanat\Theme\Admin\Tabs\SectionsTab::class,
             \ErfanSanat\Theme\Admin\SectionManager\SectionMetabox::class,
             \ErfanSanat\Theme\PostTypes\ProjectPostType::class,
             \ErfanSanat\Theme\Taxonomies\ProjectTaxonomies::class,

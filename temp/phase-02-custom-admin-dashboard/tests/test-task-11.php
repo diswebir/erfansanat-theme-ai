@@ -10,5 +10,6 @@ foreach(['brand_primary_color','custom_head_code','custom_footer_code'] as $k) $
 ob_start(); (new AppearanceTab())->render(); $html=(string)ob_get_clean();
 $assert(str_contains($html,'data-es-options-form'),'Tab renders options form');
 $assert(str_contains($html,'data-es-save-options'),'Tab renders save button');
+$assert(str_contains($html,'es-code-editor'),'Custom head/footer code uses the LTR code editor control');
 
 if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED] Task 2.11\n";

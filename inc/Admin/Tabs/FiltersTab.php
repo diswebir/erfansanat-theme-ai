@@ -7,7 +7,7 @@ final class FiltersTab extends BaseTab
 {
     public static function id(): string { return 'archives'; }
     public static function fields(): array { return [
-        ['key'=>'shop_per_page','label'=>'محصول در هر صفحه فروشگاه','type'=>'number'],['key'=>'projects_per_page','label'=>'پروژه در هر صفحه','type'=>'number'],['key'=>'blog_per_page','label'=>'مقاله در هر صفحه','type'=>'number'],
+        ['key'=>'shop_per_page','label'=>'محصول در هر صفحه فروشگاه','type'=>'number','min'=>1,'max'=>100],['key'=>'projects_per_page','label'=>'پروژه در هر صفحه','type'=>'number','min'=>1,'max'=>100],['key'=>'blog_per_page','label'=>'مقاله در هر صفحه','type'=>'number','min'=>1,'max'=>100],
     ]; }
     protected function extraFields(): void {
         $enabled=(array)OptionsStore::get('enabled_filters',[]);

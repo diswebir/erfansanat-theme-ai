@@ -15,7 +15,8 @@ abstract class BaseTab implements ServiceInterface
         wp_nonce_field('erfansanat_save_options');
         echo FieldRenderer::renderFields(static::fields(), OptionsStore::all()); // phpcs:ignore WordPress.Security.EscapeOutput
         $this->extraFields();
-        echo '<p><button type="button" class="button button-primary" data-es-save-options>'.esc_html__('ذخیره تنظیمات','erfansanat').'</button></p></form>';
+        echo '<div class="es-admin-status" data-es-admin-status role="status" aria-live="polite" aria-atomic="true"></div>';
+        echo '<div class="es-settings-actions"><button type="button" class="button button-primary es-admin-primary-button" data-es-save-options>'.esc_html__('ذخیره تنظیمات','erfansanat').'</button><span class="es-settings-hint">'.esc_html__('تغییرات پس از ذخیره در سایت اعمال می‌شوند.','erfansanat').'</span></div></form>';
     }
     protected function extraFields(): void {}
 }

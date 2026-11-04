@@ -4,6 +4,9 @@ namespace ErfanSanat\Theme\Admin;
 use ErfanSanat\Theme\Contracts\ServiceInterface;
 final class AjaxSaveOptions implements ServiceInterface
 {
+    private const PAGE_SIZE_KEYS = ['shop_per_page', 'projects_per_page', 'blog_per_page'];
+    private const PAGE_SIZE_MIN = 1;
+    private const PAGE_SIZE_MAX = 100;
     public function register(): void { add_action('wp_ajax_erfansanat_save_options', [$this,'handle']); }
     public function handle(): void {
         if (!current_user_can('manage_options')) wp_send_json_error(['message'=>'دسترسی غیرمجاز.'],403);
@@ -14,7 +17,14 @@ final class AjaxSaveOptions implements ServiceInterface
     /** @param array<string,mixed> $raw @return array<string,mixed> sanitized saved values */
     public function processSave(array $raw): array {
         $types=Defaults::types(); $clean=[];
-        foreach ($raw as $key=>$value) { if(!isset($types[$key])) continue; $clean[$key]=self::sanitize($value,$types[$key]); }
+        foreach ($raw as $key=>$value) {
+            if (!isset($types[$key])) continue;
+            $sanitized = self::sanitize($value, $types[$key]);
+            if (in_array($key, self::PAGE_SIZE_KEYS, true)) {
+                $sanitized = max(self::PAGE_SIZE_MIN, min(self::PAGE_SIZE_MAX, (int) $sanitized));
+            }
+            $clean[$key] = $sanitized;
+        }
         OptionsStore::update($clean); return $clean;
     }
     public static function sanitize(mixed $value, string $type): mixed {

@@ -17,9 +17,15 @@ $assert($found,'Top-level admin menu registered with slug '. \ErfanSanat\Theme\A
 $svc=\ErfanSanat\Theme\Core\Plugin::instance()->getService(\ErfanSanat\Theme\Admin\ThemeOptions::class);
 ob_start(); $svc->renderPage(); $html=(string)ob_get_clean();
 $assert(str_contains($html,'es-admin-wrap'),'Dashboard shell wrapper rendered');
+$assert(str_contains($html,'es-admin-header'),'Professional dashboard header rendered');
+$assert(str_contains($html,'aria-current="page"'),'Active dashboard link exposes current-page state');
 $assert(str_contains($html,'data-es-tabs'),'Tab navigation present');
 $assert(str_contains($html,'داشبورد عرفان صنعت'),'Persian dashboard title present');
 $assert(is_array($svc::tabs()) && count($svc::tabs())>=5,'At least 5 tabs defined');
+$hadTab = array_key_exists('tab', $_GET); $oldTab = $_GET['tab'] ?? null; $_GET['tab'] = ['unexpected-array'];
+ob_start(); $svc->renderPage(); $invalidTabHtml=(string)ob_get_clean();
+$assert(str_contains($invalidTabHtml,'data-es-panel="header"'),'Invalid array-shaped tab query safely falls back to the default tab');
+if ($hadTab) { $_GET['tab'] = $oldTab; } else { unset($_GET['tab']); }
 wp_set_current_user(0);
 add_filter('wp_die_handler', static function(){ return static function($m){ throw new RuntimeException(is_string($m)?$m:'die'); }; });
 $denied=false; try { $svc->renderPage(); } catch (RuntimeException $e) { $denied=true; }

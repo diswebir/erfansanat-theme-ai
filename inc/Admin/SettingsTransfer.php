@@ -4,6 +4,7 @@ namespace ErfanSanat\Theme\Admin;
 use ErfanSanat\Theme\Contracts\ServiceInterface;
 final class SettingsTransfer implements ServiceInterface
 {
+    public const MAX_IMPORT_BYTES = 1048576;
     public function register(): void {
         add_action('wp_ajax_erfansanat_reset_options', [$this,'handleReset']);
         add_action('wp_ajax_erfansanat_export_options', [$this,'handleExport']);
@@ -17,7 +18,11 @@ final class SettingsTransfer implements ServiceInterface
     /** @return array<string,mixed> */
     public function processExport(): array { return OptionsStore::all(); }
     public function processImport(string $json): bool {
-        $data=json_decode($json,true); if(!is_array($data)) return false;
+        if (strlen($json) > self::MAX_IMPORT_BYTES) return false;
+        $decodedObject = json_decode($json);
+        if (!is_object($decodedObject)) return false;
+        $data = json_decode($json, true);
+        if (!is_array($data)) return false;
         (new AjaxSaveOptions())->processSave($data); return true;
     }
 }
