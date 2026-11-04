@@ -15,6 +15,9 @@ require_once ES_INC_DIR . 'Autoloader.php';
 // Global helpers (es_option) — P02-T002.
 require_once ES_INC_DIR . 'Helpers.php';
 
+// Navigation walkers (multiple classes in one file) — P04-T005+.
+require_once ES_INC_DIR . 'Core/NavWalkers.php';
+
 \ErfanSanat\Theme\Core\Theme::boot();
 \ErfanSanat\Theme\Core\Menus::boot();
 \ErfanSanat\Theme\Core\DeBloat::boot();
