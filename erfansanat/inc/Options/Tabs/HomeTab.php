@@ -184,4 +184,103 @@ final class HomeTab {
 	public static function hero_slides_resolved(): array {
 		return self::resolve_slides( self::hero_slides() );
 	}
+
+	/**
+	 * Convert ASCII digits to Persian digits.
+	 */
+	private static function fa( string $value ): string {
+		return strtr( $value, array( '0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹' ) );
+	}
+
+	/**
+	 * Slug => lucide icon name map for the hero category cards (filterable).
+	 *
+	 * @return array<string,string>
+	 */
+	public static function category_icon_map(): array {
+		return (array) apply_filters(
+			'es_hero_category_icons',
+			array(
+				'point-light'        => 'cpu',
+				'needle-thread'      => 'sparkles',
+				'light-tree'         => 'trees',
+				'acorn-thread'       => 'lightbulb',
+				'wall-washer'        => 'waves',
+				'sun-light-elements' => 'sun',
+				'light-chandelier'   => 'flame',
+			)
+		);
+	}
+
+	/**
+	 * Hero category cards (P05-T007) sourced from the product_cat taxonomy.
+	 *
+	 * Each card carries the term name/description/link, a Persian product
+	 * count and a lucide icon name resolved from the (filterable) slug map.
+	 *
+	 * @return array<int,array{title:string,subtitle:string,href:string,count:string,icon:string}>
+	 */
+	public static function hero_categories(): array {
+		$cap   = (int) apply_filters( 'es_hero_categories_count', 7 );
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'parent'     => 0,
+				'number'     => max( 1, $cap ),
+				'hide_empty' => false,
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+			)
+		);
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return array();
+		}
+
+		$map  = self::category_icon_map();
+		$cards = array();
+		foreach ( $terms as $term ) {
+			$link = get_term_link( $term );
+			if ( is_wp_error( $link ) ) {
+				continue;
+			}
+			$cards[] = array(
+				'title'    => $term->name,
+				'subtitle' => wp_strip_all_tags( (string) $term->description ),
+				'href'     => (string) $link,
+				'count'    => self::fa( (string) (int) $term->count ) . ' مدل',
+				'icon'     => $map[ $term->slug ] ?? 'lightbulb',
+			);
+		}
+		return $cards;
+	}
+
+	/**
+	 * Hero overlay quick links (P05-T007) sourced from product_cat terms.
+	 *
+	 * @return array<int,array{label:string,href:string}>
+	 */
+	public static function hero_quick_links(): array {
+		$cap   = (int) apply_filters( 'es_hero_quick_links_count', 8 );
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'number'     => max( 1, $cap ),
+				'hide_empty' => false,
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+			)
+		);
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return array();
+		}
+		$links = array();
+		foreach ( $terms as $term ) {
+			$link = get_term_link( $term );
+			if ( is_wp_error( $link ) ) {
+				continue;
+			}
+			$links[] = array( 'label' => $term->name, 'href' => (string) $link );
+		}
+		return (array) apply_filters( 'es_hero_quick_links', $links );
+	}
 }
