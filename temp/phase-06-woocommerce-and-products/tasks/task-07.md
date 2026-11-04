@@ -1,7 +1,7 @@
 # Task 6.7 — archive-product (shop) — هیرو، نوار فیلتر، گرید و صفحه‌بندی
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 21/21]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-07.php`
 
 ## 🎯 هدف

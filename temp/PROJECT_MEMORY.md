@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 6 IN PROGRESS (6/11 TASKS DONE: 6.1–6.6 · PHASE 5 COMPLETE 12/12)**
+**PHASE 6 IN PROGRESS (7/11 TASKS DONE: 6.1–6.7 · PHASE 5 COMPLETE 12/12)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -86,6 +86,14 @@
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## رویدادهای فاز ۶ (2026-11-04)
+
+### ۶.۷ (تسک هفتم) — آرشیو فروشگاه shop (2026-11-04)
+- خروجی‌ها: `archive-product.php` (شل داینامیک: هیرو میرور + گرید + empty) + `template-parts/archive/product-filters.php` (aside برش ۱۳۹۴۵۳→۱۵۴۶۷۳ با ۸ توکن شامل درخت دسته/آپشن‌ها) + `template-parts/archive/pagination.php` (nav برش با ۸ توکن) + `inc/Woo/ShopFilters.php` (pre_get_posts@20: s/purchase/price/ip/voltage/sort + per-page کلومپ ۱..۱۰۰).
+- آپشن IP/ولتاژ selectها از termهای pa_ip-rating (description پرانتز) و pa_input-voltage.
+- pagination: صفحه فعلی button فعال، بقیه <a href="?paged=n>؛ تک‌صفحه‌ای → return؛ next/prev با data-href داینامیک (میرور JS استاتیک — جایگزینی محیطی تست).
+- تست ۶.۷: ۲۱/۲۱ (aside و pagination بایت‌دقیق + args فیلترها + کلومپ per-page با ES_FakeQuery).
+- استاب جدید: is_post_type_archive بر __wp_is_post_type_archive/__wp_post_type_archive؛ ES_FakeQuery با get/set.
+
 
 ### ۶.۶ (تسک ششم) — مرتبط‌ها و دیدگاه‌ها + ادغام فونت پنل (2026-11-04)
 - خروجی‌ها: `related-projects.php` (SEC-A 195281→ کارت-پروژه روشن از متای project-ids CSV)، `related-products.php` (SEC-C هم‌دسته product_cat به‌جز خود، count=3، فیلتر es_product_related_args)، `reviews.php` (پنل کامل تب reviews) + `inc/Woo/Reviews.php` (ذخیره rating/es_review_org در comment_meta + ایمیل placeholder مهمان).

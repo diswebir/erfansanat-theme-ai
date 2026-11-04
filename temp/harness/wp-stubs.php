@@ -809,6 +809,18 @@ if (!function_exists('update_term_meta')) {
     }
 }
 
+if (!function_exists('is_post_type_archive')) {
+    function is_post_type_archive(string|array $post_types = ''): bool
+    {
+        if (!($GLOBALS['__wp_is_post_type_archive'] ?? false)) {
+            return false;
+        }
+        if ($post_types === '') {
+            return true;
+        }
+        return in_array((string) ($GLOBALS['__wp_post_type_archive'] ?? ''), (array) $post_types, true);
+    }
+}
 if (!function_exists('get_terms')) {
     function get_terms(array|string $args = []): array|string
     {

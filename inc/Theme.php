@@ -61,6 +61,10 @@ final class Theme {
             Woo\Reviews::init();
         }
 
+        if (class_exists(Woo\ShopFilters::class)) {
+            Woo\ShopFilters::init();
+        }
+
         if (class_exists(Admin\ProductMetaboxes::class)) {
             Admin\ProductMetaboxes::init();
         }

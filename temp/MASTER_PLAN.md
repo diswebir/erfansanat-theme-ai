@@ -322,7 +322,7 @@
 - 📤 خروجی: `template-parts/single-product/related-projects.php`؛ `template-parts/single-product/related-products.php`؛ `template-parts/single-product/reviews.php` · **وابستگی:** Task 6.2, Task 3.10
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.7 — archive-product (shop) — هیرو، نوار فیلتر، گرید و صفحه‌بندی `[PENDING]`
+### Task 6.7 — archive-product (shop) — هیرو، نوار فیلتر، گرید و صفحه‌بندی `[DONE — 21/21]`
 - 🎯 آرشیو محصولات دقیقاً مطابق shop.html با فیلترهای GET کارا تا رسیدن فاز ۸
 - 📤 خروجی: `archive-product.php`؛ `template-parts/archive/product-filters.php`؛ `template-parts/archive/pagination.php` · **وابستگی:** Task 6.1, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
@@ -770,7 +770,7 @@
 - 📤 خروجی: `template-parts/single-product/related-projects.php`؛ `template-parts/single-product/related-products.php`؛ `template-parts/single-product/reviews.php` · **وابستگی:** Task 6.2, Task 3.10
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.7 — archive-product (shop) — هیرو، نوار فیلتر، گرید و صفحه‌بندی `[PENDING]`
+### Task 6.7 — archive-product (shop) — هیرو، نوار فیلتر، گرید و صفحه‌بندی `[DONE — 21/21]`
 - 🎯 آرشیو محصولات دقیقاً مطابق shop.html با فیلترهای GET کارا تا رسیدن فاز ۸
 - 📤 خروجی: `archive-product.php`؛ `template-parts/archive/product-filters.php`؛ `template-parts/archive/pagination.php` · **وابستگی:** Task 6.1, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
