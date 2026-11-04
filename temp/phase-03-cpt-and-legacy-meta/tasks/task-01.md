@@ -5,7 +5,7 @@
 | فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
 | اندازه | `M` — متوسط (~۱ روز) |
 | وابستگی | `Task 1.3` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED]` |
 | تست | `tests/test-task-01.php` |
 
 ## ۱. هدف
@@ -28,10 +28,10 @@
 
 > هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
 
-- [ ] **P1** — `post_type_exists('projects')` و `is_post_type_public` true
-- [ ] **P2** — `get_post_type_archive_link('projects')` = `/projects/`
-- [ ] **P3** — `get_post_type_object('projects')->rewrite` دقیقاً slug/with_front مورد انتظار
-- [ ] **P4** — supports شامل title, editor, thumbnail, comments, custom-fields, revisions باشد
+- [x] **P1** — `post_type_exists('projects')` و `is_post_type_public` true
+- [x] **P2** — `get_post_type_archive_link('projects')` = `/projects/`
+- [x] **P3** — `get_post_type_object('projects')->rewrite` دقیقاً slug/with_front مورد انتظار
+- [x] **P4** — supports شامل title, editor, thumbnail, comments, custom-fields, revisions باشد
 
 ## ۵. تست‌های خودکار
 

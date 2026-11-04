@@ -301,3 +301,13 @@
 | P3 — save timing | Maximum of 10 `AjaxSave::handle()` callbacks in PHP-WASM mock harness: **0.083ms** (<300ms); DB/network not included |
 | P4 — warnings | **0 PHP warnings** captured in the security/performance smoke path; no warnings in full-suite output |
 | وضعیت | Task 2.15 `[PASSED]`; Gate 2 complete; stop pending explicit user approval before Phase 3 |
+
+## Phase 3 — Tasks 3.1–3.3 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 3.1 — Native `projects` CPT | **4 PASS / 0 FAIL**؛ public/archive/rewrite/supports/REST و ادغام Theme |
+| 3.2 — `project_type` | **4 PASS / 0 FAIL**؛ اتصال به projects، labels، REST/admin column، route و hierarchical rewrite contract |
+| 3.3 — `city` | **3 PASS / 0 FAIL**؛ اتصال، لینک پایدار، hierarchical و کنترل term حذف/ناموجود |
+| سیاست‌ها | هیچ تغییری در `main.js`, `styles.css` یا markup استاتیک؛ هیچ کلید متا دستکاری نشده |
+| وضعیت | Phase 3 با تأیید صریح کاربر آغاز شد؛ ادامه از Task 3.4 |

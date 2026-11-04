@@ -19,6 +19,8 @@ use ErfanSanat\Theme\Admin\Tabs\ScriptsTab;
 use ErfanSanat\Theme\Assets\AssetManager;
 use ErfanSanat\Theme\Assets\Preload;
 use ErfanSanat\Theme\Contracts\ModuleInterface;
+use ErfanSanat\Theme\Content\PostTypes;
+use ErfanSanat\Theme\Content\Taxonomies;
 use ErfanSanat\Theme\Frontend\ArchiveConfig;
 use ErfanSanat\Theme\Frontend\CustomCode;
 use ErfanSanat\Theme\Frontend\InlineCss;
@@ -77,6 +79,8 @@ final class Theme {
 		$this->booted = true;
 
 		$this->register_module( 'theme-support', new ThemeSupport() );
+		$this->register_module( 'post-types', new PostTypes() );
+		$this->register_module( 'taxonomies', new Taxonomies() );
 		$this->register_module( 'admin-menu', new AdminMenu() );
 		$this->register_module( 'archive-tab', new ArchiveTab() );
 		$this->register_module( 'archive-config', new ArchiveConfig() );

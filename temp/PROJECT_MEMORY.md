@@ -1,13 +1,13 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — Gate 1 تأیید شده؛ Tasks 2.1–2.15 و Gate 2 پاس شده‌اند؛ توقف برای تأیید صریح پیش از Phase 3.
+**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.3 پاس شده‌اند؛ ادامه از Task 3.4.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
-| فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.15 — Phase 2 final gate (4 PASS / 0 FAIL؛ مجموع Phase 2: 104 PASS، 0 FAIL، 0 PENDING در 15 فایل) |
-| دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
+| فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
+| آخرین تسک پاس‌شده | 3.3 — ثبت taxonomy `city` (3 PASS / 0 FAIL؛ Tasks 3.1–3.3: 11 PASS / 0 FAIL) |
+| دروازه تأیید | Gate 1 و Gate 2: ✅؛ کاربر Phase 3 را در 2026-11-04 صریحاً تأیید کرد؛ Gate 3 پس از Task 3.18 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
 
@@ -46,8 +46,9 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- Gate 2 کامل است. این branch باید متوقف بماند تا کاربر Phase 3 را صریحاً تأیید کند.
-- پس از تأیید: قبل از Phase 3، برنامه و Scope آن را بررسی کن؛ هیچ Phase 3 implementation در این مرحله آغاز نشده است.
+- ادامه Phase 3 از Task 3.4: WooCommerce rewrite قراردادها و حفظ URLهای فعلی.
+- اجرای مستقل تست هر Task و تکمیل/همگام‌سازی سند و suite متناظر پیش از ادامه.
+- محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
 ## ۶. وضعیت هارنس تست
 - PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
@@ -261,3 +262,10 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Measured the maximum of 10 `AjaxSave::handle()` calls using the PHP-WASM WordPress-mock harness: **0.083 ms**, below the 300ms gate. This is a mocked handler timing, not a live database/network benchmark.
 - Performance/safety smoke path emitted **0 PHP warnings**.
 - Gate 2 is complete. **Do not start Phase 3 until the user explicitly approves it.**
+
+## §9 — Phase 3 آغاز شد (با تأیید صریح کاربر، 2026-11-04)
+- Task 3.1: Native `projects` CPT با public archive `/projects/`, rewrite `with_front=false`, non-hierarchical، REST، labels فارسی، `map_meta_cap`, supports کامل و آیکون. **4/4 PASS**.
+- Tasks 3.2–3.3: `project_type` و `city` به `projects` متصل، هر دو hierarchical/public/REST/admin-column؛ rewriteهای ثابت و non-hierarchical در `/project_type/{slug}/` و `/city/{slug}/`. **7/7 PASS**.
+- Theme kernel اکنون `PostTypes` را پیش از `Taxonomies` در priority `init=10` ثبت می‌کند.
+- Phase 3 aggregate runner هنوز اجرا نشده (15 تست pending به‌جز سه تست تکمیل‌شده). مرحله بعد Task 3.4.
+- کاربر خواسته Phase 3 کامل شود. کار روی همین branch و PR موجود ادامه می‌یابد؛ Phase 4 خارج از scope است.

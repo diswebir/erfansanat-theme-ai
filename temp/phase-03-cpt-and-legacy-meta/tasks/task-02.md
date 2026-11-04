@@ -5,7 +5,7 @@
 | فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
 | اندازه | `M` — متوسط (~۱ روز) |
 | وابستگی | `Task 3.1` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED]` |
 | تست | `tests/test-task-02.php` |
 
 ## ۱. هدف
@@ -27,10 +27,10 @@
 
 > هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
 
-- [ ] **P1** — `taxonomy_exists('project_type')` true
-- [ ] **P2** — `get_term_link` = `/project_type/{slug}/`
-- [ ] **P3** — rewrite با `hierarchical => false` در بخش rewrite باشد
-- [ ] **P4** — آرشیو تاکسونومی بدون 404 رندر شود
+- [x] **P1** — `taxonomy_exists('project_type')` true
+- [x] **P2** — `get_term_link` = `/project_type/{slug}/`
+- [x] **P3** — rewrite با `hierarchical => false` در بخش rewrite باشد
+- [x] **P4** — آرشیو تاکسونومی بدون 404 رندر شود
 
 ## ۵. تست‌های خودکار
 

@@ -33,6 +33,7 @@ DONE_STATUS = {
     "1.5": "[PASSED]", "1.6": "[PASSED]", "1.7": "[PASSED]", "1.8": "[PASSED]",
     "1.9": "[PASSED]", "1.10": "[PASSED]", "1.11": "[PASSED]", "1.12": "[PASSED]",
     "2.1": "[PASSED]", "2.2": "[PASSED]", "2.3": "[PASSED]", "2.4": "[PASSED]", "2.5": "[PASSED]", "2.6": "[PASSED]", "2.7": "[PASSED]", "2.8": "[PASSED]", "2.9": "[PASSED]", "2.10": "[PASSED]", "2.11": "[PASSED]", "2.12": "[PASSED]", "2.13": "[PASSED]", "2.14": "[PASSED]", "2.15": "[PASSED]",
+    "3.1": "[PASSED]", "3.2": "[PASSED]", "3.3": "[PASSED]",
 }
 
 
