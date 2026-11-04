@@ -11,6 +11,7 @@ use ErfanSanat\Theme\Admin\AdminMenu;
 use ErfanSanat\Theme\Admin\AjaxSave;
 use ErfanSanat\Theme\Admin\SectionsPage;
 use ErfanSanat\Theme\Admin\ImportExport;
+use ErfanSanat\Theme\Admin\ListTables;
 use ErfanSanat\Theme\Admin\Tabs\ArchiveTab;
 use ErfanSanat\Theme\Admin\Tabs\BrandTab;
 use ErfanSanat\Theme\Admin\Tabs\FooterTab;
@@ -86,6 +87,7 @@ final class Theme {
 		$this->register_module( 'rewrites', new Rewrites() );
 		$this->register_module( 'url-audit', new UrlAudit() );
 		$this->register_module( 'admin-menu', new AdminMenu() );
+		$this->register_module( 'list-tables', new ListTables() );
 		$this->register_module( 'archive-tab', new ArchiveTab() );
 		$this->register_module( 'archive-config', new ArchiveConfig() );
 		$this->register_module( 'scripts-tab', new ScriptsTab() );

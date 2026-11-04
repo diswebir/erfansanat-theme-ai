@@ -16,7 +16,7 @@ if ( ! function_exists( 'get_option' ) ) { function get_option( $name, $default 
 if ( ! function_exists( 'update_option' ) ) { function update_option( $name, $value, $autoload = null ) { $GLOBALS['es_phase3_options'][ $name ] = $value; return true; } }
 if ( ! function_exists( 'flush_rewrite_rules' ) ) { function flush_rewrite_rules( $hard = true ) { $GLOBALS['es_phase3_flush_calls']++; } }
 if ( ! function_exists( 'is_404' ) ) { function is_404() { return ! empty( $GLOBALS['es_phase3_is_404'] ); } }
-if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return false; } }
+if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return ! empty( $GLOBALS['es_phase3_admin'] ); } }
 if ( ! function_exists( 'current_user_can' ) ) { function current_user_can( $capability ) { return 'manage_options' === $capability; } }
 if ( ! function_exists( 'add_submenu_page' ) ) { function add_submenu_page( $parent, $page_title, $menu_title, $capability, $slug, $callback ) { $GLOBALS['es_phase3_submenus'][ $slug ] = compact( 'parent', 'page_title', 'menu_title', 'capability', 'slug', 'callback' ); return $slug; } }
 if ( ! function_exists( 'home_url' ) ) { function home_url( $path = '/' ) { return 'https://example.test' . '/' . ltrim( $path, '/' ); } }

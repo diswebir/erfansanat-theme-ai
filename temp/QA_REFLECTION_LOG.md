@@ -320,3 +320,12 @@
 | 3.5 — نسخه‌دارکردن flush و URL audit | **4 PASS / 0 FAIL**؛ version mismatch → یک soft flush؛ اجرای دوباره → بدون flush دوم؛ شش route family؛ 404 privacy log |
 | 404 privacy | query string/IP/cookie ذخیره نمی‌شود؛ مسیرها normalize/truncate و تعداد ردیف‌ها محدود است |
 | وضعیت | مجموع Tasks 3.1–3.5: **19 PASS / 0 FAIL**؛ بعدی 3.6 |
+
+## Phase 3 — Tasks 3.6–3.7 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 3.6 — پروژه admin list | **4 PASS / 0 FAIL**؛ columns, filters, AND-tax_query, sortable meta fields, preserved pagination |
+| 3.7 — سایر لیست‌ها | **4 PASS / 0 FAIL**؛ post/page/product/projects columns, IDs, term thumbnail, empty values, legacy view fallback |
+| Integration | `ListTables` از Theme kernel ثبت می‌شود؛ escape برای مقادیر متنی و core-generated attachment HTML |
+| نتیجه تجمعی | Tasks 3.1–3.7: **27 PASS / 0 FAIL**؛ ادامه Task 3.8 |
