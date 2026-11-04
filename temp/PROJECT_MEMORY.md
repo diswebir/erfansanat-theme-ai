@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 5 IN PROGRESS (9/12 TASKS DONE: 5.1–5.9 · 113/113 CONDITIONS · TESTS 01-09 GREEN)**
+**PHASE 5 IN PROGRESS (10/12 TASKS DONE: 5.1–5.10 · 123/123 CONDITIONS · TESTS 01-10 GREEN)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -96,6 +96,7 @@
 - نکته 5.7: svgهای لوسیسک میرور در سکشن خدمات stroke-width=1.7 (نه ۲)؛ js میرور data-service-* را می‌راند → بدون JS سفارشی.
 - 5.8 aftersale+customers: aftersale تک‌بلوکی ۱۲فیلدی (نقشه SVG تزئینی ~۳۰KB عیناً حفظ؛ tel:tel:03191091011 typo میرور به‌عنوان default فیلد) — customers رپیتر [title,sub,icon] ×۱۲ پیش‌فرض (میرور لوگو/لینک ندارد؛ کارت icon+شماره+متن)؛ خالی → مخفی؛ 11/11.
 - 5.9 blog-preview: WP_Query (posts_per_page فیلد count=4، ignore_sticky)؛ کارت‌ها: permalink/thumbnail/category-chip (fallback «مجله علمی»)/date با es_fa_num/زمان مطالعه (متا es_read_time → برآورد ceil(واژه‌ها/225) با preg_split فارسی)؛ آرشیو = page_for_posts → /blog/؛ خالی → مخفی؛ فیلتر es_blog_preview_query_args/es_blog_preview_args؛ 8/8. استاب‌های هارنس جدید: WP_Query/get_the_title/get_the_excerpt/get_the_date/get_the_category/wp_trim_words (نال‌پذیری صریح برای PHP8.4!).
+- 5.10 contact+map: contact تک‌بلوک ۱۹فیلدی (تلفن/ایمیل/ساعات: فیلد → گزینه مرکزی OptionsOutput::contact_args → خالی)؛ map: بستر SVG تزئینی میرور ↔ iframe ادمین با wp_kses (iframe لیست مجاز اتریبیوت)؛ نشانی/کدپستی از گزینه مرکزی در صورت خالی بودن فیلد؛ مخفی اگر desc+phone+email همه خالی (map: title+address)؛ استاب wp_kses به هارنس اضافه شد (اتریبیوت‌فیلتر واقعی)؛ 10/10. نکته: es_option کش استاتیک دارد → بعد از تغییر __wp_options باید es_option_reset_cache() صدا زده شود؛ گزینه‌ها زیر کلید erfansanat_theme_options نستد.
 - رگرسیون پس از 5.7: فاز ۱ (۸/۸: 154 شرط) فاز ۲ (۹/۹: ۱۶۰ شرط) فاز ۴ (۲۱۲/۲۱۲) فاز ۵ (۹۴/۹۴) — همه سبز.
 
 ## رویدادهای فاز ۲ (2026-11-03)

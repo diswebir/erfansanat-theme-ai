@@ -1212,7 +1212,7 @@ if (!class_exists('WP_Query')) {
 
 /** استاب get_the_title */
 if (!function_exists('get_the_title')) {
-    function get_the_title(int|object $post = null): string {
+    function get_the_title(int|object|null $post = null): string {
         if (is_object($post)) {
             return (string) ($post->post_title ?? '');
         }
@@ -1223,7 +1223,7 @@ if (!function_exists('get_the_title')) {
 
 /** استاب get_the_excerpt */
 if (!function_exists('get_the_excerpt')) {
-    function get_the_excerpt(int|object $post = null): string {
+    function get_the_excerpt(int|object|null $post = null): string {
         if (is_object($post)) {
             return (string) ($post->post_excerpt ?? '');
         }
@@ -1234,7 +1234,7 @@ if (!function_exists('get_the_excerpt')) {
 
 /** استاب get_the_date — تاریخ نمایشی از گلوبال (رفتار i18n فارسی در تولید شبیه‌سازی می‌شود) */
 if (!function_exists('get_the_date')) {
-    function get_the_date(string $format = '', int|object $post = null): string|int|false {
+    function get_the_date(string $format = '', int|object|null $post = null): string|int|false {
         $pid = is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
         if (isset($GLOBALS['__es_stub_post_dates'][$pid])) {
             return (string) $GLOBALS['__es_stub_post_dates'][$pid];
@@ -1261,5 +1261,36 @@ if (!function_exists('wp_trim_words')) {
             return trim($text);
         }
         return implode(' ', array_slice($words, 0, $num_words)) . $more;
+    }
+}
+
+/** استاب wp_kses — حذف تگ‌ها/اتریبیوت‌های خارج از لیست مجاز (فاز ۵: iframe نقشه) */
+if (!function_exists('wp_kses')) {
+    function wp_kses(string $string, array $allowed_html, array $allowed_protocols = []): string {
+        $allowed_tags = array_keys($allowed_html);
+        $allowed = '<' . implode('><', array_map('strtolower', array_map('strval', $allowed_tags))) . '>';
+        // حذف محتوای اسکریپت/استایل و سپس فیلتر تگ‌ها
+        $string = preg_replace('#<(script|style)\b[^>]*>.*?</\1>#is', '', $string) ?? '';
+        // فیلتر اتریبیوت‌ها در تگ‌های مجاز
+        $clean = strip_tags($string, $allowed);
+        return preg_replace_callback('/<(\w+)([^>]*)>/', function ($m) use ($allowed_html) {
+            $tag = strtolower($m[1]);
+            if (!isset($allowed_html[$tag]) || $allowed_html[$tag] !== true && !is_array($allowed_html[$tag])) {
+                return '<' . $m[1] . '>';
+            }
+            $ok = $allowed_html[$tag] === true ? [] : array_map('strtolower', array_keys($allowed_html[$tag]));
+            $attrs = '';
+            if ($ok !== []) {
+                if (preg_match_all('/([a-zA-Z-]+)=("([^"]*)"|\'([^\']*)\')/', $m[2], $am, PREG_SET_ORDER)) {
+                    foreach ($am as $a) {
+                        $name = strtolower($a[1]);
+                        if (in_array($name, $ok, true)) {
+                            $attrs .= ' ' . $name . '="' . ($a[3] ?? $a[4] ?? '') . '"';
+                        }
+                    }
+                }
+            }
+            return '<' . $m[1] . $attrs . '>';
+        }, $clean) ?? $clean;
     }
 }
