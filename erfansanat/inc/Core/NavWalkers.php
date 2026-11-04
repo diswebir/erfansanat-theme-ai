@@ -159,3 +159,96 @@ class DesktopWalker extends \Walker_Nav_Menu {
 		return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-3 w-3 shrink-0 text-slate-300 transition-transform group-hover/cat:-translate-x-0.5 group-hover/cat:text-emerald-700" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
 	}
 }
+
+/**
+ * Mobile accordion walker: collapsible multi-level drawer navigation.
+ */
+class MobileWalker extends \Walker_Nav_Menu {
+
+	/** @var array<int,bool> Top-level items that opened an accordion wrapper. */
+	private array $wrapper = array();
+
+	/** @var string Current accordion panel key. */
+	private string $acc_key = '';
+
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		if ( 0 === $depth ) {
+			$output .= '<div data-mobile-acc-panel="' . esc_attr( $this->acc_key ) . '" class="hidden flex-col gap-2.5 border-t border-slate-100 bg-slate-50/50 p-2.5">';
+		}
+	}
+
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+		if ( 0 === $depth ) {
+			$output .= '</div>';
+		}
+	}
+
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$title = trim( wp_strip_all_tags( (string) $item->title ) );
+		$url   = (string) $item->url;
+
+		// Sub-menu children render as compact rows.
+		if ( $depth > 0 ) {
+			$output .= '<a href="' . esc_url( $url ) . '" class="flex items-center justify-between rounded-lg bg-white px-3 py-2 text-[11.5px] font-bold text-slate-700 hover:text-emerald-800"><span class="truncate">' . esc_html( $title ) . '</span>' . self::child_arrow() . '</a>';
+			return;
+		}
+
+		$has_children = ! empty( $this->has_children ) || ( isset( $args->has_children ) && (bool) $args->has_children );
+		$classes      = (array) $item->classes;
+		$is_current   = in_array( 'current-menu-item', $classes, true )
+			|| in_array( 'current_page_item', $classes, true )
+			|| in_array( 'current-menu-ancestor', $classes, true );
+
+		if ( $has_children ) {
+			$type      = $this->mega_type_for( $item );
+			$this->acc_key = $type ? $type : 'item-' . (int) $item->ID;
+			$this->wrapper[ (int) $item->ID ] = true;
+
+			$output .= '<div class="overflow-hidden rounded-xl border border-slate-200/80 bg-white">';
+			$output .= '<button type="button" data-mobile-acc-btn="' . esc_attr( $this->acc_key ) . '" aria-expanded="false" class="flex w-full items-center justify-between px-3.5 py-3 text-right cursor-pointer hover:bg-slate-50"><span class="text-xs font-black text-slate-900">' . esc_html( $title ) . '</span>' . self::acc_icon() . '</button>';
+			return;
+		}
+
+		$link_class = $is_current
+			? 'flex items-center justify-between rounded-xl border px-3.5 py-3 text-xs font-black transition-colors border-emerald-200 bg-emerald-50 text-emerald-900'
+			: 'flex items-center justify-between rounded-xl border px-3.5 py-3 text-xs font-black transition-colors border-slate-200 bg-white text-slate-800';
+
+		$output .= '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $link_class ) . '"' . ( $is_current ? ' aria-current="page"' : '' ) . '><span>' . esc_html( $title ) . '</span>' . self::top_arrow() . '</a>';
+	}
+
+	public function end_el( &$output, $item, $depth = 0, $args = null ) {
+		if ( 0 === $depth && isset( $this->wrapper[ (int) $item->ID ] ) ) {
+			$output .= '</div>';
+			unset( $this->wrapper[ (int) $item->ID ] );
+		}
+	}
+
+	private function mega_type_for( $item ): ?string {
+		$classes = (array) $item->classes;
+		foreach ( array( 'products', 'projects', 'corporate', 'services' ) as $type ) {
+			if ( in_array( 'mega-' . $type, $classes, true ) ) {
+				return $type;
+			}
+		}
+		$title = trim( wp_strip_all_tags( (string) $item->title ) );
+		$map   = array(
+			'محصولات'     => 'products',
+			'پروژه‌ها'    => 'projects',
+			'درباره شرکت' => 'corporate',
+			'خدمات'       => 'services',
+		);
+		return $map[ $title ] ?? null;
+	}
+
+	public static function acc_icon(): string {
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 text-slate-500 transition-transform duration-200" aria-hidden="true" data-mobile-acc-icon="true"><path d="m6 9 6 6 6-6"></path></svg>';
+	}
+
+	public static function child_arrow(): string {
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-3 w-3 shrink-0 text-slate-300" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
+	}
+
+	public static function top_arrow(): string {
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
+	}
+}
