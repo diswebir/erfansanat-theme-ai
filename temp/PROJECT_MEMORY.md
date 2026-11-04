@@ -79,3 +79,6 @@
 - test-debug-full: رندر ۱۲ template روی WP واقعی با WP_DEBUG → theme-file diagnostics: **0** (293 noise همگی از core/harness).
 - باگ‌های رفع‌شده: comments.php اضافه شد, guard null $term در taxonomyها, number_format(null), woocommerce_* بدون guard در archive-product.
 - E2E incl. debug suite: ALL-PASS
+
+## SECURITY+ASSETS audit — 2026-11-03
+- test-security-assets: superglobals همه nonce/sanitize (Registrar فقط !empty read-only), صفر eval/exec، صفر CDN خارجی (فونت/آیکن لوکال)، JS تمیز، همه echo ها escaped، scriptها همگی defer/async، jQuery و wp-emoji در front-end نیستند. نتیجه: ALL PASS.

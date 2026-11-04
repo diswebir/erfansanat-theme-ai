@@ -69,3 +69,6 @@
 
 ## FULL DEBUG — 2026-11-03
 - Rendered 12 templates on real WP 7.2/SQLite with error handler: 0 theme-file diagnostics. Fixed: missing comments.php (WP deprecation), null $term in taxonomy templates, number_format(null), unguarded woocommerce_* in archive-product. E2E ALL-PASS.
+
+## SECURITY+ASSETS audit — 2026-11-03
+- 8 security/bloat checks on real WP 7.2: nonce-guarded superglobals, no eval, no external CDNs, all scripts defer/async, no jQuery/emoji on front-end, escaped output. ALL PASS, wired into E2E.
