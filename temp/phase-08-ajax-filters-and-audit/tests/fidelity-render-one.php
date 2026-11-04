@@ -40,7 +40,8 @@ foreach ($projSlugs as $s) {
     update_post_meta($id, 'latest_projects', '1');
     wp_set_object_terms($id, ['esfahan'], 'city');
 }
-for ($i = 0; $i < 3; $i++) { wp_insert_post(['post_type'=>'post','post_title'=>'مقاله '.$i,'post_status'=>'publish']); }
+for ($i = 0; $i < 3; $i++) { $pid = wp_insert_post(['post_type'=>'post','post_title'=>'مقاله '.$i,'post_status'=>'publish']); wp_set_object_terms($pid, ['magazine'], 'category'); }
+wp_insert_term('magazine', 'category', ['slug'=>'magazine']);
 add_filter('locale', fn() => 'fa_IR'); $GLOBALS['wp_locale']->text_direction = 'rtl';
 
 $map = [
@@ -61,6 +62,12 @@ $map = [
     'blogsingle' => [['post_type'=>'post','name'=>'مقاله-0'], 'single.php'],
     'search'   => [['s'=>'مقاله','post_type'=>'post'], 'search.php'],
     'notfound' => [['post_type'=>'post','name'=>'__none__'], '404.php'],
+    'products' => [['post_type'=>'product'], 'archive-product.php'],
+    'projects' => [['post_type'=>'projects'], 'archive-projects.php'],
+    'productcat' => [['tax_query'=>[['taxonomy'=>'product_cat','field'=>'slug','terms'=>'point-light']]], 'taxonomy-product_cat.php'],
+    'city'     => [['tax_query'=>[['taxonomy'=>'city','field'=>'slug','terms'=>'esfahan']]], 'taxonomy-city.php'],
+    'projecttype' => [['tax_query'=>[['taxonomy'=>'project_type','field'=>'slug','terms'=>'light-tunnel']]], 'taxonomy-project_type.php'],
+    'blogcat'  => [['tax_query'=>[['taxonomy'=>'category','field'=>'slug','terms'=>'magazine']]], 'category.php'],
 ];
 if (!isset($map[$key])) { fwrite(STDERR, "unknown key\n"); exit(1); }
 [$q, $file] = $map[$key];

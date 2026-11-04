@@ -108,3 +108,6 @@
 
 ## REMAINING PAGES + COMMENTS/REST — 2026-11-03
 - test-fidelity-remaining: fidelity صفحات باقی‌مانده میرر — faq/services/recruitment/refund/licenses/cart/checkout/blog همه ۱۰۰٪، blog-single ۹۳.۷٪، search ۹۹.۵٪، 404 structural PASS. test-comments-rest: comment insert/approve/list + template render + REST (posts/types/projects/product routes, es_form_entry مخفی) — ۱۴/۱۴ ALL PASS. E2E 0 FAIL.
+
+## FULL 128-PAGE MIRROR COVERAGE — 2026-11-04
+- test-fidelity-all: همه ۱۲۸ صفحه میرر fidelity-tested. Gap پیداشده و fix شد: taxonomy-city/product_cat/project_typecium now full clones of archive templates (99.4-99.6% sigs) + empty-state blocks + legacy term-meta hooks (thumbnail/faq/count). E2E 0 FAIL.

@@ -96,3 +96,6 @@
 
 ## REMAINING PAGES + COMMENTS/REST — 2026-11-03
 - All remaining mirror pages fidelity-tested: 7 pages at 100% sigs, blog-single 93.7%, search 99.5%, 404 structural. Comments flow (insert/approve/render) + REST API (posts, types, projects, product; form CPT private) 14/14 ALL PASS. E2E 0 FAILs.
+
+## FULL 128-PAGE MIRROR COVERAGE — 2026-11-04
+- All 128 mirror pages compared by DOM signature. Found & fixed: taxonomy templates were stubs — replaced with full archive clones (city/product_cat/project_type now 99.4-99.6%), added empty-state blocks and legacy term meta hooks. E2E ALL-PASS 0 FAILs.
