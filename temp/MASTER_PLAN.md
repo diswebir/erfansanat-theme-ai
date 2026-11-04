@@ -307,7 +307,7 @@
 - 📤 خروجی: `template-parts/single-product/specs-tabs.php` · **وابستگی:** Task 6.2, Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.4 — single-product — Repeaterها، FAQ، کاتالوگ و اطلاعیه قبل از خرید `[PENDING]`
+### Task 6.4 — single-product — Repeaterها، FAQ، کاتالوگ و اطلاعیه قبل از خرید `[DONE — 18/18]`
 - 🎯 رندر product-feature، feature2 دو بخشی، usage_product/usage_countr، faq آکاردئونی، دکمه کاتالوگ و نوار اطلاعیه
 - 📤 خروجی: `template-parts/single-product/features.php`؛ `template-parts/single-product/usages.php`؛ `template-parts/single-product/faq.php`؛ `template-parts/single-product/notice.php` · **وابستگی:** Task 6.2, Task 3.8
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
@@ -755,7 +755,7 @@
 - 📤 خروجی: `template-parts/single-product/specs-tabs.php` · **وابستگی:** Task 6.2, Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.4 — single-product — Repeaterها، FAQ، کاتالوگ و اطلاعیه قبل از خرید `[PENDING]`
+### Task 6.4 — single-product — Repeaterها، FAQ، کاتالوگ و اطلاعیه قبل از خرید `[DONE — 18/18]`
 - 🎯 رندر product-feature، feature2 دو بخشی، usage_product/usage_countr، faq آکاردئونی، دکمه کاتالوگ و نوار اطلاعیه
 - 📤 خروجی: `template-parts/single-product/features.php`؛ `template-parts/single-product/usages.php`؛ `template-parts/single-product/faq.php`؛ `template-parts/single-product/notice.php` · **وابستگی:** Task 6.2, Task 3.8
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا

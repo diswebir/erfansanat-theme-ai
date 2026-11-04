@@ -1,7 +1,7 @@
 # Task 6.4 — single-product — Repeaterها، FAQ، کاتالوگ و اطلاعیه قبل از خرید
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 18/18]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-04.php`
 
 ## 🎯 هدف
@@ -33,15 +33,15 @@
 - املاهای دقیق متا از فاز ۳ خوانده شود
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] هر ۴ منبع با fixture رندر شوند
-- [ ] ادغام usages بدون تکرار
-- [ ] FAQ آکاردئون با JS میرور کار کند
-- [ ] بخش‌های خالی مخفی
+- [x] هر ۴ منبع با fixture رندر شوند
+- [x] ادغام usages بدون تکرار
+- [x] FAQ آکاردئون با JS میرور کار کند (hookها عیناً)
+- [x] بخش‌های خالی مخفی
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-04.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-04.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

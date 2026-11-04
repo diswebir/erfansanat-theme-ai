@@ -1167,6 +1167,36 @@ if (!function_exists('get_comments_number')) {
         return (int) ($GLOBALS['__es_stub_comment_counts'][$id] ?? 0);
     }
 }
+if (!function_exists('get_post_field')) {
+    function get_post_field(string $field, int|object $post, string $context = 'display'): mixed
+    {
+        if (is_object($post)) {
+            return $post->{$field} ?? '';
+        }
+        foreach (($GLOBALS['__es_stub_posts'] ?? []) as $p) {
+            if ((int) ($p->ID ?? 0) === (int) $post) {
+                return $p->{$field} ?? '';
+            }
+        }
+        return '';
+    }
+}
+if (!function_exists('get_term')) {
+    function get_term(int|object $term, string $taxonomy = ''): object
+    {
+        if (is_object($term)) {
+            return $term;
+        }
+        $t = $GLOBALS['__es_stub_terms'][(int) $term] ?? null;
+        return $t instanceof \WP_Error ? $t : ($t ?? new \WP_Error('invalid_term', 'Term not found'));
+    }
+}
+if (!function_exists('is_wp_error')) {
+    function is_wp_error(mixed $thing): bool
+    {
+        return $thing instanceof \WP_Error;
+    }
+}
 if (!function_exists('get_the_ID')) {
     function get_the_ID(): int
     {

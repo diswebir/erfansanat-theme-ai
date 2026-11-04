@@ -52,12 +52,15 @@ foreach ([
     }
 }
 
+$es_catalog_raw = trim((string) get_post_meta($es_pid, 'product-catalog-file', true));
+$es_docs_url = $es_catalog_raw !== '' ? es_media_url($es_catalog_raw) : '';
 $es_rev_count = (int) get_comments_number($es_pid);
 $es_data = apply_filters('es_product_specs_args', [
     'rows'        => $es_rows,
     'legal'       => $es_legal,
     'has_desc'    => false,
     'has_reviews' => false,
+    'docs_url'   => $es_docs_url,
     'rev_count'   => $es_rev_count,
 ], $es_pid);
 $es_rows   = (array) ($es_data['rows'] ?? []);
@@ -65,6 +68,7 @@ $es_legal  = (array) ($es_data['legal'] ?? []);
 $es_has_desc = (bool) ($es_data['has_desc'] ?? false);
 $es_has_reviews = (bool) ($es_data['has_reviews'] ?? false);
 $es_rev_count = (int) ($es_data['rev_count'] ?? 0);
+$es_docs_url = (string) ($es_data['docs_url'] ?? '');
 
 // فقط تب‌های دارای محتوا؛ فعال = اولین تب رندرشده
 $es_tabs = [];
@@ -73,6 +77,9 @@ if ($es_has_desc) {
 }
 if ($es_rows !== [] || $es_legal !== []) {
     $es_tabs[] = 'specs';
+}
+if ($es_docs_url !== '') {
+    $es_tabs[] = 'docs';
 }
 if ($es_has_reviews && $es_rev_count > 0) {
     $es_tabs[] = 'reviews';
@@ -115,6 +122,18 @@ ESP63I;
 $ES_SPECS_TAIL = <<<'ESP63J'
 </div></div></div></div>
 ESP63J;
+$ES_BTN_CATALOG = <<<'ESP63K'
+<button type="button" data-prod-tab-btn="docs" class="flex shrink-0 items-center gap-2 rounded-2xl px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-[13px] font-extrabold transition-all cursor-pointer whitespace-nowrap {ES_BTN_CLS}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download h-4 w-4 {ES_ICON_CLS}" aria-hidden="true" data-prod-tab-icon="true"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg><span>کاتالوگ و فایل‌ها</span></button>
+ESP63K;
+$ES_DOC_HEAD = <<<'ESP63L'
+<div data-prod-tab-panel="docs" class="hidden"><div><h3 class="mb-5 text-lg font-extrabold text-slate-900">فایل‌های فنی، کاتالوگ و نقشه‌های اجرایی</h3><div class="grid gap-4 md:grid-cols-3">
+ESP63L;
+$ES_DOC_CARD = <<<'ESP63M'
+<a href="{ES_URL}" target="_blank" rel="noopener" class="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-5 transition-all hover:border-emerald-400 hover:bg-white hover:shadow-md"><div><div class="mb-4 flex items-center justify-between"><span class="grid h-11 w-11 place-items-center rounded-xl bg-emerald-100 text-emerald-800 transition-colors group-hover:bg-emerald-700 group-hover:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{ES_ICON}" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg></span><span class="rounded-md bg-slate-200/80 px-2.5 py-1 text-[10px] font-black text-slate-700">{ES_BADGE}</span></div><div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-800">{ES_TITLE}</div><div class="mt-1 text-xs text-slate-500">{ES_SUB}</div></div><div class="mt-5 flex items-center gap-1.5 text-xs font-extrabold text-emerald-700"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download h-3.5 w-3.5" aria-hidden="true"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg><span>دریافت فایل</span></div></a>
+ESP63M;
+$ES_DOC_TAIL = <<<'ESP63N'
+</div></div></div>
+ESP63N;
 
 echo $ES_HEAD_A;
 $es_first_done = false;
@@ -126,7 +145,9 @@ foreach ($es_tabs as $es_tab) {
     if ($es_tab === 'desc') {
         echo strtr($ES_BTN_DESC, ['{ES_LABEL}' => 'معرفی و کاربردها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);
     } elseif ($es_tab === 'specs') {
-        echo strtr($ES_BTN_SPECS, ['{ES_LABEL}' => 'مشخصات فنی و شناسه\u200cها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);
+        echo strtr($ES_BTN_SPECS, ['{ES_LABEL}' => 'مشخصات فنی و شناسه‌ها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);
+    } elseif ($es_tab === 'docs') {
+        echo strtr($ES_BTN_CATALOG, ['{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);
     } else {
         echo strtr($ES_BTN_REVIEWS, ['{ES_REV_COUNT}' => es_fa_num((string) $es_rev_count), '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);
     }
@@ -143,5 +164,10 @@ if (in_array('specs', $es_tabs, true)) {
         echo strtr($ES_CARD, ['{ES_LBL}' => esc_html((string) $es_lgc['label']), '{ES_VAL}' => esc_html((string) $es_lgc['value']), '{ES_VAL_CLS}' => (string) $es_lgc['cls']]);
     }
     echo $ES_SPECS_TAIL;
+}
+if ($es_docs_url !== '') {
+    echo $ES_DOC_HEAD;
+    echo strtr($ES_DOC_CARD, ['{ES_URL}' => esc_url($es_docs_url), '{ES_ICON}' => 'lucide lucide-file-text h-5 w-5', '{ES_BADGE}' => 'PDF', '{ES_TITLE}' => esc_html('کاتالوگ فنی ' . $es_title), '{ES_SUB}' => 'مشخصات و رنگ‌بندی — PDF']);
+    echo $ES_DOC_TAIL;
 }
 echo '</div></div></section>';

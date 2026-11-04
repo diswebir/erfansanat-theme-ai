@@ -149,11 +149,57 @@ det_btn_reviews = BTN_REVIEWS.replace('{ES_REV_COUNT}', '۳').replace('{ES_BTN_C
 reb_h = HEAD_A + det_btn_desc + det_btn_specs + det_btn_reviews + HEAD_B
 assert reb_h == s[sec:desc_panel], 'header rebuild mismatch'
 
+# ─── کاتالوگ (تب docs) از baloti-string ───
+b = open('/home/user/erfansanat-theme-ai/uploads/static-mirror/product/baloti-string.html', encoding='utf-8').read()
+cb0 = b.find('<button type="button" data-prod-tab-btn="docs"')
+assert cb0 > 0
+cb1 = b.find('</button>', cb0) + len('</button>')
+BTN_CATALOG = b[cb0:cb1]
+BTN_CATALOG = BTN_CATALOG.replace('class="flex shrink-0 items-center gap-2 rounded-2xl px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-[13px] font-extrabold transition-all cursor-pointer whitespace-nowrap text-slate-600 hover:bg-emerald-100/60 hover:text-emerald-900"',
+                                  'class="flex shrink-0 items-center gap-2 rounded-2xl px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-[13px] font-extrabold transition-all cursor-pointer whitespace-nowrap {ES_BTN_CLS}"', 1)
+BTN_CATALOG = BTN_CATALOG.replace('class="lucide lucide-download h-4 w-4 text-emerald-700"', 'class="lucide lucide-download h-4 w-4 {ES_ICON_CLS}"', 1)
+assert '{ES_BTN_CLS}' in BTN_CATALOG and '{ES_ICON_CLS}' in BTN_CATALOG
+dp0 = b.find('<div data-prod-tab-panel="docs"')
+dp1 = b.find('<div data-prod-tab-panel="reviews"')
+DOCS = b[dp0:dp1]
+dc0 = DOCS.find('<a href="#contact-cta"')
+dc1 = DOCS.find('</a>', dc0) + len('</a>')
+DOC_HEAD = DOCS[:dc0]
+DOC_CARD = DOCS[dc0:dc1]
+DOC_CARD = DOC_CARD.replace('href="#contact-cta"', 'href="{ES_URL}" target="_blank" rel="noopener"', 1)
+DOC_CARD = DOC_CARD.replace('class="lucide lucide-file-text h-5 w-5"', 'class="{ES_ICON}"', 1)
+DOC_CARD = DOC_CARD.replace('<span class="rounded-md bg-slate-200/80 px-2.5 py-1 text-[10px] font-black text-slate-700">PDF</span>',
+                            '<span class="rounded-md bg-slate-200/80 px-2.5 py-1 text-[10px] font-black text-slate-700">{ES_BADGE}</span>', 1)
+DOC_CARD = DOC_CARD.replace('<div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-800">کاتالوگ فنی ریسه بلوطی هفت رنگ</div>',
+                            '<div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-800">{ES_TITLE}</div>', 1)
+DOC_CARD = DOC_CARD.replace('<div class="mt-1 text-xs text-slate-500">مشخصات و رنگ‌بندی — PDF</div>',
+                            '<div class="mt-1 text-xs text-slate-500">{ES_SUB}</div>', 1)
+for t in ('{ES_URL}', '{ES_ICON}', '{ES_BADGE}', '{ES_TITLE}', '{ES_SUB}'):
+    assert t in DOC_CARD, t
+DOC_TAIL = DOCS[dc1:]
+import re as _re64
+DOC_TAIL = _re64.sub(r'<a href="#contact-cta".*?</a>', '', DOC_TAIL, flags=_re64.S)
+assert DOC_TAIL == '</div></div></div>', repr(DOC_TAIL)  # بستن گرید + div داخلی + پنل
+DOCS_CARDS = [
+    ('#contact-cta', 'lucide lucide-file-text h-5 w-5', 'PDF', 'کاتالوگ فنی ریسه بلوطی هفت رنگ', 'مشخصات و رنگ‌بندی — PDF'),
+    ('#contact-cta', 'lucide lucide-file-code2 lucide-file-code-2 h-5 w-5', 'DWG', 'نقشه ابعاد و جزئیات اجرایی', 'مناسب طراحی و مشاوره — DWG'),
+    ('#contact-cta', 'lucide lucide-file-text h-5 w-5', 'PDF', 'راهنمای نصب و راه‌اندازی', 'PDF مراحل نصب و نکات ایمنی'),
+]
+reb_docs = DOC_HEAD
+for u, ic, bd, tt, sb in DOCS_CARDS:
+    reb_docs += DOC_CARD.replace('{ES_URL}', u).replace('{ES_ICON}', ic).replace('{ES_BADGE}', bd).replace('{ES_TITLE}', tt).replace('{ES_SUB}', sb)
+reb_docs += DOC_TAIL
+# فقط head+کارت اول در رندر واقعی استفاده می‌شوند (میرور سه کارت دمو با آیکون‌های متمایز دارد؛ ما کارت PDF را از فایل متا رندر می‌کنیم)
+reb_docs1 = DOC_HEAD + DOC_CARD.replace('{ES_URL}', DOCS_CARDS[0][0]).replace('{ES_ICON}', DOCS_CARDS[0][1]).replace('{ES_BADGE}', DOCS_CARDS[0][2]).replace('{ES_TITLE}', DOCS_CARDS[0][3]).replace('{ES_SUB}', DOCS_CARDS[0][4])
+assert DOCS.startswith(reb_docs1.replace(' target="_blank" rel="noopener"', '')), 'docs head+card1 mismatch'
+
 frags = nowdoc('ES_HEAD_A', HEAD_A, 'ESP63A') + nowdoc('ES_BTN_DESC', BTN_DESC, 'ESP63B') \
       + nowdoc('ES_BTN_SPECS', BTN_SPECS, 'ESP63C') + nowdoc('ES_BTN_REVIEWS', BTN_REVIEWS, 'ESP63D') \
       + nowdoc('ES_HEAD_B', HEAD_B, 'ESP63E') + nowdoc('ES_SPECS_HEAD', SPECS[:r0], 'ESP63F') \
       + nowdoc('ES_ROW', ROW, 'ESP63G') + nowdoc('ES_MID', SPECS[lg:c0], 'ESP63H') \
-      + nowdoc('ES_CARD', CARD, 'ESP63I') + nowdoc('ES_SPECS_TAIL', CARDS_CLOSE, 'ESP63J')
+      + nowdoc('ES_CARD', CARD, 'ESP63I') + nowdoc('ES_SPECS_TAIL', CARDS_CLOSE, 'ESP63J') \
+      + nowdoc('ES_BTN_CATALOG', BTN_CATALOG, 'ESP63K') + nowdoc('ES_DOC_HEAD', DOC_HEAD, 'ESP63L') \
+      + nowdoc('ES_DOC_CARD', DOC_CARD, 'ESP63M') + nowdoc('ES_DOC_TAIL', DOC_TAIL, 'ESP63N')
 
 open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', encoding='utf-8').write(
 "<?php\n"
@@ -206,19 +252,23 @@ open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', en
 "        $es_legal[] = ['label' => $es_lg[1], 'value' => $es_lv, 'cls' => $es_lg[2]];\n"
 "    }\n"
 "}\n\n"
+"$es_catalog_raw = trim((string) get_post_meta($es_pid, 'product-catalog-file', true));\n"
+"$es_docs_url = $es_catalog_raw !== '' ? es_media_url($es_catalog_raw) : '';\n"
 "$es_rev_count = (int) get_comments_number($es_pid);\n"
 "$es_data = apply_filters('es_product_specs_args', [\n"
 "    'rows'        => $es_rows,\n"
 "    'legal'       => $es_legal,\n"
 "    'has_desc'    => false,\n"
 "    'has_reviews' => false,\n"
+"    'docs_url'   => $es_docs_url,\n"
 "    'rev_count'   => $es_rev_count,\n"
 "], $es_pid);\n"
 "$es_rows   = (array) ($es_data['rows'] ?? []);\n"
 "$es_legal  = (array) ($es_data['legal'] ?? []);\n"
 "$es_has_desc = (bool) ($es_data['has_desc'] ?? false);\n"
 "$es_has_reviews = (bool) ($es_data['has_reviews'] ?? false);\n"
-"$es_rev_count = (int) ($es_data['rev_count'] ?? 0);\n\n"
+"$es_rev_count = (int) ($es_data['rev_count'] ?? 0);\n"
+"$es_docs_url = (string) ($es_data['docs_url'] ?? '');\n\n"
 "// فقط تب‌های دارای محتوا؛ فعال = اولین تب رندرشده\n"
 "$es_tabs = [];\n"
 "if ($es_has_desc) {\n"
@@ -226,6 +276,9 @@ open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', en
 "}\n"
 "if ($es_rows !== [] || $es_legal !== []) {\n"
 "    $es_tabs[] = 'specs';\n"
+"}\n"
+"if ($es_docs_url !== '') {\n"
+"    $es_tabs[] = 'docs';\n"
 "}\n"
 "if ($es_has_reviews && $es_rev_count > 0) {\n"
 "    $es_tabs[] = 'reviews';\n"
@@ -248,7 +301,9 @@ open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', en
 "    if ($es_tab === 'desc') {\n"
 "        echo strtr($ES_BTN_DESC, ['{ES_LABEL}' => 'معرفی و کاربردها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);\n"
 "    } elseif ($es_tab === 'specs') {\n"
-"        echo strtr($ES_BTN_SPECS, ['{ES_LABEL}' => 'مشخصات فنی و شناسه\\u200cها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);\n"
+"        echo strtr($ES_BTN_SPECS, ['{ES_LABEL}' => 'مشخصات فنی و شناسه‌ها', '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);\n"
+"    } elseif ($es_tab === 'docs') {\n"
+"        echo strtr($ES_BTN_CATALOG, ['{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);\n"
 "    } else {\n"
 "        echo strtr($ES_BTN_REVIEWS, ['{ES_REV_COUNT}' => es_fa_num((string) $es_rev_count), '{ES_BTN_CLS}' => $es_bcls, '{ES_ICON_CLS}' => $es_icls]);\n"
 "    }\n"
@@ -265,6 +320,11 @@ open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', en
 "        echo strtr($ES_CARD, ['{ES_LBL}' => esc_html((string) $es_lgc['label']), '{ES_VAL}' => esc_html((string) $es_lgc['value']), '{ES_VAL_CLS}' => (string) $es_lgc['cls']]);\n"
 "    }\n"
 "    echo $ES_SPECS_TAIL;\n"
+"}\n"
+"if ($es_docs_url !== '') {\n"
+"    echo $ES_DOC_HEAD;\n"
+"    echo strtr($ES_DOC_CARD, ['{ES_URL}' => esc_url($es_docs_url), '{ES_ICON}' => 'lucide lucide-file-text h-5 w-5', '{ES_BADGE}' => 'PDF', '{ES_TITLE}' => esc_html('کاتالوگ فنی ' . $es_title), '{ES_SUB}' => 'مشخصات و رنگ‌بندی — PDF']);\n"
+"    echo $ES_DOC_TAIL;\n"
 "}\n"
 "echo '</div></div></section>';\n")
 
