@@ -25,6 +25,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Admin\ProjectColumns::boot();
 \ErfanSanat\Theme\Admin\ProductMetaboxes::boot();
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
+\ErfanSanat\Theme\Admin\ProjectMetaboxes::boot();
 
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();

@@ -1,6 +1,6 @@
 # P03-T020 — متاباکس گالری پروژه
 
-> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `3.3` · وابستگی‌ها: `P03-T012`, `P02-T006`
 
 ## هدف دقیق
@@ -21,20 +21,20 @@
 `second-image`, `three-image`, `foure-image`, `five-image`, `six-image`
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: second-image/three-image/foure-image/five-image/six-image دقیق باشند.
-- [ ] AC-02: گالری مدرن ترتیب را به کلیدهای legacy map کند.
-- [ ] AC-03: foure-image تغییر املا ندهد.
+- [x] AC-01: second-image/three-image/foure-image/five-image/six-image دقیق باشند.
+- [x] AC-02: گالری مدرن ترتیب را به کلیدهای legacy map کند.
+- [x] AC-03: foure-image تغییر املا ندهد.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: تصویر چهارم در foure-image ذخیره شود.
-- [ ] SC-02: حذف/جابجایی گالری همگام بماند.
+- [x] SC-01: تصویر چهارم در foure-image ذخیره شود.
+- [x] SC-02: حذف/جابجایی گالری همگام بماند.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-020.php`
@@ -44,3 +44,7 @@
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-03-cpt-and-legacy-meta/tests/test-task-020.php` → **16 passed, 0 failed, 0 pending**.
