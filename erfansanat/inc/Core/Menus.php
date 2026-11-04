@@ -78,11 +78,15 @@ final class Menus {
 
 		$class = isset( $args['menu_class'] ) ? (string) $args['menu_class'] : 'es-menu es-menu-' . $location;
 
+		// Footer product links carry the mirror's hover class (P04-T018).
+		$link_class = ( 'tolidat-sherkat' === $location ) ? ' class="transition-colors hover:text-emerald-700"' : '';
+
 		$html = '<ul class="' . esc_attr( $class ) . '">';
 		foreach ( $items as $item ) {
 			$html .= sprintf(
-				'<li><a href="%1$s">%2$s</a></li>',
+				'<li><a href="%1$s"%2$s>%3$s</a></li>',
 				esc_url( (string) ( $item['url'] ?? '' ) ),
+				$link_class,
 				esc_html( (string) ( $item['label'] ?? '' ) )
 			);
 		}

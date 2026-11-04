@@ -406,3 +406,35 @@ class MobileWalker extends \Walker_Nav_Menu {
 		return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>';
 	}
 }
+
+/**
+ * Footer "تولیدات شرکت" walker (P04-T018): a flat, escaped list of real
+ * category/product links matching the mirror footer DOM. The surrounding
+ * `<ul class="space-y-2.5 text-[13px] text-slate-600">` comes from the
+ * menu_class/items_wrap passed by the footer template (AC-03).
+ */
+class TolidatWalker extends \Walker_Nav_Menu {
+
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		// Flat footer list — no nested levels are rendered.
+	}
+
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+	}
+
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$title      = trim( wp_strip_all_tags( (string) $item->title ) );
+		$url        = (string) $item->url;
+		$classes    = (array) $item->classes;
+		$is_current = in_array( 'current-menu-item', $classes, true )
+			|| in_array( 'current_page_item', $classes, true )
+			|| in_array( 'current-menu-ancestor', $classes, true );
+
+		$output .= '<li><a href="' . esc_url( $url ) . '" class="transition-colors hover:text-emerald-700"'
+			. ( $is_current ? ' aria-current="page"' : '' ) . '>' . esc_html( $title ) . '</a>';
+	}
+
+	public function end_el( &$output, $item, $depth = 0, $args = null ) {
+		$output .= '</li>';
+	}
+}
