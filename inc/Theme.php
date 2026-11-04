@@ -24,6 +24,8 @@ final class Theme
         TemplateParts::register();
         HomepageData::register();
         Ajax\Filters::register();
+        Forms\Submission::register();
+        Admin\Forms::register();
         Admin\ThemeOptions::register();
         Admin\SectionManager::register();
         ContentTypes::register();

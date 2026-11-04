@@ -1751,27 +1751,62 @@
      13. Contact & Recruitment Form Submission & Reset
      ─────────────────────────────────────────────── */
   function initContactForm() {
-    var form = document.querySelector('[data-contact-form="true"]');
-    var successBox = document.querySelector('[data-contact-success="true"]');
-    var resetBtn = document.querySelector('[data-contact-reset="true"]');
+    var forms = document.querySelectorAll('[data-ese-submission-form="true"]');
+    for (var i = 0; i < forms.length; i++) {
+      (function (form) {
+        var container = form.parentElement || document;
+        var successBox = container.querySelector('[data-ese-form-success="true"]');
+        var errorBox = container.querySelector('[data-ese-form-error="true"]');
+        var resetButton = container.querySelector('[data-ese-form-reset="true"]');
+        var submitButtons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
+        var submitting = false;
 
-    if (form && successBox) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        form.classList.add("hidden");
-        form.classList.remove("flex");
-        successBox.classList.remove("hidden");
-        successBox.classList.add("flex");
-      });
-    }
-    if (resetBtn && form && successBox) {
-      resetBtn.addEventListener("click", function () {
-        form.reset();
-        successBox.classList.add("hidden");
-        successBox.classList.remove("flex");
-        form.classList.remove("hidden");
-        form.classList.add("flex");
-      });
+        form.addEventListener("submit", function (event) {
+          if (!window.eseAjax || !window.eseAjax.ajaxUrl || typeof window.fetch !== "function") return;
+          event.preventDefault();
+          if (submitting) return;
+          submitting = true;
+          if (errorBox) {
+            errorBox.textContent = "";
+            errorBox.classList.add("hidden");
+          }
+          for (var b = 0; b < submitButtons.length; b++) submitButtons[b].disabled = true;
+          var fields = {};
+          new FormData(form).forEach(function (value, key) {
+            if (key !== "action" && typeof value === "string") fields[key] = value;
+          });
+          ajaxRequest("ese_submit_form", fields).then(function (data) {
+            if (successBox) {
+              successBox.classList.remove("hidden");
+              if (data.message) {
+                var textNode = successBox.firstChild;
+                if (textNode && textNode.nodeType === 3) textNode.textContent = data.message + " ";
+              }
+            }
+            form.classList.add("hidden");
+          }).catch(function () {
+            if (errorBox) {
+              errorBox.textContent = "ارسال درخواست انجام نشد. لطفاً اطلاعات را بررسی کنید و دوباره تلاش کنید.";
+              errorBox.classList.remove("hidden");
+            }
+          }).finally(function () {
+            submitting = false;
+            for (var b = 0; b < submitButtons.length; b++) submitButtons[b].disabled = false;
+          });
+        });
+
+        if (resetButton) {
+          resetButton.addEventListener("click", function () {
+            form.reset();
+            form.classList.remove("hidden");
+            if (successBox) successBox.classList.add("hidden");
+            if (errorBox) {
+              errorBox.textContent = "";
+              errorBox.classList.add("hidden");
+            }
+          });
+        }
+      })(forms[i]);
     }
   }
 

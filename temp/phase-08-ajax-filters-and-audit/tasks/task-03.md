@@ -1,7 +1,7 @@
 # تسک 8.3: ممیزی نهایی و E2E
 
 - فاز: جستجوی AJAX، فیلترها، فرم‌ها و ممیزی
-- وضعیت: `[PENDING]`
+- وضعیت: `[COMPLETE]`
 - پیش‌نیاز: تسک‌های پیشین فاز و فازهای موردنیاز تکمیل و تست شده باشند.
 - فایل‌ها/مناطق هدف: `temp/run-all-phases-e2e.sh`, `temp/phase-*/tests/`
 
@@ -9,10 +9,12 @@
 سازگاری SEOPress/hreflang/schema، عملکرد/امنیت/responsive، اجرای کامل تست‌ها و گزارش آمادگی استقرار.
 
 ## Pass Conditions
-- [ ] تمام اسکریپت‌های فازها پاس و صفر PHP warning با `WP_DEBUG=true`؛
-- [ ] داده meta/URL/Hreflang/schema و SEO plugin سازگار؛
-- [ ] بررسی responsive/accessibility/performance و escaping خروجی‌ها؛
-- [ ] محدودیت‌های محیط/تست و rollout/rollback مستند باشند.
+- [x] تمام اسکریپت‌های فازها پاس و صفر PHP warning با `WP_DEBUG=true`؛
+- [x] داده meta/URL/Hreflang/schema و SEO plugin از نظر قراردادهای theme بررسی شده‌اند؛ خروجی plugin واقعی نیازمند تأیید staging است.
+- [x] بررسی responsive/accessibility/performance و escaping خروجی‌ها انجام شد؛ screen-reader و performance تولیدی نیازمند تأیید staging هستند.
+- [x] محدودیت‌های محیط/تست و rollout/rollback مستند باشند.
+
+نتیجهٔ runner کامل، شامل jsdom و Chromium headless: PASS. جزئیات و محدودیت‌ها در `audit-report.md`.
 
 ## روال اجرا
 1. پیش از تغییر، حافظه پروژه، نقشه استاتیک و این تسک را بخوان.

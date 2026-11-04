@@ -323,6 +323,11 @@ if (function_exists('do_action')) {
         </section>
     <?php endif; ?>
 
+    <?php get_template_part('template-parts/forms/client-feedback', null, ['product_id' => $productId]); ?>
+    <?php if (!$canBuyOnline) : ?>
+        <?php get_template_part('template-parts/forms/quote', null, ['product_id' => $productId]); ?>
+    <?php endif; ?>
+
     <?php if ($faqRows) : ?>
         <?php $renderableFaqs = array_values(array_filter($faqRows, static function (array $row): bool { return !empty($row['name_question']) && !empty($row['answer_question']); })); ?>
         <?php if ($renderableFaqs) : ?>
