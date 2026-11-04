@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
 /** Resolves templates safely and passes schema-sanitized data as template args. */
 final class Renderer {
 
+	/** Read the whitelisted home hero variant, defaulting safely to home1. */
+	public static function home_hero_variant(): string {
+		$value = function_exists( 'es_option' ) ? es_option( 'home_hero_variant', 'home1' ) : ( function_exists( 'get_option' ) ? get_option( 'home_hero_variant', 'home1' ) : 'home1' );
+		$value = is_scalar( $value ) ? (string) $value : 'home1';
+		return in_array( $value, array( 'home1', 'home2', 'home3' ), true ) ? $value : 'home1';
+	}
+
 	/**
 	 * Render enabled sections in the order stored for the selected page.
 	 *
@@ -42,6 +49,12 @@ final class Renderer {
 				continue;
 			}
 			$template = $sections[ $key ]['template'];
+			$variant = 'home' === $page && 'hero' === $key ? self::home_hero_variant() : '';
+			if ( in_array( $variant, array( 'home2', 'home3' ), true ) ) {
+				$variant_template = 'template-parts/home/hero-variants/hero-' . $variant . '.php';
+				$variant_located = locate_template( array( $variant_template ), false, false );
+				if ( is_string( $variant_located ) && '' !== $variant_located ) { $template = $variant_template; }
+			}
 			$located = locate_template( array( $template ), false, false );
 			if ( ! is_string( $located ) || '' === $located ) {
 				continue;
@@ -55,6 +68,7 @@ final class Renderer {
 				'post_id' => max( 0, $post_id ),
 				'data'    => $data,
 			);
+			if ( 'hero' === $key && '' !== $variant ) { $args['variant'] = $variant; }
 			$buffer_level = ob_get_level();
 			ob_start();
 			try {

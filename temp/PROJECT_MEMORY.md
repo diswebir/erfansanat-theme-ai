@@ -325,3 +325,10 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Task 4.12: `tools/harness/dom-diff.php` compares header/footer tag/class/selected accessibility structure to static reference; result ≥99%, prior 11 tests all green, no PHP warnings. Phase runner now isolates each task in its own PHP-WASM request to avoid test-stub function collisions. **3 PASS**.
 - Full Phase 4 suite: **12 test files · 48 PASS / 0 FAIL / 0 PENDING**. Phase 3 regression after new Theme modules: **66/66 PASS**. All Tasks 4.1–4.12 and Gate 4 are complete.
 - Still note limitation: tests are deterministic mocks/static fixtures; live WP + WooCommerce and browser interactivity require deployment smoke-test.
+
+
+## §12 — Phase 5 start (2026-11-04)
+- Task 5.1: added `front-page.php` as a markup-free shell that buffers `Renderer::render('home')` and falls back to the real front-page content when no section template produces output.
+- Renderer dispatches all 15 homepage sections using Registry/Store order, reads `home_hero_variant` through a strict home1/home2/home3 whitelist (default home1), passes the variant to the hero args, and selects separate home2/home3 templates when installed (Task 5.20 will add those files). Added default option.
+- Task 5.1 test: **4 PASS / 0 FAIL / 0 PENDING**. Cross-phase regression: Phase 2 **104/104**, Phase 3 **66/66**, Phase 4 **48/48** pass. Updated Phase 2 Task 2.7 fixture to register `NavTab`, now rendered by `AdminMenu` since Phase 4. Dependencies restored with `npm ci` (Node 22 emits known PHP-WASM Node >=24.18 engine warnings). Phase 5 is mock-tested; real WordPress rendering remains for deployment.
+- Next: Task 5.2, implement the home1 hero using the static-reference contract without changing protected JS/CSS.

@@ -35,6 +35,7 @@ if ( $available ) {
 	require_once ES_REPO_ROOT . '/theme/inc/Admin/Fields/FieldRenderer.php';
 	require_once $admin_dir . 'Tabs/HeaderTab.php';
 	require_once $admin_dir . 'Tabs/FooterTab.php';
+	require_once $admin_dir . 'Tabs/NavTab.php';
 	require_once $admin_dir . 'AjaxSave.php';
 	require_once $admin_dir . 'AdminMenu.php';
 }
@@ -45,6 +46,7 @@ if ( $available ) {
 	\ErfanSanat\Theme\Admin\Fields\Schema::reset();
 	( new \ErfanSanat\Theme\Admin\Tabs\HeaderTab() )->register();
 	( new \ErfanSanat\Theme\Admin\Tabs\FooterTab() )->register();
+	( new \ErfanSanat\Theme\Admin\Tabs\NavTab() )->register();
 	$registered = \ErfanSanat\Theme\Admin\Fields\Schema::all();
 	check( 'schema includes announcement, contact, logo, social and footer fields', fn() => isset( $registered['header.announcement.enabled'], $registered['header.phone'], $registered['header.sales_phone'], $registered['header.email'], $registered['header.logo_id'], $registered['social.links'], $registered['footer.address'], $registered['footer.work_hours'], $registered['footer.copyright'] ) );
 	$defaults = \ErfanSanat\Theme\Helpers\Defaults::all();

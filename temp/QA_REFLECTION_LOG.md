@@ -434,3 +434,17 @@
 | PHP/JS/قیدها | تمام PHPهای theme با `token_get_all(..., TOKEN_PARSE)` parse شدند؛ `node --check` روی adapters؛ `main.js` و `styles.css` با reference hash یکسان |
 | محدودیت | Gate تست ساختاری بر mock/static fragment است؛ live WordPress/WooCommerce database/browser rendering هنوز smoke-test نشده |
 | وضعیت | **Phase 4 Gate 4 کامل؛ Tasks 4.1–4.12 `[PASSED]`** |
+
+
+## Phase 5 — Task 5.1 (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| front-page shell | **PASS**؛ `front-page.php` فقط `Renderer::render('home')` را فراخوانی می‌کند و markup سکشن مستقیم ندارد |
+| ترتیب | **PASS**؛ هر ۱۵ سکشن مطابق ترتیب Registry به renderer رسیدند |
+| hero variant | **PASS**؛ مقدار مجاز `home_hero_variant` به partial مستقل home2/home3 dispatch می‌شود؛ فایل‌های واریانت در Task 5.20 تکمیل می‌شوند |
+| حالت خالی | **PASS**؛ بدون سکشن قابل‌رندر، محتوای برگه اصلی fallback می‌شود |
+| تست | `test-task-01.php` → **4 PASS / 0 FAIL / 0 PENDING** |
+| regression | Phase 2 **104/104**, Phase 3 **66/66**, Phase 4 **48/48** PASS؛ Phase 2 test fixture اکنون `NavTab` را نیز مطابق AdminMenu ثبت می‌کند |
+| محدودیت | تست runner PHP-WASM/mock است؛ هنوز سکشن‌های 5.2–5.17 در حال پیاده‌سازی‌اند |
+| وضعیت | Task 5.1 `[PASSED]`; بعدی Task 5.2 |

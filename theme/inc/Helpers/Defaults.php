@@ -23,6 +23,7 @@ final class Defaults {
 	 */
 	public static function all(): array {
 		return array(
+			'home_hero_variant' => 'home1',
 			'header' => array(
 				'announcement' => array(
 					'enabled' => true,

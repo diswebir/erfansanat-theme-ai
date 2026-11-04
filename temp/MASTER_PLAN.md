@@ -140,7 +140,7 @@
 
 | # | تسک | اندازه | وابستگی | وضعیت | فایل‌های کلیدی |
 |---|---|---|---|---|---|
-| 5.1 | `front-page.php` + حلقه رندر ۱۵ سکشن | `M` | `2.11`، `2.13` | `[PENDING]` | `front-page.php` +2 |
+| 5.1 | `front-page.php` + حلقه رندر ۱۵ سکشن | `M` | `2.11`، `2.13` | `[PASSED]` | `front-page.php` +2 |
 | 5.2 | هیرو واریانت home1 (اسلایدر صحنه + ویدیو + نوار دسته‌بندی) | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-hero.php` +1 |
 | 5.3 | معرفی پروژه‌های نورپردازی شهری | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-projects-intro.php` +1 |
 | 5.4 | گالری نمونه‌کارها (تب اسلایدر نمونه‌کارها) | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-gallery.php` +1 |
