@@ -93,3 +93,6 @@
 - تست fidelity عمیق (set-based signatures) روی ۶ صفحه: shop/about/contact/product/project = **۱۰۰٪**، index = ۹۵.۷٪ (بخش‌های dynamic).
 - port کامل ۱۲ صفحه stub (page-*, archive, home, cart, checkout) + ۱۵ سکشن home + header overlay + single templates از میرر؛ injekt dynamic loops (products/projects/blog) + legacy meta hooks (faq, galerry_produ, english_titl, legal ids, pa_* attributes, finish-pro-time, project gallery/terms).
 - E2E: ALL-PASS با صفر FAIL.
+
+## AJAX FUNCTIONAL — 2026-11-03
+- test-ajax-functional: همه endpointها روی WP واقعی (subprocess per call): search/filter products/projects با nonce معتبر success + payload sane، nonce坏 reject، ۴ فرم (contact/inquiry/recruitment/feedback) ثبت و در CPT es_form_entry ذخیره می‌شوند. ALL PASS. E2E 0 FAIL.

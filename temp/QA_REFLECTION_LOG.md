@@ -81,3 +81,6 @@
 
 ## DEEP FIDELITY — 2026-11-03
 - New test-fidelity-deep: per-page unique DOM signature comparison vs mirror on real WP. Found & fixed: missing root/home/z-10 wrappers, missing header overlay (mobile drawer), 12 stub page templates ported from mirror, 15 home sections re-sliced, single templates re-ported with legacy meta hooks, dynamic loops restored in shop/projects/blog archives. Result: 5/6 pages 100%, index 95.7% (dynamic sections). E2E ALL-PASS, 0 FAILs.
+
+## AJAX FUNCTIONAL — 2026-11-03
+- 8 functional checks on real WP: all filter/search endpoints return success JSON with correct content, bad nonce rejected, all 4 form endpoints persist to es_form_entry CPT. ALL PASS, wired into E2E (0 FAILs).
