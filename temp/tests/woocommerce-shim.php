@@ -324,11 +324,45 @@ class ES_Shim_Order {
 	public function get_total(): string { return (string) get_post_meta( $this->id, '_order_total', true ); }
 	public function get_status(): string { return (string) get_post_meta( $this->id, '_order_status', true ); }
 	public function get_order_number(): string { return (string) $this->id; }
+	public function get_customer_id(): int { return (int) get_post_meta( $this->id, '_customer_user', true ); }
+	public function get_date_created(): string { return (string) get_post_field( 'post_date', $this->id ); }
+	public function get_payment_method(): string { return (string) get_post_meta( $this->id, '_es_payment_method', true ); }
+	public function get_items(): array {
+		$out = array();
+		foreach ( ( get_post_meta( $this->id, '_order_items', true ) ?: array() ) as $item ) {
+			$p = wc_get_product( $item['product_id'] );
+			if ( ! $p ) { continue; }
+			$out[] = array(
+				'product'  => $p,
+				'name'     => $p->get_name(),
+				'qty'      => (int) $item['qty'],
+				'price'    => (float) $p->get_price(),
+				'subtotal' => (float) $p->get_price() * (int) $item['qty'],
+			);
+		}
+		return $out;
+	}
+	public function get_billing_address(): array {
+		return array(
+			'first_name' => (string) get_post_meta( $this->id, '_billing_first_name', true ),
+			'phone'      => (string) get_post_meta( $this->id, '_billing_phone', true ),
+			'address_1'  => (string) get_post_meta( $this->id, '_billing_address_1', true ),
+			'city'       => (string) get_post_meta( $this->id, '_billing_city', true ),
+		);
+	}
 }
 
 function wc_create_order( array $args = array() ): ES_Shim_Order {
 	$id = wp_insert_post( array( 'post_type' => 'shop_order', 'post_status' => 'publish', 'post_title' => 'Order ' . time() ) );
 	return new ES_Shim_Order( (int) $id );
+}
+
+function wc_get_order( $order_id ): ?ES_Shim_Order {
+	$order_id = (int) $order_id;
+	if ( $order_id && 'shop_order' === get_post_type( $order_id ) ) {
+		return new ES_Shim_Order( $order_id );
+	}
+	return null;
 }
 
 class ES_Shim_WC {
