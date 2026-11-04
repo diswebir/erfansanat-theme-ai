@@ -29,10 +29,12 @@ run_checked() {
 
 run_checked "$PHP_BIN" -l "$ROOT/inc/Admin/ThemeOptions.php"
 run_checked "$PHP_BIN" -l "$ROOT/inc/Admin/SectionManager.php"
+run_checked "$PHP_BIN" -l "$ROOT/inc/Admin/Typography.php"
 run_checked "$PHP_BIN" -l "$ROOT/inc/Helpers.php"
 run_checked env WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$ROOT/temp/phase-02-custom-admin-dashboard/tests/test-task-01.php"
 run_checked env WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$ROOT/temp/phase-02-custom-admin-dashboard/tests/test-task-02.php"
 run_checked env WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$ROOT/temp/phase-02-custom-admin-dashboard/tests/test-task-03.php"
+run_checked env WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$ROOT/temp/phase-02-custom-admin-dashboard/tests/test-task-04.php"
 WP_TEST_DIR="${WP_TEST_DIR:-$ROOT/node_modules/.cache/ese-wp-test}"
 if [ -s "$WP_TEST_DIR/wp-debug.log" ]; then
   cat "$WP_TEST_DIR/wp-debug.log" >&2

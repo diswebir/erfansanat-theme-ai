@@ -1,6 +1,7 @@
 "use strict";
 
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
 const path = require("node:path");
 process.env.AWS_EXECUTION_ENV = process.env.AWS_EXECUTION_ENV || "AWS_Lambda_nodejs22.x";
 const chromiumPackage = require("@sparticuz/chromium");
@@ -102,9 +103,30 @@ let browser;
   assert.equal(desktopLayout.width, 1280);
   assert.ok(desktopLayout.scrollWidth <= desktopLayout.width, `desktop layout overflows: ${JSON.stringify(desktopLayout)}`);
   assert.equal(desktopLayout.columns, 2, "desktop form should use two columns");
+
+  const adminFontCss = fs.readFileSync(path.join(root, "assets/css/admin-vazirmatn.css"), "utf8").replace(
+    /url\([\"']\.\.\/fonts\/([^\"']+)[\"']\)/g,
+    (_match, fontFile) => `url(data:font/woff2;base64,${fs.readFileSync(path.join(root, "assets/fonts", fontFile)).toString("base64")})`
+  );
+  await page.setContent('<!doctype html><html lang="fa" dir="rtl"><body class="wp-admin"><main id="admin-copy">پنل پیشخوان فارسی</main><span id="admin-icon" class="dashicons">\uF111</span><div class="editor-styles-wrapper"><p id="editor-copy">متن ویرایشگر فارسی</p></div></body></html>');
+  await page.addStyleTag({ content: '.dashicons { font-family: dashicons; }' });
+  await page.addStyleTag({ content: adminFontCss });
+  const adminTypography = await page.evaluate(async () => {
+    await document.fonts.load('400 16px Vazirmatn', 'پنل فارسی');
+    return {
+      adminFamily: getComputedStyle(document.querySelector('#admin-copy')).fontFamily,
+      editorFamily: getComputedStyle(document.querySelector('#editor-copy')).fontFamily,
+      iconFamily: getComputedStyle(document.querySelector('#admin-icon')).fontFamily,
+      fontLoaded: document.fonts.check('400 16px Vazirmatn', 'پنل فارسی'),
+    };
+  });
+  assert.match(adminTypography.adminFamily, /Vazirmatn/);
+  assert.match(adminTypography.editorFamily, /Vazirmatn/);
+  assert.equal(adminTypography.iconFamily, "dashicons", "admin font must preserve WordPress icon fonts");
+  assert.equal(adminTypography.fontLoaded, true, "local Vazirmatn font should load Persian glyphs");
   assert.deepEqual(pageErrors, [], `browser runtime errors: ${pageErrors.join(" | ")}`);
   await browser.close();
-  console.log("PASS Chromium E2E: responsive 390px/1280px form layout, labels, nonce payload, success/error/reset, and no internal-error disclosure");
+  console.log("PASS Chromium E2E: responsive form flows and layout, admin/editor Vazirmatn font loading, icon preservation, and internal-error concealment");
 })().catch(async (error) => {
   console.error(error.stack || error);
   if (browser) await browser.close();

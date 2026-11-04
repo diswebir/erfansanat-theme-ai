@@ -26,6 +26,7 @@ final class Theme
         Ajax\Filters::register();
         Forms\Submission::register();
         Admin\Forms::register();
+        Admin\Typography::register();
         Admin\ThemeOptions::register();
         Admin\SectionManager::register();
         ContentTypes::register();
@@ -50,6 +51,8 @@ final class Theme
         Navigation\Navigation::register_menus();
         add_theme_support('title-tag');
         add_theme_support('post-thumbnails');
+        add_theme_support('editor-styles');
+        add_editor_style('assets/css/admin-vazirmatn.css');
         add_theme_support('woocommerce');
         add_theme_support(
             'html5',
