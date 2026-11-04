@@ -158,7 +158,7 @@
 - `[PASSED]` **Task 7.17 (`task-17.md` / `test-task-17.php`):** قالب استخدام (۴ واحد)
 - `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PASSED]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
-- `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
+- `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ آریا؛ قرارداد لینک داخلی `/contact/` بدون وابستگی به hostname تست.
 - `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Phase 7 approval was subsequently given; Phase 8 proceeded with the user-approved native-theme exception for missing UI sources in Tasks 8.11, 8.14, and 8.15.
 
 ---
@@ -200,3 +200,9 @@
 2. هیچ تسکی بدون سبز شدن تست اختصاصی خودش `[PASSED]` نمی‌شود.
 3. در پایان هر فاز: اجرای `run-phase-XX-tests.sh`، گزارش جامع فارسی و توقف تا تایید کارفرما.
 4. ممنوعیت placeholder/TODO و ممنوعیت تغییر URL در فیلترها (`filterUrlMutation: false`).
+
+## Whole-system regression refresh — 2026-11-04
+- Individual task coverage: **123/123 passed** across Phases 1–8. Phases 1.1–1.3 and Phase 2 Tasks 2.1–2.2 used temporary copies only to bypass unavailable host-shell operations (`php -l`, WP-CLI, PHP built-in server/cURL); their PHP syntax was covered by the independent parser run and applicable HTTP endpoints by live Node fetch. Phase 2 Tasks 2.1–2.15: 15/15; Phase 3: 17/17; Phase 4: 11/11; Phase 5: 20/20; Phase 6: 20/20; Phase 7: 20/20; Phase 8: 17/17.
+- Task 7.20 initially exposed a brittle test expectation hard-coded to `http://localhost:8080/contact/`. The rendered link for configured relative input is correctly `/contact/`; the test now asserts that host-independent contract, and the rerun passed. No production behavior changed.
+- Final syntax/runtime checks: all 279 tracked/unignored PHP files parsed with `php-parser` (0 errors); 10 live WordPress and static-asset endpoints returned HTTP 200.
+- Environment caveat: `temp/run-all-phases-e2e.sh` itself is still blocked at Phase 1 by absent native PHP CLI (`php: command not found`, exit 127). Its direct all-phase execution is **not** claimed as passing. Native Chromium visual review remains unavailable and is distinct from the jsdom checks.

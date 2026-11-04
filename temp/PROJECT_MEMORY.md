@@ -130,3 +130,9 @@
 - All Phase 8 task statuses 8.1–8.16 are now PASSED. Task 8.17 has been updated to assert every prerequisite status and is being rerun as the final gate. The native full all-phases shell runner was attempted and exited 127 immediately (`php: command not found` in Phase 1) because this environment has no host PHP CLI; Phase 8 8.1–8.16 and the WooCommerce Phase 6 suite were run separately under Playground PHP, with Phase 6 20/20. Do not claim the full shell runner passed.
 
 - Final Phase 8 gate result: reran `test-task-17.php` after updating task statuses; it reported all prerequisites PASSED and the Phase 8 final readiness gate PASSED. The host shell readiness scan also found no unpassed Phase 8 tasks. The actual full all-phases script was not run because native PHP CLI is absent.
+
+### Whole-system regression refresh — 2026-11-04
+- Covered all 123 task tests across Phases 1–8: Phase 1 3/3 via temporary test copies with host-only commands deferred, Phase 2 15/15, Phase 3 17/17, Phase 4 11/11, Phase 5 20/20, Phase 6 20/20, Phase 7 20/20, Phase 8 17/17. Phase 2 Tasks 2.1–2.2 and Phase 1 lint assertions bypass native shell calls only in `/tmp` copies; all 279 tracked/unignored PHP files parsed with `php-parser` (zero errors).
+- Phase 1 Task 1.3's PHP built-in server/cURL subsection was skipped only because PHP-WASM cannot spawn the native host server; separately fetched 10 live WordPress/static asset endpoints via Node and all returned HTTP 200.
+- Fixed Phase 7 Task 7.20's environment-bound expected URL: the template correctly emits the configured relative `/contact/`; the test formerly hard-coded `http://localhost:8080/contact/`. Updated assertion and reran Task 7.20 successfully; no product code changed.
+- Native `temp/run-all-phases-e2e.sh` still exits 127 at Phase 1 (`php: command not found`); do not claim that script passed. Native Chromium verification remains unavailable.

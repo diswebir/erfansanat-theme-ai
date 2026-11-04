@@ -9,7 +9,7 @@ update_post_meta($pageId, '_es_sections', [
  ['id'=>'arya-faq','type'=>'arya-faq','enabled'=>true,'order'=>2,'fields'=>['title'=>'پرسش‌های آریا QA','items'=>['پرسش و پاسخ QA']]],
 ]);
 $GLOBALS['post']=get_post($pageId); setup_postdata($GLOBALS['post']); ob_start(); include $themeRoot . '/page-templates/template-landing-arya.php'; $html=(string)ob_get_clean();
-foreach (['data-arya-landing="true"', 'data-landing-menu="landing"', 'data-arya-section="arya-hero"', 'آریا؛ درب بازکن هوشمند QA', 'data-arya-section="arya-features"', 'کنترل هوشمند QA', 'data-arya-section="arya-faq"', 'مشاوره آریا', 'href="http://localhost:8080/contact/"'] as $needle) $assert(str_contains($html, $needle), 'Arya landing contract ' . $needle);
+foreach (['data-arya-landing="true"', 'data-landing-menu="landing"', 'data-arya-section="arya-hero"', 'آریا؛ درب بازکن هوشمند QA', 'data-arya-section="arya-features"', 'کنترل هوشمند QA', 'data-arya-section="arya-faq"', 'مشاوره آریا', 'href="/contact/"'] as $needle) $assert(str_contains($html, $needle), 'Arya landing contract ' . $needle);
 $assert(is_file($themeRoot . '/page-templates/template-landing-arya.php'), 'Arya landing template exists');
 delete_post_meta($pageId, '_es_sections'); ob_start(); include $themeRoot . '/page-templates/template-landing-arya.php'; $fallback = (string) ob_get_clean();
 $assert(str_contains($fallback, 'درب بازکن هوشمند آریا QA') && str_contains($fallback, 'توضیحات محصول آریا QA'), 'landing fallback uses real page title/content when no sections exist');
