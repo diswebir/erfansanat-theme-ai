@@ -158,8 +158,8 @@
 - `[PASSED]` **Task 7.17 (`task-17.md` / `test-task-17.php`):** قالب استخدام (۴ واحد)
 - `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PASSED]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
-- `[PENDING]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
-- `[PENDING]` **Phase 7 Suite (`run-phase-07-tests.sh`):** اجرای همه 20 تست این فاز + گزارش و توقف برای تایید کارفرما (فاز به فاز).
+- `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
+- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–5 passed; Phase 6 could not complete in this restored testbed because WooCommerce is not installed/active (Task 6.1 prerequisite failure). Stop here for Phase 7 approval; do not start Phase 8.
 
 ---
 
