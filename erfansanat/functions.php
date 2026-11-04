@@ -69,6 +69,13 @@ add_action(
 add_action(
 	'es_product_specs_panel',
 	static function () {
+		get_template_part( 'template-parts/product/features' ); // P06-T009.
+	},
+	5
+);
+add_action(
+	'es_product_specs_panel',
+	static function () {
 		get_template_part( 'template-parts/product/legal-ids' ); // P06-T005.
 	},
 	20
