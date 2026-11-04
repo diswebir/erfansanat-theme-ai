@@ -9,10 +9,10 @@ require dirname( __DIR__, 2 ) . '/tests/bootstrap.php';
 es_task( 'P07-T006', 'آرشیو پروژه‌ها' );
 
 es_check( 'target: archive-projects.php', es_file( 'archive-projects.php', ES_THEME ) );
-es_check( 'AC-01: id=archive و data-projects-archive', es_contains( 'archive-projects.php', 'id="archive"' ) && es_contains( 'archive-projects.php', 'data-projects-archive="true"' ) );
-es_check( 'AC-01: قرارداد data-project-*', es_contains( 'archive-projects.php', 'data-project-grid="true"' ) && es_contains( 'archive-projects.php', 'data-project-search="true"' ) && es_contains( 'archive-projects.php', 'data-project-sort="true"' ) );
+es_check( 'AC-01: id=archive و data-projects-archive', es_contains( 'template-parts/archive/project-archive-shell.php', 'id="archive"' ) && es_contains( 'template-parts/archive/project-archive-shell.php', 'data-projects-archive="true"' ) );
+es_check( 'AC-01: قرارداد data-project-*', es_contains( 'template-parts/archive/project-archive-shell.php', 'data-project-grid="true"' ) && es_contains( 'template-parts/archive/project-archive-shell.php', 'data-project-search="true"' ) && es_contains( 'template-parts/archive/project-archive-shell.php', 'data-project-sort="true"' ) );
 es_check( 'AC-02: کوئری فقط منتشرشده', es_contains( 'archive-projects.php', "'post_status'    => 'publish'" ) && es_contains( 'archive-projects.php', "'post_type'      => 'projects'" ) );
-es_check( 'AC-03: صفحه‌بندی', es_contains( 'archive-projects.php', "get_template_part( 'template-parts/archive/pagination'" ) );
+es_check( 'AC-03: صفحه‌بندی', es_contains( 'template-parts/archive/project-archive-shell.php', "get_template_part( 'template-parts/archive/pagination'" ) );
 
 if ( es_load_wp() ) {
 	require_once ES_THEME . '/functions.php';
