@@ -1,6 +1,6 @@
 # P06-T023 — Mini-cart و AJAX سبد
 
-> فاز 6: ووکامرس، محصول تکی و آرشیو فروشگاه · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 6: ووکامرس، محصول تکی و آرشیو فروشگاه · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `6.3` · وابستگی‌ها: `P06-T022`, `P04-T013`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: add/remove/update بدون reload کار کند.
-- [ ] AC-02: nonce/fragmentهای Woo حفظ شوند.
-- [ ] AC-03: localStorage جای سبد واقعی را نگیرد.
+- [x] AC-01: add/remove/update بدون reload کار کند.
+- [x] AC-02: nonce/fragmentهای Woo حفظ شوند.
+- [x] AC-03: localStorage جای سبد واقعی را نگیرد.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: افزودن محصول badge و مودال را به‌روز کند.
-- [ ] SC-02: حذف ردیف جمع را صفر کند.
+- [x] SC-01: افزودن محصول badge و مودال را به‌روز کند.
+- [x] SC-02: حذف ردیف جمع را صفر کند.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-06-woocommerce-and-products/tests/test-task-023.php`
@@ -45,3 +45,7 @@
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-06-woocommerce-and-products/tests/test-task-023.php` → **21 passed, 0 failed, 0 pending**.

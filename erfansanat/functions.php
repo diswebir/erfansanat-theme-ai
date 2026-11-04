@@ -23,6 +23,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Core\Menus::boot();
 \ErfanSanat\Theme\Core\DeBloat::boot();
 \ErfanSanat\Theme\Core\AssetManager::boot();
+\ErfanSanat\Theme\Core\CartFragments::boot(); // P06-T023: real Woo cart fragments + AJAX.
 \ErfanSanat\Theme\Core\PostTypes::boot();
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();

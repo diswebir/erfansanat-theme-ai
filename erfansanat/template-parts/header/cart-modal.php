@@ -59,7 +59,7 @@ if ( post_type_exists( 'product' ) ) {
 	$es_quick = get_posts( array( 'post_type' => 'product', 'post_status' => 'publish', 'numberposts' => 3 ) );
 }
 ?>
-<div data-cart-modal="true" aria-hidden="true" class="fixed inset-0 z-[95] items-center justify-center p-3 sm:p-5 hidden">
+<div data-cart-modal="true" data-cart-real="true" data-cart-ajax-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-cart-nonce="<?php echo esc_attr( wp_create_nonce( \ErfanSanat\Theme\Core\CartFragments::NONCE_ACTION ) ); ?>" aria-hidden="true" class="fixed inset-0 z-[95] items-center justify-center p-3 sm:p-5 hidden">
 	<div data-cart-modal-backdrop="true" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
 	<div role="dialog" aria-modal="true" aria-label="سبد خرید و پیش‌فاکتور" class="relative z-10 flex max-h-[90dvh] w-full max-w-[680px] flex-col overflow-hidden rounded-[1.75rem] border border-emerald-100 bg-white shadow-[0_32px_80px_-20px_rgba(15,23,42,0.4)] sm:rounded-[2rem]">
 
