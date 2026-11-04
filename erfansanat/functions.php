@@ -22,6 +22,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();
 \ErfanSanat\Theme\Core\LegacyRedirects::boot();
+\ErfanSanat\Theme\Core\ViewCounter::boot();
 \ErfanSanat\Theme\Admin\ProjectColumns::boot();
 \ErfanSanat\Theme\Admin\ProductMetaboxes::boot();
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
