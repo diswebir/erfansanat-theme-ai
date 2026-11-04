@@ -1,23 +1,25 @@
 <?php
-/**
- * Automated QA Test Script — Task 8.14: فرم استخدام و آپلود رزومه
- * Phase: phase-08-ajax-filters-and-audit
- * NOTE: Skeleton — completed in [WRITE TEST] step of Task 8.14 before implementation (TDD RED).
- */
+/** Automated QA Test Script — Task 8.14: Recruitment resume upload. */
 declare(strict_types=1);
-
-$themeRoot = dirname(__DIR__, 3);
-$wpRoot    = '/opt/wp-testbed';
-
-echo "=== [TEST] Task 8.14: فرم استخدام و آپلود رزومه ===\n";
-
-// Target files for this atomic task:
-//   - inc/Forms/RecruitmentForm.php
-
-if (!is_dir($themeRoot)) {
-    fwrite(STDERR, "[FAIL] Theme root directory missing.\n");
-    exit(1);
-}
-
-echo "[SKELETON READY] Task 8.14 test harness initialized — scenarios defined in tasks/task-14.md\n";
-exit(0);
+$root=dirname(__DIR__,3);$failures=[];
+$assert=static function(bool $condition,string $label)use(&$failures):void{echo $condition?"  [PASS] {$label}\n":"  [FAIL] {$label}\n";if(!$condition)$failures[]=$label;};
+require_once '/opt/wp-testbed/wp-load.php';$GLOBALS['wp']->main();
+echo "=== [TEST] Task 8.14: Recruitment resume upload ===\n";
+$class='ErfanSanat\\Theme\\Forms\\RecruitmentForm';
+$assert(is_file($root.'/inc/Forms/RecruitmentForm.php')&&class_exists($class),'RecruitmentForm exists and autoloads');
+$service=new $class();$routes=apply_filters('erfan_sanat_ajax_routes',[]);
+$assert(isset($routes['recruitment_submission'])&&is_callable($routes['recruitment_submission']),'recruitment submission route is registered');
+$pdf=tempnam(sys_get_temp_dir(),'resume-');file_put_contents($pdf,"%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\n%%EOF");
+$valid=['name'=>'Resume QA','phone'=>'09123456789','message'=>'Application','email'=>'qa@example.test','website'=>'','form_nonce'=>wp_create_nonce('erfan_sanat_form')];
+$assert($service->validateResume(['name'=>'resume.pdf','tmp_name'=>$pdf,'size'=>filesize($pdf),'error'=>UPLOAD_ERR_OK])===true,'PDF resume MIME, extension and size pass validation');
+$badFile=tempnam(sys_get_temp_dir(),'not-pdf-');file_put_contents($badFile,'plain text without PDF magic');
+$wrong=$service->validateResume(['name'=>'resume.pdf','tmp_name'=>$badFile,'size'=>filesize($badFile),'error'=>UPLOAD_ERR_OK]);unlink($badFile);
+$assert(is_wp_error($wrong),'non-PDF content disguised as PDF is rejected');
+$large=$service->validateResume(['name'=>'resume.pdf','tmp_name'=>$pdf,'size'=>6*1024*1024,'error'=>UPLOAD_ERR_OK]);
+$assert(is_wp_error($large),'oversized resume is rejected');
+$disallowed=$service->validateResume(['name'=>'resume.exe','tmp_name'=>$pdf,'size'=>filesize($pdf),'error'=>UPLOAD_ERR_OK]);
+$assert(is_wp_error($disallowed),'unsupported file extensions are rejected');
+$template=(string)file_get_contents($root.'/page-templates/template-recruitment.php');
+$assert(!str_contains($template,'type="file"'),'existing recruitment template has no static file input; do not invent replacement DOM');
+unlink($pdf);
+if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Recruitment upload validation tests passed; UI remains blocked by absent static file input.\n";

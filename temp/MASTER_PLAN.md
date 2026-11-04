@@ -178,7 +178,7 @@
 - `[BLOCKED]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل و همگام‌سازی وضعیت — آرشیوها فاقد markup استاتیک `data-archive-drawer` هستند؛ طبق Strict Static-to-Dynamic Rule هیچ DOM/CSS جدیدی طراحی نشده است.
 - `[PASSED]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PASSED]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
-- `[PENDING]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه
+- `[BLOCKED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه — مسیر امن و اعتبارسنجی فایل آماده است، اما template استخدام فاقد فرم/ورودی فایل است و طبق قانون استاتیک، markup جدید طراحی نشده است.
 - `[PENDING]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback)
 - `[PENDING]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
 - `[PENDING]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** ممیزی امنیت، کارایی و E2E نهایی

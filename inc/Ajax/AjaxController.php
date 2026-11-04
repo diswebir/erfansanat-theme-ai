@@ -45,6 +45,7 @@ final class AjaxController implements ServiceInterface
         $raw = isset($_POST) && is_array($_POST) ? wp_unslash($_POST) : [];
         $input = $this->sanitizeInput($raw);
         $route = isset($input['route']) && is_string($input['route']) ? sanitize_key($input['route']) : '';
+        if ($route === 'recruitment_submission' && isset($_FILES) && is_array($_FILES)) $input['_files'] = $_FILES;
         $routes = apply_filters('erfan_sanat_ajax_routes', []);
         $handler = is_array($routes) ? ($routes[$route] ?? null) : null;
 

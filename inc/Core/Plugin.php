@@ -90,6 +90,7 @@ final class Plugin
             \ErfanSanat\Theme\Forms\FormManager::class,
             \ErfanSanat\Theme\Forms\ContactForm::class,
             \ErfanSanat\Theme\Forms\ProductInquiryForm::class,
+            \ErfanSanat\Theme\Forms\RecruitmentForm::class,
             DeBloat::class,
             AssetManager::class,
             \ErfanSanat\Theme\Admin\ThemeOptions::class,

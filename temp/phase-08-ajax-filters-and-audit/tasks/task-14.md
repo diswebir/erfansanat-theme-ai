@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[BLOCKED — missing static resume input]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -22,6 +22,8 @@
 
 ## فایل‌های هدف (Target Files)
 - `inc/Forms/RecruitmentForm.php`
+- `inc/Ajax/AjaxController.php` (pass multipart uploads to the route)
+- `inc/Core/Plugin.php` (register the route service)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** recruitment.html
@@ -55,3 +57,6 @@
 
 ## پیام کامیت پیشنهادی
 `feat(phase-8): task 8.14 — فرم استخدام و آپلود رزومه`
+
+## Blocker
+The current recruitment template contains only a mailto CTA and no static `<input type="file">` or recruitment form. Secure server-side PDF/DOC validation and the route are implemented, but the user-facing upload flow cannot be activated without inventing form markup, which the strict static-to-dynamic instruction forbids. Task remains BLOCKED pending the static form source.
