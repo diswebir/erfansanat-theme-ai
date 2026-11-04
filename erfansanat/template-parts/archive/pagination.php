@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 $es_total    = isset( $args['total'] ) ? (int) $args['total'] : 0;
 $es_per_page = isset( $args['per_page'] ) ? max( 1, (int) $args['per_page'] ) : 9;
+$es_label    = isset( $args['label'] ) ? (string) $args['label'] : __( 'صفحه‌بندی محصولات', 'erfansanat' );
 
 $es_fa = static function ( $v ) {
 	$map = array();
@@ -24,7 +25,7 @@ $es_fa = static function ( $v ) {
 
 $es_total_pages = max( 1, (int) ceil( $es_total / $es_per_page ) );
 ?>
-<nav aria-label="<?php esc_attr_e( 'صفحه‌بندی محصولات', 'erfansanat' ); ?>" data-pagination-root="true" data-per-page="<?php echo (int) $es_per_page; ?>" class="<?php echo $es_total_pages <= 1 ? 'hidden' : 'flex'; ?> mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 shadow-2xs sm:px-5">
+<nav aria-label="<?php echo esc_attr( $es_label ); ?>" data-pagination-root="true" data-per-page="<?php echo (int) $es_per_page; ?>" class="<?php echo $es_total_pages <= 1 ? 'hidden' : 'flex'; ?> mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 shadow-2xs sm:px-5">
 	<div class="text-[12.5px] font-bold text-slate-600" data-pagination-summary="true"><?php echo esc_html( sprintf( 'صفحه %s از %s (%s مورد)', $es_fa( 1 ), $es_fa( $es_total_pages ), $es_fa( $es_total ) ) ); ?></div>
 	<div class="flex items-center gap-1.5" data-pagination-buttons="true">
 		<button type="button" data-page-prev="true" disabled class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-extrabold text-slate-600 transition hover:bg-emerald-50 disabled:opacity-40">

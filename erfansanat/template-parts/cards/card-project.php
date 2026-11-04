@@ -63,7 +63,7 @@ $es_views_fa  = strtr( (string) $es_views, $es_fa_digits );
 $es_rating_fa = strtr( $es_rating, $es_fa_digits );
 $es_date_fa   = strtr( $es_date, $es_fa_digits );
 ?>
-<div data-project-item="true" data-project-type="<?php echo esc_attr( $es_primary_type ); ?>" data-project-types="<?php echo esc_attr( $es_types_attr ); ?>" data-project-location="<?php echo esc_attr( $es_city ); ?>" data-project-views="<?php echo esc_attr( (string) $es_views ); ?>" data-project-rating="<?php echo esc_attr( '' !== $es_rating ? $es_rating : '0' ); ?>" data-project-search-text="<?php echo esc_attr( $es_search_text ); ?>" class="block">
+<div data-project-item="true" data-project-type="<?php echo esc_attr( $es_primary_type ); ?>" data-project-types="<?php echo esc_attr( $es_types_attr ); ?>" data-project-location="<?php echo esc_attr( $es_city ); ?>" data-project-views="<?php echo esc_attr( (string) $es_views ); ?>" data-project-rating="<?php echo esc_attr( '' !== $es_rating ? $es_rating : '0' ); ?>" data-project-date="<?php echo esc_attr( substr( (string) get_post_field( 'post_date', $es_project_id ), 0, 10 ) ); ?>" data-project-search-text="<?php echo esc_attr( $es_search_text ); ?>" class="block">
 	<a href="<?php echo esc_url( $es_link ); ?>" class="card-glow group relative block overflow-hidden rounded-[1.5rem] border border-emerald-100 bg-slate-900 shadow-sm">
 		<div class="relative h-60 overflow-hidden">
 			<img src="<?php echo esc_url( $es_img ); ?>" alt="<?php echo esc_attr( $es_title ); ?>" loading="lazy" class="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"/>
