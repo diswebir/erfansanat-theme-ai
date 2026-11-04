@@ -172,6 +172,14 @@ add_filter(
 			}
 		}
 
+		// Auth page (P06-T027).
+		if ( is_page( 'auth' ) ) {
+			$es_auth_template = ES_THEME_DIR . 'page-templates/auth.php';
+			if ( is_file( $es_auth_template ) ) {
+				return $es_auth_template;
+			}
+		}
+
 		// Cart / checkout / account pages (P06-T022 / T024 / T026).
 		$es_wc_pages = array(
 			'cart'     => array( 'is_cart', 'woocommerce/cart/cart.php' ),
