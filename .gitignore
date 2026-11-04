@@ -1,0 +1,9 @@
+# machine-specific test harness config (never commit local paths/credentials)
+temp/tests/harness.local.php
+temp/_scan/
+node_modules/
+.DS_Store
+
+# harness run artefacts (regenerated on every run)
+tools/harness/*.json
+tools/harness/*.log

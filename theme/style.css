@@ -1,0 +1,24 @@
+/*
+Theme Name: عرفان صنعت اصفهان (ErfanSanat)
+Theme URI: https://erfansanat.com
+Author: Erfan Sanat Esfahan (ESE)
+Author URI: https://erfansanat.com
+Description: قالب اختصاصی، فوق‌سبک و بدون صفحه‌ساز شرکت دانش‌بنیان عرفان صنعت اصفهان. تمام استایل‌ها و اسکریپت‌های ظاهری در assets/ نگهداری می‌شوند و این فایل تنها شناسنامه قالب است.
+Version: 1.0.0
+Requires at least: 6.5
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: erfansanat
+Domain Path: /languages
+Tags: rtl-language-support, custom-menu, custom-logo, featured-images, translation-ready, block-styles, wide-blocks
+*/
+
+/*
+ * ⚠️ این فایل هیچ قاعده استایلی ندارد — به‌عمد.
+ *
+ * تمام CSS سایت در `assets/css/styles.css` (نسخهٔ کامپایل‌شدهٔ قالب استاتیک) قرار دارد
+ * و از طریق `inc/Assets/AssetManager.php` بارگذاری می‌شود. نوشتن استایل در این فایل
+ * از نظر پروژه ممنوع است (قانون R1: بدون طراحی مجدد فرانت‌اند).
+ */

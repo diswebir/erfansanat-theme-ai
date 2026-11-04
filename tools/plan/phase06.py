@@ -1,0 +1,307 @@
+# -*- coding: utf-8 -*-
+"""Phase 6 — atomic tasks: WooCommerce single product, archives, cart/checkout/account."""
+
+PHASE = dict(
+    num=6, slug='woocommerce-and-products',
+    title='قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه',
+    goal='Override کامل قالب‌های ووکامرس با همان UI استاتیک، اتصال همه متاهای محصول و حفظ سازگاری درگاه/افزونه‌ها.',
+    tasks=[
+
+dict(id='6.1', size='M', deps=['1.9'],
+  title='راه‌اندازی پوشه `woocommerce/` و `declare_compatibility`',
+  desc='فعال‌سازی پشتیبانی رسمی WooCommerce (HPOS و blocks) و ساخت ساختار پوشه قالب‌های ووکامرس + نسخه‌گذاری قالب‌ها.',
+  files=['inc/Woo/WooSupport.php','woocommerce/.keep'],
+  steps=[
+   '`FeaturesUtil::declare_compatibility(\'custom_order_tables\', __FILE__, true)` در `before_woocommerce_init`.',
+   '`declare_compatibility(\'cart_checkout_blocks\', ...)` مطابق تصمیم G3 (قالب‌های کلاسیک).',
+   'حذف `wc-blocks` از فرانت در DeBloat (تسک ۱.۶) و اطمینان از سالم بودن چک‌اوت کلاسیک.',
+   'تعریف `ES_WC_TEMPLATE_VERSION` برای همگامی با نسخه قالب‌های ووکامرس.',
+  ],
+  pass_=[
+   'در WooCommerce > Status هیچ «outdated template» دیده نشود',
+   'بدون WooCommerce، قالب بدون Fatal کار کند',
+   'اعلام سازگاری HPOS ثبت شده باشد',
+  ],
+  asserts=['اعلام سازگاری', 'ایمنی بدون ووکامرس', 'بدون قالب قدیمی']),
+
+dict(id='6.2', size='L', deps=['6.1','5.18'],
+  title='هیرو محصول (`template-parts/product/hero.php`)',
+  desc='برش سکشن اول صفحه محصول: مسیر راهنما (breadcrumb)، عنوان، زیرعنوان (`zireonvan`)، عنوان انگلیسی (`english_titl`)، نشان وضعیت فروش، و تصویر/گالری کوچک.',
+  files=['woocommerce/single-product.php','template-parts/product/hero.php'],
+  steps=[
+   '`single-product.php` = `get_header()` + `wc_get_template` ساختار استاندارد + قطعات اختصاصی.',
+   'Breadcrumb مطابق استاتیک (صفحه اصلی › محصولات › دسته › محصول).',
+   'نمایش `zireonvan` فقط اگر پر باشد؛ `english_titl` با `dir="ltr"`.',
+   'حذف سکشن‌های خالی (بدون رندر باکس خالی).',
+  ],
+  pass_=[
+   'دو محصول (با/بدون زیرعنوان) بدون خطا رندر شوند',
+   'Breadcrumb با `Rank Math`/SEOPress تداخل نداشته باشد',
+   '`h1` تنها یک‌بار در صفحه',
+   'همه متن‌ها escape شده باشند',
+  ],
+  asserts=['دو حالت', 'یکتایی h1', 'escaping', 'breadcrumb']),
+
+dict(id='6.3', size='L', deps=['6.2','3.10'],
+  title='گالری محصول + لایت‌باکس',
+  desc='گالری با زنجیره fallback (`galerry_produ` → `_product_image_gallery` → `gallery-filed` → `image-2..6`) و همان هوک‌های `data-gallery-*` استاتیک، شامل لایت‌باکس و شمارنده.',
+  files=['template-parts/product/gallery.php','inc/Woo/ProductGallery.php'],
+  steps=[
+   'تولید thumbnail و main image با `data-gallery-src` صحیح.',
+   'حذف تصاویر تکراری/نامعتبر.',
+   'تصویر شاخص محصول به‌عنوان تصویر اول اگر گالری خالی است.',
+   'alt متنی معنادار (نام محصول + شماره).',
+  ],
+  pass_=[
+   'گالری با داده هر چهار کلید قدیمی کار کند',
+   'لایت‌باکس با JS موجود باز/بسته شود',
+   'محصول بدون گالری: فقط تصویر شاخص (بدون خطا)',
+   'تصاویر `loading="lazy"` به‌جز تصویر اول',
+  ],
+  asserts=['fallback زنجیره‌ای', 'لایت‌باکس', 'بدون گالری', 'lazy']),
+
+dict(id='6.4', size='L', deps=['6.2'],
+  title='جعبه خرید: قیمت، وضعیت `true_sale`، افزودن به سبد',
+  desc='جعبه خرید با دو حالت: `true_sale="true"` → فرم استاندارد ووکامرس (ساده/متغیر با Swatches)؛ `true_sale="false"` → دکمه «استعلام قیمت» + لینک تماس/واتساپ. به‌همراه اطلاعیه `before-sale-c`.',
+  files=['template-parts/product/purchase-box.php'],
+  steps=[
+   '`woocommerce_template_single_add_to_cart()` برای حالت قابل خرید (بدون بازنویسی فرم).',
+   'حالت استعلام: دکمه/پاپ‌آپ فرم استعلام (تسک ۸.۴).',
+   'نمایش `before-sale-c` با `wp_kses_post` و کلاس استاتیک.',
+   'پشتیبانی از محصول متغیر + افزونه Variation Swatches و WPC Quantity.',
+  ],
+  pass_=[
+   'محصول simple با `true_sale=true` فرم افزودن به سبد معتبر داشته باشد',
+   'محصول `true_sale=false` هیچ فرم سبد رندر نکند و دکمه استعلام داشته باشد',
+   'محصول متغیر با Swatches بدون خطا کار کند',
+   '`before-sale-c` فقط اگر پر باشد رندر شود',
+  ],
+  asserts=['دو حالت', 'متغیر + Swatches', 'اطلاعیه شرطی', 'بدون فرم در حالت استعلام']),
+
+dict(id='6.5', size='L', deps=['6.2'],
+  title='جدول مشخصات فنی (۱۸ ویژگی `pa_*`)',
+  desc='جدول کامل مشخصات با ترتیب ثابت ۱۸ ویژگی، نمایش `pa_color` به‌صورت سواچ رنگ، پنهان‌سازی ویژگی‌های خالی، و پشتیبانی از ویژگی‌های سفارشی اضافه.',
+  files=['template-parts/product/specs.php','inc/Woo/AttributeData.php'],
+  steps=[
+   'ترتیب دقیق: after-sales-support, beam-angle, body-material, brand, bulb-type, cable-material, certifications, color, diameter, diffuser-color, input-voltage, intensity, ip-rating, led-chip-type, lifespan, size, warranty, wattage.',
+   'خواندن از `$product->get_attributes()` (نه متای خام).',
+   'نمایش `pa_color` با `term meta` رنگ (در صورت وجود) و fallback متنی.',
+   'اگر هیچ ویژگی پر نبود، کل سکشن حذف شود.',
+  ],
+  pass_=[
+   'هر ۱۸ ویژگی با داده ساختگی در جدول ظاهر شوند',
+   'ویژگی خالی نمایش داده نشود',
+   'برچسب فارسی هر ویژگی از taxonomy label بیاید (نه hardcode)',
+   'بدون ویژگی، سکشن حذف شود',
+  ],
+  asserts=['۱۸ ویژگی', 'پنهان‌سازی خالی', 'برچسب از تکسونومی', 'حذف سکشن']),
+
+dict(id='6.6', size='L', deps=['3.12'],
+  title='Repeaterهای محصول در فرانت (مشخصات، ویژگی‌های کلیدی، کاربردها، FAQ)',
+  desc='رندر `product-feature`, `product-feature2_copy` (عنوان/مقدار), `usage_product`, `faq` با همان مارک‌آپ استاتیک و آکاردئون `data-faq-*`.',
+  files=['template-parts/product/features.php','template-parts/product/usage.php','template-parts/product/faq.php'],
+  steps=[
+   'خواندن با `RepeaterCodec` و حذف سطرهای خالی.',
+   'ویژگی‌های کلیدی دو ستونی (عنوان → `add-new-feature`, مقدار → `vaule_of_variable`).',
+   'FAQ با `data-faq-toggle/icon/body/list` برای کارکرد JS.',
+  ],
+  pass_=[
+   'هر چهار Repeater رندر شوند',
+   'آکاردئون FAQ با JS موجود باز/بسته شود',
+   'Repeater خالی → سکشن حذف',
+   'HTML هر سطر با `wp_kses_post` مجاز باشد',
+  ],
+  asserts=['رندر چهار Repeater', 'آکاردئون', 'حذف خالی', 'kses']),
+
+dict(id='6.7', size='M', deps=['6.2'],
+  title='شناسه‌های قانونی (`gs1_id`, `national_code`, `hs_id`, `isic_id`, `cpc_id`, `product_id`)',
+  desc='بلوک «شناسه‌های رسمی کالا» (ویژه سامانه ستاد/تدارکات دولتی) با نمایش شرطی هر شناسه و کپی‌به‌کلیپ‌بورد بدون کتابخانه.',
+  files=['template-parts/product/legal-ids.php'],
+  steps=[
+   'جدول شناسه‌ها با `esc_html`.',
+   'حذف سطرهای خالی.',
+   'دکمه کپی با `navigator.clipboard` + fallback.',
+  ],
+  pass_=[
+   'همه ۶ شناسه با داده ظاهر شوند',
+   'خالی → سکشن حذف',
+   'کپی بدون خطای کنسول',
+  ],
+  asserts=['شش شناسه', 'حذف خالی', 'کپی']),
+
+dict(id='6.8', size='M', deps=['3.10'],
+  title='دانلود کاتالوگ محصول (`product-catalog-file`)',
+  desc='دکمه دانلود کاتالوگ با URL رسانه و ویژگی‌های امنیتی (`rel="noopener"`, `download`) و نمایش حجم فایل.',
+  files=['template-parts/product/catalog.php'],
+  steps=[
+   'خواندن URL با `esc_url`.',
+   'نمایش حجم فایل با `size_format` اگر فایل محلی باشد.',
+   'در نبود فایل، هیچ خروجی.',
+  ],
+  pass_=[
+   'با فایل: دکمه معتبر',
+   'بدون فایل: صفر خروجی',
+   'لینک با `esc_url` و `rel` امن',
+  ],
+  asserts=['حالت با/بدون فایل', 'امنیت لینک']),
+
+dict(id='6.9', size='M', deps=['3.11','5.18'],
+  title='پروژه‌های مرتبط محصول (`project-ids`) + کاربردها (`usage_countr`)',
+  desc='نمایش کارت‌های پروژه‌های مرتبط از `project-ids` و برچسب‌های کاربرد از ترم‌های `usage_countr` با لینک به `project_type`.',
+  files=['template-parts/product/related-projects.php'],
+  steps=[
+   '`WP_Query` روی `post__in` با حفظ ترتیب ذخیره‌شده.',
+   'کارت پروژه از `card-project.php`.',
+   'حذف IDهای ناموجود.',
+  ],
+  pass_=[
+   'پروژه‌ها با ترتیب ذخیره‌شده نمایش داده شوند',
+   'ID ناموجود خطا ندهد',
+   'بدون رابطه، سکشن حذف شود',
+  ],
+  asserts=['ترتیب', 'ID ناموجود', 'حذف خالی']),
+
+dict(id='6.10', size='L', deps=['6.2'],
+  title='تب‌های صفحه محصول (`data-prod-tab-*`) و نظرات',
+  desc='تب‌های معرفی / مشخصات / شناسه‌ها / نظرات با همان آکاردئون و `data-prod-tab-btn|panel|icon|container`, به‌همراه فرم نظر با ستاره‌دهی (`data-review-star*`) و شمارنده نظرات.',
+  files=['template-parts/product/tabs.php','template-parts/product/reviews.php'],
+  steps=[
+   'ساختار تب با `aria-selected`/`role="tab"` صحیح.',
+   'نظرات با `comments_template` و اورراید `woocommerce/single-product-reviews.php`.',
+   'فرم نظر ووکامرس با امتیازدهی (بدون نوشتن فرم جدید).',
+  ],
+  pass_=[
+   'تب‌ها با JS موجود سوییچ شوند',
+   'فرم نظر ووکامرس کامل کار کند (ثبت نظر تست‌شده)',
+   'دسترسی‌پذیری: `aria-*` و کلیدهای جهت',
+  ],
+  asserts=['سوییچ تب', 'ثبت نظر', 'aria']),
+
+dict(id='6.11', size='M', deps=['5.18'],
+  title='محصولات مشابه و مکمل',
+  desc='بلوک محصولات مشابه با `wc_get_related_products` (یا ترم مشترک) و کارت استاندارد؛ حذف در صورت خالی بودن.',
+  files=['template-parts/product/related.php'],
+  steps=[
+   'حداکثر ۴ محصول، ترتیب تصادفی با seed پایدار.',
+   'حذف محصول جاری از لیست.',
+  ],
+  pass_=[
+   'بدون محصول مرتبط، سکشن حذف شود',
+   'محصول جاری در لیست نباشد',
+   'کارت‌ها با `card-product` رندر شوند',
+  ],
+  asserts=['حذف خالی', 'عدم نمایش جاری', 'کارت استاندارد']),
+
+dict(id='6.12', size='L', deps=['6.1','5.18'],
+  title='آرشیو فروشگاه و دسته‌ها (`archive-product.php`, `taxonomy-product_cat.php`)',
+  desc='آرشیو با همان گرید، دراوور فیلتر (`data-archive-drawer`)، توضیحات دسته، FAQ دسته (term meta)، شمارش نتایج و صفحه‌بندی سئو-دوست.',
+  files=['woocommerce/archive-product.php','woocommerce/taxonomy-product_cat.php','template-parts/archive/hero.php','template-parts/archive/grid.php'],
+  steps=[
+   'کارت‌ها با `card-product` و `data-product-*` کامل.',
+   'FAQ دسته از term meta `faq` (تسک ۳.۱۵).',
+   'صفحه‌بندی با `woocommerce_pagination` و `rel` صحیح.',
+   'فیلتر سمت کلاینت موجود (`initProductsArchive`) بدون تغییر JS.',
+  ],
+  pass_=[
+   '`/shop/` و `/product_cat/{slug}/` رندر صحیح',
+   'صفحه ۲ بدون خطا و با `rel="next"`',
+   'دسته با FAQ، آکاردئون را نشان دهد',
+   'دسته بدون محصول، حالت خالی داشته باشد',
+  ],
+  asserts=['رندر دو آرشیو', 'صفحه‌بندی', 'FAQ دسته', 'حالت خالی']),
+
+dict(id='6.13', size='M', deps=['6.12'],
+  title='آرشیو برچسب و برند (`taxonomy-product_tag.php`, `taxonomy-product_brand.php`)',
+  desc='آرشیو برچسب/برند با همان گرید و hero کوچک، شمارش و صفحه‌بندی.',
+  files=['woocommerce/taxonomy-product_tag.php','woocommerce/taxonomy-product_brand.php'],
+  steps=[
+   'استفاده مجدد از `grid.php` برای پرهیز از تکرار.',
+   'Hero با نام ترم و توضیحات.',
+  ],
+  pass_=[
+   'هر دو آرشیو رندر شوند',
+   'ترم بدون محصول، حالت خالی داشته باشد',
+  ],
+  asserts=['رندر', 'حالت خالی']),
+
+dict(id='6.14', size='L', deps=['6.1'],
+  title='سبد خرید (`woocommerce/cart/*`) با UI استاتیک',
+  desc='Override قالب سبد با مارک‌آپ استاتیک، حفظ کامل هوک‌های ووکامرس و به‌روزرسانی تعداد/جمع بدون شکستن اسکریپت‌های ووکامرس.',
+  files=['woocommerce/cart/cart.php','woocommerce/cart/cart-empty.php','woocommerce/cart/cart-totals.php','woocommerce/cart/cross-sells.php'],
+  steps=[
+   'حفظ `woocommerce_before_cart_table` … `woocommerce_after_cart` (همه هوک‌ها).',
+   'حذف JS سبد استاتیک (`data-cart-page`) در این صفحه و اتکا به `wc-cart-fragments`.',
+   'کارت خالی با همان مارک‌آپ.',
+   'RTL و فرمت `IRT`.',
+  ],
+  pass_=[
+   'افزودن/حذف/تغییر تعداد محصول کار کند',
+   'جمع کل با کوپن به‌روز شود',
+   'سبد خالی مارک‌آپ اختصاصی داشته باشد',
+   'هیچ خطای JS در کنسول',
+  ],
+  asserts=['عملیات سبد', 'کوپن', 'سبد خالی', 'خطای JS']),
+
+dict(id='6.15', size='L', deps=['6.1'],
+  title='تسویه حساب (`woocommerce/checkout/*`)',
+  desc='Override فرم پرداخت با UI استاتیک، حفظ کامل فیلدها و هوک‌ها، سازگاری با درگاه بانکی و `checkout.js` ووکامرس.',
+  files=['woocommerce/checkout/form-checkout.php','woocommerce/checkout/review-order.php','woocommerce/checkout/thankyou.php'],
+  steps=[
+   'حفظ `woocommerce_checkout_before_customer_details` … `_after_order_review`.',
+   'حذف کامل فرم استاتیک (`data-checkout-form`) و اتکا به فرم واقعی.',
+   'صفحه تشکر با مارک‌آپ استاتیک.',
+  ],
+  pass_=[
+   'ثبت سفارش تستی کامل شود',
+   'درگاه (mock) خطا ندهد',
+   'صفحه تشکر با جزئیات سفارش رندر شود',
+  ],
+  asserts=['ثبت سفارش', 'سازگاری درگاه', 'صفحه تشکر']),
+
+dict(id='6.16', size='M', deps=['6.1'],
+  title='حساب کاربری (`woocommerce/myaccount/*`) + ورود پیامکی',
+  desc='Override صفحه حساب کاربری، ورود/ثبت‌نام، سفارش‌ها، آدرس‌ها و خروج با UI استاتیک و سازگاری با افزونه `voorodak` (ورود پیامکی).',
+  files=['woocommerce/myaccount/my-account.php','woocommerce/myaccount/dashboard.php','woocommerce/myaccount/orders.php','woocommerce/global/form-login.php'],
+  steps=[
+   'تب‌های حساب با `wc_get_account_menu_items()`.',
+   'حفظ فیلدهای `voorodak` (بدون حذف فرم‌های افزونه).',
+   'بدون ورود، فرم ورود استایل‌شده.',
+  ],
+  pass_=[
+   'ورود/خروج کار کند',
+   'صفحه سفارش‌ها رندر شود',
+   'فرم پیامکی افزونه حذف/شکسته نشود',
+  ],
+  asserts=['ورود/خروج', 'سفارش‌ها', 'سازگاری voorodak']),
+
+dict(id='6.17', size='M', deps=['6.12'],
+  title='صفحه‌های ووکامرس بدون قالب استاتیک (`search`, `404`, `page`)',
+  desc='استایل‌دهی صفحاتی که میرور ندارد: نتایج جستجوی محصول، ۴۰۴ ووکامرس، و برگه‌های عمومی — با همان زبان بصری و بدون طراحی مجدد.',
+  files=['woocommerce/404.php','template-parts/general/page-content.php'],
+  steps=[
+   'استفاده از کلاس‌های موجود (`card-light`, گرید) بدون اختراع کلاس جدید.',
+   'پیام خالی با همان لحن.',
+  ],
+  pass_=[
+   '۴۰۴ کد وضعیت درست بدهد',
+   'صفحه بدون محتوا خطا ندهد',
+   'کلاس جدید غیر از موجود اضافه نشود (تست لیست کلاس‌ها)',
+  ],
+  asserts=['کد وضعیت', 'بدون خطا', 'بدون کلاس جدید']),
+
+dict(id='6.18', size='S', deps=['6.2','6.3','6.4','6.5','6.6','6.7','6.8','6.9','6.10','6.11','6.12','6.13','6.14','6.15','6.16','6.17'],
+  title='گیت فاز ۶: تست سرتاسری فروشگاه',
+  desc='تست محصول ساده/متغیر/استعلامی، آرشیو و دسته، چرخه سبد→پرداخت (mock gateway) و بررسی صفر خطای PHP/JS.',
+  files=['temp/phase-06-woocommerce-and-products/tests/run-phase-06-tests.sh','tools/harness/seed-products.php'],
+  steps=[
+   'Seed سه محصول با انواع مختلف و ویژگی‌های `pa_*`.',
+   'اجرای چرخه خرید کامل با درگاه mock.',
+   'پاک‌سازی داده.',
+  ],
+  pass_=[
+   '۱۰۰٪ تست‌ها PASS',
+   'چرخه خرید کامل بدون خطا',
+   'صفر Warning',
+  ],
+  asserts=['اجرای فاز', 'چرخه خرید', 'بدون Warning']),
+])

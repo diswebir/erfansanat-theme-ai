@@ -1,0 +1,22 @@
+<?php
+/**
+ * Single entry point required from functions.php.
+ *
+ * @package ErfanSanat\Theme
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/** 1. Constants. */
+require_once __DIR__ . '/Constants.php';
+
+/** 2. Autoloader (classes below are resolved lazily). */
+require_once __DIR__ . '/Autoloader.php';
+
+/** 3. Global option helpers (functions cannot be autoloaded). */
+require_once __DIR__ . '/Helpers/Options.php';
+require_once __DIR__ . '/Meta/functions.php';
+\ErfanSanat\Theme\Helpers\Options::register();
+
+/** 4. Kernel. */
+\ErfanSanat\Theme\Theme::instance()->boot();
