@@ -105,4 +105,23 @@ final class FooterTab {
 	public static function badges(): array {
 		return (array) es_option( 'footer_badges' );
 	}
+
+	/**
+	 * Global contact CTA content (P04-T016). Phone/email reuse contact().
+	 *
+	 * @return array<string,mixed>
+	 */
+	public static function cta(): array {
+		return array(
+			'enabled'           => (bool) es_option( 'cta_enabled' ),
+			'eyebrow'           => (string) es_option( 'cta_eyebrow' ),
+			'heading'           => (string) es_option( 'cta_heading' ),
+			'heading_highlight' => (string) es_option( 'cta_heading_highlight' ),
+			'description'       => (string) es_option( 'cta_description' ),
+			'phone_label'       => (string) es_option( 'cta_phone_label' ),
+			'quote_label'       => (string) es_option( 'cta_quote_label' ),
+			'quote_url'         => (string) es_option( 'cta_quote_url' ),
+			'hours'             => (string) es_option( 'cta_hours' ),
+		);
+	}
 }

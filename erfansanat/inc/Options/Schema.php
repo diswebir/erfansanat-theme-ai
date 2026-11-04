@@ -230,6 +230,62 @@ final class Schema {
 				'max'      => 8,
 			),
 
+			// ── Global contact CTA (P04-T016) ──────────────────────────────.
+			'cta_enabled'           => array(
+				'type'    => 'toggle',
+				'default' => true,
+				'label'   => 'نمایش بخش تماس (CTA)',
+				'tab'     => 'footer',
+			),
+			'cta_eyebrow'           => array(
+				'type'    => 'text',
+				'default' => 'مشاوره مهندسی و استعلام قیمت مستقیم از کارخانه',
+				'label'   => 'CTA: متن نشان بالا',
+				'tab'     => 'footer',
+			),
+			'cta_heading'           => array(
+				'type'    => 'text',
+				'default' => 'روشنایی و هویت بصری متمایز را به شهر خود دعوت کنید',
+				'label'   => 'CTA: تیتر',
+				'tab'     => 'footer',
+			),
+			'cta_heading_highlight' => array(
+				'type'    => 'text',
+				'default' => 'شهر خود',
+				'label'   => 'CTA: بخش برجسته تیتر',
+				'tab'     => 'footer',
+			),
+			'cta_description'       => array(
+				'type'    => 'textarea',
+				'default' => 'واحد مهندسی فروش عرفان صنعت اصفهان آماده ارائه مشاوره تخصصی، طراحی سه‌بعدی المان‌های نوری، صدور پیش‌فاکتور رسمی سامانه تدارکات الکترونیکی دولت (ستاد) و ارسال مستقیم به سراسر کشور است.',
+				'label'   => 'CTA: توضیح',
+				'tab'     => 'footer',
+			),
+			'cta_phone_label'       => array(
+				'type'    => 'text',
+				'default' => 'تماس مستقیم با کارشناسان فروش',
+				'label'   => 'CTA: متن دکمه تماس',
+				'tab'     => 'footer',
+			),
+			'cta_quote_label'       => array(
+				'type'    => 'text',
+				'default' => 'درخواست پیش‌فاکتور رسمی ستاد',
+				'label'   => 'CTA: متن دکمه پیش‌فاکتور',
+				'tab'     => 'footer',
+			),
+			'cta_quote_url'         => array(
+				'type'    => 'url',
+				'default' => '',
+				'label'   => 'CTA: لینک دکمه پیش‌فاکتور (خالی = برگه تماس)',
+				'tab'     => 'footer',
+			),
+			'cta_hours'             => array(
+				'type'    => 'text',
+				'default' => 'شنبه تا پنجشنبه · ۷:۰۰ الی ۱۶:۳۰',
+				'label'   => 'CTA: ساعات پاسخگویی',
+				'tab'     => 'footer',
+			),
+
 			// ── Brand / colors / custom code ────────────────────────────────.
 			'brand_primary'         => array(
 				'type'    => 'color',
