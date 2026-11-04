@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[BLOCKED — missing static client-feedback form]`
+- **وضعیت:** `[TESTING — native client feedback UI and AJAX route wired; WordPress runtime unavailable]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -58,4 +58,4 @@
 `feat(phase-8): task 8.15 — فرم بازخورد مشتریان (client-feedback)`
 
 ## Blocker
-A server-side handler is ready, but repository templates and styles contain no `client-feedback` form markup or selector. The strict static-to-dynamic rule forbids inventing a replacement UI, so frontend completion and browser verification are blocked pending the original static form source.
+User approved a narrow native-theme implementation using existing emerald/slate styling; Elementor remains excluded. Added an accessible customer feedback form to the existing homepage clients section, with name, optional organization, required 1–5 rating, message and honeypot; wired it to the preexisting nonce-protected `client_feedback` AJAX route and CPT/email handler. PHP/WordPress integration and browser submission tests cannot run in this sandbox because PHP CLI and `/opt/wp-testbed` are absent; keep status TESTING until those checks pass.

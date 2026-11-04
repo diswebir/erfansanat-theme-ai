@@ -10,3 +10,4 @@ $esClients = ['شهرداری اصفهان', 'شهرداری تهران', 'شه�
 if (isset($esF['items']) && is_array($esF['items'])) $esClients = array_map(static fn($s): string => (string)($s['title'] ?? $s), array_values($esF['items']));
 ?>
 <section class="mx-auto max-w-[1300px] px-5 pt-20 lg:px-8"><h2 class="text-center text-2xl font-black text-slate-900"><?php echo esc_html($esField('title', 'مشتریان و سازمان‌های همکار')); ?></h2><div class="mt-8 flex flex-wrap justify-center gap-3"><?php foreach ($esClients as $c) : ?><span class="rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-extrabold text-slate-600 shadow-sm"><?php echo esc_html($c); ?></span><?php endforeach; ?></div></section>
+<?php get_template_part('template-parts/forms/client-feedback'); ?>

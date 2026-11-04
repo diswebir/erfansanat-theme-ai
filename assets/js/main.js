@@ -1447,6 +1447,39 @@
     });
   }
 
+  function initClientFeedbackForm() {
+    var form = document.querySelector('[data-client-feedback-form="true"]');
+    if (!form) return;
+    var status = form.querySelector('[data-client-feedback-status="true"]');
+    var submitButton = form.querySelector('[type="submit"]');
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!window.esThemeData || !window.esThemeData.ajaxUrl || !window.esThemeData.ajaxNonce || !window.esThemeData.formNonce) {
+        if (status) status.textContent = "ارسال فرم در دسترس نیست. صفحه را تازه‌سازی کنید و دوباره تلاش کنید.";
+        return;
+      }
+      var payload = new URLSearchParams(new FormData(form));
+      payload.set("action", "erfan_sanat_ajax");
+      payload.set("nonce", window.esThemeData.ajaxNonce);
+      payload.set("form_nonce", window.esThemeData.formNonce);
+      payload.set("route", "client_feedback");
+      if (submitButton) submitButton.disabled = true;
+      if (status) status.textContent = "در حال ثبت بازخورد شما…";
+      fetch(window.esThemeData.ajaxUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: payload.toString()
+      }).then(function (response) { return response.json(); }).then(function (result) {
+        var message = result && result.data && result.data.message ? result.data.message : "در ثبت بازخورد خطایی رخ داد.";
+        if (status) status.textContent = message;
+        if (result && result.success) form.reset();
+      }).catch(function () {
+        if (status) status.textContent = "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.";
+      }).then(function () { if (submitButton) submitButton.disabled = false; });
+    });
+  }
+
   /* ───────────────────────────────────────────────
      14. Mega-Menu Tabs, Mobile Accordions & Live AJAX Search
      ─────────────────────────────────────────────── */
@@ -2790,6 +2823,7 @@
     initShareButtons();
     initContactForm();
     initRecruitmentForm();
+    initClientFeedbackForm();
   }
 
   if (document.readyState === "loading") {
