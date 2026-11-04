@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[TESTING — native recruitment UI and secure upload route implemented; WordPress runtime unavailable]`
+- **وضعیت:** `[TESTING — live multipart upload/storage and DOM interaction tests pass; native-browser visual review pending]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -59,4 +59,4 @@
 `feat(phase-8): task 8.14 — فرم استخدام و آپلود رزومه`
 
 ## Blocker
-User approved native theme UI for this missing component, using existing emerald/slate styling; Elementor is not restored. Replaced the mailto-only slot with a required multipart resume form (PDF/DOC/DOCX, max 5 MB), fields and honeypot; wired FormData to the existing `recruitment_submission` route and normalized Persian/Arabic phone digits server-side. PHP/WordPress integration tests cannot currently run because the sandbox lacks PHP CLI and `/opt/wp-testbed`; keep task TESTING until targeted WP tests and browser upload checks pass.
+User approved native theme UI for this component; Elementor remains excluded. The native required multipart resume form (PDF/DOC/DOCX, max 5 MB) is wired to `recruitment_submission`, with nonce/honeypot and Persian/Arabic phone normalization. WordPress 7.2/PHP 8.5 tests passed for valid and invalid MIME/extension/size. A DOM harness loaded the actual recruitment page and `main.js`, sent a real multipart PDF over HTTP to WordPress, and verified the route stored a private resume submission successfully. `WP_DEBUG=true` checks exposed PHP 8.5 deprecation of `finfo_close()`; removed the redundant close (finfo objects are released automatically), then reran clean. Native-browser visual review remains pending because no compatible browser binary is available in the sandbox.

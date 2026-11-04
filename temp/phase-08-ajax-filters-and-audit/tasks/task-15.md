@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[TESTING — native client feedback UI and AJAX route wired; WordPress runtime unavailable]`
+- **وضعیت:** `[TESTING — live AJAX/CPT submission and DOM interaction tests pass; native-browser visual review pending]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -58,4 +58,4 @@
 `feat(phase-8): task 8.15 — فرم بازخورد مشتریان (client-feedback)`
 
 ## Blocker
-User approved a narrow native-theme implementation using existing emerald/slate styling; Elementor remains excluded. Added an accessible customer feedback form to the existing homepage clients section, with name, optional organization, required 1–5 rating, message and honeypot; wired it to the preexisting nonce-protected `client_feedback` AJAX route and CPT/email handler. PHP/WordPress integration and browser submission tests cannot run in this sandbox because PHP CLI and `/opt/wp-testbed` are absent; keep status TESTING until those checks pass.
+User approved the narrow native-theme implementation; Elementor remains excluded. The accessible feedback form is rendered in the existing homepage clients section and uses the established nonce-protected `client_feedback` route and message CPT. WordPress 7.2/PHP 8.5 task tests passed; a DOM harness loaded the actual homepage and theme JavaScript, validated required fields, submitted a real AJAX request to WordPress, and verified a stored submission ID/status response. Native-browser visual review remains pending because no compatible browser binary is available in the sandbox.

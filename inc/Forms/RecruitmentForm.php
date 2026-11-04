@@ -87,7 +87,9 @@ final class RecruitmentForm implements ServiceInterface
         if (!function_exists('finfo_open')) return new WP_Error('resume_mime_unavailable', 'بررسی نوع فایل در سرور در دسترس نیست.');
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = $finfo ? finfo_file($finfo, $tmp) : false;
-        if ($finfo) finfo_close($finfo);
+        // finfo is an object in supported PHP versions and is released automatically;
+        // finfo_close() is deprecated as of PHP 8.5.
+        unset($finfo);
         if (!is_string($mime) || !in_array($mime, $mimes[$extension], true)) return new WP_Error('resume_mime_invalid', 'محتوای فایل با پسوند آن سازگار نیست.');
         return true;
     }
