@@ -1,0 +1,11 @@
+/* Vazirmatn Persian font for the WP admin panel (local, no CDN). */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../fonts/vazirmatn-arabic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+#wpcontent, #wpwrap, body.wp-admin, .wp-admin .button, .wp-admin input, .wp-admin select, .wp-admin textarea {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif !important;
+}

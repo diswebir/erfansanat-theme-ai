@@ -35,11 +35,36 @@ final class Theme
             Admin\SectionManager::hooks();
             Admin\ProductMetaboxes::hooks();
             Admin\LegacyMetaBoxes::hooks();
+            add_action('admin_enqueue_scripts', [$this, 'admin_font']);
+            add_action('admin_head', [$this, 'admin_font_css'], 1);
         }
         add_action('after_setup_theme', [$this, 'setup']);
         add_action('init', [$this, 'register_core'], 5);
         Data\Registrar::hooks();
         Seo::hooks();
+    }
+
+    /**
+     * Vazirmatn Persian font for the admin panel (local woff2, no CDN).
+     */
+    public function admin_font(string $hook): void
+    {
+        wp_enqueue_style(
+            'erfansanat-admin-font',
+            ERFANSANAT_THEME_URI . 'assets/css/admin-font.css',
+            [],
+            ERFANSANAT_THEME_VERSION
+        );
+    }
+
+    /** Inline @font-face so it applies even before the stylesheet loads. */
+    public function admin_font_css(): void
+    {
+        $uri = esc_url(ERFANSANAT_THEME_URI . 'assets/fonts/');
+        echo '<style id="erfansanat-admin-font-face">'
+            . '@font-face{font-family:"Vazirmatn";src:url("' . $uri . 'vazirmatn-arabic.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap;}'
+            . '#wpcontent,#wpwrap,.wp-admin,body.wp-admin{font-family:"Vazirmatn",Tahoma,Arial,sans-serif !important;}'
+            . '</style>' . "\n";
     }
 
     /**
