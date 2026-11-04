@@ -419,3 +419,18 @@
 | تست | `test-task-08.php` → **3 PASS / 0 FAIL / 0 PENDING** |
 | cumulative Phase 4 | Tasks 4.1–4.8: **8 test files · 35 PASS / 0 FAIL / 0 PENDING**؛ regression Phase 3: **18 files · 66 PASS / 0 FAIL / 0 PENDING** |
 | وضعیت | Tasks 4.1–4.8 `[PASSED]`; بعدی Task 4.9 |
+
+
+## Phase 4 — Tasks 4.9–4.12 / Gate 4 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 4.9 — مودال جستجوی سراسری | **3 PASS**؛ shell استاتیک حفظ شد، سه ستون با محصولات/پروژه‌ها/مقالات، حداکثر ۸ نتیجه در هر گروه با `no_found_rows`, و selectorهای جستجوی main.js |
+| 4.10 — شمارنده سبد ووکامرس | **4 PASS**؛ دو selector Fragment مستقل برای badge و شمارنده مودال، `cart-modal.php` با هوک‌های استاتیک، enqueue یکتای `wc-cart-fragments`، adapter حفظ‌کننده مقدار سرور، fallback صفر بدون WooCommerce |
+| 4.11 — data-hook/asset contract | **3 PASS**؛ تمام selectorهای header/mega/mobile/search/cart؛ `md5(main.js)` برابر مرجع استاتیک و adapterها syntax checked |
+| 4.12 — Gate DOM/فاز | **3 PASS**؛ header/footer tag+class signature ≥99%، 11 تست قبلی سبز، صفر warning در رندر mock |
+| اجرای کامل Phase 4 | `run-phase-04-tests.sh` → **12 test files · 48 PASS / 0 FAIL / 0 PENDING** |
+| Regression | Phase 3 پس از تغییر Theme kernel: **18 files · 66 PASS / 0 FAIL / 0 PENDING** |
+| PHP/JS/قیدها | تمام PHPهای theme با `token_get_all(..., TOKEN_PARSE)` parse شدند؛ `node --check` روی adapters؛ `main.js` و `styles.css` با reference hash یکسان |
+| محدودیت | Gate تست ساختاری بر mock/static fragment است؛ live WordPress/WooCommerce database/browser rendering هنوز smoke-test نشده |
+| وضعیت | **Phase 4 Gate 4 کامل؛ Tasks 4.1–4.12 `[PASSED]`** |

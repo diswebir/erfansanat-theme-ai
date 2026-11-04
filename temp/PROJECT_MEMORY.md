@@ -316,3 +316,12 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 
 - Task 4.8: `MobileMenuWalker` renders nested accordions from `mobile-menu` location into the existing scroll region, keeping static content when no usable menu is assigned. `header.php` wraps the existing backdrop/aside in the exact `data-mobile-menu` hook expected by `main.js`, initially hidden and aria-hidden. Test **3 PASS**.
 - Cumulative Phase 4 Tasks 4.1–4.8: **8 test files · 35 PASS / 0 FAIL / 0 PENDING**; Phase 3 regression after kernel changes: **66/66 PASS**. Next Task 4.9.
+
+
+## §11 — Phase 4 complete / Gate 4 (2026-11-04)
+- Task 4.9: `SearchData` limits each group (products/projects/articles) to 8 and uses `no_found_rows`; extracted static search modal remains in place and is hydrated through `search-modal.php` while keeping main.js hooks. **3 PASS**.
+- Task 4.10: `HeaderCart` uses separate `woocommerce_add_to_cart_fragments` selectors for the header badge and cart-modal count, a static-compatible modal partial, guarded cart count, and adapter that keeps server values authoritative after unchanged `main.js` initialization. Woo's script is enqueued only when registered and not already enqueued. **4 PASS**.
+- Task 4.11: Phase-specific contract test confirms `main.js` MD5 matches `reference/static-mirror/assets/js/main.js`, and all required data hooks exist; `nav-config.js`/`header-cart.js` both syntax checked. **3 PASS**.
+- Task 4.12: `tools/harness/dom-diff.php` compares header/footer tag/class/selected accessibility structure to static reference; result ≥99%, prior 11 tests all green, no PHP warnings. Phase runner now isolates each task in its own PHP-WASM request to avoid test-stub function collisions. **3 PASS**.
+- Full Phase 4 suite: **12 test files · 48 PASS / 0 FAIL / 0 PENDING**. Phase 3 regression after new Theme modules: **66/66 PASS**. All Tasks 4.1–4.12 and Gate 4 are complete.
+- Still note limitation: tests are deterministic mocks/static fixtures; live WP + WooCommerce and browser interactivity require deployment smoke-test.

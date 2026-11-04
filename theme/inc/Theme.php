@@ -43,6 +43,7 @@ use ErfanSanat\Theme\Performance\DeBloat;
 use ErfanSanat\Theme\Setup\Menus;
 use ErfanSanat\Theme\Setup\ThemeSupport;
 use ErfanSanat\Theme\Woo\ProductGallery;
+use ErfanSanat\Theme\Woo\HeaderCart;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -109,6 +110,7 @@ final class Theme {
 		$this->register_module( 'term-meta', new TermMeta() );
 		$this->register_module( 'hreflang', new Hreflang() );
 		$this->register_module( 'product-gallery', new ProductGallery() );
+		$this->register_module( 'header-cart', new HeaderCart() );
 		$this->register_module( 'product-relations', new ProductRelationsTab() );
 		$this->register_module( 'archive-tab', new ArchiveTab() );
 		$this->register_module( 'archive-config', new ArchiveConfig() );

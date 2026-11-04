@@ -26,6 +26,15 @@ final class HeaderMarkup {
 			$html,
 			1
 		);
+		if ( class_exists( \ErfanSanat\Theme\Woo\HeaderCart::class ) ) {
+			$badge = \ErfanSanat\Theme\Woo\HeaderCart::badge_markup();
+			$html = (string) preg_replace( '/<span(?=[^>]*data-header-cart-badge="true")[^>]*>.*?<\/span>/s', $badge, $html, 1 );
+		}
+		$search_modal = self::render_partial( 'template-parts/header/search-modal', static fn() => '' );
+		if ( '' !== $search_modal ) {
+			if ( class_exists( \ErfanSanat\Theme\Search\SearchData::class ) ) { $search_modal = \ErfanSanat\Theme\Search\SearchData::hydrate( $search_modal ); }
+			$html = self::replace_div( $html, 'data-search-modal="true"', $search_modal );
+		}
 		if ( class_exists( \ErfanSanat\Theme\Frontend\NavConfig::class ) ) { $html = \ErfanSanat\Theme\Frontend\NavConfig::apply_markup( $html ); }
 		$mega_enabled = ! class_exists( \ErfanSanat\Theme\Frontend\NavConfig::class ) || \ErfanSanat\Theme\Frontend\NavConfig::mega_enabled();
 		if ( $mega_enabled && function_exists( 'has_nav_menu' ) && has_nav_menu( 'tolidat-sherkat' ) ) {
