@@ -170,6 +170,21 @@ add_filter(
 				return $es_archive;
 			}
 		}
+
+		// Product taxonomy archives (P06-T018 / T020).
+		$es_tax_map = array(
+			'product_cat'   => 'taxonomy-product_cat.php',
+			'product_tag'   => 'taxonomy-product_tag.php',
+			'product_brand' => 'taxonomy-product_brand.php',
+		);
+		foreach ( $es_tax_map as $es_tax => $es_file ) {
+			if ( is_tax( $es_tax ) ) {
+				$es_tax_template = ES_THEME_DIR . 'woocommerce/' . $es_file;
+				if ( is_file( $es_tax_template ) ) {
+					return $es_tax_template;
+				}
+			}
+		}
 		return $template;
 	}
 );
