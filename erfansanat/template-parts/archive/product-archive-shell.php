@@ -238,29 +238,7 @@ $es_filter_controls = static function ( $uid, $active ) use ( $es_fa, $es_top_ca
 		</aside>
 
 		<div class="lg:col-span-8 xl:col-span-9">
-			<div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 shadow-2xs sm:px-5">
-				<div class="flex flex-wrap items-center gap-2">
-					<span class="text-[13.5px] font-black text-slate-900"><?php echo esc_html( $es_toolbar_title ); ?></span>
-					<span class="rounded-lg bg-emerald-50 px-2.5 py-1 text-[11.5px] font-extrabold text-emerald-800"><span data-product-count="true"><?php echo esc_html( $es_fa( $es_total ) ); ?></span> <?php esc_html_e( 'محصول', 'erfansanat' ); ?></span>
-				</div>
-				<div class="flex flex-wrap items-center gap-2">
-					<div class="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5">
-						<svg class="h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
-						<label for="product-sort-select" class="text-[11.5px] font-bold text-slate-500"><?php esc_html_e( 'مرتب‌سازی:', 'erfansanat' ); ?></label>
-						<select id="product-sort-select" data-product-sort="true" class="bg-transparent text-[12px] font-extrabold text-slate-800 focus:outline-none cursor-pointer">
-							<option value="default" selected><?php esc_html_e( 'پیش‌فرض کارخانه', 'erfansanat' ); ?></option>
-							<option value="popular"><?php esc_html_e( 'پربازدیدترین', 'erfansanat' ); ?></option>
-							<option value="rating"><?php esc_html_e( 'بالاترین امتیاز', 'erfansanat' ); ?></option>
-							<option value="price-asc"><?php esc_html_e( 'ارزان‌ترین', 'erfansanat' ); ?></option>
-							<option value="price-desc"><?php esc_html_e( 'گران‌ترین', 'erfansanat' ); ?></option>
-						</select>
-					</div>
-					<button type="button" data-archive-drawer-open="true" class="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-3.5 py-2 text-[12px] font-extrabold text-white shadow-sm transition hover:bg-emerald-800 lg:hidden">
-						<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
-						<span><?php esc_html_e( 'فیلتر و دسته‌بندی', 'erfansanat' ); ?></span>
-					</button>
-				</div>
-			</div>
+			<?php get_template_part( 'template-parts/archive/toolbar', null, array( 'total' => $es_total, 'toolbar_title' => $es_toolbar_title ) ); // P06-T021. ?>
 
 			<div data-product-grid="true" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
 				<?php if ( $es_query && $es_query->have_posts() ) : ?>
@@ -276,23 +254,7 @@ $es_filter_controls = static function ( $uid, $active ) use ( $es_fa, $es_top_ca
 				<a href="<?php echo esc_url( $es_shop_url ); ?>" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-[12.5px] font-extrabold text-white transition hover:bg-emerald-800"><?php esc_html_e( 'مشاهده همه محصولات', 'erfansanat' ); ?></a>
 			</div>
 
-			<?php $es_total_pages = max( 1, (int) ceil( $es_total / $es_per_page ) ); ?>
-			<nav aria-label="<?php esc_attr_e( 'صفحه‌بندی محصولات', 'erfansanat' ); ?>" data-pagination-root="true" data-per-page="<?php echo (int) $es_per_page; ?>" class="<?php echo $es_total_pages <= 1 ? 'hidden' : 'flex'; ?> mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 shadow-2xs sm:px-5">
-				<div class="text-[12.5px] font-bold text-slate-600" data-pagination-summary="true"><?php echo esc_html( sprintf( 'صفحه %s از %s (%s مورد)', $es_fa( 1 ), $es_fa( $es_total_pages ), $es_fa( $es_total ) ) ); ?></div>
-				<div class="flex items-center gap-1.5" data-pagination-buttons="true">
-					<button type="button" data-page-prev="true" disabled class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-extrabold text-slate-600 transition hover:bg-emerald-50 disabled:opacity-40">
-						<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-						<span><?php esc_html_e( 'قبلی', 'erfansanat' ); ?></span>
-					</button>
-					<?php for ( $es_p = 1; $es_p <= $es_total_pages; $es_p++ ) : ?>
-						<button type="button" data-page-btn="<?php echo (int) $es_p; ?>" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer <?php echo 1 === $es_p ? 'bg-emerald-700 text-white shadow-md shadow-emerald-700/25' : 'border border-slate-200 bg-white text-slate-700 hover:border-emerald-400 hover:text-emerald-700'; ?>" <?php echo 1 === $es_p ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $es_fa( $es_p ) ); ?></button>
-					<?php endfor; ?>
-					<button type="button" data-page-next="true" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-extrabold text-slate-600 transition hover:bg-emerald-50">
-						<span><?php esc_html_e( 'بعدی', 'erfansanat' ); ?></span>
-						<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-					</button>
-				</div>
-			</nav>
+			<?php get_template_part( 'template-parts/archive/pagination', null, array( 'total' => $es_total, 'per_page' => $es_per_page ) ); // P06-T021. ?>
 		</div>
 	</div>
 
