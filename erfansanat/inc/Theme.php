@@ -101,6 +101,10 @@ final class Theme {
 		ContentTypes::register();
 		Rewrites::register();
 
+		// WooCommerce boots its own classes after the theme, so the bridge is
+		// attached to `init` instead of being checked for existence here.
+		add_action( 'init', array( WooCommerce::class, 'register' ), 5 );
+
 		// Navigation is stateless data plus renderers, so nothing is hooked
 		// here; touching the classes keeps the autoloader map honest and makes
 		// a broken navigation class fail loudly at boot instead of mid-render.

@@ -187,6 +187,35 @@ final class SectionParts {
 	}
 
 	/**
+	 * Persian digits for a number the theme prints itself.
+	 *
+	 * Deliberately narrow: it is used for counters, ratings and review totals
+	 * that the template builds. WooCommerce's own price and date HTML is left
+	 * alone, because WP-Parsidate already converts plugin output on the live
+	 * site and converting twice would mangle the currency markup.
+	 *
+	 * @param string|int $value Number as stored.
+	 * @return string
+	 */
+	public static function fa_digits( $value ): string {
+		return strtr(
+			(string) $value,
+			array(
+				'0' => '۰',
+				'1' => '۱',
+				'2' => '۲',
+				'3' => '۳',
+				'4' => '۴',
+				'5' => '۵',
+				'6' => '۶',
+				'7' => '۷',
+				'8' => '۸',
+				'9' => '۹',
+			)
+		);
+	}
+
+	/**
 	 * Section field value with a typed fallback.
 	 *
 	 * @param array<string, mixed> $fields Section fields.
