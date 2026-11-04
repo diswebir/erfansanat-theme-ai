@@ -13,11 +13,15 @@ if (!defined('ABSPATH')) { exit; }
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
+    <title><?php echo esc_html(wp_get_document_title()); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:locale" content="fa_IR" />
     <meta property="og:site_name" content="<?php echo esc_attr( es_option('general.site_name', 'شرکت دانش‌بنیان عرفان صنعت اصفهان') ); ?>" />
     <meta property="og:type" content="website" />
+    <link rel="canonical" href="<?php echo esc_url(is_singular() ? get_permalink() : home_url(add_query_arg([]))); ?>" />
+    <meta property="og:url" content="<?php echo esc_url(is_singular() ? get_permalink() : home_url(add_query_arg([]))); ?>" />
+    <meta name="description" content="<?php echo esc_attr(is_singular() ? wp_strip_all_tags(get_the_excerpt()) : es_option('general.meta_description', 'تولیدکننده تجهیزات نورپردازی شهری و صنعتی — شرکت دانش‌بنیان عرفان صنعت اصفهان')); ?>" />
     <meta name="twitter:card" content="summary_large_image" />
     <?php
     // Dynamic hreflang tags from hrefmeta_* meta (fallback: site root)

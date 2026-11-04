@@ -96,3 +96,6 @@
 
 ## AJAX FUNCTIONAL — 2026-11-03
 - test-ajax-functional: همه endpointها روی WP واقعی (subprocess per call): search/filter products/projects با nonce معتبر success + payload sane، nonce坏 reject، ۴ فرم (contact/inquiry/recruitment/feedback) ثبت و در CPT es_form_entry ذخیره می‌شوند. ALL PASS. E2E 0 FAIL.
+
+## SEO OUTPUT — 2026-11-03
+- test-seo-output: روی WP واقعی title/robots/OG/hreflang(fa,en,ar,x-default)/canonical/og:url/viewport/charset + overrideهای hrefmeta_en/ar روی single + theme supports — همه PASS. <title> صریح به header اضافه شد (WP 7.2). E2E 0 FAIL.

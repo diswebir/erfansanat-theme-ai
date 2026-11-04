@@ -84,3 +84,6 @@
 
 ## AJAX FUNCTIONAL — 2026-11-03
 - 8 functional checks on real WP: all filter/search endpoints return success JSON with correct content, bad nonce rejected, all 4 form endpoints persist to es_form_entry CPT. ALL PASS, wired into E2E (0 FAILs).
+
+## SEO OUTPUT — 2026-11-03
+- 15 SEO checks on real WP renders: title, robots, OG, hreflang incl. hrefmeta_* legacy overrides on singular, canonical, viewport, theme supports. Added explicit <title> + canonical + og:url + meta description to header. ALL PASS, in E2E.
