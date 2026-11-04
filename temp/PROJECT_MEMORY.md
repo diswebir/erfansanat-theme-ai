@@ -2,7 +2,7 @@
 
 ## وضعیت جاری
 
-`STAGE 1 - PHASE 3 IN PROGRESS - TASK 3.1 PASSED`
+`STAGE 1 - PHASE 3 IN PROGRESS - TASK 3.2 PASSED`
 
 - تاریخ شروع: 2026-11-03.
 - شاخه کار: `arena/de593948-erfansanat-theme-ai`.
@@ -86,3 +86,9 @@
 - **Task 3.1 PASSED** (`2026-11-04`): `inc/ContentTypes.php` + `inc/Rewrites.php`؛ ثبت بومی `projects`/`services`/`project_type`/`city` با اسلاگ‌های بلوپرینت، قرارداد سئوی ووکامرس، ستون‌ها و فیلترهای ادمین، ۱۶ کلید متای تاریخی. mu-plugin آزمایشی غیرفعال شد. PHPUnit ۱۲/۱۳۵، HTTP ۱۵/۱۵.
 - دو لایهٔ پذیرش فاز ۲: PHPUnit (`tests/test-task-0N.php`) و `tests/check-http.py` (پنل/ذخیرهٔ واقعی/مجوز/nonce).
 - در جریان: Task 2.2 رندر عمومی مقادیر در هدر/فوتر/نوار اعلان و Task 2.3 رجیستری سکشن‌ها.
+
+## وضعیت فاز ۳
+
+- **Task 3.1 PASSED** (`4896417`): ثبت بومی CPT/تکسونومی و قرارداد پرمالینک. PHPUnit ۱۲/۱۳۵، HTTP ۱۵/۱۵.
+- **Task 3.2 PASSED**: `inc/Data/LegacyMeta.php` + `inc/Admin/ProductMetaboxes.php`. PHPUnit ۱۲/۹۵، HTTP ۱۳/۱۳. باگ بحرانی unslash در `update_metadata()` شناسایی و رفع شد.
+- **Task 3.3 در انتظار**: متای پروژه، ترم، hreflang و بازدید.
