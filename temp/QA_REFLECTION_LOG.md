@@ -72,3 +72,6 @@
 
 ## SECURITY+ASSETS audit — 2026-11-03
 - 8 security/bloat checks on real WP 7.2: nonce-guarded superglobals, no eval, no external CDNs, all scripts defer/async, no jQuery/emoji on front-end, escaped output. ALL PASS, wired into E2E.
+
+## ADMIN+A11Y+PERF — 2026-11-03
+- Real-WP admin dashboard test (SectionManager save + nonce rejection + legacy meta roundtrip), a11y (skip-link added, aria-label on search input, all 65 imgs have alt, rtl/lang via fa_IR), performance budget (402KB code assets vs 296KB static mirror, 271KB rendered page). ALL PASS, in E2E.

@@ -82,3 +82,6 @@
 
 ## SECURITY+ASSETS audit — 2026-11-03
 - test-security-assets: superglobals همه nonce/sanitize (Registrar فقط !empty read-only), صفر eval/exec، صفر CDN خارجی (فونت/آیکن لوکال)، JS تمیز، همه echo ها escaped، scriptها همگی defer/async، jQuery و wp-emoji در front-end نیستند. نتیجه: ALL PASS.
+
+## ADMIN+A11Y+PERF audit — 2026-11-03
+- test-admin-a11y-perf: admin save با nonce/cap → meta legacy `_erfansanat_sections` roundtrip OK، nonce坏 reject می‌شود؛ rtl/lang با locale fa_IR OK؛ skip-link و aria-label search اضافه شد؛ ۶۵ img همگی alt دارند؛ code assets ۴۰۲KB (css ۱۹۲ + js ۱۲۴ + fonts ۱۰۸) vs استاتیک ۲۹۶KB؛ front-page ۲۷۱KB. ALL PASS.
