@@ -234,3 +234,11 @@ add_action(
 	10,
 	1
 );
+add_action(
+	'es_project_used_products',
+	static function ( $project_id ) {
+		get_template_part( 'template-parts/project/used-products', null, array( 'project_id' => (int) $project_id ) );
+	},
+	10,
+	1
+);
