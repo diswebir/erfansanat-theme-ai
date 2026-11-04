@@ -123,3 +123,6 @@
 
 ## ASSET BUDGET / PERFORMANCE — 2026-11-04
 - test-asset-budget: ۴ صفحه — صفر external script/css، همه scriptها defer، بدون jQuery، payload ~۱۱۰KB، lazy-loading images مطابق میرر (card/header imgs lazy اضافه شد). main.js حالا با strategy+filter defer واقعی می‌خورد. E2E 0 FAIL.
+
+## RELEASE READINESS — 2026-11-04
+- test-release-readiness: فایل‌های required، header کامل style.css (Tested up to 7.2)، صفر TODO/FIXME/debug، همه ترجمه‌ها دامنه erfansanat، lint تمام PHPها، template hierarchy کامل — ALL PASS. E2E 0 FAIL. قالب آماده انتشار است.
