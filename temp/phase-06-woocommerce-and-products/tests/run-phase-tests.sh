@@ -19,7 +19,21 @@ for task in $TASKS; do
     *) echo "Unknown Phase 06 task: $task" >&2; exit 2 ;;
   esac
   testFile="$ROOT/temp/phase-06-woocommerce-and-products/tests/test-task-$task.php"
-  "$PHP_BIN" -l "$testFile"
-  WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$testFile"
+  if ! lintOutput=$("$PHP_BIN" -l "$testFile" 2>&1); then
+    printf '%s\n' "$lintOutput" >&2
+    exit 1
+  fi
+  printf '%s\n' "$lintOutput"
+  case "$lintOutput" in
+    *"Errors parsing"*|*"Parse error"*) exit 1 ;;
+  esac
+  if ! testOutput=$(WP_TEST_ROOT="$WP_TEST_ROOT" "$PHP_BIN" "$testFile" 2>&1); then
+    printf '%s\n' "$testOutput" >&2
+    exit 1
+  fi
+  printf '%s\n' "$testOutput"
+  case "$testOutput" in
+    *"FAIL "*) echo "Selected Phase 06 test reported a failure." >&2; exit 1 ;;
+  esac
 done
 printf "Selected Phase 06 tests passed.\n"

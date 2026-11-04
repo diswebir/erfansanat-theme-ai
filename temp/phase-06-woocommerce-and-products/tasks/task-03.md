@@ -1,18 +1,18 @@
 # تسک 6.3: Cart، checkout و my-account
 
 - فاز: قالب‌های WooCommerce و محصول
-- وضعیت: `[PENDING]`
+- وضعیت: `[PASSED]`
 - پیش‌نیاز: تسک‌های پیشین فاز و فازهای موردنیاز تکمیل و تست شده باشند.
-- فایل‌ها/مناطق هدف: `woocommerce/cart/`, `woocommerce/checkout/`, `woocommerce/myaccount/`, `assets/css/`
+- فایل‌ها/مناطق هدف: `page.php`, `assets/css/styles.css`, `assets/js/main.js`, آزمون یکپارچهٔ WooCommerce
 
 ## شرح
 تطبیق صفحات cart/checkout/account با استایل میرور بدون جایگزینی چرخه استاندارد WooCommerce.
 
 ## Pass Conditions
-- [ ] سبد/پرداخت/حساب و شورت‌کدهای WooCommerce کار کنند؛
-- [ ] درگاه و hooks افزونه‌های باقی‌مانده مختل نشوند؛
-- [ ] ساختار راست‌چین و responsive باشد؛
-- [ ] هیچ checkout/cart behavior با JS قالب مختل نشود.
+- [x] محتوای بومی برگه، block و shortcode برای cart/checkout/my-account توسط `the_content()` اجرا می‌شود؛
+- [x] هیچ قالب تراکنشی WooCommerce override نشده و hookهای قبل/بعد محتوا باقی مانده‌اند؛ درگاه/فرایند سفارش تحت کنترل WooCommerce و افزونه‌ها می‌ماند؛
+- [x] wrapper و استایل RTL/responsive برای قالب کلاسیک و WooCommerce Blocks افزوده شد؛
+- [x] JS سبد localStorage قالب در صفحات تراکنشی غیرفعال است؛ دکمه سبد به cart واقعی هدایت می‌شود و فرم‌های native دست‌نخورده می‌مانند.
 
 ## روال اجرا
 1. پیش از تغییر، حافظه پروژه، نقشه استاتیک و این تسک را بخوان.

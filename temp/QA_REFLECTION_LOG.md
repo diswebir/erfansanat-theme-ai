@@ -126,3 +126,15 @@
 - `single-product.php` از APIهای استاندارد خرید، قیمت و review WooCommerce استفاده می‌کند؛ `true_sale=false` به لینک‌های contact/settings می‌رود. گالری legacy و استاندارد، ۱۸ attribute exact، شناسه‌ها/ویژگی‌های فنی، FAQ، پروژه‌ها/کاربردها، products related و WordPress/Woo reviews data-driven رندر می‌شوند. selectorهای gallery/lightbox/tabs/FAQ با `main.js` حفظ شده‌اند.
 - چون test harness افزونهٔ WooCommerce نصب نمی‌کند، hookهای واقعی WooCommerce با test doubles پوشش داده شدند؛ مسیر WordPress comments fallback نیز قابل استفاده باقی ماند.
 - نتایج: Task 6.1 integration PASS؛ regression Phases 1–4 و Task 5.1 PASS؛ syntax PHPهای تغییرکرده PASS؛ WP_DEBUG خالی. Phase 6 runner از `PHASE_TASKS=01` برای اجرای تسک تأییدشده پشتیبانی می‌کند.
+
+## Phase 6 / Task 6.2 — Archive integration
+- Replaced the task scaffold with WordPress fixtures exercising shop, product-category and product-tag queries. Verified dynamic archive cards and sort/filter markup, main query and pagination hooks, term image/description/FAQ metadata, escaped values and empty state.
+- Shared archive partials were added without replacing WooCommerce's main loop. Client sorting supports menu order, both price directions and popularity; inquiry products are recognized, and the filter controls remain available for the later AJAX phase.
+- Task test, targeted PHP syntax checks, JavaScript syntax and `git diff --check` passed. A historical WP_DEBUG log from the intentional red run was retained temporarily and later cleared before the clean Phase 6 full rerun.
+
+## Phase 6 / Task 6.3 — Cart, checkout and account
+- The initial scaffold expected a direct `woocommerce/cart/cart.php` override. Rejected that implementation path because overriding transaction templates would duplicate core lifecycle and risk gateways/extensions. Rewrote the contract around preserving native shortcodes/blocks and using a page wrapper plus visual-only CSS.
+- `page.php` now only intercepts Woo cart/checkout/account conditionals; other regular pages continue via `index.php`. It renders `the_content()` within core Woo before/after hooks, leaves forms to WooCommerce, and provides an RTL breadcrumb/title wrapper.
+- Added responsive classic/Blocks CSS. On transactional pages, the theme's localStorage cart journey is skipped and the header cart button routes to the actual Woo cart; native cart/checkout forms are not intercepted.
+- Test checks three shortcode branches, content retention, cart URL contract, safe absence of transaction template overrides, classic/Blocks CSS contracts and absence of JS selectors that directly intercept native forms.
+- Task 6.3 test passed; full Phase 6 (6.1–6.3) passed with WP_DEBUG log cleared and remaining empty. The Phase 6 runner now treats printed `FAIL` output as failure because PHP WASM may not propagate a PHP script's exit status. Phase 1–5 regression passed after updating the migration test to allow only the reviewed Phase 6 stylesheet append and JS integration markers. PHP/JS/shell syntax and `git diff --check` passed. No Phase 7 work was started.

@@ -1,6 +1,6 @@
 # نقشه راه ارشد پروژه
 
-> وضعیت فعلی: Phases 1–5 تکمیل و regression شده‌اند؛ Task 6.1 نیز با تأیید صریح کاربر پاس شد؛ پیش از Task 6.2 تأیید جداگانه لازم است.
+> وضعیت فعلی: Phases 1–5 و کل Phase 6 (Tasks 6.1–6.3) تکمیل و regression شده‌اند؛ کاربر تکمیل remainder فاز ۶ را مجاز کرده بود. Phase 7 شروع نشده و مجاز نیست.
 
 ## گیت‌های ورودی و تصمیمات
 
@@ -13,7 +13,8 @@
 - [PASSED] کاربر پس از تکمیل Phase 2 دستور «ادامه بده» داد؛ Phase 3 مجاز شد.
 - [PASSED] کاربر پس از تکمیل Phase 3 مجدداً «ادامه بده» گفت؛ Phase 4 مجاز شد؛ Task 4.1 اجرا شد.
 - [PASSED] کاربر پس از Task 4.1 برای Task 4.2 نیز «اوکیه ادامه بده» گفت؛ پیاده‌سازی مگامنو/منوهای موبایل مجاز شد.
-- [PASSED] کاربر Phase 5 را مجاز کرد و پس از Task 5.1 اجرای Task 5.2 را تأیید کرد؛ هر دو تسک پاس شدند. سپس کاربر Task 6.1 را صریحاً مجاز کرد؛ Task 6.1 پاس شد و پیش از Task 6.2 منتظر تأیید هستیم.
+- [PASSED] کاربر Phase 5 را مجاز کرد و پس از Task 5.1 اجرای Task 5.2 را تأیید کرد؛ هر دو تسک پاس شدند.
+- [PASSED] کاربر اجرای Task 6.1 را صریحاً مجاز کرد؛ سپس تکمیل remainder Phase 6 (Tasks 6.2 و 6.3) را نیز مجاز کرد. هر سه تسک Phase 6 تکمیل شدند؛ Phase 7 خارج از محدوده است.
 
 ## فازها و تسک‌ها
 
@@ -53,8 +54,8 @@
 ### Phase 6 — قالب‌های WooCommerce و محصول (`phase-06-woocommerce-and-products`)
 
 - [PASSED] **6.1 صفحه تک‌محصول** — خرید/استعلام بر پایهٔ `true_sale`، گالری legacy/Woo، ۱۸ ویژگی `pa_*`، relations، FAQ، reviews و related products؛ integration test پاس شد.
-- [PENDING] **6.2 آرشیو فروشگاه و دسته محصول** — شروط پذیرش در `phase-06-woocommerce-and-products/tasks/task-02.md`; تست در `phase-06-woocommerce-and-products/tests/test-task-02.php`.
-- [PENDING] **6.3 Cart، checkout و my-account** — شروط پذیرش در `phase-06-woocommerce-and-products/tasks/task-03.md`; تست در `phase-06-woocommerce-and-products/tests/test-task-03.php`.
+- [PASSED] **6.2 آرشیو فروشگاه و دسته محصول** — قالب‌های shop/category/tag، کارت‌ها و فیلترهای سازگار با فاز ۸، metadata دسته، pagination و empty states؛ integration test پاس شد.
+- [PASSED] **6.3 Cart، checkout و my-account** — صفحات بومی از طریق محتوای وردپرس/شورت‌کدها حفظ شدند؛ بدون override چرخه سفارش WooCommerce، استایل RTL/responsive و جلوگیری از دخالت سبد localStorage قالب در صفحات تراکنشی؛ integration test پاس شد.
 - تست یکپارچه: `phase-06-woocommerce-and-products/tests/run-phase-tests.sh`
 
 ### Phase 7 — پروژه‌ها، بلاگ، برگه‌ها و landingها (`phase-07-projects-blog-and-pages`)

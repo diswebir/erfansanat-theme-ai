@@ -1,14 +1,14 @@
 # حافظه زنده پروژه
 
-- وضعیت: `Phases 1–5 PASSED; Tasks 5.1, 5.2, 6.1 PASSED; request approval before Task 6.2.`
+- وضعیت: `Phases 1–6 PASSED; Tasks 6.1–6.3 complete; Phase 7 not authorized.`
 - شاخه فعال: `arena/8fc7b5b7-erfansanat-theme-ai`.
 - میرور پیوست در `static-mirror/`؛ 128 فایل HTML و assets محلی.
 - محیط: Node و curl موجود؛ PHP native/WP-CLI/PHPUnit/PHPCS/xmllint موجود نیستند؛ PHP WASM 8.5.12 به‌صورت محلی در `node_modules/` فراهم شد و برای lint و smoke tests قابل استفاده است. WordPress production/native دائمی نیست؛ برای آزمون، WordPress 7.2-beta3 (build 65225) و SQLite با PHP WASM در `node_modules/.cache/ese-wp-test/` نصب/فعال است؛ این مسیر در Git نادیده گرفته می‌شود.
 - اسناد مرجع: `PROJECT_GOAL.md`, `DATA_BLUEPRINT.md`, `STATIC_TEMPLATE_MAP.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md`.
 - تصمیم‌های کاربر: صفحات هم‌نام دو مسیر محصول مقایسه/ادغام شوند؛ خدمات یک CPT مستقل؛ تمام سکشن‌های منتخب قابل ویرایش؛ فیلترها AJAX.
 - Stage 1: درخت 8 فاز و 22 تسک ساخته شد؛ task briefها، 22 contract tests، 8 phase runners و 1 all-phases runner تولید شدند.
-- آخرین تسک‌های پاس‌شده: 5.1، 5.2 و 6.1؛ Phases 1–5 تکمیل‌اند و Phase 6 در حال اجراست. Theme Options، Section Builder، CPTs/taxonomies، legacy metaboxes، header/footer، navigation، homepage parts، dynamic homepage data و صفحهٔ محصول تکی موجودند.
-- گام بعدی: دریافت تأیید صریح پیش از Task 6.2. Task 6.1 را با `PHASE_TASKS=01 sh temp/phase-06-woocommerce-and-products/tests/run-phase-tests.sh` می‌توان مجدداً اجرا کرد. Harness: `temp/setup-wordpress-test.sh`; Phaseهای 2–5 runnerهای یکپارچهٔ متناظر دارند.
+- آخرین تسک‌های پاس‌شده: 6.1، 6.2 و 6.3؛ Phases 1–6 تکمیل‌اند. Theme Options، Section Builder، CPTs/taxonomies، legacy metaboxes، header/footer، navigation، homepage parts، dynamic homepage data و قالب‌های WooCommerce موجودند.
+- گام بعدی خارج از مجوز فعلی است: Phase 7 شروع نشود. Phase 6 را با `PHP_BIN="$PWD/node_modules/.bin/php-wasm-cli" sh temp/phase-06-woocommerce-and-products/tests/run-phase-tests.sh` می‌توان مجدداً تست کرد. Harness: `temp/setup-wordpress-test.sh`.
 - توجه: اسلاگ نهایی خدمات باید با URLهای زنده تطبیق داده شود؛ برای محصولات URL canonical مطابق بلوپرینت حفظ می‌شود.
 
 - Task 1.1 QA: PHP WASM 8.5.12 روی 26 فایل PHP lint پاس؛ contract test پاس؛ WordPress integration test واقعی (WordPress 7.2-beta3 + SQLite) و render fallback پاس؛ WP_DEBUG log خالی است.
@@ -71,3 +71,15 @@
 - Empty content sections are omitted (gallery has a clear missing-image state); output is escaped, with post description passed through the normal WordPress content filters. Product reviews use `wc_get_template('single-product-reviews.php')` when WooCommerce is active, with a WordPress comments fallback.
 - Task 6.1 WordPress integration test covers online/inquiry branches, gallery priority/fallbacks, attributes, identifiers, relations, FAQ visibility, escaped content, WooCommerce review template integration and related products. The disposable WordPress harness does not install WooCommerce, so Woo APIs are exercised with test doubles.
 - Task 6.1 test, regression Phases 1–4, Task 5.1, PHP syntax checks, and WP_DEBUG log all passed. Phase 6 runner supports `PHASE_TASKS=01` to run only the authorized task.
+
+## Phase 6 / Task 6.2 — WooCommerce archives
+- Shop, category and tag templates retain WordPress/WooCommerce main queries and archive hooks; `template-parts/woocommerce/product-archive.php` renders dynamic cards, filter controls, pagination, empty states, category thumbnail/description/FAQ metadata and escaped output.
+- `assets/js/main.js` handles `menu_order`, price ascending/descending, popularity and inquiry purchase types; the filter UI remains ready for Phase 8 AJAX without adding AJAX behavior in Phase 6.
+- Integration fixtures cover shop/category/tag queries and rewrite bases, card data, filters, pagination hooks, term metadata, escaping and empty archives. Task 6.2 test passed.
+
+## Phase 6 / Task 6.3 — WooCommerce Cart, Checkout and My Account
+- `page.php` scopes a dedicated wrapper to WooCommerce cart/checkout/account conditional pages and runs the stored WordPress content via `the_content()`; all other regular pages continue through the prior `index.php` fallback.
+- No WooCommerce cart, checkout or account transaction template override was added. Core shortcodes/blocks, gateway rendering, lifecycle, and plugin hooks remain in control; before/after main-content actions are preserved.
+- RTL/responsive visual-only styling covers classic WooCommerce markup and cart/checkout blocks. On transactional pages, the theme localStorage purchase journey does not initialize; its header cart button routes to the native Woo cart URL, leaving native checkout/cart forms and their JS untouched.
+- Task 6.3 integration test covers native shortcode content for all three contexts, wrapper/cart URL, no unsafe template overrides, styling contracts, and no JS interception of native Woo forms. Passed. The Phase 6 runner detects explicit `FAIL` output as well as nonzero statuses because PHP WASM does not always propagate PHP `exit(1)`.
+- Phase 6 full runner (Tasks 6.1–6.3) passed; WP_DEBUG log was cleared before run and remained empty. Phase 1–5 regression tests and syntax/diff checks also passed after updating the asset migration test to recognize reviewed Phase 6 stylesheet/JS extensions. Phase 7 remains out of scope.

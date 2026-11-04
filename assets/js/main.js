@@ -769,7 +769,7 @@
     var selectedIps = [];
     var selectedVoltages = [];
     var searchQuery = "";
-    var sortBy = "popular";
+    var sortBy = sortSelect ? (sortSelect.value || "menu_order") : "menu_order";
     var currentPage = 1;
 
     try {
@@ -784,6 +784,11 @@
       var allItems = Array.prototype.slice.call(
         gridEl.querySelectorAll("[data-product-item]")
       );
+      for (var orderIdx = 0; orderIdx < allItems.length; orderIdx++) {
+        if (!allItems[orderIdx].hasAttribute("data-product-default-order")) {
+          allItems[orderIdx].setAttribute("data-product-default-order", String(orderIdx));
+        }
+      }
 
       // Sort items
       allItems.sort(function (a, b) {
@@ -792,7 +797,7 @@
           var rB = parseFloat(b.getAttribute("data-product-rating") || "0");
           return rB - rA;
         }
-        if (sortBy === "price-asc") {
+        if (sortBy === "price-asc" || sortBy === "price") {
           var pA = parseInt(a.getAttribute("data-product-price") || "999999999", 10) || 999999999;
           var pB = parseInt(b.getAttribute("data-product-price") || "999999999", 10) || 999999999;
           return pA - pB;
@@ -802,9 +807,14 @@
           var pdB = parseInt(b.getAttribute("data-product-price") || "0", 10) || 0;
           return pdB - pdA;
         }
-        var vA = parseInt(a.getAttribute("data-product-views") || "0", 10);
-        var vB = parseInt(b.getAttribute("data-product-views") || "0", 10);
-        return vB - vA;
+        if (sortBy === "popularity" || sortBy === "popular") {
+          var vA = parseInt(a.getAttribute("data-product-views") || "0", 10);
+          var vB = parseInt(b.getAttribute("data-product-views") || "0", 10);
+          return vB - vA;
+        }
+        var orderA = parseInt(a.getAttribute("data-product-default-order") || "0", 10);
+        var orderB = parseInt(b.getAttribute("data-product-default-order") || "0", 10);
+        return orderA - orderB;
       });
 
       for (var s = 0; s < allItems.length; s++) {
@@ -825,7 +835,7 @@
         var matchPurch =
           purchaseMode === "all" ||
           (purchaseMode === "online" && purch) ||
-          (purchaseMode === "call" && !purch);
+          ((purchaseMode === "call" || purchaseMode === "inquiry") && !purch);
 
         var matchPrice = maxPrice >= 3000000 || (purch && itemPrice <= maxPrice);
 
@@ -1814,6 +1824,19 @@
      15. Complete Purchase Journey (PDP, Cart & Checkout)
      ─────────────────────────────────────────────── */
   function initPurchaseJourney() {
+    var nativeWooPage = document.querySelector('[data-woocommerce-page="cart"], [data-woocommerce-page="checkout"], [data-woocommerce-page="account"]');
+    if (nativeWooPage) {
+      var nativeCartUrl = nativeWooPage.getAttribute("data-woocommerce-cart-url") || "/cart/";
+      var nativeCartButtons = document.querySelectorAll('[data-cart-modal-open="true"]');
+      for (var nativeButtonIndex = 0; nativeButtonIndex < nativeCartButtons.length; nativeButtonIndex++) {
+        nativeCartButtons[nativeButtonIndex].addEventListener("click", function (event) {
+          event.preventDefault();
+          window.location.assign(nativeCartUrl);
+        });
+      }
+      return;
+    }
+
     var CART_KEY = "esfahan_emrooz_cart_v1";
 
     function loadCart() {

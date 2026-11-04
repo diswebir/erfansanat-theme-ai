@@ -1,7 +1,7 @@
 # تسک 6.2: آرشیو فروشگاه و دسته محصول
 
 - فاز: قالب‌های WooCommerce و محصول
-- وضعیت: `[PENDING]`
+- وضعیت: `[PASSED]`
 - پیش‌نیاز: تسک‌های پیشین فاز و فازهای موردنیاز تکمیل و تست شده باشند.
 - فایل‌ها/مناطق هدف: `archive-product.php`, `taxonomy-product_cat.php`, `taxonomy-product_tag.php`
 
@@ -9,10 +9,10 @@
 پیاده‌سازی `archive-product.php`, `taxonomy-product_cat.php`, `taxonomy-product_tag.php` مطابق میرور، FAQ/term description و pagination.
 
 ## Pass Conditions
-- [ ] `/shop/` و `/product_cat/.../` با rewrite پایدار پاسخ معتبر دهند؛
-- [ ] کارت‌ها و pagination ساختاری مطابق میرور باشند؛
-- [ ] توضیح و FAQ term بر اساس meta متصل شوند؛
-- [ ] فیلترهای HTML حفظ و به منطق AJAX فاز 8 متصل شوند.
+- [x] مسیرهای shop، product category و product tag از queryهای اصلی و rewriteهای WooCommerce استفاده می‌کنند؛
+- [x] کارت‌های پویا، مرتب‌سازی، pagination و empty state بدون جایگزینی loop و hookهای WooCommerce رندر می‌شوند؛
+- [x] تصویر، توضیح و FAQ دسته از term meta امن خوانده می‌شوند؛
+- [x] فیلترها و selectorهای سازگار با اتصال AJAX فاز ۸ حفظ شده‌اند (اتصال AJAX خارج از Phase 6 است).
 
 ## روال اجرا
 1. پیش از تغییر، حافظه پروژه، نقشه استاتیک و این تسک را بخوان.
