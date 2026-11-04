@@ -1,13 +1,13 @@
 # PROJECT MEMORY — حافظه زنده و وضعیت جاری پروژه
 
 ## وضعیت فعلی (Current Stage & Status)
-- **مرحله فعلی:** `PHASE 6 COMPLETED & PASSED (20/20) -> WAITING FOR USER APPROVAL TO START PHASE 7`
-- **آخرین مرحله پاس‌شده:** `Phase 1 Complete (Tasks 1.1, 1.2, 1.3 + run-phase-01-tests.sh: 91/91 Checks PASSED)`
+- **مرحله فعلی:** `PHASE 7 COMPLETED & PASSED (20/20) -> WAITING FOR USER APPROVAL TO START PHASE 8`
+- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20 tasks and phase suite passed; approval gate reached. Phase 1–5 regression suites passed in the restored harness; Phase 6 could not be rerun because WooCommerce was not installed/active.`
 - **آخرین فاز پاس‌شده:** Phase 2 — داشبورد ادمین (آپشن واحد `erfansanat_theme_options` + `es_option()`)، تب‌های هدر/فوتر/ظاهر/فیلترها (۲۵ toggle شامل ۱۸ `pa_*`) و SectionManager کامل (`_es_sections` + Drag&Drop + `es_render_sections()`); سوئیت فاز ۲: ۱۵/۱۵ پاس و رگرسیون فاز ۱ سبز.
 - **آخرین فاز پاس‌شده:** Phase 3 — CPT `projects`، تکسونومی‌های `project_type`/`city`/`product_brand`، گارد Rewrite ووکامرس، ریدایرکت ۳۰۱ `/project/`، موتور `LegacyMeta` (فرمت `item-0` جت‌انجین)، متاباکس‌های کامل محصول/پروژه/ترم با کلیدهای دقیق دیتابیس زنده، Hreflang و `ViewCounter`؛ سوئیت فاز ۳: ۱۷/۱۷ پاس، رگرسیون فازهای ۱ و ۲ سبز.
 - **آخرین فاز پاس‌شده:** Phase 5 — front-page با ۱۵ سکشن پیش‌فرض SectionManager (هیرو ۵ صحنه‌ای با ویدیو و data-home1-*، پروژه‌ها، شمارنده‌ها، تایم‌لاین، محصولات، خدمات تب‌دار data-service-*، مقالات و CTA) + ۳ کارت استاندارد؛ سوئیت فاز ۵: ۲۰/۲۰ پاس، رگرسیون فازهای ۱ تا ۴ سبز. نکته: static-mirror در ریست سندباکس حذف شد و فاز ۴ بازسازی شد (11/11).
 - **آخرین فاز پاس‌شده:** Phase 6 — ادغام پوسته ووکامرس، تک‌محصول (فروش/استعلام/گالری/تغییرات/مشخصات/دیدگاه/مرتبط)، آرشیو فروشگاه/دسته/برند/تگ، سبد متصل به WC، مینی‌کارت fragment + AJAX، checkout hooks و حساب/ورود؛ ۲۰/۲۰ تست پاس و رگرسیون فازهای ۱ تا ۵ سبز.
-- **فاز بعدی در نوبت اجرا:** `Phase 7 (۲۰ تسک اتمیک): پروژه‌ها، وبلاگ و صفحات استاتیک/خدمات/لندینگ`
+- **فاز بعدی در نوبت اجرا:** `Phase 8 (۱۷ تسک اتمیک): AJAX filters, forms, SEO and final audit — blocked until Phase 7 approval.`
 - **برنامه اتمیک v2 (تصمیم کارفرما):** هر تسک = یک کامپوننت/قابلیت مستقل + تست جدا + کامیت جدا؛ فازهای ۲ تا ۸ از ۱۹ تسک فشرده به **۱۲۰ تسک اتمیک** شکسته شدند (جمع کل با فاز ۱: **۱۲۳ تسک**). جزئیات کامل هر تسک در `MASTER_PLAN.md` و فایل `tasks/task-XX.md` هر فاز.
 - **شاخه گیت فعال:** `arena/23abd651-erfansanat-theme-ai`
 - **سیاست توقف و گزارش‌دهی (Gate Policy):** **فاز به فاز (`Phase-by-Phase`)** — اجرای اتمیک تسک‌به‌تسک درون هر فاز با چرخه ۶ گامی TDD + کامیت گیت مستقل برای هر تسک، و توقف در پایان هر فاز پس از اجرای `run-phase-XX-tests.sh` برای تایید کارفرما.
