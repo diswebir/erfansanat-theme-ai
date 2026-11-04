@@ -33,9 +33,64 @@ final class WooCommerce {
 		}
 
 		add_action( 'init', array( self::class, 'swap_content_wrappers' ), 20 );
+		add_action( 'pre_get_posts', array( self::class, 'archive_paging' ) );
 		add_filter( 'woocommerce_locate_template', array( self::class, 'locate_template' ), 10, 3 );
 		add_filter( 'woocommerce_add_to_cart_fragments', array( self::class, 'cart_count_fragment' ) );
 		add_filter( 'body_class', array( self::class, 'body_class' ) );
+	}
+
+	/**
+	 * Give the product archives a real `?page=N` page number.
+	 *
+	 * WooCommerce's own archive is paginated by the main query; the theme's
+	 * archive needs the same number for its pager markup and for the browser
+	 * script's starting page. WordPress reads `paged` for archives and `page`
+	 * for a static front page, so both are accepted.
+	 *
+	 * @param \WP_Query $query Query being prepared.
+	 * @return void
+	 */
+	public static function archive_paging( $query ): void {
+		if ( ! self::is_product_archive_query( $query ) ) {
+			return;
+		}
+
+		self::paginate_archive_query( $query );
+	}
+
+	/**
+	 * Whether a query is the main query of a product archive.
+	 *
+	 * Kept separate so the rule can be asserted without a full page request,
+	 * which is the only place a real main query exists.
+	 *
+	 * @param mixed $query Candidate query.
+	 * @return bool
+	 */
+	public static function is_product_archive_query( $query ): bool {
+		if ( ! $query instanceof \WP_Query || is_admin() ) {
+			return false;
+		}
+		if ( ! $query->is_main_query() ) {
+			return false;
+		}
+		return $query->is_post_type_archive( 'product' ) || $query->is_tax( array( 'product_cat', 'product_tag' ) );
+	}
+
+	/**
+	 * Apply the archive page size and the `?page=N` page number to a query.
+	 *
+	 * @param \WP_Query $query Product archive query.
+	 * @return void
+	 */
+	public static function paginate_archive_query( \WP_Query $query ): void {
+		$per_page = (int) apply_filters( 'erfansanat_archive_per_page', 9 );
+		$query->set( 'posts_per_page', max( 1, $per_page ) );
+
+		$page = max( 1, (int) $query->get( 'paged' ), (int) $query->get( 'page' ) );
+		if ( $page > 1 && ! $query->get( 'paged' ) ) {
+			$query->set( 'paged', $page );
+		}
 	}
 
 	/**
@@ -59,6 +114,10 @@ final class WooCommerce {
 	 * removed and the theme prints an inert div wrapper instead, so the CSS
 	 * classes WooCommerce styles against still exist.
 	 *
+	 * The wrapper cannot reuse `#primary`: the theme's own `<main>` already
+	 * owns that id, and two elements sharing it is invalid. `#woocommerce-primary`
+	 * keeps the same class contract without the collision.
+	 *
 	 * @return void
 	 */
 	public static function swap_content_wrappers(): void {
@@ -75,7 +134,7 @@ final class WooCommerce {
 	 * @return void
 	 */
 	public static function open_content_wrapper(): void {
-		echo '<div id="primary" class="content-area"><div id="content" class="site-content erfansanat-woocommerce">';
+		echo '<div id="woocommerce-primary" class="content-area"><div id="woocommerce-content" class="site-content erfansanat-woocommerce">';
 	}
 
 	/**

@@ -254,14 +254,200 @@ def task_6_3(_: str) -> None:
     check("6.3", "the cart reports one line item", count == "1", count)
 
 
+def term_urls(taxonomy: str) -> list[str]:
+    script = (
+        "<?php\n"
+        "foreach (get_terms(['taxonomy'=>%r,'hide_empty'=>false]) as $t) {\n"
+        "  echo str_replace(home_url(),'',get_term_link($t)), \"\\n\";\n"
+        "}\n" % taxonomy
+    )
+    path = ROOT / ".local" / "probe-terms.php"
+    path.write_text(script, encoding="utf-8")
+    return [line.strip() for line in wp("eval-file", str(path)).splitlines() if line.strip()]
+
+
+def task_6_4(_: str) -> None:
+    """The shop archive is a real, paginated archive."""
+    status, shop = fetch(BASE + "/shop/")
+    check("6.4", "shop answers 200", status == 200, f"status={status}")
+    if status != 200:
+        return
+
+    check("6.4", "no PHP error leaks into the shop",
+          not any(t in shop for t in ("Fatal error", "Parse error", "Warning: ", "Notice: ", "Deprecated: ")))
+    check("6.4", "shop has one <main>", shop.count("<main") == 1, str(shop.count("<main")))
+    check("6.4", "shop has one <h1>", shop.count("<h1") == 1, str(shop.count("<h1")))
+
+    ids = re.findall(r'\sid="([^"]+)"', shop)
+    dupes = sorted({i for i in ids if ids.count(i) > 1})
+    check("6.4", "no duplicate DOM ids", not dupes, ",".join(dupes))
+
+    # Archive root carries the contract the script reads.
+    for attr in ['data-products-archive="true"', 'data-initial-category=', 'data-items-per-page="9"']:
+        check("6.4", f"archive root has {attr}", attr in shop)
+    check("6.4", "archive anchors on #archive", 'id="archive"' in shop)
+
+    # Grid: nine products, each with the full filter payload.
+    items = re.findall(r"data-product-item=\"true\"(.*?)class=\"block\"", shop, re.S)
+    check("6.4", "the first shop page holds nine products", len(items) == 9, str(len(items)))
+
+    required = ["data-product-category", "data-product-categories", "data-product-purchasable",
+                "data-product-price", "data-product-ip", "data-product-voltage", "data-product-views",
+                "data-product-rating", "data-product-search-text"]
+    incomplete = []
+    for index, raw in enumerate(items):
+        for attr in required:
+            if attr + "=" not in raw:
+                incomplete.append(f"{index}:{attr}")
+    check("6.4", "every grid item carries the full filter payload", not incomplete, ",".join(incomplete[:5]))
+
+    prices = [int(m) for m in re.findall(r'data-product-price="(\d+)"', "".join(items))]
+    check("6.4", "prices are real numbers", bool(prices) and all(p > 0 for p in prices), str(prices[:3]))
+    purch = set(re.findall(r'data-product-purchasable="(true|false)"', "".join(items)))
+    check("6.4", "purchasable is the string the script compares", purch <= {"true", "false"}, str(purch))
+
+    # Filters, sort and the mobile drawer.
+    for attr in ['data-product-search="true"', 'data-product-purchase-mode="all"',
+                 'data-product-price-range="true"', 'data-product-ip-filter="true"',
+                 'data-product-voltage-filter="true"', 'data-product-sort="true"',
+                 'data-product-empty="true"', 'data-product-grid="true"']:
+        check("6.4", f"filter hook {attr}", attr in shop)
+    check("6.4", "sort offers the five reference modes",
+          len(re.findall(r'value="(?:default|popular|rating|price-asc|price-desc)"', shop)) >= 5)
+    check("6.4", "mobile drawer exists", 'data-archive-drawer="true"' in shop and
+          shop.count('data-archive-drawer-open="true"') >= 2 and shop.count('data-archive-drawer-close="true"') >= 2)
+    check("6.4", "category tree is rendered from terms", shop.count("/product_cat/") >= 15,
+          str(shop.count("/product_cat/")))
+    check("6.4", "shop offers the real phone", 'href="tel:' in shop)
+    check("6.4", "closing contact CTA is present", 'id="contact"' in shop)
+
+    # Server pagination is real: page two holds different products.
+    status2, page2 = fetch(BASE + "/shop/page/2/")
+    check("6.4", "shop page 2 answers 200", status2 == 200, f"status={status2}")
+    if status2 == 200:
+        items2 = re.findall(r'data-product-search-text="([^"]*)"', page2)
+        items1 = re.findall(r'data-product-search-text="([^"]*)"', shop)
+        check("6.4", "page 2 holds nine different products",
+              len(items2) == 9 and not (set(items1) & set(items2)), f"{len(items1)} vs {len(items2)}")
+
+    status3, page3 = fetch(BASE + "/shop/page/3/")
+    if status3 == 200:
+        items3 = re.findall(r'data-product-search-text="([^"]*)"', page3)
+        total = wp("post", "list", "--post_type=product", "--post_status=publish", "--format=count")
+        check("6.4", "every published product appears once across the pages",
+              len(set(items1) | set(items2) | set(items3)) == int(total or 0),
+              f"{len(set(items1) | set(items2) | set(items3))} of {total}")
+
+    # The pager links real pages rather than dead buttons.
+    check("6.4", "pager marks itself as server-rendered", "data-pagination-server=\"true\"" in shop)
+    check("6.4", "pager links page 2", re.search(r'href="[^"]*/shop/page/2/"', shop) is not None)
+    check("6.4", "pager uses the reference attribute names",
+          "data-page-num=" in shop and "data-page-btn" not in shop)
+
+
+def task_6_5(_: str) -> None:
+    """Category and tag archives reuse the archive body."""
+    categories = term_urls("product_cat")
+    tags = term_urls("product_tag")
+    check("6.5", "the fixture has product categories", len(categories) >= 15, str(len(categories)))
+    check("6.5", "the fixture has product tags", len(tags) >= 1, str(len(tags)))
+
+    broken: list[str] = []
+    empty_faq = 0
+    for url in categories + tags:
+        status, body = fetch(BASE + url)
+        if status != 200:
+            broken.append(f"{url}={status}")
+            continue
+        if any(t in body for t in ("Fatal error", "Warning: ", "Notice: ")):
+            broken.append(f"{url}=php-error")
+            continue
+        if body.count("<main") != 1 or body.count("<h1") != 1:
+            broken.append(f"{url}=layout")
+            continue
+        ids = re.findall(r'\sid="([^"]+)"', body)
+        dupes = {i for i in ids if ids.count(i) > 1}
+        if dupes:
+            broken.append(f"{url}=dup:{','.join(sorted(dupes))}")
+            continue
+        if 'data-products-archive="true"' not in body:
+            broken.append(f"{url}=no-archive")
+        if "data-product-grid" not in body and 'data-product-empty="true"' not in body:
+            broken.append(f"{url}=no-grid")
+        if '/shop/' not in body:
+            broken.append(f"{url}=no-shop-link")
+    check("6.5", f"all {len(categories) + len(tags)} term archives render cleanly", not broken, ",".join(broken[:5]))
+
+    # The category hero is built from the term, not from a fixed string.
+    status, cat = fetch(BASE + "/product_cat/wall-washer/")
+    if status == 200:
+        term_name = wp("eval", 'echo get_term_by("slug","wall-washer","product_cat")->name;')
+        check("6.5", "the category hero names the category", term_name and term_name in cat, term_name)
+        check("6.5", "the breadcrumb links back to the shop", re.search(r'href="[^"]*/shop/"', cat) is not None)
+        check("6.5", "the category page carries its own products", 'data-product-item="true"' in cat)
+        check("6.5", "the category FAQ is printed from term meta", 'data-faq-list' in cat)
+        check("6.5", "the FAQ starts with one item open", 'data-faq-body="0"' in cat)
+        check("6.5", "the pagination stays inside the category",
+              re.search(r'href="[^"]*/product_cat/wall-washer/page/2/"', cat) is not None or "data-page-next" in cat)
+
+    # A tag has no FAQ of its own and must not invent one.
+    if tags:
+        status, tag = fetch(BASE + tags[0])
+        if status == 200:
+            check("6.5", "a tag page does not invent a FAQ", "data-faq-list" not in tag)
+
+
+def task_6_6(_: str) -> None:
+    """An empty category shows the empty state, not a broken grid."""
+    slug = "es-empty-" + str(abs(hash("phase6")) % 100000)
+    created = wp("eval", "print wp_insert_term('%s','product_cat')['term_id'];" % slug)
+    if not created.isdigit():
+        check("6.6", "temporary empty category created", False, created[:80])
+        return
+    try:
+        status, body = fetch(BASE + "/product_cat/" + slug + "/")
+        check("6.6", "empty category answers 200", status == 200, f"status={status}")
+        check("6.6", "empty state is visible", 'data-product-empty="true"' in body)
+        check("6.6", "no grid is printed", "data-product-grid" not in body)
+        check("6.6", "no pager is printed", "data-pagination-root" not in body)
+        check("6.6", "the empty state links to the shop", re.search(r'href="[^"]*/shop/"', body) is not None)
+        check("6.6", "no PHP error on the empty path",
+              not any(t in body for t in ("Fatal error", "Warning: ", "Notice: ")))
+    finally:
+        # `wp term delete` has no --yes flag, so the removal goes through eval
+        # and its result is asserted: a leaked fixture term would silently
+        # change every later term-count check.
+        removed = wp("eval", "print wp_delete_term(%s,'product_cat')===true?'ok':'failed';" % created)
+        check("6.6", "the temporary category is removed again", removed == "ok", removed[:60])
+
+
+def task_6_7(_: str) -> None:
+    """The archive never fakes a cart or a price, and keeps its assets."""
+    _, shop = fetch(BASE + "/shop/")
+    check("6.7", "no localStorage cart", "localStorage" not in shop)
+    check("6.7", "no static mirror link", 'href="product/' not in shop and 'href="../' not in shop)
+    check("6.7", "no placeholder text", "لورم" not in shop and "Lorem" not in shop)
+    check("6.7", "the compiled stylesheet is loaded", "assets/css/styles.css" in shop)
+    check("6.7", "the behaviour script is loaded", "assets/js/main.js" in shop)
+    check("6.7", "images are lazy loaded", shop.count('loading="lazy"') > 5)
+    check("6.7", "no empty image src", 'src=""' not in shop)
+    check("6.7", "the reference page-size contract is honoured", 'data-items-per-page="9"' in shop)
+
+    # The theme's own script and the markup must agree on the pager hooks.
+    script = (ROOT / "erfansanat" / "assets" / "js" / "main.js").read_text(encoding="utf-8")
+    check("6.7", "the script looks the pager up by its real attribute",
+          '[data-pagination-root]' in script and 'data-pagination-root="true"' not in script.split("function initProductsArchive")[0])
+    check("6.7", "the script reads the reference page-number attribute", "data-page-num" in script)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8080")
-    parser.add_argument("--task", action="append", choices=["6.1", "6.2", "6.3"])
+    parser.add_argument("--task", action="append", choices=["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"])
     args = parser.parse_args()
     global BASE
     BASE = args.base
-    tasks = args.task or ["6.1", "6.2", "6.3"]
+    tasks = args.task or ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"]
     for task in tasks:
         print(f"\n== task {task} ==\n")
         globals()["task_" + task.replace(".", "_")](args.base)
@@ -271,7 +457,7 @@ def main() -> int:
         print("  - " + failure)
     if FAILED:
         return 1
-    print("PHASE 6.1 HTTP CHECKS PASSED — local synthetic site only.")
+    print("PHASE 6 HTTP CHECKS PASSED — local synthetic site only.")
     return 0
 
 

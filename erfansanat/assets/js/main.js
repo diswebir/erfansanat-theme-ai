@@ -494,6 +494,18 @@
   }
 
   function updatePaginationUI(paginationRoot, matchingItems, currentPage, perPage, onPageSelect) {
+    /*
+     * A server-rendered archive already shows the right slice and links the
+     * pager. It marks itself with data-pagination-server so in-page paging
+     * cannot fight the real page number.
+     */
+    if (paginationRoot && paginationRoot.getAttribute("data-pagination-server") === "true") {
+      return Math.min(
+        Math.max(1, currentPage),
+        Math.max(1, Math.ceil(matchingItems.length / perPage))
+      );
+    }
+
     var totalMatches = matchingItems.length;
     var totalPages = Math.max(1, Math.ceil(totalMatches / perPage));
     var safePage = Math.min(Math.max(1, currentPage), totalPages);
@@ -516,14 +528,14 @@
     }
 
     paginationRoot.classList.remove("hidden");
-    var pageBtns = paginationRoot.querySelectorAll("[data-page-btn]");
+    var pageBtns = paginationRoot.querySelectorAll("[data-page-num]");
     var prevBtn = paginationRoot.querySelector('[data-page-prev="true"]');
     var nextBtn = paginationRoot.querySelector('[data-page-next="true"]');
     var summaryEl = paginationRoot.querySelector('[data-pagination-summary="true"]');
 
     for (var b = 0; b < pageBtns.length; b++) {
       var btn = pageBtns[b];
-      var pNum = parseInt(btn.getAttribute("data-page-btn") || "1", 10);
+      var pNum = parseInt(btn.getAttribute("data-page-num") || "1", 10);
       if (pNum > totalPages) {
         btn.classList.add("hidden");
       } else {
@@ -585,7 +597,7 @@
       paginationRoot.setAttribute("data-pagination-bound", "true");
       for (var k = 0; k < pageBtns.length; k++) {
         pageBtns[k].addEventListener("click", function () {
-          var targetP = parseInt(this.getAttribute("data-page-btn") || "1", 10);
+          var targetP = parseInt(this.getAttribute("data-page-num") || "1", 10);
           onPageSelect(targetP);
         });
       }
@@ -618,7 +630,7 @@
     var gridEl = archive.querySelector('[data-project-grid="true"]');
     var countEls = archive.querySelectorAll('[data-project-count="true"]');
     var emptyEl = archive.querySelector('[data-project-empty="true"]');
-    var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
+    var paginationRoot = archive.querySelector("[data-pagination-root]");
     var perPage = paginationRoot
       ? parseInt(paginationRoot.getAttribute("data-per-page") || "6", 10)
       : 6;
@@ -759,7 +771,7 @@
     var countEls = archive.querySelectorAll('[data-product-count="true"]');
     var emptyEl = archive.querySelector('[data-product-empty="true"]');
     var gridEl = archive.querySelector('[data-product-grid="true"]');
-    var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
+    var paginationRoot = archive.querySelector("[data-pagination-root]");
     var perPage = paginationRoot
       ? parseInt(paginationRoot.getAttribute("data-per-page") || "9", 10)
       : 9;
@@ -1281,7 +1293,7 @@
     var emptyEl = archive.querySelector('[data-blog-empty="true"]');
     var gridEl = archive.querySelector('[data-blog-grid="true"]');
     var items = archive.querySelectorAll('[data-blog-item="true"]');
-    var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
+    var paginationRoot = archive.querySelector("[data-pagination-root]");
     var perPage = paginationRoot
       ? parseInt(paginationRoot.getAttribute("data-per-page") || "6", 10)
       : 6;

@@ -395,4 +395,173 @@ final class ProductData {
 		$terms = get_the_terms( $product->get_id(), 'product_cat' );
 		return is_array( $terms ) ? array_values( array_filter( $terms, static fn( $term ) => $term instanceof \WP_Term ) ) : array();
 	}
+
+	/**
+	 * Filter attributes the shop sidebar and the card attributes read.
+	 *
+	 * The slugs are the real WooCommerce attribute taxonomy suffixes, so a
+	 * product edited in WooCommerce's own screens needs no extra work.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function filter_attributes(): array {
+		return array(
+			'ip-rating'     => 'IP',
+			'input-voltage' => 'V',
+			'wattage'       => 'W',
+		);
+	}
+
+	/**
+	 * One attribute value as a plain string, or '' when the product lacks it.
+	 *
+	 * @param \WC_Product $product Product.
+	 * @param string      $slug    Attribute slug without the `pa_` prefix.
+	 * @return string
+	 */
+	public static function attribute_text( \WC_Product $product, string $slug ): string {
+		$value = $product->get_attribute( 'pa_' . $slug );
+		if ( is_array( $value ) ) {
+			$value = implode( ', ', $value );
+		}
+		return is_scalar( $value ) ? trim( wp_strip_all_tags( (string) $value ) ) : '';
+	}
+
+	/**
+	 * Views counter in the historical key, falling back to the sales counter.
+	 *
+	 * The mirror sorted products by views and the migration keeps the same
+	 * key; a product that was never counted still has a real, non-invented
+	 * popularity signal in WooCommerce's own `total_sales`.
+	 *
+	 * @param \WC_Product $product Product.
+	 * @return int
+	 */
+	public static function views( \WC_Product $product ): int {
+		$views = LegacyMeta::views( $product->get_id() );
+		return $views > 0 ? $views : (int) $product->get_total_sales();
+	}
+
+	/**
+	 * Filter payload for the archive grid item.
+	 *
+	 * The archive script filters and sorts entirely in the browser, so every
+	 * value it needs is written once here instead of inside the template.
+	 *
+	 * @param \WC_Product $product Product.
+	 * @return array<string, string>
+	 */
+	public static function archive_payload( \WC_Product $product ): array {
+		$categories = self::categories( $product );
+		$names      = array();
+		$slugs      = array();
+		foreach ( $categories as $category ) {
+			$names[] = $category->name;
+			$slugs[] = $category->slug;
+		}
+
+		$rating = self::rating( $product );
+		$ids    = self::identifiers( $product->get_id() );
+		$search = array( $product->get_name() );
+
+		$search[] = $product->get_sku();
+		foreach ( $ids as $row ) {
+			$search[] = (string) $row['value'];
+		}
+		foreach ( self::filter_attributes() as $slug => $unused ) {
+			unset( $unused );
+			$search[] = self::attribute_text( $product, $slug );
+		}
+		$search[] = wp_strip_all_tags( (string) $product->get_short_description() );
+		$search[] = implode( ' ', $names );
+		$search[] = implode( ' ', $slugs );
+
+		$search = array_values( array_filter( array_map( 'trim', $search ), static fn( $value ) => '' !== $value ) );
+
+		return array(
+			'category'    => array() !== $names ? $names[0] : '',
+			'categories'  => implode( ',', $names ),
+			'purchasable' => self::is_direct_sale( $product ) ? 'true' : 'false',
+			'price'       => (string) (int) round( (float) $product->get_price() ),
+			'ip'          => self::attribute_text( $product, 'ip-rating' ),
+			'voltage'     => self::attribute_text( $product, 'input-voltage' ),
+			'wattage'     => self::attribute_text( $product, 'wattage' ),
+			'views'       => (string) self::views( $product ),
+			'rating'      => (string) $rating['average'],
+			'search_text' => implode( ' ', $search ),
+		);
+	}
+
+	/**
+	 * FAQ rows stored on a product category term.
+	 *
+	 * Terms use `LegacyMeta::term_key()` so the same historical JSON shape an
+	 * editor already saved keeps working after the migration.
+	 *
+	 * @param \WP_Term $term Category term.
+	 * @return array<int, array{question: string, answer: string}>
+	 */
+	public static function term_faq( \WP_Term $term ): array {
+		$raw = LegacyMeta::to_array( get_term_meta( $term->term_id, LegacyMeta::term_key( 'faq' ), true ) );
+		$faq = array();
+		foreach ( $raw as $row ) {
+			if ( ! is_array( $row ) ) {
+				continue;
+			}
+			$question = isset( $row['name_question'] ) && is_scalar( $row['name_question'] ) ? trim( (string) $row['name_question'] ) : '';
+			$answer   = isset( $row['answer_question'] ) && is_scalar( $row['answer_question'] ) ? trim( (string) $row['answer_question'] ) : '';
+			if ( '' === $question || '' === $answer ) {
+				continue;
+			}
+			$faq[] = array(
+				'question' => $question,
+				'answer'   => $answer,
+			);
+		}
+		return $faq;
+	}
+
+	/**
+	 * Category thumbnail term meta as an image URL.
+	 *
+	 * @param \WP_Term $term Category term.
+	 * @param string   $size Image size.
+	 * @return string
+	 */
+	public static function term_image( \WP_Term $term, string $size = 'erfansanat-wide' ): string {
+		$id = absint( get_term_meta( $term->term_id, LegacyMeta::term_key( 'thumbnail' ), true ) );
+		if ( $id <= 0 ) {
+			return '';
+		}
+		$url = wp_get_attachment_image_url( $id, $size );
+		return is_string( $url ) ? $url : '';
+	}
+
+	/**
+	 * Products for an archive page, in a stable order the browser script can
+	 * re-sort without losing a product.
+	 *
+	 * @param string $orderby `menu_order` or `price`.
+	 * @return array<int, \WC_Product>
+	 */
+	public static function archive_products( string $orderby = 'menu_order' ): array {
+		if ( ! function_exists( 'wc_get_products' ) ) {
+			return array();
+		}
+		$args = array(
+			'status'  => 'publish',
+			'limit'   => -1,
+			'orderby' => $orderby,
+			'order'   => 'ASC',
+		);
+
+		if ( 'price' === $orderby ) {
+			$args['orderby']  = 'meta_value_num';
+			$args['meta_key'] = '_price'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- WooCommerce's own price key.
+			$args['order']    = (string) get_option( 'woocommerce_default_catalog_orderby' ) === 'price-desc' ? 'DESC' : 'ASC';
+		}
+
+		$products = wc_get_products( $args );
+		return is_array( $products ) ? $products : array();
+	}
 }
