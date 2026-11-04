@@ -117,3 +117,6 @@
 
 ## ADMIN FONT FULL + JSON-LD + fa_IR.mo — 2026-11-04
 - فونت وزیرمتن حالا کل پنل ادمین + صفحه لاگین + adminbar + metaboxها + صفحات تنظیمات قالب را کاver می‌کند (admin-font.css کامل + inline @font-face). JSON-LD (Organization/Product/BlogPosting) به wp_head اضافه شد. fa_IR.mo ساخته شد. Bug fatal \ErfanSanat\Theme\Admin\Migrator (namespace اشتباه) در WP_ADMIN=true رفع شد. تست ۱۴/۱۴ ALL PASS، E2E 0 FAIL.
+
+## ADMIN PANEL FUNCTIONAL — 2026-11-04
+- test-admin-panel: ThemeOptions save/persist (nonce), SectionManager metabox save + nonce rejection, Migrator در context ادمین (بعد از fix fatal), admin menu — ۱۱/۱۱ ALL PASS. E2E 0 FAIL.

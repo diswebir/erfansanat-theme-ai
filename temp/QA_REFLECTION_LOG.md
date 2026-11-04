@@ -105,3 +105,6 @@
 
 ## ADMIN FONT FULL + JSON-LD + fa_IR.mo — 2026-11-04
 - Vazirmatn now covers entire admin incl. login screen, admin bar, metaboxes, theme option pages. JSON-LD schema (Organization/Product/BlogPosting) in wp_head. fa_IR.mo generated. Fixed real fatal: Admin\Migrator wrong namespace crashed admin context. 14/14 ALL PASS, E2E 0 FAILs.
+
+## ADMIN PANEL FUNCTIONAL — 2026-11-04
+- Real admin-context test: options save/persist with nonce, section manager metabox save + bad-nonce rejection, migrator run, admin menus. 11/11 ALL PASS, E2E 0 FAILs.
