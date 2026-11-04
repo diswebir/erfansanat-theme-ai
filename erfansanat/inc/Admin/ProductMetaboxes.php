@@ -13,6 +13,9 @@ namespace ErfanSanat\Theme\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
+use ErfanSanat\Theme\Core\LegacyMeta;
+use WP_Term;
+
 final class ProductMetaboxes {
 
 	/** Industrial/legal identifiers (P03-T013) — text, leading zeros preserved. */
@@ -41,6 +44,7 @@ final class ProductMetaboxes {
 		add_meta_box( 'es-product-ids', __( 'شناسه‌های صنعتی و قانونی', 'erfansanat' ), array( __CLASS__, 'render_ids' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-titles', __( 'عناوین و وضعیت فروش', 'erfansanat' ), array( __CLASS__, 'render_titles' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-files', __( 'کاتالوگ و گالری', 'erfansanat' ), array( __CLASS__, 'render_files' ), 'product', 'normal', 'default' );
+		add_meta_box( 'es-product-relations', __( 'پروژه‌ها و کاربردهای مرتبط', 'erfansanat' ), array( __CLASS__, 'render_relations' ), 'product', 'normal', 'default' );
 	}
 
 	/**
@@ -63,6 +67,7 @@ final class ProductMetaboxes {
 		self::save_ids( $post_id );
 		self::save_titles( $post_id );
 		self::save_files( $post_id );
+		self::save_relations( $post_id );
 	}
 
 	/**
@@ -293,6 +298,92 @@ final class ProductMetaboxes {
 			if ( metadata_exists( 'post', $post_id, $key ) ) {
 				update_post_meta( $post_id, $key, isset( $ids[ $i ] ) ? $ids[ $i ] : '' );
 			}
+		}
+	}
+
+	/**
+	 * Read related project ids (validated against existing projects).
+	 *
+	 * @return array<int,int>
+	 */
+	public static function get_related_projects( $post_id ): array {
+		$ids = array();
+		foreach ( LegacyMeta::get( $post_id, 'project-ids' ) as $id ) {
+			$id = absint( $id );
+			if ( $id > 0 && 'projects' === get_post_type( $id ) ) {
+				$ids[] = $id;
+			}
+		}
+		return $ids;
+	}
+
+	/**
+	 * Read related project-type term ids (validated against existing terms).
+	 *
+	 * @return array<int,int>
+	 */
+	public static function get_usage_terms( $post_id ): array {
+		$ids = array();
+		foreach ( LegacyMeta::get( $post_id, 'usage_countr' ) as $term_id ) {
+			$term_id = absint( $term_id );
+			$term    = $term_id > 0 ? get_term( $term_id, 'project_type' ) : null;
+			if ( $term instanceof WP_Term ) {
+				$ids[] = $term_id;
+			}
+		}
+		return $ids;
+	}
+
+	/**
+	 * Render the relations metabox (P03-T016).
+	 *
+	 * @param \WP_Post $post Post.
+	 */
+	public static function render_relations( $post ): void {
+		wp_nonce_field( 'es_product_relations', 'es_product_relations_nonce' );
+
+		$projects = implode( ',', self::get_related_projects( $post->ID ) );
+		$terms    = implode( ',', self::get_usage_terms( $post->ID ) );
+
+		printf( '<p class="es-field"><label for="es-project-ids">%s</label><input type="text" id="es-project-ids" name="es_relations[project-ids]" value="%s" class="widefat" /></p>', esc_html__( 'پروژه‌های مرتبط (شناسه‌ها با کاما)', 'erfansanat' ), esc_attr( $projects ) );
+		printf( '<p class="es-field"><label for="es-usage-countr">%s</label><input type="text" id="es-usage-countr" name="es_relations[usage_countr]" value="%s" class="widefat" /></p>', esc_html__( 'کاربردها (شناسه انواع پروژه با کاما)', 'erfansanat' ), esc_attr( $terms ) );
+	}
+
+	/**
+	 * Save relations: only valid project ids / project_type term ids are kept,
+	 * and the previous storage format (PHP array vs JSON) is preserved.
+	 *
+	 * @param int $post_id Post id.
+	 */
+	public static function save_relations( $post_id ): void {
+		if ( ! isset( $_POST['es_product_relations_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['es_product_relations_nonce'] ) ), 'es_product_relations' ) ) {
+			return;
+		}
+		if ( ! isset( $_POST['es_relations'] ) || ! is_array( $_POST['es_relations'] ) ) {
+			return;
+		}
+
+		$raw = wp_unslash( $_POST['es_relations'] );
+
+		if ( array_key_exists( 'project-ids', $raw ) ) {
+			$valid = array();
+			foreach ( self::parse_ids( $raw['project-ids'] ) as $id ) {
+				if ( 'projects' === get_post_type( $id ) ) {
+					$valid[] = $id; // AC-01: only real projects; deleted ids dropped.
+				}
+			}
+			LegacyMeta::set( $post_id, 'project-ids', $valid );
+		}
+
+		if ( array_key_exists( 'usage_countr', $raw ) ) {
+			$valid = array();
+			foreach ( self::parse_ids( $raw['usage_countr'] ) as $term_id ) {
+				$term = get_term( $term_id, 'project_type' );
+				if ( $term instanceof WP_Term ) {
+					$valid[] = $term_id; // AC-02: only real project_type terms.
+				}
+			}
+			LegacyMeta::set( $post_id, 'usage_countr', $valid );
 		}
 	}
 }

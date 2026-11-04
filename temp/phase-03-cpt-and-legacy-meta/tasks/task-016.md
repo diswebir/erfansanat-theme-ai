@@ -1,6 +1,6 @@
 # P03-T016 — متاباکس روابط محصول
 
-> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 3: CPTها، تکسونومی‌ها و متاباکس‌های Legacy · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `3.2` · وابستگی‌ها: `P03-T012`, `P03-T001`, `P03-T003`
 
 ## هدف دقیق
@@ -21,20 +21,20 @@
 `project-ids`, `usage_countr`
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: project-ids فقط ID پروژه معتبر بپذیرد.
-- [ ] AC-02: usage_countr فقط term_id پروژه‌تایپ بپذیرد.
-- [ ] AC-03: فرمت ذخیره قبلی حفظ شود.
+- [x] AC-01: project-ids فقط ID پروژه معتبر بپذیرد.
+- [x] AC-02: usage_countr فقط term_id پروژه‌تایپ بپذیرد.
+- [x] AC-03: فرمت ذخیره قبلی حفظ شود.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: رابط دوطرفه داده را خراب نکند.
-- [ ] SC-02: ID حذف‌شده پاک‌سازی شود.
+- [x] SC-01: رابط دوطرفه داده را خراب نکند.
+- [x] SC-02: ID حذف‌شده پاک‌سازی شود.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-03-cpt-and-legacy-meta/tests/test-task-016.php`
@@ -44,3 +44,7 @@
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-03-cpt-and-legacy-meta/tests/test-task-016.php` → **10 passed, 0 failed, 0 pending**.
