@@ -4,6 +4,11 @@ declare(strict_types=1);
 $root=dirname(__DIR__,3);$failures=[];
 $assert=static function(bool $condition,string $label)use(&$failures):void{echo $condition?"  [PASS] {$label}\n":"  [FAIL] {$label}\n";if(!$condition)$failures[]=$label;};
 require_once '/opt/wp-testbed/wp-load.php';$GLOBALS['wp']->main();
+$optionsClass = 'ErfanSanat\\Theme\\Admin\\OptionsStore';
+$originalOptions = get_option($optionsClass::OPTION_NAME, []);
+$enabledMap = \ErfanSanat\Theme\Filters\FilterRegistry::defaultEnabled();
+update_option($optionsClass::OPTION_NAME, array_merge(is_array($originalOptions) ? $originalOptions : [], ['enabled_filters' => $enabledMap]));
+$optionsClass::flushCache();
 echo "=== [TEST] Task 8.7: Product filter AJAX endpoint ===\n";
 $class='ErfanSanat\\Theme\\Ajax\\ProductFilterEndpoint';
 $assert(is_file($root.'/inc/Ajax/ProductFilterEndpoint.php'),'ProductFilterEndpoint source exists');
@@ -22,4 +27,5 @@ $assert(($call['data']['items']??[])===[$ids[0]],'sale mode composes with the pr
 $empty=$endpoint->search(['product_cat'=>'no-such-product-category-qa']);
 $assert(($empty['count']??-1)===0&&str_contains($empty['data']['empty_html']??'','محصولی مطابق فیلترهای انتخابی پیدا نشد'),'no results returns the existing empty-state markup');
 foreach($ids as $id)wp_delete_post($id,true);
+update_option($optionsClass::OPTION_NAME, $originalOptions); $optionsClass::flushCache();
 if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Task 8.7 checks completed successfully.\n";

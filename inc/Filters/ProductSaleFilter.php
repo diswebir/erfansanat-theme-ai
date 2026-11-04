@@ -10,6 +10,7 @@ final class ProductSaleFilter
     public static function apply(array $queryArgs, mixed $mode): array
     {
         $mode = is_scalar($mode) ? sanitize_key((string) $mode) : 'all';
+        if (!FilterRegistry::isEnabled('true_sale')) $mode = 'all';
         if (!in_array($mode, ['all', 'online', 'call'], true) || $mode === 'all') {
             return $queryArgs;
         }

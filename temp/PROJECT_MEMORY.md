@@ -2,7 +2,7 @@
 
 ## وضعیت فعلی (Current Stage & Status)
 - **مرحله فعلی:** `PHASE 8 IN PROGRESS — TASK 8.1 PASSED; CONTINUE TASK-BY-TASK`
-- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20; Phase 8 has started with explicit user approval. Tasks 8.1–8.7 passed targeted tests; Phase 8 is not complete.`
+- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20; Phase 8 has started with explicit user approval. Tasks 8.1–8.8 passed targeted tests; Phase 8 is not complete.`
 - **آخرین فاز پاس‌شده:** Phase 2 — داشبورد ادمین (آپشن واحد `erfansanat_theme_options` + `es_option()`)، تب‌های هدر/فوتر/ظاهر/فیلترها (۲۵ toggle شامل ۱۸ `pa_*`) و SectionManager کامل (`_es_sections` + Drag&Drop + `es_render_sections()`); سوئیت فاز ۲: ۱۵/۱۵ پاس و رگرسیون فاز ۱ سبز.
 - **آخرین فاز پاس‌شده:** Phase 3 — CPT `projects`، تکسونومی‌های `project_type`/`city`/`product_brand`، گارد Rewrite ووکامرس، ریدایرکت ۳۰۱ `/project/`، موتور `LegacyMeta` (فرمت `item-0` جت‌انجین)، متاباکس‌های کامل محصول/پروژه/ترم با کلیدهای دقیق دیتابیس زنده، Hreflang و `ViewCounter`؛ سوئیت فاز ۳: ۱۷/۱۷ پاس، رگرسیون فازهای ۱ و ۲ سبز.
 - **آخرین فاز پاس‌شده:** Phase 5 — front-page با ۱۵ سکشن پیش‌فرض SectionManager (هیرو ۵ صحنه‌ای با ویدیو و data-home1-*، پروژه‌ها، شمارنده‌ها، تایم‌لاین، محصولات، خدمات تب‌دار data-service-*، مقالات و CTA) + ۳ کارت استاندارد؛ سوئیت فاز ۵: ۲۰/۲۰ پاس، رگرسیون فازهای ۱ تا ۴ سبز. نکته: static-mirror در ریست سندباکس حذف شد و فاز ۴ بازسازی شد (11/11).
@@ -102,3 +102,4 @@
 - Phase 8 Task 8.5 passed: purchase-mode query modifier uses exact `true_sale` metadata; online includes explicit non-false and missing-meta defaults (consistent with the product card), call matches `false`, and all/invalid modes leave the query unfiltered. Tasks 8.1–8.5 targeted tests pass.
 - Phase 8 Task 8.6 passed: product attribute query builder maps all 18 `pa_*` taxonomies independently, sanitizes term slugs, ignores unknown keys, AND-merges with existing category clauses, and skips admin-disabled filters. Tasks 8.1–8.6 targeted suites pass.
 - Phase 8 Task 8.7 passed: `product_filter` combines search/category/price/sort, exact `true_sale`, and enabled attribute filters; returns existing card-product HTML, count, current/total pages, standard WP pagination markup, and the archive empty-state fragment. The endpoint itself does not mutate URLs. Phase 8 remains in progress.
+- Phase 8 Task 8.8 passed: product archive controls now serialize search, selected categories, max price, sale mode, all enabled `pa_*` selections, sort, and page to the shared AJAX route; updates grid/count/empty/pagination; prevents pagination navigation and never reads or mutates filter URLs. Server-side builders/endpoint ignore dashboard-disabled filters. Phase 8 remains in progress.

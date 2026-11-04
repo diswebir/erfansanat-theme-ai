@@ -745,150 +745,118 @@
   function initProductsArchive() {
     var archive = document.querySelector("[data-products-archive]");
     if (!archive) return;
-
     initArchiveDrawer(archive);
 
     var searchInputs = archive.querySelectorAll('[data-product-search="true"]');
     var purchaseRadios = archive.querySelectorAll("[data-product-purchase-mode]");
     var priceSliders = archive.querySelectorAll('[data-product-price-range="true"]');
     var priceLabels = archive.querySelectorAll('[data-product-price-label="true"]');
-    var ipCheckboxes = archive.querySelectorAll("[data-product-ip-filter]");
-    var voltageCheckboxes = archive.querySelectorAll("[data-product-voltage-filter]");
+    var categoryInputs = archive.querySelectorAll("[data-product-category-filter]");
+    var attributeInputs = archive.querySelectorAll("[data-product-attribute-filter]");
     var sortSelect = archive.querySelector('[data-product-sort="true"]');
     var purchBadge = archive.querySelector('[data-product-active-purch-badge="true"]');
     var countEls = archive.querySelectorAll('[data-product-count="true"]');
     var emptyEl = archive.querySelector('[data-product-empty="true"]');
     var gridEl = archive.querySelector('[data-product-grid="true"]');
-    var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
-    var perPage = paginationRoot
-      ? parseInt(paginationRoot.getAttribute("data-per-page") || "9", 10)
-      : 9;
+    var paginationRoot = archive.querySelector('nav[aria-label="صفحه‌بندی محصولات"]');
+    if (!gridEl || !window.esThemeData || !window.esThemeData.ajaxUrl) return;
 
     var purchaseMode = "all";
     var maxPrice = 3000000;
-    var selectedIps = [];
-    var selectedVoltages = [];
     var searchQuery = "";
-    var sortBy = "popular";
+    var sortBy = sortSelect ? (sortSelect.value || "default") : "default";
     var currentPage = 1;
+    var requestVersion = 0;
+    var debounceTimer = null;
 
-    try {
-      var params = new URLSearchParams(window.location.search);
-      if (params.get("purchasable") === "true") purchaseMode = "online";
-      var qPage = params.get("page");
-      if (qPage) currentPage = Math.max(1, parseInt(qPage, 10) || 1);
-    } catch (_e) {}
+    function selectedValues(inputs, attribute) {
+      var values = [];
+      for (var i = 0; i < inputs.length; i++) {
+        if (!inputs[i].checked) continue;
+        var value = inputs[i].getAttribute(attribute) || "";
+        if (value && values.indexOf(value) === -1) values.push(value);
+      }
+      return values;
+    }
 
-    function renderProductsFilter() {
-      if (!gridEl) return;
-      var allItems = Array.prototype.slice.call(
-        gridEl.querySelectorAll("[data-product-item]")
-      );
+    function updatePagination(markup) {
+      if (!markup) {
+        if (paginationRoot && paginationRoot.parentNode) paginationRoot.parentNode.removeChild(paginationRoot);
+        paginationRoot = null;
+        return;
+      }
+      if (!paginationRoot) {
+        paginationRoot = document.createElement("nav");
+        paginationRoot.setAttribute("aria-label", "صفحه‌بندی محصولات");
+        paginationRoot.className = "mt-8";
+        gridEl.parentNode.insertBefore(paginationRoot, gridEl.nextSibling);
+      }
+      paginationRoot.innerHTML = markup;
+      paginationRoot.onclick = function (event) {
+        var link = event.target && event.target.closest ? event.target.closest("a.page-numbers") : null;
+        if (!link) return;
+        event.preventDefault();
+        var match = (link.getAttribute("href") || "").match(/page-(\d+)/);
+        if (!match) return;
+        currentPage = Math.max(1, parseInt(match[1], 10) || 1);
+        renderProductsFilter(false);
+        archive.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+    }
 
-      // Sort items
-      allItems.sort(function (a, b) {
-        if (sortBy === "rating") {
-          var rA = parseFloat(a.getAttribute("data-product-rating") || "0");
-          var rB = parseFloat(b.getAttribute("data-product-rating") || "0");
-          return rB - rA;
+    function sendProductFilters() {
+      if (!window.esThemeData.ajaxNonce) return;
+      var version = ++requestVersion;
+      var payload = new URLSearchParams();
+      payload.set("action", "erfan_sanat_ajax");
+      payload.set("nonce", window.esThemeData.ajaxNonce);
+      payload.set("route", "product_filter");
+      payload.set("search", searchQuery.trim());
+      payload.set("true_sale", purchaseMode);
+      payload.set("max_price", String(maxPrice));
+      payload.set("sort", sortBy);
+      payload.set("page", String(currentPage));
+      var categories = selectedValues(categoryInputs, "data-product-category-filter");
+      for (var c = 0; c < categories.length; c++) payload.append("product_cat[]", categories[c]);
+      var attributes = {};
+      for (var a = 0; a < attributeInputs.length; a++) {
+        var control = attributeInputs[a];
+        if (!control.checked) continue;
+        var taxonomy = control.getAttribute("data-product-attribute-filter") || "";
+        var term = control.getAttribute("data-product-attribute-value") || "";
+        if (!taxonomy || !term) continue;
+        if (!attributes[taxonomy]) attributes[taxonomy] = [];
+        if (attributes[taxonomy].indexOf(term) === -1) attributes[taxonomy].push(term);
+      }
+      Object.keys(attributes).forEach(function (taxonomy) {
+        for (var i = 0; i < attributes[taxonomy].length; i++) {
+          payload.append("attributes[" + taxonomy + "][]", attributes[taxonomy][i]);
         }
-        if (sortBy === "price-asc") {
-          var pA = parseInt(a.getAttribute("data-product-price") || "999999999", 10) || 999999999;
-          var pB = parseInt(b.getAttribute("data-product-price") || "999999999", 10) || 999999999;
-          return pA - pB;
-        }
-        if (sortBy === "price-desc") {
-          var pdA = parseInt(a.getAttribute("data-product-price") || "0", 10) || 0;
-          var pdB = parseInt(b.getAttribute("data-product-price") || "0", 10) || 0;
-          return pdB - pdA;
-        }
-        var vA = parseInt(a.getAttribute("data-product-views") || "0", 10);
-        var vB = parseInt(b.getAttribute("data-product-views") || "0", 10);
-        return vB - vA;
       });
-
-      for (var s = 0; s < allItems.length; s++) {
-        gridEl.appendChild(allItems[s]);
-      }
-
-      var q = searchQuery.trim();
-      var matchingItems = [];
-
-      for (var i = 0; i < allItems.length; i++) {
-        var item = allItems[i];
-        var purch = item.getAttribute("data-product-purchasable") === "true";
-        var itemPrice = parseInt(item.getAttribute("data-product-price") || "0", 10) || 0;
-        var itemIp = item.getAttribute("data-product-ip") || "";
-        var itemVoltage = item.getAttribute("data-product-voltage") || "";
-        var pText = item.getAttribute("data-product-search-text") || "";
-
-        var matchPurch =
-          purchaseMode === "all" ||
-          (purchaseMode === "online" && purch) ||
-          (purchaseMode === "call" && !purch);
-
-        var matchPrice = maxPrice >= 3000000 || (purch && itemPrice <= maxPrice);
-
-        var matchIp =
-          selectedIps.length === 0 ||
-          selectedIps.some(function (ip) {
-            return itemIp.indexOf(ip) !== -1;
-          });
-
-        var matchVoltage =
-          selectedVoltages.length === 0 ||
-          selectedVoltages.some(function (v) {
-            return itemVoltage.indexOf(v) !== -1;
-          });
-
-        var matchQuery = !q || pText.indexOf(q) !== -1;
-
-        if (matchPurch && matchPrice && matchIp && matchVoltage && matchQuery) {
-          matchingItems.push(item);
-        } else {
-          item.classList.add("hidden");
+      fetch(window.esThemeData.ajaxUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: payload.toString()
+      }).then(function (response) { return response.json(); }).then(function (result) {
+        if (version !== requestVersion || !result || !result.success) return;
+        gridEl.innerHTML = result.html || "";
+        var isEmpty = !!(result.data && result.data.empty);
+        if (emptyEl) {
+          emptyEl.classList.toggle("hidden", !isEmpty);
+          emptyEl.classList.toggle("block", isEmpty);
         }
-      }
+        gridEl.classList.toggle("hidden", isEmpty);
+        for (var i = 0; i < countEls.length; i++) countEls[i].textContent = toFa(result.count || 0);
+        updatePagination(result.data ? result.data.pagination_html || "" : "");
+        if (purchBadge) purchBadge.classList.toggle("hidden", purchaseMode !== "online");
+      }).catch(function () {});
+    }
 
-      if (purchBadge) {
-        if (purchaseMode === "online") {
-          purchBadge.classList.remove("hidden");
-          purchBadge.classList.add("inline-flex");
-        } else {
-          purchBadge.classList.add("hidden");
-          purchBadge.classList.remove("inline-flex");
-        }
-      }
-
-      for (var c = 0; c < countEls.length; c++) {
-        countEls[c].textContent = toFa(matchingItems.length);
-      }
-
-      if (emptyEl && gridEl) {
-        if (matchingItems.length === 0) {
-          emptyEl.classList.remove("hidden");
-          emptyEl.classList.add("block");
-          gridEl.classList.add("hidden");
-        } else {
-          emptyEl.classList.add("hidden");
-          emptyEl.classList.remove("block");
-          gridEl.classList.remove("hidden");
-        }
-      }
-
-      currentPage = updatePaginationUI(
-        paginationRoot,
-        matchingItems,
-        currentPage,
-        perPage,
-        function (action) {
-          if (action === "prev") currentPage = Math.max(1, currentPage - 1);
-          else if (action === "next") currentPage = currentPage + 1;
-          else currentPage = Number(action) || 1;
-          renderProductsFilter();
-          archive.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      );
+    function renderProductsFilter(debounce) {
+      clearTimeout(debounceTimer);
+      var wait = debounce === false ? 0 : 220;
+      debounceTimer = setTimeout(sendProductFilters, wait);
     }
 
     for (var r = 0; r < purchaseRadios.length; r++) {
@@ -896,92 +864,30 @@
         if (!this.checked) return;
         purchaseMode = this.getAttribute("data-product-purchase-mode") || "all";
         currentPage = 1;
-        for (var k = 0; k < purchaseRadios.length; k++) {
-          purchaseRadios[k].checked =
-            purchaseRadios[k].getAttribute("data-product-purchase-mode") === purchaseMode;
-        }
         renderProductsFilter();
       });
     }
-
     for (var sl = 0; sl < priceSliders.length; sl++) {
       priceSliders[sl].addEventListener("input", function () {
-        var val = parseInt(this.value || "3000000", 10);
-        maxPrice = val;
+        maxPrice = Math.max(0, parseInt(this.value || "3000000", 10) || 0);
         currentPage = 1;
-        for (var k = 0; k < priceSliders.length; k++) {
-          if (priceSliders[k] !== this) priceSliders[k].value = String(val);
-        }
-        for (var l = 0; l < priceLabels.length; l++) {
-          priceLabels[l].textContent = "تا " + formatToman(val);
-        }
+        for (var k = 0; k < priceSliders.length; k++) if (priceSliders[k] !== this) priceSliders[k].value = String(maxPrice);
+        for (var l = 0; l < priceLabels.length; l++) priceLabels[l].textContent = "تا " + formatToman(maxPrice);
         renderProductsFilter();
       });
     }
-
-    for (var ipIdx = 0; ipIdx < ipCheckboxes.length; ipIdx++) {
-      ipCheckboxes[ipIdx].addEventListener("change", function () {
-        var ipVal = this.getAttribute("data-product-ip-filter") || "";
-        var checked = this.checked;
-        for (var k = 0; k < ipCheckboxes.length; k++) {
-          if (ipCheckboxes[k].getAttribute("data-product-ip-filter") === ipVal) {
-            ipCheckboxes[k].checked = checked;
-          }
-        }
-        selectedIps = [];
-        for (var m = 0; m < ipCheckboxes.length; m++) {
-          var v = ipCheckboxes[m].getAttribute("data-product-ip-filter") || "";
-          if (ipCheckboxes[m].checked && selectedIps.indexOf(v) === -1) {
-            selectedIps.push(v);
-          }
-        }
-        currentPage = 1;
-        renderProductsFilter();
-      });
-    }
-
-    for (var vIdx = 0; vIdx < voltageCheckboxes.length; vIdx++) {
-      voltageCheckboxes[vIdx].addEventListener("change", function () {
-        var vVal = this.getAttribute("data-product-voltage-filter") || "";
-        var checked = this.checked;
-        for (var k = 0; k < voltageCheckboxes.length; k++) {
-          if (voltageCheckboxes[k].getAttribute("data-product-voltage-filter") === vVal) {
-            voltageCheckboxes[k].checked = checked;
-          }
-        }
-        selectedVoltages = [];
-        for (var m = 0; m < voltageCheckboxes.length; m++) {
-          var v = voltageCheckboxes[m].getAttribute("data-product-voltage-filter") || "";
-          if (voltageCheckboxes[m].checked && selectedVoltages.indexOf(v) === -1) {
-            selectedVoltages.push(v);
-          }
-        }
-        currentPage = 1;
-        renderProductsFilter();
-      });
-    }
-
+    for (var ci = 0; ci < categoryInputs.length; ci++) categoryInputs[ci].addEventListener("change", function () { currentPage = 1; renderProductsFilter(); });
+    for (var ai = 0; ai < attributeInputs.length; ai++) attributeInputs[ai].addEventListener("change", function () { currentPage = 1; renderProductsFilter(); });
     for (var s = 0; s < searchInputs.length; s++) {
       searchInputs[s].addEventListener("input", function () {
-        var val = this.value || "";
-        searchQuery = val;
+        searchQuery = this.value || "";
         currentPage = 1;
-        for (var k = 0; k < searchInputs.length; k++) {
-          if (searchInputs[k] !== this) searchInputs[k].value = val;
-        }
+        for (var k = 0; k < searchInputs.length; k++) if (searchInputs[k] !== this) searchInputs[k].value = searchQuery;
         renderProductsFilter();
       });
     }
-
-    if (sortSelect) {
-      sortSelect.addEventListener("change", function () {
-        sortBy = this.value || "popular";
-        currentPage = 1;
-        renderProductsFilter();
-      });
-    }
-
-    renderProductsFilter();
+    if (sortSelect) sortSelect.addEventListener("change", function () { sortBy = this.value || "default"; currentPage = 1; renderProductsFilter(); });
+    renderProductsFilter(false);
   }
 
   /* ───────────────────────────────────────────────

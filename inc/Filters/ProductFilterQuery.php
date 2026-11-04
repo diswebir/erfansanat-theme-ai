@@ -23,22 +23,27 @@ final class ProductFilterQuery
         ];
 
         $search = $input['search'] ?? $input['query'] ?? '';
-        if (is_scalar($search)) {
+        if (FilterRegistry::isEnabled('search') && is_scalar($search)) {
             $search = trim(sanitize_text_field((string) $search));
             if ($search !== '') $args['s'] = $search;
         }
 
-        $category = $input['product_cat'] ?? '';
-        if (is_scalar($category) && trim((string) $category) !== '') {
-            $category = is_numeric($category) ? absint($category) : sanitize_title((string) $category);
-            if ($category !== '' && $category !== 0) {
-                $args['tax_query'] = [[
-                    'taxonomy' => 'product_cat',
-                    'field' => is_int($category) ? 'term_id' : 'slug',
-                    'terms' => [$category],
-                    'operator' => 'IN',
-                ]];
-            }
+        $rawCategories = $input['product_cat'] ?? [];
+        $rawCategories = is_array($rawCategories) ? $rawCategories : [$rawCategories];
+        $categoryTerms = [];
+        foreach ($rawCategories as $rawCategory) {
+            if (!is_scalar($rawCategory)) continue;
+            $slug = sanitize_title((string) $rawCategory);
+            if ($slug !== '') $categoryTerms[] = $slug;
+        }
+        $categoryTerms = array_values(array_unique($categoryTerms));
+        if (FilterRegistry::isEnabled('product_cat') && $categoryTerms !== []) {
+            $args['tax_query'] = [[
+                'taxonomy' => 'product_cat',
+                'field' => 'slug',
+                'terms' => $categoryTerms,
+                'operator' => 'IN',
+            ]];
         }
 
         $min = self::priceBound($input['min_price'] ?? $input['price_min'] ?? null);
@@ -57,11 +62,11 @@ final class ProductFilterQuery
             $priceClause['value'] = $max;
             $priceClause['compare'] = '<=';
         }
-        if (isset($priceClause['value'])) {
+        if (FilterRegistry::isEnabled('price') && isset($priceClause['value'])) {
             $args['meta_query'] = [$priceClause];
         }
 
-        $sort = isset($input['sort']) && is_scalar($input['sort']) ? sanitize_key((string) $input['sort']) : 'default';
+        $sort = FilterRegistry::isEnabled('sort') && isset($input['sort']) && is_scalar($input['sort']) ? sanitize_key((string) $input['sort']) : 'default';
         if (!in_array($sort, self::SORTS, true)) $sort = 'default';
         switch ($sort) {
             case 'price-asc':

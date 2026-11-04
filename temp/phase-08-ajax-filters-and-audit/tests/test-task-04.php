@@ -6,6 +6,11 @@ $failures = [];
 $assert = static function (bool $condition, string $label) use (&$failures): void { echo $condition ? "  [PASS] {$label}\n" : "  [FAIL] {$label}\n"; if (!$condition) $failures[] = $label; };
 require_once '/opt/wp-testbed/wp-load.php';
 $GLOBALS['wp']->main();
+$optionsClass = 'ErfanSanat\\Theme\\Admin\\OptionsStore';
+$originalOptions = get_option($optionsClass::OPTION_NAME, []);
+$enabledMap = \ErfanSanat\Theme\Filters\FilterRegistry::defaultEnabled();
+update_option($optionsClass::OPTION_NAME, array_merge(is_array($originalOptions) ? $originalOptions : [], ['enabled_filters' => $enabledMap]));
+$optionsClass::flushCache();
 echo "=== [TEST] Task 8.4: Product filter query builder ===\n";
 $class = 'ErfanSanat\\Theme\\Filters\\ProductFilterQuery';
 $assert(is_file($root . '/inc/Filters/ProductFilterQuery.php'), 'ProductFilterQuery source exists');
@@ -29,11 +34,14 @@ $assert(isset($args['meta_query'][0]['key']) && $args['meta_query'][0]['key'] ==
 $assert(($args['meta_key'] ?? '') === '_price' && ($args['orderby'] ?? '') === 'meta_value_num' && ($args['order'] ?? '') === 'ASC', 'price-asc sort is numeric and ascending');
 $query = new WP_Query($args);
 $assert(count(array_intersect($ids, wp_list_pluck($query->posts, 'ID'))) === 1 && (int) $query->posts[0]->ID === $ids[0], 'combined search/category/price filters return only the expected product');
+$multiCategory = $class::buildArgs(['product_cat' => ['category-one', 'category-two']]);
+$assert(($multiCategory['tax_query'][0]['terms'] ?? []) === ['category-one', 'category-two'], 'multiple selected categories are preserved as a sanitized OR set');
 $badSort = $class::buildArgs(['sort' => 'sql injection DESC']);
 $assert(($badSort['orderby'] ?? '') === 'menu_order title' && ($badSort['order'] ?? '') === 'ASC', 'unsupported sort values fall back to a safe default');
 $empty = $class::buildArgs(['min_price' => '-10', 'max_price' => 'not-a-price']);
 $assert(!isset($empty['meta_query']), 'invalid and negative price bounds are ignored safely');
 foreach ($ids as $id) wp_delete_post($id, true);
 wp_delete_term((int) $category['term_id'], 'product_cat');
+update_option($optionsClass::OPTION_NAME, $originalOptions); $optionsClass::flushCache();
 if ($failures) { fwrite(STDERR, "[FAILED] " . implode('; ', $failures) . "\n"); exit(1); }
 echo "[PASSED] Task 8.4 checks completed successfully.\n";

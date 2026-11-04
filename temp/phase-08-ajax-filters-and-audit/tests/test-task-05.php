@@ -4,6 +4,11 @@ declare(strict_types=1);
 $root = dirname(__DIR__, 3); $failures = [];
 $assert = static function (bool $condition, string $label) use (&$failures): void { echo $condition ? "  [PASS] {$label}\n" : "  [FAIL] {$label}\n"; if (!$condition) $failures[] = $label; };
 require_once '/opt/wp-testbed/wp-load.php'; $GLOBALS['wp']->main();
+$optionsClass = 'ErfanSanat\\Theme\\Admin\\OptionsStore';
+$originalOptions = get_option($optionsClass::OPTION_NAME, []);
+$enabledMap = \ErfanSanat\Theme\Filters\FilterRegistry::defaultEnabled();
+update_option($optionsClass::OPTION_NAME, array_merge(is_array($originalOptions) ? $originalOptions : [], ['enabled_filters' => $enabledMap]));
+$optionsClass::flushCache();
 echo "=== [TEST] Task 8.5: Product sale filter ===\n";
 $class = 'ErfanSanat\\Theme\\Filters\\ProductSaleFilter';
 $assert(is_file($root . '/inc/Filters/ProductSaleFilter.php'), 'ProductSaleFilter source exists');
@@ -23,5 +28,6 @@ $assert(!isset($allArgs['meta_query']), 'all mode leaves products unfiltered');
 $badArgs = $class::apply($base,'unexpected');
 $assert(!isset($badArgs['meta_query']), 'invalid modes safely fall back to all');
 foreach ($ids as $id) wp_delete_post($id,true);
+update_option($optionsClass::OPTION_NAME, $originalOptions); $optionsClass::flushCache();
 if ($failures) { fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n"); exit(1); }
 echo "[PASSED] Task 8.5 checks completed successfully.\n";
