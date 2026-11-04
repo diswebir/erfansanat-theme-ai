@@ -215,14 +215,17 @@ final class ContentTypes {
 					)
 				);
 			}
+			// The live site stores this counter as a string and older rows may be
+			// corrupt, so the registered type stays `string` and LegacyMeta::views()
+			// does the numeric interpretation with its documented fallback.
 			register_post_meta(
 				$post_type,
 				'number2-viewc',
 				array(
-					'type'              => 'integer',
+					'type'              => 'string',
 					'single'            => true,
 					'show_in_rest'      => false,
-					'sanitize_callback' => 'absint',
+					'sanitize_callback' => 'sanitize_text_field',
 					'auth_callback'     => static fn(): bool => current_user_can( 'edit_posts' ),
 				)
 			);

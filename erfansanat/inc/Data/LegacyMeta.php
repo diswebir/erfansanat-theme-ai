@@ -318,20 +318,40 @@ final class LegacyMeta {
 		if ( is_numeric( $primary ) ) {
 			return absint( $primary );
 		}
+		// A corrupt or absent new key falls back to the legacy counter, but a
+		// stored "0" is a real zero, not corruption.
 		$legacy = get_post_meta( $post_id, 'number-viewc', true );
 		return is_numeric( $legacy ) ? absint( $legacy ) : 0;
 	}
 
 	/**
+	 * Whether the new counter key exists and holds a numeric value.
+	 *
+	 * @param int $post_id Post id.
+	 * @return bool
+	 */
+	public static function has_new_counter( int $post_id ): bool {
+		$value = get_post_meta( $post_id, 'number2-viewc', true );
+		return metadata_exists( 'post', $post_id, 'number2-viewc' ) && is_numeric( $value );
+	}
+
+	/**
 	 * Increment the view counter without touching or inventing legacy keys.
+	 *
+	 * The value is written straight to the new key as a string, never through
+	 * the old key, so a fallback count does not get copied over the legacy row.
 	 *
 	 * @param int $post_id Post id.
 	 * @return int New value.
 	 */
 	public static function increment_views( int $post_id ): int {
-		$current = self::views( $post_id );
-		$next    = $current + 1;
-		update_post_meta( $post_id, 'number2-viewc', $next );
+		$current = self::has_new_counter( $post_id ) ? absint( get_post_meta( $post_id, 'number2-viewc', true ) ) : 0;
+		$legacy  = get_post_meta( $post_id, 'number-viewc', true );
+		if ( ! self::has_new_counter( $post_id ) && is_numeric( $legacy ) ) {
+			$current = absint( $legacy );
+		}
+		$next = $current + 1;
+		update_post_meta( $post_id, 'number2-viewc', wp_slash( (string) $next ) );
 		return $next;
 	}
 
@@ -373,6 +393,37 @@ final class LegacyMeta {
 			return implode( ',', array_map( 'strval', self::to_array( $value ) ) );
 		}
 		return '';
+	}
+
+	/**
+	 * Read the hreflang triplet for a post.
+	 *
+	 * An empty language simply means "no translation", which the output layer
+	 * treats as "do not print that alternate link".
+	 *
+	 * @param int $post_id Post id.
+	 * @return array<string, string>
+	 */
+	public static function hreflang( int $post_id ): array {
+		$links = array();
+		foreach ( array( 'fa', 'en', 'ar' ) as $language ) {
+			$value              = get_post_meta( $post_id, 'hrefmeta_' . $language, true );
+			$links[ $language ] = is_scalar( $value ) ? esc_url_raw( (string) $value ) : '';
+		}
+		return $links;
+	}
+
+	/**
+	 * Prefix a term meta key, matching the historical `term_` convention.
+	 *
+	 * Term meta on the live site is stored under the plain key on `wp_termmeta`
+	 * and is read with `get_term_meta()`; no prefix rewriting is applied.
+	 *
+	 * @param string $key Raw key.
+	 * @return string
+	 */
+	public static function term_key( string $key ): string {
+		return $key;
 	}
 
 	/**

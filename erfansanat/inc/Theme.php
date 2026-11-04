@@ -50,6 +50,9 @@ final class Theme {
 			\ErfanSanat\Theme\Admin\ThemeOptions::register();
 			\ErfanSanat\Theme\Admin\SectionManager::register();
 			\ErfanSanat\Theme\Admin\ProductMetaboxes::register();
+			\ErfanSanat\Theme\Admin\ProjectMetaboxes::register();
+			\ErfanSanat\Theme\Admin\TermMetaboxes::register();
+			\ErfanSanat\Theme\Admin\ContentMetaboxes::register();
 			add_action( 'admin_init', array( \ErfanSanat\Theme\Admin\ThemeOptions::class, 'register_ajax' ) );
 		}
 	}

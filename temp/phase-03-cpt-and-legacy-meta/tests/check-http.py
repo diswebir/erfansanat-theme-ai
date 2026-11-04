@@ -170,12 +170,61 @@ def task_3_2(base: str) -> None:
     wp("post", "meta", "delete", product_id, "faq")
 
 
+def task_3_3(base: str) -> None:
+    """Project, term, hreflang and view meta on the live local site."""
+    projects = wp("post", "list", "--post_type=projects", "--post_status=any", "--fields=ID", "--format=ids").split()
+    check("3.3", "project fixtures exist", bool(projects))
+    if not projects:
+        return
+    project_id = projects[0]
+
+    probe = ROOT / ".local" / "probe-project-meta.php"
+    probe.write_text(
+        "<?php\n"
+        "\\ErfanSanat\\Theme\\Admin\\ProjectMetaboxes::persist(" + project_id + ", array(\n"
+        "    'finish-pro-time' => '۱۴۰۴/۱/۵',\n"
+        "    'mortabet_mahsole_2' => '11,12,12',\n"
+        "));\n"
+        "\\ErfanSanat\\Theme\\Admin\\ContentMetaboxes::persist(" + project_id + ", array(\n"
+        "    'hrefmeta_en' => 'https://erfansanat.test/en/project/',\n"
+        "    'same_key_hrefl' => 'probe-key',\n"
+        "    'number2-viewc' => '5',\n"
+        "));\n"
+        "echo 'ok';\n",
+        encoding="utf-8",
+    )
+    try:
+        wp("eval-file", str(probe.relative_to(ROOT)))
+    finally:
+        probe.unlink(missing_ok=True)
+
+    check("3.3", "jalali finish date is normalised", wp_meta(project_id, "finish-pro-time") == "1404/01/05", wp_meta(project_id, "finish-pro-time"))
+    check("3.3", "related products keep their exact key", wp_meta(project_id, "mortabet_mahsole_2") == "[11,12]", wp_meta(project_id, "mortabet_mahsole_2"))
+    check("3.3", "hreflang english link is stored", wp_meta(project_id, "hrefmeta_en") == "https://erfansanat.test/en/project/")
+    check("3.3", "shared hreflang key is stored", wp_meta(project_id, "same_key_hrefl") == "probe-key")
+    check("3.3", "view counter is stored", wp_meta(project_id, "number2-viewc") == "5")
+
+    status, body = fetch(f"{base}/projects/{wp('post', 'get', project_id, '--field=post_name')}/")
+    check("3.3", "project page still renders after the meta write", status == 200, f"status={status}")
+    # Core prints RSS discovery links as rel="alternate"; only the hreflang
+    # variant would conflict with SEOPress, so that is what must be absent.
+    has_hreflang_link = bool(re.search(r'rel=["\']alternate["\'][^>]*hreflang=|hreflang=["\'][a-z]{2}["\']', body))
+    check("3.3", "theme does not print competing hreflang tags", not has_hreflang_link)
+
+    # Foreign plugin meta must survive.
+    wp("post", "meta", "update", project_id, "_rank_math_title", "SEO probe")
+    check("3.3", "foreign seo meta is untouched by our write", wp_meta(project_id, "_rank_math_title") == "SEO probe")
+
+    for key in ("finish-pro-time", "mortabet_mahsole_2", "hrefmeta_en", "same_key_hrefl", "number2-viewc", "_rank_math_title"):
+        wp("post", "meta", "delete", project_id, key)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8080")
-    parser.add_argument("--task", action="append", choices=["3.1", "3.2"])
+    parser.add_argument("--task", action="append", choices=["3.1", "3.2", "3.3"])
     args = parser.parse_args()
-    tasks = args.task or ["3.1", "3.2"]
+    tasks = args.task or ["3.1", "3.2", "3.3"]
     for task in tasks:
         print(f"\n== task {task} ==")
         globals()["task_" + task.replace(".", "_")](args.base)
