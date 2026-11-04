@@ -21,7 +21,7 @@ if ( es_load_wp() ) {
 		return (string) ob_get_clean();
 	};
 	$mkterm = static function ( $name, $slug, $desc = '' ) {
-		$t = wp_insert_term( $name, 'product_cat', array( 'slug' => $slug, 'description' => $desc ) );
+		$t = es_insert_term( $name, 'product_cat', array( 'slug' => $slug, 'description' => $desc ) );
 		return get_term( (int) $t['term_id'], 'product_cat' );
 	};
 

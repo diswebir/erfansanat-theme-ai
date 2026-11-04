@@ -50,10 +50,10 @@ if ( es_load_wp() ) {
 	update_post_meta( $pid, '_step_qty', '5' );
 	update_post_meta( $pid, '_unit', 'شاخه' );
 
-	$green = wp_insert_term( 'سبز', 'pa_color', array( 'slug' => 'green' ) );
-	$red   = wp_insert_term( 'قرمز', 'pa_color', array( 'slug' => 'red' ) );
-	$s10   = wp_insert_term( '10m', 'pa_size', array( 'slug' => '10m' ) );
-	$s20   = wp_insert_term( '20m', 'pa_size', array( 'slug' => '20m' ) );
+	$green = es_insert_term( 'سبز', 'pa_color', array( 'slug' => 'green' ) );
+	$red   = es_insert_term( 'قرمز', 'pa_color', array( 'slug' => 'red' ) );
+	$s10   = es_insert_term( '10m', 'pa_size', array( 'slug' => '10m' ) );
+	$s20   = es_insert_term( '20m', 'pa_size', array( 'slug' => '20m' ) );
 	wp_set_object_terms( $pid, array( (int) $green['term_id'], (int) $red['term_id'] ), 'pa_color' );
 	wp_set_object_terms( $pid, array( (int) $s10['term_id'], (int) $s20['term_id'] ), 'pa_size' );
 	update_post_meta( $pid, '_es_variation_attributes', array( 'pa_color' => array( 'green', 'red' ), 'pa_size' => array( '10m', '20m' ) ) );

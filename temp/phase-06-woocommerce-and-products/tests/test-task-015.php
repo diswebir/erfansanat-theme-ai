@@ -28,8 +28,8 @@ if ( es_load_wp() ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => $status, 'post_title' => $title, 'post_name' => $slug ) );
 	};
 
-	$cat  = wp_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-cat' ) );
-	$cat2 = wp_insert_term( 'ریسه', 'product_cat', array( 'slug' => 'string-cat' ) );
+	$cat  = es_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-cat' ) );
+	$cat2 = es_insert_term( 'ریسه', 'product_cat', array( 'slug' => 'string-cat' ) );
 	$cid  = (int) $cat['term_id'];
 
 	$current = $mkprod( 'درخت نوری دلسا', 'delsa-current' );

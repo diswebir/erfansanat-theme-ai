@@ -18,8 +18,8 @@ if ( es_load_wp() ) {
 	$mkprod = static function ( $title, $slug ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug ) );
 	};
-	$tag   = wp_insert_term( 'ضدآب', 'product_tag', array( 'slug' => 'waterproof', 'description' => 'محصولات ضدآب IP68.' ) );
-	$brand = wp_insert_term( 'عرفان صنعت', 'product_brand', array( 'slug' => 'erfansanat-brand', 'description' => 'تولیدات کارخانه عرفان صنعت.' ) );
+	$tag   = es_insert_term( 'ضدآب', 'product_tag', array( 'slug' => 'waterproof', 'description' => 'محصولات ضدآب IP68.' ) );
+	$brand = es_insert_term( 'عرفان صنعت', 'product_brand', array( 'slug' => 'erfansanat-brand', 'description' => 'تولیدات کارخانه عرفان صنعت.' ) );
 	$tid   = (int) $tag['term_id'];
 	$bid   = (int) $brand['term_id'];
 

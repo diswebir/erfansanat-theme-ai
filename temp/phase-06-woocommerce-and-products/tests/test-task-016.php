@@ -18,13 +18,20 @@ if ( es_load_wp() ) {
 	$mkprod = static function ( $title, $slug ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug ) );
 	};
-	$cat = wp_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-shop' ) );
+	$cat = es_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-shop' ) );
 	$p1  = $mkprod( 'درخت نوری دلسا', 'delsa-shop' );
 	$p2  = $mkprod( 'ریسه بلوطی', 'baloti-shop' );
 	$p3  = $mkprod( 'پوینت لایت', 'point-shop' );
 	wp_set_object_terms( $p1, array( (int) $cat['term_id'] ), 'product_cat' );
 	update_post_meta( $p1, 'true_sale', 'true' );
 	update_post_meta( $p1, '_price', '100000' );
+
+	// Scope the archive query to this test's fixtures (isolates from DB state).
+	add_filter( 'es_shop_archive_query_args', static function ( $args ) use ( $p1, $p2, $p3 ) {
+		$args['post__in'] = array( $p1, $p2, $p3 );
+		$args['orderby']  = 'post__in';
+		return $args;
+	} );
 
 	// SC-01: render the full archive template.
 	ob_start();

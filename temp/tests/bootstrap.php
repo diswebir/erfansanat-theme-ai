@@ -74,6 +74,30 @@ function es_contains( string $rel, string $needle, string $base = ES_THEME ): bo
 	return false !== strpos( (string) file_get_contents( $p ), $needle );
 }
 
+/**
+ * Idempotent term creation for tests: returns the existing term (by slug, then
+ * name) instead of a WP_Error when a fixed-slug fixture term already exists.
+ * Drop-in replacement for wp_insert_term() returning the same array shape.
+ */
+function es_insert_term( string $name, string $taxonomy, array $args = array() ): array {
+	$slug = isset( $args['slug'] ) ? (string) $args['slug'] : '';
+	if ( '' !== $slug && taxonomy_exists( $taxonomy ) ) {
+		$existing = get_term_by( 'slug', $slug, $taxonomy );
+		if ( $existing instanceof WP_Term ) {
+			return array( 'term_id' => (int) $existing->term_id, 'term_taxonomy_id' => (int) $existing->term_taxonomy_id );
+		}
+	}
+	$result = wp_insert_term( $name, $taxonomy, $args );
+	if ( is_wp_error( $result ) ) {
+		$existing = get_term_by( 'name', $name, $taxonomy );
+		if ( $existing instanceof WP_Term ) {
+			return array( 'term_id' => (int) $existing->term_id, 'term_taxonomy_id' => (int) $existing->term_taxonomy_id );
+		}
+		return array( 'term_id' => 0, 'term_taxonomy_id' => 0 );
+	}
+	return $result;
+}
+
 /** Load the QA WordPress (once). Returns true on success. */
 function es_load_wp(): bool {
 	if ( defined( 'ABSPATH' ) ) {

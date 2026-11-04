@@ -30,12 +30,12 @@ if ( es_load_wp() ) {
 	es_check( 'SC-02: بدون ویژگی → جدول نمی‌سازد', '' === trim( $render( $pid ) ) );
 
 	// Assign a subset (incl. colour) — order/labels must follow the map.
-	$green = wp_insert_term( 'سبز', 'pa_color', array( 'slug' => 'green' ) );
-	$red   = wp_insert_term( 'قرمز', 'pa_color', array( 'slug' => 'red' ) );
+	$green = es_insert_term( 'سبز', 'pa_color', array( 'slug' => 'green' ) );
+	$red   = es_insert_term( 'قرمز', 'pa_color', array( 'slug' => 'red' ) );
 	wp_set_object_terms( $pid, array( (int) $green['term_id'], (int) $red['term_id'] ), 'pa_color' );
-	$ip = wp_insert_term( 'IP67', 'pa_ip-rating', array( 'slug' => 'ip67' ) );
+	$ip = es_insert_term( 'IP67', 'pa_ip-rating', array( 'slug' => 'ip67' ) );
 	wp_set_object_terms( $pid, array( (int) $ip['term_id'] ), 'pa_ip-rating' );
-	$watt = wp_insert_term( '۲۴ وات', 'pa_wattage', array( 'slug' => '24w' ) );
+	$watt = es_insert_term( '۲۴ وات', 'pa_wattage', array( 'slug' => '24w' ) );
 	wp_set_object_terms( $pid, array( (int) $watt['term_id'] ), 'pa_wattage' );
 
 	$html = $render( $pid );
@@ -52,7 +52,7 @@ if ( es_load_wp() ) {
 	// SC-01: all 18 attributes present → 18 rows.
 	$all_pid = (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => 'همه ویژگی‌ها', 'post_name' => 'specs-all' ) );
 	foreach ( array_keys( AttributeMap::all() ) as $tax ) {
-		$t = wp_insert_term( 'مقدار ' . $tax, $tax, array( 'slug' => 'val-' . $tax ) );
+		$t = es_insert_term( 'مقدار ' . $tax, $tax, array( 'slug' => 'val-' . $tax ) );
 		if ( ! is_wp_error( $t ) ) {
 			wp_set_object_terms( $all_pid, array( (int) $t['term_id'] ), $tax );
 		}

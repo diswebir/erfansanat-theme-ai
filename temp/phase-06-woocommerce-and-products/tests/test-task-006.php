@@ -39,7 +39,7 @@ if ( es_load_wp() ) {
 	$price_sale_expected    = $es_fa_str( number_format( 1450000, 0, '.', ',' ) ) . ' تومان';
 	$price_regular_expected = $es_fa_str( number_format( 1620000, 0, '.', ',' ) ) . ' تومان';
 
-	$cat = wp_insert_term( 'ریسه بلوطی LED', 'product_cat', array( 'slug' => 'baloti' ) );
+	$cat = es_insert_term( 'ریسه بلوطی LED', 'product_cat', array( 'slug' => 'baloti' ) );
 	$att = (int) wp_insert_post( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'post_title' => 'img', 'post_mime_type' => 'image/jpeg' ) );
 	update_post_meta( $att, '_wp_attached_file', '2026/11/b.jpg' );
 

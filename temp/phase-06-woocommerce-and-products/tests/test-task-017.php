@@ -29,9 +29,9 @@ if ( es_load_wp() ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug, 'post_excerpt' => 'توضیح کوتاه محصول' ) );
 	};
 
-	$cat = wp_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-card' ) );
-	$ip  = wp_insert_term( 'IP67', 'pa_ip-rating', array( 'slug' => 'ip67-card' ) );
-	$vol = wp_insert_term( '24V', 'pa_input-voltage', array( 'slug' => '24v-card' ) );
+	$cat = es_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree-card' ) );
+	$ip  = es_insert_term( 'IP67', 'pa_ip-rating', array( 'slug' => 'ip67-card' ) );
+	$vol = es_insert_term( '24V', 'pa_input-voltage', array( 'slug' => '24v-card' ) );
 
 	// Online product.
 	$on = $mkprod( 'درخت نوری دلسا', 'delsa-card' );

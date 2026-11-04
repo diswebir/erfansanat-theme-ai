@@ -32,7 +32,7 @@ if ( es_load_wp() ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => $title, 'post_excerpt' => $excerpt ) );
 	};
 
-	$cat = wp_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'lt' ) );
+	$cat = es_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'lt' ) );
 
 	// ── SC-01: product WITH subtitle + English title ──────────────────────.
 	$p = $mkprod( 'درخت نوری دلسا', 'سازه فولادی با نورپردازی هوشمند.' );

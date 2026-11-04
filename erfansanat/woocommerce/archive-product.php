@@ -14,7 +14,12 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$es_archive_query = new WP_Query(
+/**
+ * Filter the shop archive query args (integrations/tests may scope the set,
+ * e.g. post__in). Defaults to the full published product catalogue.
+ */
+$es_archive_args = apply_filters(
+	'es_shop_archive_query_args',
 	array(
 		'post_type'      => 'product',
 		'post_status'    => 'publish',
@@ -24,6 +29,8 @@ $es_archive_query = new WP_Query(
 		'no_found_rows'  => true,
 	)
 );
+
+$es_archive_query = new WP_Query( $es_archive_args );
 
 get_template_part(
 	'template-parts/archive/product',

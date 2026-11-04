@@ -35,7 +35,7 @@ if ( es_load_wp() ) {
 	// Fixtures.
 	$att = wp_insert_post( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'post_title' => 'img', 'post_mime_type' => 'image/jpeg' ) );
 	update_post_meta( $att, '_wp_attached_file', '2026/11/p.jpg' );
-	$cat = wp_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree' ) );
+	$cat = es_insert_term( 'درخت نوری', 'product_cat', array( 'slug' => 'light-tree' ) );
 	$pid = wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => 'درخت نوری دلسا', 'post_excerpt' => 'سازه فولادی با نورپردازی هوشمند.', 'post_content' => '<p>توضیحات کامل محصول دلسا.</p>' ) );
 	set_post_thumbnail( $pid, $att );
 	wp_set_object_terms( $pid, array( (int) $cat['term_id'] ), 'product_cat' );

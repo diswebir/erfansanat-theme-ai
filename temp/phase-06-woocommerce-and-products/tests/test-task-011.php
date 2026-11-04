@@ -26,8 +26,8 @@ if ( es_load_wp() ) {
 
 	es_check( 'AC-03: خالی → سکشن نمی‌سازد', '' === trim( $render( $pid ) ) );
 
-	$t1 = wp_insert_term( 'درخت نوری', 'project_type', array( 'slug' => 'light-tree' ) );
-	$t2 = wp_insert_term( 'المان‌های نورانی', 'project_type', array( 'slug' => 'luminous-elements' ) );
+	$t1 = es_insert_term( 'درخت نوری', 'project_type', array( 'slug' => 'light-tree' ) );
+	$t2 = es_insert_term( 'المان‌های نورانی', 'project_type', array( 'slug' => 'luminous-elements' ) );
 	$usage = array(
 		'item-0' => array( 'add-new-usage' => 'پارک‌ها و بوستان‌ها' ),
 		'item-1' => array( 'add-new-usage' => 'پیاده‌راه‌های شهری' ),

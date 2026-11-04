@@ -18,8 +18,8 @@ if ( es_load_wp() ) {
 	$mkprod = static function ( $title, $slug ) {
 		return (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug ) );
 	};
-	$parent = wp_insert_term( 'ریسه و تزئینات', 'product_cat', array( 'slug' => 'strings-decor', 'description' => 'توضیح دسته ریسه و تزئینات نورپردازی شهری.' ) );
-	$child  = wp_insert_term( 'ریسه بلوطی LED', 'product_cat', array( 'slug' => 'acorn-thread', 'parent' => (int) $parent['term_id'] ) );
+	$parent = es_insert_term( 'ریسه و تزئینات', 'product_cat', array( 'slug' => 'strings-decor', 'description' => 'توضیح دسته ریسه و تزئینات نورپردازی شهری.' ) );
+	$child  = es_insert_term( 'ریسه بلوطی LED', 'product_cat', array( 'slug' => 'acorn-thread', 'parent' => (int) $parent['term_id'] ) );
 	$pid    = (int) $parent['term_id'];
 	$cid    = (int) $child['term_id'];
 
