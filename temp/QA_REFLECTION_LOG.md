@@ -291,3 +291,13 @@
 | امنیت | admin-post endpointها nonce + `manage_options`; upload تا 1MB با پسوند JSON و `is_uploaded_file`; reset علاوه بر nonce نیاز به checkbox تأیید دارد |
 | Suite Phase 2 | **100 PASS / 0 FAIL / 3 PENDING**؛ فقط Task 2.15 pending است |
 | وضعیت | Task 2.14 `[PASSED]`; بعدی: Task 2.15 (final gate) |
+
+## Phase 2 — Task 2.15 final gate (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| P1 — کل suite | **104 PASS / 0 FAIL / 0 PENDING**, 15 test files |
+| P2 — اسکن `$_POST`/`$_GET` | 6 direct reads inspected, **0 unsafe** |
+| P3 — save timing | Maximum of 10 `AjaxSave::handle()` callbacks in PHP-WASM mock harness: **0.083ms** (<300ms); DB/network not included |
+| P4 — warnings | **0 PHP warnings** captured in the security/performance smoke path; no warnings in full-suite output |
+| وضعیت | Task 2.15 `[PASSED]`; Gate 2 complete; stop pending explicit user approval before Phase 3 |

@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.14 پاس شده‌اند؛ ادامه Phase 2 از Task 2.15 (گیت).
+**آخرین به‌روزرسانی:** 2026-11-04 — Gate 1 تأیید شده؛ Tasks 2.1–2.15 و Gate 2 پاس شده‌اند؛ توقف برای تأیید صریح پیش از Phase 3.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.14 — Import/Export + scoped Reset (4 PASS / 0 FAIL؛ مجموع Phase 2: 100 PASS، 0 FAIL، 3 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.15 — Phase 2 final gate (4 PASS / 0 FAIL؛ مجموع Phase 2: 104 PASS، 0 FAIL، 0 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,9 +46,8 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- اجرای Task 2.15: گیت نهایی Phase 2 — تست کامل، مرور امنیتی، اسکن sanitize و سنجش زمان ذخیره.
-- `Store` داده هر صفحه را در `_es_sections` روی post meta نگه می‌دارد؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
-- پس از گیت: توقف در Gate 2 و انتظار برای تأیید صریح کاربر پیش از شروع Phase 3.
+- Gate 2 کامل است. این branch باید متوقف بماند تا کاربر Phase 3 را صریحاً تأیید کند.
+- پس از تأیید: قبل از Phase 3، برنامه و Scope آن را بررسی کن؛ هیچ Phase 3 implementation در این مرحله آغاز نشده است.
 
 ## ۶. وضعیت هارنس تست
 - PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
@@ -255,3 +254,10 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Reset با nonce، `manage_options` و checkbox تأیید صریح فقط یکی از header/footer/social/brand/archive/scripts/sections را reset می‌کند.
 - تست اختصاصی: **4 PASS / 0 FAIL / 0 PENDING** (round-trip options + `_es_sections`, malformed/malicious JSON, scoped reset). Full Phase 2 suite: **100 PASS / 0 FAIL / 3 PENDING** (فقط Task 2.15).
 - بعدی: Task 2.15؛ پس از Gate 2 توقف و تا تأیید صریح، Phase 3 را آغاز نکن.
+
+### Task 2.15 — PASS / Gate 2 complete
+- Full phase suite: **104 PASS / 0 FAIL / 0 PENDING** across 15 test files.
+- Security audit scanned **6** direct `$_POST`/`$_GET` reads in `theme/inc/Admin`; **0 unsafe reads**. Each is unslashed, validated, and/or schema-sanitized.
+- Measured the maximum of 10 `AjaxSave::handle()` calls using the PHP-WASM WordPress-mock harness: **0.083 ms**, below the 300ms gate. This is a mocked handler timing, not a live database/network benchmark.
+- Performance/safety smoke path emitted **0 PHP warnings**.
+- Gate 2 is complete. **Do not start Phase 3 until the user explicitly approves it.**

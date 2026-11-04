@@ -30,6 +30,13 @@ $failed = 0;
 
 foreach ( $files as $file ) {
 	\EsTest\reset_results();
+	$prior_pass = $prior_fail = $prior_pending = 0;
+	foreach ( $rows as $prior_row ) {
+		$prior_pass += $prior_row[1];
+		$prior_fail += $prior_row[2];
+		$prior_pending += $prior_row[3];
+	}
+	$GLOBALS['es_phase_prior_result'] = array( 'files' => count( $rows ), 'passed' => $prior_pass, 'failed' => $prior_fail, 'pending' => $prior_pending );
 	$before = ob_get_level();
 
 	echo "\n" . str_repeat( '─', 64 ) . "\n";

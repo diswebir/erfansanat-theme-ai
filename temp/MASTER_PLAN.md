@@ -68,7 +68,7 @@
 | 2.12 | ویرایشگر سکشن‌ها در ادمین + Drag&Drop | `L` | `2.11`، `2.6` | `[PASSED]` | `inc/Admin/SectionsPage.php` +6 |
 | 2.13 | Renderer سکشن‌ها در فرانت + fallback | `M` | `2.11` | `[PASSED]` | `inc/Sections/Renderer.php` +1 |
 | 2.14 | صادرات/واردات تنظیمات و `Reset` ایمن | `M` | `2.1` | `[PASSED]` | `inc/Admin/ImportExport.php` +2 |
-| 2.15 | گیت فاز ۲: تست امنیتی + عملکرد پنل | `S` | `2.1`، `2.2`، `2.3`، `2.4`، `2.5`، `2.6`، `2.7`، `2.8`، `2.9`، `2.10`، `2.11`، `2.12`، `2.13`، `2.14` | `[PENDING]` | `temp/phase-02-custom-admin-dashboard/tests/run-phase-02-tests.sh` |
+| 2.15 | گیت فاز ۲: تست امنیتی + عملکرد پنل | `S` | `2.1`، `2.2`، `2.3`، `2.4`، `2.5`، `2.6`، `2.7`، `2.8`، `2.9`، `2.10`، `2.11`، `2.12`، `2.13`، `2.14` | `[PASSED]` | `temp/phase-02-custom-admin-dashboard/tests/run-phase-02-tests.sh` |
 
 **گیت فاز:** `tests/run-phase-02-tests.sh`
 
