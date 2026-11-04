@@ -27,6 +27,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
 \ErfanSanat\Theme\Admin\ProjectMetaboxes::boot();
 \ErfanSanat\Theme\Admin\TermMetaboxes::boot();
+\ErfanSanat\Theme\Admin\HreflangMetabox::boot();
 
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
