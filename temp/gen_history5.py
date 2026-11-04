@@ -29,7 +29,7 @@ F_HEAD = F_HEAD.replace('data-history-total="6"', 'data-history-total="{ES_TOTAL
 F_HEAD = F_HEAD.replace('>مسیر رشد و تکامل صنعتی</span>', '>{ES_KICKER}</span>')
 F_HEAD = F_HEAD.replace('تاریخچه و دستاوردهای <span class="text-emerald-700">عرفان صنعت اصفهان (۱۳۸۰ تا ۱۴۰۵)</span>', 'تاریخچه و دستاوردهای <span class="text-emerald-700">{ES_HL}</span>')
 F_HEAD = re.sub(r'(<p class="text-sm leading-7 font-medium text-slate-600 sm:text-\[15px\] sm:leading-8">)[^<]*(</p>)', r'\1{ES_EXCERPT}\2', F_HEAD)
-F_HEAD = F_HEAD.replace('>گام ۱ از ۶ (سال ۱۳۸۰)</span>', '>گام {ES_N1} از {ES_TOTAL} (سال {ES_YEAR1})</span>')
+F_HEAD = F_HEAD.replace('>گام ۱ از ۶ (سال ۱۳۸۰)</span>', '>گام {ES_N1} از {ES_TOTAL_FA} (سال {ES_YEAR1})</span>')
 F_HEAD = F_HEAD.replace('style="width:17%"', 'style="width:{ES_WIDTH}%"')
 
 # ═══ ۲) دکمه‌های تب ═══
@@ -72,7 +72,7 @@ for _ in range(3):
 TAIL = '</div></div></div></section'
 assert h.endswith(TAIL), repr(h[-60:])
 h = h[:-len(TAIL)]  # حذف پنل ۵ + بستهٔ خودش
-F_TAIL = '</div></div></section' + '>'
+F_TAIL = '</div></section' + '>'  # بستهٔ پنل در الگو هست
 h = ''
 print('F_TAIL:', repr(F_TAIL))
 
@@ -87,7 +87,11 @@ for t, tok in zip(texts0, TOKENS):
 PANEL_T = re.sub(r'data-home2-history-panel="\d+"', 'data-home2-history-panel="{ES_I}"', PANEL_T, count=1)
 PANEL_T = PANEL_T.replace('class="grid card-light', 'class="{ES_CLS} card-light', 1)
 PANEL_T = re.sub(r'src="images/[^"]*"', 'src="{ES_IMG}"', PANEL_T, count=1)
-PANEL_T = re.sub(r'alt="[^"]*"', 'alt="{ES_ALT}"', PANEL_T, count=1)
+PANEL_T = PANEL_T.replace('src="images/light-tunnel.jpg"', 'src="{ES_IMG2}"', 1)
+PANEL_T = PANEL_T.replace('src="images/light-tree.jpg"', 'src="{ES_IMG3}"', 1)
+PANEL_T = re.sub(r'alt="[^"]*"', 'alt="{ES_ALT}"', PANEL_T)
+PANEL_T = re.sub(r'<svg xmlns="http://www\.w3\.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award h-4 w-4 text-emerald-600" aria-hidden="true">.*?</svg>',
+                 '{ES_ICON_SVG}', PANEL_T, count=1, flags=re.S)
 assert '{ES_' in PANEL_T
 
 # ═══ استخراج فیلدهای ۶ مرحله → JSON برای اسکیم ═══
@@ -97,6 +101,7 @@ marks = [m.start() for m in re.finditer(r'<div data-home2-history-panel="\d+"', 
 marks.append(hraw.find('</section>'))
 imgs = [re.search(r'src="images/([^"]*)"', hraw[marks[i]:marks[i+1]]).group(1) for i in range(6)]
 imgs = ['assets/images/' + x for x in imgs]
+srcs_all = [re.findall(r'src="images/([^"]*)"', hraw[marks[i]:marks[i+1]]) for i in range(6)]
 years = re.findall(r'font-black tabular-nums">([^<]*)</span>', hraw)
 assert len(years) == 6, years
 rows = []
@@ -109,8 +114,8 @@ for i in range(6):
         'name':  tx[1], 'badge': tx[1],
         'title': tx[2], 'subline': tx[3], 'body': tx[4],
         's1_label': tx[5], 's1_value': tx[6], 's2_label': tx[7], 's2_value': tx[8],
-        'hint': tx[10], 'caption': tx[13],
-        'image': imgs[i], 'image_alt': tx[2],
+        'hint': tx[10], 'caption': tx[13], 'icon': ('sun' if re.search(r'lucide lucide-sun', p) else 'award'),
+        'image': imgs[i], 'image2': srcs_all[i][1] and ('assets/images/' + srcs_all[i][1]), 'image3': 'assets/images/' + srcs_all[i][2], 'image_alt': tx[2],
     })
 json.dump(rows, open('/tmp/es-history-rows.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print('rows dumped:', len(rows))
@@ -148,6 +153,8 @@ PHP = """<?php
  */
 declare(strict_types=1);
 
+use ErfanSanat\Theme\Frontend\Icons;
+
 /** @var array {section_id: string, fields: array<string, mixed>, post_id: int} $args */
 
 $es_f = $args['fields'] ?? [];
@@ -175,7 +182,8 @@ FRAGBLOCK
 // ═══ رندر ═══
 $es_first_year = (string) ($es_stages[0]['year'] ?? '');
 echo strtr($F_HEAD, [
-    '{ES_TOTAL}'  => $es_total_fa,
+    '{ES_TOTAL}'  => (string) $es_total,
+    '{ES_TOTAL_FA}' => $es_total_fa,
     '{ES_KICKER}' => (string) ($es_f['kicker'] ?? ''),
     '{ES_HL}'     => (string) ($es_f['title_highlight'] ?? ''),
     '{ES_EXCERPT}' => (string) ($es_f['excerpt'] ?? ''),
@@ -225,7 +233,10 @@ foreach ($es_stages as $es_i => $es_row) {
         '{ES_NEXT}'    => 'بعدی',
         '{ES_CAP}'     => (string) ($es_row['caption'] ?? ''),
         '{ES_IMG}'     => es_media_url((string) ($es_row['image'] ?? '')),
+        '{ES_IMG2}'    => es_media_url((string) ($es_row['image2'] ?? '')),
+        '{ES_IMG3}'    => es_media_url((string) ($es_row['image3'] ?? '')),
         '{ES_ALT}'     => (string) ($es_row['image_alt'] ?? ''),
+        '{ES_ICON_SVG}'   => \ErfanSanat\Theme\Frontend\Icons::svg((string) ($es_row['icon'] ?? 'award'), 'lucide lucide-' . (string) ($es_row['icon'] ?? 'award') . ' h-4 w-4 ' . ((string) ($es_row['icon'] ?? 'award') === 'sun' ? 'text-amber-500' : 'text-emerald-600')),
     ]);
 }
 echo $F_TAIL;
@@ -233,5 +244,9 @@ echo $F_TAIL;
 PHP = PHP.replace('FRAGBLOCK', frags)
 PHP = PHP.replace("'CLS_ACTIVE'", "'" + CLS_ACTIVE.replace('\\', '\\\\') + "'")
 PHP = PHP.replace("'CLS_IDLE'", "'" + CLS_IDLE.replace('\\', '\\\\') + "'")
+PHP = PHP.replace("'NUMCLS_ACTIVE'", "'" + NUMCLS_ACTIVE + "'")
+PHP = PHP.replace("'NUMCLS_IDLE'", "'" + NUMCLS_IDLE + "'")
+PHP = PHP.replace("'NAMECLS_A'", "'" + NAME_CLS_A + "'")
+PHP = PHP.replace("'NAMECLS_I'", "'" + NAME_CLS_I + "'")
 open(os.path.join(ROOT, 'template-parts/home/section-history.php'), 'w', encoding='utf-8').write(PHP)
 print('section-history.php bytes:', os.path.getsize(os.path.join(ROOT, 'template-parts/home/section-history.php')))
