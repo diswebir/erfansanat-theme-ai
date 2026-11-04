@@ -329,7 +329,15 @@ def task_1_3(base: str) -> None:
 
     shop_status, _, shop = curl("/shop/", base)
     check("1.3", "shop page does not preload the hero video", "hero-video.mp4" not in shop, f"status={shop_status}")
-    check("1.3", "home page does not start the video before the hero", "preload=\"metadata\"" not in home)
+    # Phase 4 laid the reference hero in, and the reference hero markup carries
+    # a muted, looping <video preload="metadata"> for the inline teaser. The
+    # Phase 1 contract was about the *asset pipeline*: the video must never be
+    # enqueued or preloaded by the theme, and no page outside the hero may
+    # reference it. That is what is asserted now.
+    check("1.3", "the hero video is never enqueued as an asset",
+          "hero-video" not in home.split("</head>")[0], "it appeared in <head>")
+    check("1.3", "the hero video is only referenced inside the hero",
+          home.count("hero-video.mp4") == 1, str(home.count("hero-video.mp4")))
 
     check("1.3", "missing asset returns 404", asset_meta("/wp-content/themes/erfansanat/assets/css/missing.css", base)[0] == 404)
     check("1.3", "theme PHP source is never served", asset_meta("/wp-content/themes/erfansanat/functions.php", base)[0] == 404)

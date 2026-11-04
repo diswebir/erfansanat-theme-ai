@@ -99,8 +99,24 @@ final class TaskP02T03Test extends TestCase {
 	 */
 	public function testReferenceAnchorsAreReproduced(): void {
 		$html = $this->render( Sections::default_home() );
-		preg_match_all( '/<section id="([^"]+)"/', $html, $matches );
-		$this->assertSame( array( 'home', 'projects', 'about', 'products', 'services', 'blog-preview', 'contact' ), $matches[1] );
+
+		// Phase 2 asserted the ids on the wrapper <section>. Phase 5 moved the
+		// hero (`home`), the project tab block (`projects`) and the services
+		// block (`services`) onto their own reference elements, because the
+		// reference places the same id there and the wrapper would duplicate it.
+		// The contract is unchanged: each anchor exists exactly once, in the
+		// reference order.
+		$positions = array();
+		foreach ( array( 'home', 'projects', 'about', 'products', 'services', 'blog-preview', 'contact' ) as $anchor ) {
+			$this->assertSame( 1, substr_count( $html, 'id="' . $anchor . '"' ), '#' . $anchor . ' must appear exactly once.' );
+			$positions[ $anchor ] = strpos( $html, 'id="' . $anchor . '"' );
+		}
+		asort( $positions );
+		$this->assertSame(
+			array( 'home', 'projects', 'about', 'products', 'services', 'blog-preview', 'contact' ),
+			array_keys( $positions ),
+			'Anchors must keep the reference document order.'
+		);
 	}
 
 	/**
