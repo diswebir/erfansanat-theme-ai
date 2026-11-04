@@ -75,18 +75,10 @@ do_action( 'woocommerce_before_single_product' );
 					<span class="max-w-[16rem] truncate rounded-lg bg-emerald-50 px-2 py-0.5 font-extrabold text-emerald-800"><?php echo esc_html( $es_title ); ?></span>
 				</span>
 			</nav>
-			<div class="pt-6">
-				<?php if ( $es_primary ) : ?>
-					<div class="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-1.5 text-[12px] font-extrabold text-emerald-800 shadow-2xs">
-						<span class="h-2 w-2 rounded-full bg-emerald-600"></span>
-						<span><?php echo esc_html( $es_primary->name ); ?></span>
-					</div>
-				<?php endif; ?>
-				<h1 class="text-[2rem] font-black leading-[1.3] tracking-[-0.015em] text-slate-950 sm:text-[2.5rem] lg:text-[2.9rem] lg:leading-[1.24]"><?php echo esc_html( $es_title ); ?></h1>
-				<?php if ( '' !== trim( $es_excerpt ) ) : ?>
-					<p class="mt-4 max-w-3xl border-r-2 border-emerald-500/60 pr-4 text-[14.5px] font-medium leading-8 text-slate-600 lg:text-[15.5px]"><?php echo esc_html( $es_excerpt ); ?></p>
-				<?php endif; ?>
-			</div>
+			<?php
+			// Title block (name / zireonvan / english_titl / excerpt) — P06-T004.
+			get_template_part( 'template-parts/product/summary' );
+			?>
 		</div>
 	</section>
 
