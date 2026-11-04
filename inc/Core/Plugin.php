@@ -116,6 +116,7 @@ final class Plugin
             \ErfanSanat\Theme\Admin\Metaboxes\HreflangMetabox::class,
             \ErfanSanat\Theme\Admin\Metaboxes\HreflangTermFields::class,
             \ErfanSanat\Theme\Seo\HreflangTags::class,
+            \ErfanSanat\Theme\Seo\SeoAudit::class,
             \ErfanSanat\Theme\Home\DefaultSections::class,
             \ErfanSanat\Theme\WooCommerce\WooSetup::class,
             \ErfanSanat\Theme\WooCommerce\MiniCart::class,

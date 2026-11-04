@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[PASSED]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -22,6 +22,7 @@
 
 ## فایل‌های هدف (Target Files)
 - `inc/Seo/SeoAudit.php`
+- `inc/Core/Plugin.php` (register SEO compatibility service)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** تگ‌های ld+json در HTMLها
