@@ -258,12 +258,20 @@ def task_2_3(jar: Path) -> None:
         "blog", "contact-cta", "location",
     ]
     check("2.3", "home renders all fifteen reference sections", keys == expected, str(keys))
-    anchors = re.findall(r'<section id="([a-z-]+)"', home)
+    # Phase 2 asserted the anchors on the wrapper <section>. Phase 5 moved
+    # `home`, `projects` and `services` onto their own reference elements
+    # (the hero, the project tab block, the services block) so the id is never
+    # duplicated. The contract holds: seven anchors, each exactly once, in the
+    # reference document order.
+    expected_anchors = ["home", "projects", "about", "products", "services", "blog-preview", "contact"]
+    anchors = [(home.find(f'id="{a}"'), a) for a in expected_anchors]
     check(
         "2.3",
         "the seven reference anchors are reproduced",
-        anchors == ["home", "projects", "about", "products", "services", "blog-preview", "contact"],
-        str(anchors),
+        all(position >= 0 for position, _ in anchors)
+        and [a for _, a in sorted(anchors)] == expected_anchors
+        and all(home.count(f'id="{a}"') == 1 for a in expected_anchors),
+        str([a for _, a in sorted(anchors)]),
     )
     check("2.3", "manager lists fifteen draggable rows",
           panel.count('class="erfansanat-sections__item"') == 15 and panel.count("draggable=\"true\"") == 15)
