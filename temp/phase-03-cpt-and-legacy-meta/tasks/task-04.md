@@ -5,7 +5,7 @@
 | فاز | 3 — معماری داده‌ها، CPTها، تکسونومی‌ها و متاباکس‌های سازگار با دیتابیس زنده |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 1.3` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED]` |
 | تست | `tests/test-task-04.php` |
 
 ## ۱. هدف
@@ -15,6 +15,7 @@
 ## ۲. فایل‌های هدف
 
 - `inc/Content/Rewrites.php`
+- `inc/Theme.php`
 
 ## ۳. مراحل پیاده‌سازی (گام‌به‌گام)
 
@@ -27,10 +28,10 @@
 
 > هر شرط باید در تست خودکار به `PASS` تبدیل شود؛ یک شرط `PENDING` یعنی تسک تمام نشده است.
 
-- [ ] **P1** — `get_term_link` دسته محصول = `/product_cat/{slug}/`
-- [ ] **P2** — `get_term_link` برچسب = `/product-tag/{slug}/`
-- [ ] **P3** — `get_permalink` محصول = `/product/{slug}/`
-- [ ] **P4** — هیچ فراخوانی `flush_rewrite_rules` در مسیر عادی درخواست نباشد
+- [x] **P1** — `get_term_link` دسته محصول = `/product_cat/{slug}/`
+- [x] **P2** — `get_term_link` برچسب = `/product-tag/{slug}/`
+- [x] **P3** — `get_permalink` محصول = `/product/{slug}/`
+- [x] **P4** — هیچ فراخوانی `flush_rewrite_rules` در مسیر عادی درخواست نباشد
 
 ## ۵. تست‌های خودکار
 

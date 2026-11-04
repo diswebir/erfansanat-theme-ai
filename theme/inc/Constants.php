@@ -34,5 +34,5 @@ if ( ! defined( 'ES_REWRITE_VERSION' ) ) {
 	/**
 	 * Bump this (not the theme version) to trigger a one-off rewrite flush.
 	 */
-	define( 'ES_REWRITE_VERSION', '1' );
+	define( 'ES_REWRITE_VERSION', '2' );
 }

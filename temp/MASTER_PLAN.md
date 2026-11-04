@@ -85,8 +85,8 @@
 | 3.1 | ثبت پست‌تایپ `projects` (Native) | `M` | `1.3` | `[PASSED]` | `inc/Content/PostTypes.php` |
 | 3.2 | ثبت تکسونومی `project_type` | `M` | `3.1` | `[PASSED]` | `inc/Content/Taxonomies.php` |
 | 3.3 | ثبت تکسونومی `city` | `M` | `3.1` | `[PASSED]` | `inc/Content/Taxonomies.php` |
-| 3.4 | تصحیح Rewriteهای ووکامرس (`product_cat`, `product-tag`, سینگل) | `L` | `1.3` | `[PENDING]` | `inc/Content/Rewrites.php` |
-| 3.5 | Flush نسخه‌دار + مانیتور ۴۰۴ پس از فعال‌سازی | `M` | `3.4` | `[PENDING]` | `inc/Content/Rewrites.php` +1 |
+| 3.4 | تصحیح Rewriteهای ووکامرس (`product_cat`, `product-tag`, سینگل) | `L` | `1.3` | `[PASSED]` | `inc/Content/Rewrites.php` +1 |
+| 3.5 | Flush نسخه‌دار + مانیتور ۴۰۴ پس از فعال‌سازی | `M` | `3.4` | `[PASSED]` | `inc/Content/Rewrites.php` +3 |
 | 3.6 | ستون‌های ادمین + فیلترهای دراپ‌داون پروژه‌ها | `M` | `3.1`، `3.2`، `3.3` | `[PENDING]` | `inc/Admin/ListTables.php` |
 | 3.7 | ستون‌های ادمین نوشته‌ها/محصولات/دسته‌ها | `M` | `3.4` | `[PENDING]` | `inc/Admin/ListTables.php` |
 | 3.8 | `MetaRepository` + `RepeaterCodec` (سازگاری دوطرفه JetEngine) | `L` | `1.3` | `[PENDING]` | `inc/Meta/MetaRepository.php` +1 |

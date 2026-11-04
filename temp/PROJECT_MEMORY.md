@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.3 پاس شده‌اند؛ ادامه از Task 3.4.
+**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.5 پاس شده‌اند؛ ادامه از Task 3.6.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
-| آخرین تسک پاس‌شده | 3.3 — ثبت taxonomy `city` (3 PASS / 0 FAIL؛ Tasks 3.1–3.3: 11 PASS / 0 FAIL) |
+| آخرین تسک پاس‌شده | 3.5 — نسخه‌دارکردن rewrite flush و ممیزی URL (4 PASS / 0 FAIL؛ Tasks 3.1–3.5: 19 PASS / 0 FAIL) |
 | دروازه تأیید | Gate 1 و Gate 2: ✅؛ کاربر Phase 3 را در 2026-11-04 صریحاً تأیید کرد؛ Gate 3 پس از Task 3.18 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,7 +46,7 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 3 از Task 3.4: WooCommerce rewrite قراردادها و حفظ URLهای فعلی.
+- ادامه Phase 3 از Task 3.6: ستون‌های پروژه، taxonomy filters و sorting/pagination در admin list.
 - اجرای مستقل تست هر Task و تکمیل/همگام‌سازی سند و suite متناظر پیش از ادامه.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
@@ -269,3 +269,8 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Theme kernel اکنون `PostTypes` را پیش از `Taxonomies` در priority `init=10` ثبت می‌کند.
 - Phase 3 aggregate runner هنوز اجرا نشده (15 تست pending به‌جز سه تست تکمیل‌شده). مرحله بعد Task 3.4.
 - کاربر خواسته Phase 3 کامل شود. کار روی همین branch و PR موجود ادامه می‌یابد؛ Phase 4 خارج از scope است.
+
+### Phase 3 progress — Tasks 3.4–3.5
+- Task 3.4: `register_taxonomy_args`/`register_post_type_args` filters preserve the required WooCommerce paths (`product_cat`, `product-tag`, `product`); fallback `product_brand` registers only when Woo's `product` exists and the taxonomy is absent. No flush occurs during ordinary registration. **4 PASS**.
+- Task 3.5: `ES_REWRITE_VERSION` bumped to `2`; a soft flush and version update occur only via `after_switch_theme`, only on mismatch. Tools → URL Audit lists all six route families and stores a bounded 404 log containing only normalized paths (no query/cookie/IP). **4 PASS**.
+- Focused Phase 3 tests through Task 3.5: **19 PASS / 0 FAIL**. Next: Task 3.6.

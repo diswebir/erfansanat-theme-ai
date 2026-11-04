@@ -311,3 +311,12 @@
 | 3.3 — `city` | **3 PASS / 0 FAIL**؛ اتصال، لینک پایدار، hierarchical و کنترل term حذف/ناموجود |
 | سیاست‌ها | هیچ تغییری در `main.js`, `styles.css` یا markup استاتیک؛ هیچ کلید متا دستکاری نشده |
 | وضعیت | Phase 3 با تأیید صریح کاربر آغاز شد؛ ادامه از Task 3.4 |
+
+## Phase 3 — Tasks 3.4–3.5 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 3.4 — WooCommerce rewrite قراردادها | **4 PASS / 0 FAIL**؛ `/product_cat/`, `/product-tag/`, `/product/`; `product_brand` fallback؛ no normal-request flush |
+| 3.5 — نسخه‌دارکردن flush و URL audit | **4 PASS / 0 FAIL**؛ version mismatch → یک soft flush؛ اجرای دوباره → بدون flush دوم؛ شش route family؛ 404 privacy log |
+| 404 privacy | query string/IP/cookie ذخیره نمی‌شود؛ مسیرها normalize/truncate و تعداد ردیف‌ها محدود است |
+| وضعیت | مجموع Tasks 3.1–3.5: **19 PASS / 0 FAIL**؛ بعدی 3.6 |
