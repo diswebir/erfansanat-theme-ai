@@ -141,20 +141,20 @@
 | # | تسک | اندازه | وابستگی | وضعیت | فایل‌های کلیدی |
 |---|---|---|---|---|---|
 | 5.1 | `front-page.php` + حلقه رندر ۱۵ سکشن | `M` | `2.11`، `2.13` | `[PASSED]` | `front-page.php` +2 |
-| 5.2 | هیرو واریانت home1 (اسلایدر صحنه + ویدیو + نوار دسته‌بندی) | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-hero.php` +1 |
-| 5.3 | معرفی پروژه‌های نورپردازی شهری | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-projects-intro.php` +1 |
+| 5.2 | هیرو واریانت home1 (اسلایدر صحنه + ویدیو + نوار دسته‌بندی) | `L` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-hero.php` +1 |
+| 5.3 | معرفی پروژه‌های نورپردازی شهری | `S` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-projects-intro.php` +1 |
 | 5.4 | گالری نمونه‌کارها (تب اسلایدر نمونه‌کارها) | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-gallery.php` +1 |
-| 5.5 | درباره + شمارنده‌های آماری | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-about.php` +1 |
-| 5.6 | درباره تاسیس شرکت (بلوک متنی + تصویر) | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-about-establishment.php` +1 |
+| 5.5 | درباره + شمارنده‌های آماری | `M` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-about.php` +1 |
+| 5.6 | درباره تاسیس شرکت (بلوک متنی + تصویر) | `S` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-about-establishment.php` +1 |
 | 5.7 | تاریخچه شرکت (۱۳۸۰ تا ۱۴۰۵) با اسکرول تعاملی | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-timeline.php` +1 |
-| 5.8 | محصولات منتخب (۴ کارت دسته) | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-products.php` +1 |
-| 5.9 | بنر دانلود کاتالوگ جامع | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-catalog.php` +1 |
+| 5.8 | محصولات منتخب (۴ کارت دسته) | `M` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-products.php` +1 |
+| 5.9 | بنر دانلود کاتالوگ جامع | `S` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-catalog.php` +1 |
 | 5.10 | خدمات تخصصی (ردیف‌های تعاملی) | `L` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-services.php` +1 |
-| 5.11 | استانداردهای کیفیت و ماندگاری (۴ کارت) | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-quality.php` +1 |
-| 5.12 | پشتیبانی فنی و گارانتی (نقشه/ویژگی‌ها) | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-support.php` +1 |
-| 5.13 | مشتریان و سازمان‌های همکار | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-clients.php` +1 |
-| 5.14 | ویترین مقالات (۴ کارت) | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-blog-preview.php` +1 |
-| 5.15 | CTA تماس/استعلام قیمت | `S` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-contact-cta.php` +1 |
+| 5.11 | استانداردهای کیفیت و ماندگاری (۴ کارت) | `M` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-quality.php` +1 |
+| 5.12 | پشتیبانی فنی و گارانتی (نقشه/ویژگی‌ها) | `M` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-support.php` +1 |
+| 5.13 | مشتریان و سازمان‌های همکار | `S` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-clients.php` +1 |
+| 5.14 | ویترین مقالات (۴ کارت) | `M` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-blog-preview.php` +1 |
+| 5.15 | CTA تماس/استعلام قیمت | `S` | `2.11`، `2.13` | `[PASSED]` | `template-parts/home/section-contact-cta.php` +1 |
 | 5.16 | نقشه موقعیت کارخانه + اطلاعات تماس | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-map-contact.php` +1 |
 | 5.17 | چرا عرفان صنعت (تمایزها و گواهینامه‌ها) | `M` | `2.11`، `2.13` | `[PENDING]` | `template-parts/home/section-why-ese.php` +1 |
 | 5.18 | کارت‌های استاندارد: `card-product`, `card-project`, `card-post` | `L` | `5.8`، `5.14` | `[PENDING]` | `template-parts/cards/card-product.php` +2 |

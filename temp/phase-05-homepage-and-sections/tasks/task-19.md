@@ -8,6 +8,8 @@
 | وضعیت | `[PENDING]` |
 | تست | `tests/test-task-19.php` |
 
+> پیشرفت: helperهای bounded/cached projects, posts, products و product_cat، versioned keys و invalidation implement شده‌اند; mock suite passes. Full homepage query count/cache-hit integration gate هنوز تکمیل نیست.
+
 ## ۱. هدف
 
 تمام کوئری‌های صفحه اصلی در یک کلاس با کش transient، `no_found_rows`, `update_post_meta_cache=false` برای کارت‌ها، و invalidation هوشمند روی `save_post`/`edited_term`.

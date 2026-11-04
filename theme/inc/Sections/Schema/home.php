@@ -43,16 +43,75 @@ $gallery['fields'][] = array(
 );
 $gallery['default_data']['items'] = array();
 
-return array(
+$services = $section( 'services', 'خدمات تخصصی', 'template-parts/home/section-services.php' );
+$services_content_path = __DIR__ . '/home-content/services.json';
+$services_content = is_file( $services_content_path ) ? json_decode( (string) file_get_contents( $services_content_path ), true ) : array();
+$service_token_map = array(
+	array( 'A000', 'A001', 'T006' ), array( 'A003', 'A004', 'T009' ), array( 'A006', 'A007', 'T012' ), array( 'A009', 'A010', 'T015' ), array( 'A012', 'A013', 'T018' ),
+);
+$service_rows = array();
+foreach ( $service_token_map as $tokens ) {
+	$service_rows[] = array(
+		'title' => (string) ( $services_content[ $tokens[0] ]['value'] ?? '' ),
+		'image' => (string) ( $services_content[ $tokens[1] ]['value'] ?? '' ),
+		'description' => (string) ( $services_content[ $tokens[2] ]['value'] ?? '' ),
+	);
+}
+$services['fields'][] = array(
+	'id' => 'services', 'type' => 'repeater', 'label' => 'ردیف‌های خدمات', 'default' => $service_rows,
+	'fields' => array(
+		array( 'id' => 'title', 'type' => 'text', 'label' => 'عنوان خدمت', 'default' => '' ),
+		array( 'id' => 'description', 'type' => 'textarea', 'label' => 'توضیح خدمت', 'default' => '' ),
+		array( 'id' => 'image', 'type' => 'media', 'label' => 'تصویر پیش‌نمایش', 'default' => '', 'return' => 'url', 'media_kind' => 'image' ),
+	),
+);
+$services['default_data']['services'] = $service_rows;
+
+$catalog = $section( 'catalog', 'دانلود کاتالوگ', 'template-parts/home/section-catalog.php' );
+$catalog['fields'][] = array( 'id' => 'catalog_file', 'type' => 'media', 'label' => 'فایل PDF کاتالوگ', 'default' => 0, 'return' => 'url', 'media_kind' => 'file' );
+$catalog['default_data']['catalog_file'] = '';
+
+$about = $section( 'about', 'درباره عرفان صنعت', 'template-parts/home/section-about.php' );
+$about_content_path = __DIR__ . '/home-content/about.json';
+$about_content = is_file( $about_content_path ) ? json_decode( (string) file_get_contents( $about_content_path ), true ) : array();
+$stat_token_map = array(
+	array( 'A003', 'A004', 'T014', 'T015', 'T016' ),
+	array( 'A005', 'A006', 'T017', 'T018', 'T019' ),
+	array( 'A007', 'A008', 'T020', 'T021', 'T022' ),
+	array( 'A009', 'A010', 'T023', 'T024', 'T025' ),
+);
+$about_stats = array();
+foreach ( $stat_token_map as $tokens ) {
+	$about_stats[] = array(
+		'value' => (string) ( $about_content[ $tokens[0] ]['value'] ?? '' ),
+		'suffix' => (string) ( $about_content[ $tokens[1] ]['value'] ?? '' ),
+		'label' => (string) ( $about_content[ $tokens[3] ]['value'] ?? '' ),
+		'description' => (string) ( $about_content[ $tokens[4] ]['value'] ?? '' ),
+	);
+}
+$about['fields'][] = array(
+	'id' => 'stats', 'type' => 'repeater', 'label' => 'آمار صفحه درباره', 'default' => $about_stats,
+	'fields' => array(
+		array( 'id' => 'value', 'type' => 'number', 'label' => 'مقدار', 'default' => '' ),
+		array( 'id' => 'suffix', 'type' => 'text', 'label' => 'پسوند', 'default' => '' ),
+		array( 'id' => 'label', 'type' => 'text', 'label' => 'عنوان', 'default' => '' ),
+		array( 'id' => 'description', 'type' => 'text', 'label' => 'توضیح', 'default' => '' ),
+	),
+);
+$about['fields'][] = array( 'id' => 'use_project_count', 'type' => 'toggle', 'label' => 'استفاده از تعداد پروژه‌های منتشرشده برای شمارنده اول', 'default' => false );
+$about['default_data']['stats'] = $about_stats;
+$about['default_data']['use_project_count'] = false;
+
+$sections = array(
 	'hero'          => $hero,
 	'projects'      => $section( 'projects', 'پروژه‌های منتخب', 'template-parts/home/section-projects-intro.php' ),
 	'gallery'       => $gallery,
-	'about'         => $section( 'about', 'درباره عرفان صنعت', 'template-parts/home/section-about.php' ),
+	'about'         => $about,
 	'establishment' => $section( 'establishment', 'درباره تأسیس شرکت', 'template-parts/home/section-about-establishment.php' ),
 	'timeline'      => $section( 'timeline', 'تاریخچه شرکت', 'template-parts/home/section-timeline.php' ),
 	'products'      => $section( 'products', 'محصولات منتخب', 'template-parts/home/section-products.php' ),
-	'catalog'       => $section( 'catalog', 'دانلود کاتالوگ', 'template-parts/home/section-catalog.php' ),
-	'services'      => $section( 'services', 'خدمات تخصصی', 'template-parts/home/section-services.php' ),
+	'catalog'       => $catalog,
+	'services'      => $services,
 	'quality'       => $section( 'quality', 'استانداردهای کیفیت', 'template-parts/home/section-quality.php' ),
 	'support'       => $section( 'support', 'پشتیبانی و گارانتی', 'template-parts/home/section-support.php' ),
 	'clients'       => $section( 'clients', 'مشتریان و سازمان‌های همکار', 'template-parts/home/section-clients.php' ),
@@ -60,3 +119,18 @@ return array(
 	'contact-cta'   => $section( 'contact-cta', 'دعوت به تماس', 'template-parts/home/section-contact-cta.php' ),
 	'map-contact'   => $section( 'map-contact', 'موقعیت کارخانه و اطلاعات تماس', 'template-parts/home/section-map-contact.php' ),
 );
+
+foreach ( $sections as $key => &$definition ) {
+	$path = __DIR__ . '/home-content/' . $key . '.json';
+	if ( ! is_file( $path ) ) { continue; }
+	$json = (string) file_get_contents( $path );
+	$definition['default_data']['content_json'] = $json;
+	$definition['fields'][] = array(
+		'id' => 'content_json',
+		'type' => 'textarea',
+		'label' => 'متن‌ها و پیوندهای سکشن (JSON)',
+		'default' => $json,
+	);
+}
+unset( $definition );
+return $sections;

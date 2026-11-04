@@ -448,3 +448,32 @@
 | regression | Phase 2 **104/104**, Phase 3 **66/66**, Phase 4 **48/48** PASS؛ Phase 2 test fixture اکنون `NavTab` را نیز مطابق AdminMenu ثبت می‌کند |
 | محدودیت | تست runner PHP-WASM/mock است؛ هنوز سکشن‌های 5.2–5.17 در حال پیاده‌سازی‌اند |
 | وضعیت | Task 5.1 `[PASSED]`; بعدی Task 5.2 |
+
+## Phase 5 — Tasks 5.2–5.12 (2026-11-04, incremental)
+
+| تسک | نتیجه |
+|---|---|
+| 5.2 — home1 hero | **4 PASS / 0 FAIL**؛ ریشه سکشن مرجع با end-tag واقعی استخراج شد (برش قبلی با 28,200 کاراکتر Unicode، در PHP به‌عنوان بایت تفسیر می‌شد و reference را کوتاه می‌کرد). ساختار tag/class از آستانه 99٪ گذشت؛ schema edit، product categories، 5 scenes، video poster/preload و empty-video fallback بررسی شد. `autoPlay`/`playsInline` به HTML استاندارد تبدیل شدند. |
+| 5.3 — معرفی پروژه‌ها | **5 PASS / 0 FAIL**؛ DOM ≥99٪، 3 کارت/لینک/تصویر، داده Schema قابل ویرایش و fallback امن. |
+| 5.6 — تأسیس شرکت | **4 PASS / 0 FAIL**؛ DOM، schema edit، fallback و عدم هاردکد بررسی شدند. |
+| 5.7 — timeline | **5 PASS / 0 FAIL**؛ 6 hook پیوسته، total و selectorهای main.js برابرند؛ repeater واقعی ویرایش‌پذیر هنوز تکمیل نیست، بنابراین وضعیت task pending است. |
+| 5.10 — خدمات | **9 PASS / 0 FAIL**؛ 5-item repeater now edits title/description/image, service counters adapt to row count, and existing main.js hooks remain intact. Task pending only for service-destination links: the extracted reference uses `<button>` controls, not links, so adding links would alter its DOM/interaction contract. |
+| 5.11 — کیفیت | **4 PASS / 0 FAIL**؛ DOM و schema data/fallback بررسی شدند. |
+| 5.12 — پشتیبانی | **5 PASS / 0 FAIL**؛ DOM/schema data/fallback، no-script contract و static contact content بررسی شدند. |
+| محدودیت | این‌ها تست‌های PHP-WASM و static reference هستند؛ تست WordPress/WooCommerce زنده موجود نیست. taskهای query-driven/repeater-based، home2/home3 و Gate فاز همچنان بازند. |
+
+## Phase 5 — Tasks 5.5, 5.8–5.15 / incremental verification (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 5.5 — آمار درباره | **8 PASS / 0 FAIL**؛ repeater چهار ردیفی + toggle شمارش projects، مقدار واقعی از `wp_count_posts('projects')` در `data-counter-target` و متن همان counter هم‌زمان تغییر می‌کند؛ fallback استاتیک بدون گزینه حفظ است. |
+| 5.8 — دسته‌های محصول | **7 PASS / 0 FAIL**؛ چهار product_cat از `HomeQueries` جایگزین کارت‌ها، لینک و عنوان واقعی، thumbnail term و fallback تصویر استاتیک در نبود thumbnail؛ رندر دوم cache hit. |
+| 5.9 — کاتالوگ | **7 PASS / 0 FAIL**؛ فایل PDF از media attachment option، CTA حذف‌شده در نبود فایل، و `target=_blank` + `rel=noopener noreferrer` در حضور فایل. |
+| 5.13 — مشتریان | **5 PASS / 0 FAIL**؛ `content_json=[]` سکشن را کامل حذف می‌کند. |
+| 5.14 — مقالات | **6 PASS / 0 FAIL**؛ چهار مقاله از query cache، permalink، thumbnail، عنوان، excerpt، دسته و تاریخ `get_the_date` (سازگار با WP-Parsidate)؛ empty query سکشن را حذف می‌کند. |
+| 5.15 — CTA تماس | **5 PASS / 0 FAIL**؛ تلفن و ایمیل متن/لینک از `header.phone` و `header.email`. |
+| 5.16 — موقعیت تماس | **5 PASS / 0 FAIL** برای محتوای موجود: آدرس از `footer.address`، عدم third-party script و تماس امن. **Task همچنان pending** چون static reference شامل map/iframe/image map نیست و منبع نقشه‌ای برای استخراج/گزینش در repo پیدا نشد؛ چیزی برای ساختن بدون تغییر scope اضافه نشد. |
+| 5.19 — HomeQueries | **4 PASS / 0 FAIL**؛ cache keys نسخه‌دار، query bounded، cache-hit و invalidation تمام limitها؛ **Task pending** تا شمارش واقعی کل صفحه و cache-hit در full homepage integration اندازه‌گیری شود. |
+| Regression | Phase 2 `104/104`, Phase 3 `66/66`, Phase 4 `48/48` PASS. Phase 3 اجرا با `run-phase.mjs` (runner لازم برای gate cumulative); fixture Task 3.9 اکنون Interface و WordPress stubs لازم را load می‌کند. |
+| محدودیت | رندرهای homepage و WP queryها با PHP-WASM و mock هستند؛ WordPress/WooCommerce زنده یا مرورگر سایت در این محیط در دسترس نیست. |
+| 5.18 — کارت‌های مشترک | **8 PASS / 0 FAIL**؛ partialهای product/project/post از fragmentهای واقعی reference، escaped args، data-product hooks و تصویر جایگزین؛ ref/class signature ≥99%. Task pending تا اتصال این partialها به مصرف‌کننده‌های آرشیو/مرتبط/جستجو (و نه فقط smoke render) تکمیل شود. |

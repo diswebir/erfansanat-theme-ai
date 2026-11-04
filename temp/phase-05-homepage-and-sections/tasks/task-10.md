@@ -8,6 +8,8 @@
 | وضعیت | `[PENDING]` |
 | تست | `tests/test-task-10.php` |
 
+> پیشرفت: پنج خدمت اکنون در Repeater ویرایش‌پذیرند؛ عنوان/توضیح/تصویر و counterها به JS hooks متصل و تست شده‌اند. شرط لینک‌دهی به صفحه خدمت هنوز باز است، چون reference برای ردیف‌ها `<button>` تعاملی دارد و URL ردیف در DOM/مرجع موجود نیست.
+
 ## ۱. هدف
 
 تبدیل سکشن «خدمات تخصصی (ردیف‌های تعاملی)» از `index.html` به `template-parts/home/section-services.php` با اتصال کامل به Section Manager و بدون تغییر در `main.js`.

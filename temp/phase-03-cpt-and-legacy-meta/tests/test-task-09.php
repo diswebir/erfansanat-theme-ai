@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../tests/bootstrap.php';
 if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', '/wp/' ); }
+require_once ES_REPO_ROOT . '/theme/inc/Contracts/ModuleInterface.php';
 $GLOBALS['es_phase3_actions'] = $GLOBALS['es_phase3_actions'] ?? array();
 $GLOBALS['es_phase3_meta_updates'] = array();
 $GLOBALS['es_phase3_product_meta'] = array( 444 => array( 'gs1_id' => 'GTIN-OLD', 'english_titl' => 'Old title', 'true_sale' => 'false' ) );
@@ -30,6 +31,8 @@ if ( ! function_exists( 'esc_textarea' ) ) { function esc_textarea( $value ) { r
 if ( ! function_exists( 'wp_basename' ) ) { function wp_basename( $value ) { return basename( (string) $value ); } }
 if ( ! function_exists( 'wp_create_nonce' ) ) { function wp_create_nonce( $action ) { return 'valid'; } }
 if ( ! function_exists( 'get_terms' ) ) { function get_terms( $args = array() ) { return array(); } }
+if ( ! function_exists( 'absint' ) ) { function absint( $value ) { return abs( (int) $value ); } }
+if ( ! function_exists( 'is_wp_error' ) ) { function is_wp_error( $value ) { return false; } }
 require_once ES_REPO_ROOT . '/theme/inc/Meta/RepeaterCodec.php';
 require_once ES_REPO_ROOT . '/theme/inc/Meta/MetaRepository.php';
 require_once ES_REPO_ROOT . '/theme/inc/Meta/functions.php';

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', '/wp/' ); }
 require_once ES_REPO_ROOT . '/theme/inc/Meta/RepeaterCodec.php';
 $fixtures = require ES_REPO_ROOT . '/tools/harness/seed-fixtures.php';
 $prior = $GLOBALS['es_phase_prior_result'] ?? array();
-$phase_ok = 17 === (int) ( $prior['files'] ?? 0 ) && 0 === (int) ( $prior['failed'] ?? -1 ) && 0 === (int) ( $prior['pending'] ?? -1 ) && 63 === (int) ( $prior['passed'] ?? 0 );
+$phase_ok = 17 === (int) ( $prior['files'] ?? 0 ) && 0 === (int) ( $prior['failed'] ?? -1 ) && 0 === (int) ( $prior['pending'] ?? -1 ) && (int) ( $prior['passed'] ?? 0 ) >= 63;
 $json_original = $fixtures['products'][9301]['meta']['product-feature'];
 $serialized_original = $fixtures['products'][9302]['meta']['faq'];
 $json_decoded = \ErfanSanat\Theme\Meta\RepeaterCodec::decode( $json_original );

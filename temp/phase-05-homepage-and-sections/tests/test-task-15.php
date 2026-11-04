@@ -1,29 +1,14 @@
 <?php
-/**
- * Test — Task 5.15: CTA تماس/استعلام قیمت
- * Phase 5: صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-05-homepage-and-sections/tests/test-task-15.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
+/** Task 5.15 — contact CTA reads canonical phone/email options. */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 5.15: CTA تماس/استعلام قیمت ==\n";
-echo "   phase 5 | size S | files: 2 | pass conditions: 5\n";
-
-// --- Pass Conditions (5 شرط) -----------------------------------
-// diff ساختاری سکشن
-check('diff ساختاری سکشن', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// اسکن هاردکد
-check('اسکن هاردکد', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// اثر داشبورد
-check('اثر داشبورد', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// حالت خالی
-check('حالت خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', __DIR__ . '/' ); }
+$GLOBALS['es_p5_contact_options'] = array();
+function es_option( $key, $default = null ) { return $GLOBALS['es_p5_contact_options'][ $key ] ?? $default; }
+require_once __DIR__ . '/section-test-support.php';
+run_p5_fragment_checks( 'contact-cta', 'template-parts/home/section-contact-cta.php', 13, 'CTA تماس' );
+$GLOBALS['es_p5_contact_options'] = array( 'header.phone' => '021-555-0101', 'header.email' => 'sales@example.test' );
+$args = array( 'section' => 'contact-cta', 'data' => array( 'content_json' => (string) file_get_contents( ES_REPO_ROOT . '/theme/inc/Sections/Schema/home-content/contact-cta.json' ) ) );
+ob_start(); include ES_REPO_ROOT . '/theme/template-parts/home/section-contact-cta.php'; $output = (string) ob_get_clean();
+check( 'تلفن و mailto در متن و لینک از header options خوانده می‌شوند', fn() => str_contains( $output, '021-555-0101' ) && str_contains( $output, 'tel:021-555-0101' ) && str_contains( $output, 'sales@example.test' ) && str_contains( $output, 'mailto:sales@example.test' ) );
 summary();

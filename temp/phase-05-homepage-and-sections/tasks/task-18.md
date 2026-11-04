@@ -8,6 +8,8 @@
 | وضعیت | `[PENDING]` |
 | تست | `tests/test-task-18.php` |
 
+> پیشرفت: `card-product`, `card-project`, `card-post` و قالب‌های کارتِ static از fragmentهای reference اضافه شده‌اند؛ test signature/escaping/placeholder سبز است. ادغام در consumerهای واقعیِ home/archive/related/search هنوز انجام نشده، پس Task باز است.
+
 ## ۱. هدف
 
 سه فایل کارت مشترک با **دقیقاً** همان مارک‌آپ کارت‌های استاتیک و پارامترهای ورودی (`$args`) — مصرف‌کننده در صفحه اصلی، آرشیوها، مرتبط‌ها و جستجو.

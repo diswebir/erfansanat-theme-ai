@@ -44,6 +44,7 @@ use ErfanSanat\Theme\Setup\Menus;
 use ErfanSanat\Theme\Setup\ThemeSupport;
 use ErfanSanat\Theme\Woo\ProductGallery;
 use ErfanSanat\Theme\Woo\HeaderCart;
+use ErfanSanat\Theme\Query\HomeQueries;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -126,6 +127,7 @@ final class Theme {
 		$this->register_module( 'footer-tab', new FooterTab() );
 		$this->register_module( 'ajax-save', new AjaxSave() );
 		$this->register_module( 'sections-page', new SectionsPage() );
+		$this->register_module( 'home-queries', new HomeQueries() );
 		$this->register_module( 'import-export', new ImportExport() );
 		$this->register_module( 'menus', new Menus() );
 		$this->register_module( 'debloat', new DeBloat() );
