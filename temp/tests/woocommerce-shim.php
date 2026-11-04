@@ -299,6 +299,38 @@ class ES_Shim_Cart {
 	}
 }
 
+class ES_Shim_Order {
+	public int $id;
+	public function __construct( int $id ) { $this->id = $id; }
+	public function get_id(): int { return $this->id; }
+	public function set_address( array $address, string $type = 'billing' ): void {
+		foreach ( $address as $key => $value ) { update_post_meta( $this->id, '_' . $type . '_' . $key, $value ); }
+	}
+	public function add_product( $product, int $qty = 1 ): void {
+		$items   = get_post_meta( $this->id, '_order_items', true ) ?: array();
+		$items[] = array( 'product_id' => is_object( $product ) ? $product->get_id() : (int) $product, 'qty' => $qty );
+		update_post_meta( $this->id, '_order_items', $items );
+	}
+	public function calculate_totals(): float {
+		$total = 0.0;
+		foreach ( ( get_post_meta( $this->id, '_order_items', true ) ?: array() ) as $item ) {
+			$p = wc_get_product( $item['product_id'] );
+			if ( $p ) { $total += (float) $p->get_price() * (int) $item['qty']; }
+		}
+		update_post_meta( $this->id, '_order_total', $total );
+		return $total;
+	}
+	public function update_status( string $status ): void { update_post_meta( $this->id, '_order_status', $status ); }
+	public function get_total(): string { return (string) get_post_meta( $this->id, '_order_total', true ); }
+	public function get_status(): string { return (string) get_post_meta( $this->id, '_order_status', true ); }
+	public function get_order_number(): string { return (string) $this->id; }
+}
+
+function wc_create_order( array $args = array() ): ES_Shim_Order {
+	$id = wp_insert_post( array( 'post_type' => 'shop_order', 'post_status' => 'publish', 'post_title' => 'Order ' . time() ) );
+	return new ES_Shim_Order( (int) $id );
+}
+
 class ES_Shim_WC {
 	public ES_Shim_Cart $cart;
 	public function __construct() { $this->cart = new ES_Shim_Cart(); }
