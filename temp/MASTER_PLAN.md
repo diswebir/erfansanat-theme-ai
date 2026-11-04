@@ -170,7 +170,7 @@
 - `[PASSED]` **Task 8.3 (`task-03.md` / `test-task-03.php`):** جستجوی زنده پروژه‌ها و مقالات
 - `[PASSED]` **Task 8.4 (`task-04.md` / `test-task-04.php`):** Query Builder فیلتر محصولات
 - `[PENDING]` **Task 8.5 (`task-05.md` / `test-task-05.php`):** فیلتر وضعیت خرید آنلاین (true_sale)
-- `[PENDING]` **Task 8.6 (`task-06.md` / `test-task-06.php`):** فیلترهای ۱۸ ویژگی pa_*
+- `[PASSED]` **Task 8.6 (`task-06.md` / `test-task-06.php`):** فیلترهای ۱۸ ویژگی pa_*
 - `[PENDING]` **Task 8.7 (`task-07.md` / `test-task-07.php`):** رندر نتایج فیلتر و صفحه‌بندی AJAX محصولات
 - `[PENDING]` **Task 8.8 (`task-08.md` / `test-task-08.php`):** اتصال JS فیلتر محصولات بدون تغییر URL
 - `[PENDING]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
