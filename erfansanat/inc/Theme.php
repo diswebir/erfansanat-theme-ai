@@ -100,6 +100,13 @@ final class Theme {
 		AssetManager::register();
 		ContentTypes::register();
 		Rewrites::register();
+
+		// Navigation is stateless data plus renderers, so nothing is hooked
+		// here; touching the classes keeps the autoloader map honest and makes
+		// a broken navigation class fail loudly at boot instead of mid-render.
+		class_exists( \ErfanSanat\Theme\Navigation\MenuTree::class );
+		class_exists( \ErfanSanat\Theme\Navigation\MegaMenu::class );
+		class_exists( \ErfanSanat\Theme\Navigation\MobileMenu::class );
 	}
 
 	/**

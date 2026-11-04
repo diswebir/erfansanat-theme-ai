@@ -224,9 +224,10 @@ final class SiteParts {
 	 * static reference lists are used, looked up by slug so the markup survives a
 	 * data import that renumbers terms.
 	 *
+	 * @param string $css_class Class list applied to the category list.
 	 * @return void
 	 */
-	public static function footer_categories(): void {
+	public static function footer_categories( string $css_class = 'space-y-2.5 text-[13px] text-slate-600' ): void {
 		$terms      = array();
 		$configured = array_map( 'intval', (array) Settings::get( 'footer_categories', array() ) );
 		if ( array() !== $configured ) {
@@ -251,7 +252,7 @@ final class SiteParts {
 			return;
 		}
 		?>
-		<ul class="erfansanat-footer-cats space-y-2.5 text-[13px] text-slate-600">
+		<ul class="erfansanat-footer-cats <?php echo esc_attr( $css_class ); ?>">
 			<?php foreach ( $terms as $term ) : ?>
 				<li>
 					<a href="<?php echo esc_url( (string) get_term_link( $term ) ); ?>" class="transition-colors hover:text-emerald-700"><?php echo esc_html( $term->name ); ?></a>
@@ -300,15 +301,16 @@ final class SiteParts {
 	/**
 	 * Print the trust badges.
 	 *
+	 * @param string $css_class Class list applied to the badge list.
 	 * @return void
 	 */
-	public static function footer_badges(): void {
+	public static function footer_badges( string $css_class = 'flex flex-wrap gap-2 pt-1 text-[11px] font-bold text-emerald-800' ): void {
 		$badges = (array) Settings::get( 'footer_badges', array() );
 		if ( array() === $badges ) {
 			return;
 		}
 		?>
-		<ul class="erfansanat-badges flex flex-wrap gap-2 pt-1 text-[11px] font-bold text-emerald-800">
+		<ul class="erfansanat-badges <?php echo esc_attr( $css_class ); ?>">
 			<?php foreach ( $badges as $badge ) : ?>
 				<li class="rounded-full bg-emerald-50 px-3 py-1"><?php echo esc_html( (string) $badge ); ?></li>
 			<?php endforeach; ?>
@@ -431,6 +433,17 @@ final class SiteParts {
 		$plus   = str_starts_with( $phone, '+' );
 		$digits = preg_replace( '/[^0-9]/', '', $phone );
 		return ( $plus ? '+' : '' ) . (string) $digits;
+	}
+
+	/**
+	 * Public `tel:` link for a stored phone number.
+	 *
+	 * @param string $phone Stored phone value.
+	 * @return string
+	 */
+	public static function phone_link( string $phone ): string {
+		$href = self::tel_href( $phone );
+		return '' === $href ? '' : 'tel:' . $href;
 	}
 
 	/**

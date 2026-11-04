@@ -183,7 +183,10 @@ def task_2_2(jar: Path) -> None:
     check("2.2", "trust badges are printed", "ISO 9001:2015" in home and "IP67 / IP68" in home)
     check("2.2", "footer quick links are printed", "/licenses-and-honors/" in home and "/refund_returns/" in home)
     check("2.2", "footer product categories are printed", "/product_cat/point-light/" in home)
-    check("2.2", "primary navigation is present", "erfansanat-menu" in home)
+    # Phase 2 asserted the temporary shell's `erfansanat-menu` class; Phase 4
+    # replaced that shell with the reference header, whose contract is the
+    # labelled <nav> landmark plus the mega-menu hooks.
+    check("2.2", "primary navigation is present", 'aria-label="منوی اصلی"' in home and "data-desktop-mega-trigger" in home)
     check("2.2", "announcement bar is off by default", "erfansanat-notice" not in home)
 
     save_status, saved = ajax(
