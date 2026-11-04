@@ -1410,6 +1410,43 @@
     }
   }
 
+  function initRecruitmentForm() {
+    var form = document.querySelector('[data-recruitment-form="true"]');
+    if (!form) return;
+    var status = form.querySelector('[data-recruitment-status="true"]');
+    var submitButton = form.querySelector('[type="submit"]');
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!window.esThemeData || !window.esThemeData.ajaxUrl || !window.esThemeData.ajaxNonce || !window.esThemeData.formNonce) {
+        if (status) status.textContent = "ارسال فرم در دسترس نیست. صفحه را تازه‌سازی کنید و دوباره تلاش کنید.";
+        return;
+      }
+      var payload = new FormData(form);
+      payload.set("action", "erfan_sanat_ajax");
+      payload.set("nonce", window.esThemeData.ajaxNonce);
+      payload.set("form_nonce", window.esThemeData.formNonce);
+      payload.set("route", "recruitment_submission");
+      if (!payload.has("website")) payload.set("website", "");
+      if (submitButton) submitButton.disabled = true;
+      form.setAttribute("aria-busy", "true");
+      if (status) status.textContent = "در حال ارسال درخواست و بارگذاری رزومه…";
+      fetch(window.esThemeData.ajaxUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        body: payload
+      }).then(function (response) { return response.json(); }).then(function (result) {
+        var message = result && result.data && result.data.message ? result.data.message : "در ثبت درخواست خطایی رخ داد.";
+        if (status) status.textContent = message;
+        if (result && result.success) form.reset();
+      }).catch(function () {
+        if (status) status.textContent = "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.";
+      }).then(function () {
+        if (submitButton) submitButton.disabled = false;
+        form.removeAttribute("aria-busy");
+      });
+    });
+  }
+
   /* ───────────────────────────────────────────────
      14. Mega-Menu Tabs, Mobile Accordions & Live AJAX Search
      ─────────────────────────────────────────────── */
@@ -2752,6 +2789,7 @@
     initRecruitmentTabs();
     initShareButtons();
     initContactForm();
+    initRecruitmentForm();
   }
 
   if (document.readyState === "loading") {

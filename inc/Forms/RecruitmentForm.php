@@ -40,7 +40,8 @@ final class RecruitmentForm implements ServiceInterface
         if (is_wp_error($validation)) return $validation;
         $fields = (new FormManager())->sanitizeFields($input);
         $name = trim($fields['name'] ?? '');
-        $phone = preg_replace('/[^0-9+]/', '', $fields['phone'] ?? '') ?: '';
+        $phoneInput = strtr($fields['phone'] ?? '', ['۰' => '0', '۱' => '1', '۲' => '2', '۳' => '3', '۴' => '4', '۵' => '5', '۶' => '6', '۷' => '7', '۸' => '8', '۹' => '9', '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9']);
+        $phone = preg_replace('/[^0-9+]/', '', $phoneInput) ?: '';
         $message = trim($fields['message'] ?? '');
         if (strlen($name) < 2) return new WP_Error('recruitment_name_invalid', 'نام را به‌درستی وارد کنید.');
         if (!preg_match('/^\+?[0-9]{7,15}$/', $phone)) return new WP_Error('recruitment_phone_invalid', 'شماره تماس معتبر وارد کنید.');

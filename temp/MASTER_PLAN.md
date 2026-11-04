@@ -17,7 +17,7 @@
 | **Phase 5** | تبدیل صفحه اصلی (۱۵ سکشن) و کارت‌های استاندارد | `temp/phase-05-homepage-and-sections` | 20 | `[PASSED]` |
 | **Phase 6** | تبدیل قالب‌های ووکامرس، تک‌محصول، آرشیو و سبد/پرداخت | `temp/phase-06-woocommerce-and-products` | 20 | `[PASSED]` |
 | **Phase 7** | پروژه‌ها، وبلاگ، برگه‌های عمومی، خدمات و لندینگ آریا | `temp/phase-07-projects-blog-and-pages` | 20 | `[PASSED]` |
-| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — 13 passed; 8.11 testing, 8.14/8.15 not yet passed]` |
+| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — 13 passed; 8.11/8.14 testing, 8.15 not yet passed]` |
 
 **جمع کل تسک‌های اجرایی: 123 تسک** (۳ تسک پاس‌شده فاز ۱ + 120 تسک اتمیک فازهای ۲ تا ۸)
 
@@ -180,7 +180,7 @@
 - `[TESTING]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل با تمپلیت بومی و کلاس‌های موجود برای محصولات/پروژه‌ها/وبلاگ ساخته شد؛ JS همگام‌سازی، پاک‌کردن، اعمال، بستن و reset را پوشش می‌دهد. استثنای محدود را کاربر تأیید کرد؛ اجرای WordPress/browser test در محیط فعلی ممکن نیست.
 - `[PASSED]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PASSED]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
-- `[BLOCKED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه — مسیر امن و اعتبارسنجی فایل آماده است، اما template استخدام فاقد فرم/ورودی فایل است و طبق قانون استاتیک، markup جدید طراحی نشده است.
+- `[TESTING]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام بومی با آپلود multipart رزومه، nonce/honeypot موجود، اعتبارسنجی MIME/۵MB و ارسال AJAX به route امن اضافه شد. تست WordPress و مرورگر در محیط فعلی اجراپذیر نیست.
 - `[BLOCKED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback) — handler سمت سرور آماده است، اما هیچ markup/class استاتیک فرم موجود نیست و طبق قانون پروژه UI جدید ساخته نشده است.
 - `[PASSED]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
 - `[BLOCKED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** گیت نهایی فقط وقتی آماده است که همه تسک‌های 8.1 تا 8.16 `[PASSED]` باشند؛ موارد در حال تست نیز مانع اعلام آمادگی‌اند.

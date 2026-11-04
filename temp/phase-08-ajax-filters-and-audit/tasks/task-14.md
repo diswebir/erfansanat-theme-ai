@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[BLOCKED — missing static resume input]`
+- **وضعیت:** `[TESTING — native recruitment UI and secure upload route implemented; WordPress runtime unavailable]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -59,4 +59,4 @@
 `feat(phase-8): task 8.14 — فرم استخدام و آپلود رزومه`
 
 ## Blocker
-The current recruitment template contains only a mailto CTA and no static `<input type="file">` or recruitment form. Secure server-side PDF/DOC validation and the route are implemented, but the user-facing upload flow cannot be activated without inventing form markup, which the strict static-to-dynamic instruction forbids. Task remains BLOCKED pending the static form source.
+User approved native theme UI for this missing component, using existing emerald/slate styling; Elementor is not restored. Replaced the mailto-only slot with a required multipart resume form (PDF/DOC/DOCX, max 5 MB), fields and honeypot; wired FormData to the existing `recruitment_submission` route and normalized Persian/Arabic phone digits server-side. PHP/WordPress integration tests cannot currently run because the sandbox lacks PHP CLI and `/opt/wp-testbed`; keep task TESTING until targeted WP tests and browser upload checks pass.
