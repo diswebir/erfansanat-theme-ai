@@ -3,6 +3,20 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
+**PHASE 4 COMPLETED (8/8 TASKS, 212/212 CONDITIONS, TESTS 01-08)**
+
+- D-027: refهای برش در `temp/phase-04-header-footer-navigation/refs/` — header-ref (69,345B)، footer-ref (7,475B)، mobile-sidebar-ref (29,459B) همگی byte-exact از میرور؛ HEADER_MAP فهرست ۳۲ data-hook + جدول جایگزینی. میرور flat در `uploads/static-mirror/` (زیپ یک لایه تو در تو دارد — استخراج باید flatten شود).
+- D-028: هدر = `header.php` (shell: language_attributes/body_class/wp_body_open/wp_head) + `template-parts/header/header-top.php` (نوار بالا + لوگو + nav مگا + اکشن‌ها + مودال جستجو، برش عین میرور) + `template-parts/header/mobile-sidebar.php`.
+- D-029: `MegaMenu` (inc/Nav/) — فرگمنت‌های byte-exact به‌صورت nowdoc constant (F_HOME/F_P_HEAD/F_TAB_ACTIVE/F_TAB_IDLE/F_PANEL/F_CAT/F_P_BOTTOM/…) با توکن‌های {ES_*}؛ بازسازی با مقادیر میرور = بلوک مرجع (تست byte-exact). منابع: منو (کنوانسیون کلاس es-mega-products/es-mega-tab/es-icon-{lucide}) → fallback تاکسونومی (۴ دسته سطح‌اول product_cat با آیکون‌های cpu/sparkles/trees/waves) → fallback نهایی آرشیو (هدر هرگز خالی نمی‌ماند). فیلتر es_mega_products_tabs. TAB_IDLE تک‌تب است (تب ۱؛ نه دنباله). کلاس‌های active تب در انتهای attr میرورند.
+- D-030: `MobileWalker` — آکاردئون ۴گانه products (۴ تب)/projects (type+city)/services/corporate با همان منابع MegaMenu + سبد/تلفن از contact_args؛ بازسازی byte-exact آکاردئون کامل محصولات در تست.
+- D-031: `Footer` — فرگمنت‌های ۵ ستونه؛ دسترسی سریع: منوی footer → آپشن footer.quick_links (لینک نسبی / → home_url)؛ دسته‌بندی: منوی tolidat-sherkat → product_cat؛ تماس: contact_args (address fallback میرور)؛ کپی‌رایت از آپشن؛ بازسازی byte-exact کامل فوتر در تست (بدون append تکراری </footer> — F_BAR خودش دارد).
+- D-032: `SimpleWalker` (تک‌سطح، کلاس‌های میرور فوتر) + `LandingWalker` (انکر #es-sec-{slug} + data-landing-scroll + is-active؛ resolve از منوی landing با regex انکر).
+- D-033: `es_page_url()` نگاشت اسلاگ‌های میرور به URL داینامیک (shop/cart/checkout/my-account از wc_get_page_id؛ projects/services/refund_returns…؛ فیلتر es_page_urls)؛ `es_cart_badge()` (WC → ارقام فارسی؛ fallback «۲»)؛ `es_logo_url()` سه‌مرحله‌ای (custom-logo → آپشن → باکس متنی ESE میرور؛ مقدار placeholder «assets/images/ese-logo.svg» = باکس متنی)؛ `es_cta_text/es_cta_url` (fallback میرور)؛ `es_fa_num`.
+- D-034: hreflang قالب با فیلتر `es_disable_builtin_hreflang` برای هماهنگی با افزونه hreflangpch.
+- نکته تست: هدر test-02 رندر واقعی header.php را include می‌کند؛ نوار اعلان فقط با ann_enabled=1؛ مودال جستجو اسکلت ثابت با ۷ data-search-item نمونه (پر شدن = فاز ۸).
+
+**QA فاز ۴ (خوداصلاحی‌ها):** TAB_IDLE کل دنباله ۳ تب بریده شده بود؛ کلاس active تب موبایل وسط attr نبود (انتها)؛ MP_TAIL شامل CTA فروشگاه بین پنل‌ها و بستن wrapper؛ PANEL_TPL پر از لینک concrete بود (inner گرید → {ES_CATS})؛ شاب wnome فرگمنت HOME با آفست مطلق/نسبی؛ فوتر </footer> دوبار append می‌شد؛ لینک‌های نسبی quick_links به home_url نیاز داشتند؛ شیم PHP نسخه ۵ (loadNodeRuntime → runtimeId → new PHP + emscriptenOptions.processId، پاسخ: bytes/errors/exitCode، خطا: e.response PHPExecutionFailureError).
+
 **PHASE 3 COMPLETED (14/14 TASKS, 221/221 CONDITIONS, TESTS 01-14)**
 
 - D-014: `PostTypes::init()` روی init — projects (rewrite `projects` with_front=false, archive, icon screenoptions) / services (has_archive FALSE — بدون صفحه آرشیو، D-005) / تاکسونومی‌های city و project_type روی projects (hierarchical, with_front=false, show_admin_column).

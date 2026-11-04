@@ -135,3 +135,90 @@ if (!function_exists('es_render_sections')) {
         }
     }
 }
+
+if (!function_exists('es_fa_num')) {
+    /** تبدیل ارقام لاتین به فارسی — برای شمارنده‌ها و اعداد UI */
+    function es_fa_num(int|string $value): string {
+        return strtr((string) $value, ['0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹']);
+    }
+}
+
+if (!function_exists('es_page_url')) {
+    /**
+     * URL صفحه از اسلاگ میرور — نگاشت صفحات ثابت سایت
+     * shop → آرشیو ووکامرس؛ بقیه → صفحه وردپرسی با همان اسلاگ.
+     */
+    function es_page_url(string $slug): string {
+        $map = [
+            'shop'                => function_exists('wc_get_page_id') ? get_permalink((int) wc_get_page_id('shop')) : home_url('/shop/'),
+            'cart'                => function_exists('wc_get_page_id') ? get_permalink((int) wc_get_page_id('cart')) : home_url('/cart/'),
+            'checkout'            => function_exists('wc_get_page_id') ? get_permalink((int) wc_get_page_id('checkout')) : home_url('/checkout/'),
+            'my-account'          => function_exists('wc_get_page_id') ? get_permalink((int) wc_get_page_id('myaccount')) : home_url('/my-account/'),
+            'refund_returns'      => home_url('/refund_returns/'),
+            'projects'            => home_url('/projects/'),
+            'services'            => home_url('/services/'),
+        ];
+        $map = (array) apply_filters('es_page_urls', $map);
+        if (isset($map[$slug]) && is_string($map[$slug]) && $map[$slug] !== '') {
+            return $map[$slug];
+        }
+        return home_url('/' . str_replace('_', '-', $slug) . '/');
+    }
+}
+
+if (!function_exists('es_logo_url')) {
+    /** لوگو: custom-logo → آپشن header.logo → خالی (قالب باکس متنی ESE میرور را رندر می‌کند) */
+    function es_logo_url(): string {
+        if (function_exists('has_custom_logo') && has_custom_logo() && function_exists('get_custom_logo')) {
+            $html = (string) get_custom_logo();
+            if (preg_match('/src="([^"]+)"/', $html, $m) && $m[1] !== '') {
+                return (string) $m[1];
+            }
+        }
+        $option = es_option('header.logo', 'assets/images/ese-logo.svg');
+        // مقدار placeholder پیش‌فرض (فاز ۲) لوگوی واقعی نیست — میرور باکس متنی ESE دارد
+        if (is_string($option) && $option !== '' && $option !== 'assets/images/ese-logo.svg') {
+            return $option;
+        }
+        return '';
+    }
+}
+
+if (!function_exists('es_logo_alt')) {
+    /** متن alt لوگو */
+    function es_logo_alt(): string {
+        $alt = es_option('header.logo_alt', '');
+        return is_string($alt) && $alt !== '' ? $alt : (function_exists('get_bloginfo') ? get_bloginfo('name') : 'عرفان صنعت اصفهان');
+    }
+}
+
+if (!function_exists('es_cart_badge')) {
+    /**
+     * شمارنده سبد هدر: تعداد ووکامرس (ارقام فارسی) فقط وقتی WC فعال و سبد موجود؛ وگرنه مقدار میرور (۲).
+     */
+    function es_cart_badge(): string {
+        if (function_exists('WC')) {
+            $cart = \WC();
+            if (is_object($cart) && method_exists($cart, 'get_cart_contents_count')) {
+                return es_fa_num((int) $cart->get_cart_contents_count());
+            }
+        }
+        return '۲';
+    }
+}
+
+if (!function_exists('es_cta_text')) {
+    /** متن دکمه CTA هدر — fallback میرور: استعلام قیمت */
+    function es_cta_text(): string {
+        $text = es_option('header.cta_text', 'استعلام قیمت');
+        return is_string($text) && $text !== '' ? $text : 'استعلام قیمت';
+    }
+}
+
+if (!function_exists('es_cta_url')) {
+    /** لینک دکمه CTA هدر — fallback میرور: صفحه تماس */
+    function es_cta_url(): string {
+        $url = es_option('header.cta_url', '');
+        return is_string($url) && $url !== '' ? $url : es_page_url('contact');
+    }
+}

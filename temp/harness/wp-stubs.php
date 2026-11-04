@@ -495,36 +495,70 @@ function get_footer($name = null, array $args = []): void
 if (!function_exists('wp_head')) {
 function wp_head(): void
 {
+    do_action('wp_head');
+    echo 'wp-head-marker\n';
 }
 }
 
 if (!function_exists('wp_footer')) {
 function wp_footer(): void
 {
+    do_action('wp_footer');
+    echo 'wp-footer-marker\n';
 }
 }
 
 if (!function_exists('language_attributes')) {
 function language_attributes(): void
 {
+    $lang = $GLOBALS['__es_stub_locale'] ?? 'fa_IR';
+    $html_lang = str_replace('_', '-', $lang);
+    echo 'dir="rtl" lang="' . esc_attr($html_lang) . '"';
 }
 }
 
 if (!function_exists('body_class')) {
 function body_class(string $css_class = ''): void
 {
+    $classes = array_filter(array_map('trim', explode(' ', $css_class)));
+    $classes[] = ($GLOBALS['__es_stub_current_post_type'] ?? '') !== '' ? $GLOBALS['__es_stub_current_post_type'] : 'es-page';
+    echo 'class="' . esc_attr(implode(' ', $classes)) . '"';
 }
 }
 
 if (!function_exists('wp_body_open')) {
 function wp_body_open(): void
 {
+    do_action('wp_body_open');
+    echo 'wp-body-open-marker\n';
 }
 }
 
 if (!function_exists('bloginfo')) {
 function bloginfo(string $show = ''): void
 {
+    if ($show === 'charset') {
+        echo 'UTF-8';
+    }
+}
+}
+
+if (!function_exists('language_attributes_reset')) {
+function language_attributes_reset(): void
+{
+    // نگهبان ساده برای سازگاری تست‌ها — بدون عملیات
+}
+}
+
+if (!function_exists('get_bloginfo')) {
+function get_bloginfo(string $show = ''): string
+{
+    return match ($show) {
+        'name' => $GLOBALS['__es_stub_blogname'] ?? 'عرفان صنعت اصفهان',
+        'charset' => 'UTF-8',
+        'language' => $GLOBALS['__es_stub_locale'] ?? 'fa-IR',
+        default => '',
+    };
 }
 }
 
@@ -772,11 +806,61 @@ if (!function_exists('get_terms')) {
         if (is_string($args)) {
             $args = ['taxonomy' => $args];
         }
-        $tax = $args['taxonomy'] ?? '';
-        if ($tax === '' || isset($fixture[$tax])) {
-            return is_array($tax) || $tax === '' ? array_merge(...array_values($fixture ?: [])) : $fixture[$tax];
+        $taxes = $args['taxonomy'] ?? '';
+        $taxes = is_array($taxes) ? $taxes : ($taxes === '' ? array_keys($fixture) : [$taxes]);
+        $out = [];
+        foreach ($taxes as $tax) {
+            foreach ($fixture[$tax] ?? [] as $term) {
+                if (isset($args['parent']) && (int) ($term->parent ?? 0) !== (int) $args['parent']) {
+                    continue;
+                }
+                if (isset($args['slug']) && (string) $term->slug !== (string) $args['slug']) {
+                    continue;
+                }
+                if (!empty($args['name__like']) && !str_contains((string) $term->name, (string) $args['name__like'])) {
+                    continue;
+                }
+                $out[] = $term;
+            }
         }
-        return [];
+        $number = (int) ($args['number'] ?? 0);
+        return $number > 0 ? array_slice($out, 0, $number) : $out;
+    }
+}
+
+if (!function_exists('wp_count_posts')) {
+    function wp_count_posts(string $type = 'post', string $perm = ''): object
+    {
+        $counts = $GLOBALS['__es_stub_post_counts'] ?? [];
+        return (object) ['publish' => (int) ($counts[$type] ?? 0), 'draft' => 0, 'trash' => 0];
+    }
+}
+
+if (!function_exists('get_posts')) {
+    function get_posts(array $args = []): array
+    {
+        $posts = $GLOBALS['__es_stub_posts'] ?? [];
+        $type  = $args['post_type'] ?? 'post';
+        $num   = (int) ($args['numberposts'] ?? 5);
+        $out = [];
+        foreach ($posts as $post) {
+            if ((string) ($post->post_type ?? '') !== (string) $type) {
+                continue;
+            }
+            $out[] = $post;
+        }
+        return array_slice($out, 0, max($num, 0));
+    }
+}
+
+if (!function_exists('get_permalink')) {
+    function get_permalink(mixed $post = null): string|false
+    {
+        $id = is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
+        if (isset($GLOBALS['__es_stub_permalinks'][$id])) {
+            return (string) $GLOBALS['__es_stub_permalinks'][$id];
+        }
+        return $id > 0 ? home_url('/?p=' . $id) : false;
     }
 }
 
@@ -789,6 +873,165 @@ if (!function_exists('setcookie')) {
     {
         $GLOBALS['__es_stub_cookies'][$name] = $value;
         return true;
+    }
+}
+
+/** استاب WooCommerce (فااز ۴: badge سبد؛ فاز ۶ کامل می‌شود) */
+if (!function_exists('WC')) {
+    function WC(): ?object
+    {
+        return $GLOBALS['__es_stub_wc'] ?? null;
+    }
+}
+
+if (!function_exists('wc_get_page_id')) {
+    function wc_get_page_id(string $page): int
+    {
+        return (int) ($GLOBALS['__es_stub_wc_page_ids'][$page] ?? -1);
+    }
+}
+
+/** ─── استاب‌های فاز ۴: ناوبری، منوها، theme mod ─── */
+if (!function_exists('get_theme_mod')) {
+    function get_theme_mod(string $name, mixed $default = ''): mixed
+    {
+        return $GLOBALS['__wp_theme_mods'][$name] ?? $default;
+    }
+}
+
+if (!function_exists('has_custom_logo')) {
+    function has_custom_logo(int $blog_id = 0): bool
+    {
+        return (int) (get_theme_mod('custom_logo', 0)) > 0;
+    }
+}
+
+if (!function_exists('get_custom_logo')) {
+    function get_custom_logo(int $blog_id = 0): string
+    {
+        $id = (int) get_theme_mod('custom_logo', 0);
+        if ($id <= 0) {
+            return '';
+        }
+        $url = $GLOBALS['__es_stub_attachment_urls'][$id] ?? '';
+        return '<img src="' . esc_url((string) $url) . '" class="custom-logo" alt="">';
+    }
+}
+
+if (!function_exists('has_nav_menu')) {
+    function has_nav_menu(string $location): bool
+    {
+        return !empty($GLOBALS['__es_stub_nav_menus'][$location]);
+    }
+}
+
+if (!function_exists('wp_get_nav_menu_items')) {
+    function wp_get_nav_menu_items(mixed $menu): array|false
+    {
+        $items = $GLOBALS['__es_stub_nav_items'] ?? null;
+        if (is_array($items)) {
+            return $items;
+        }
+        return false;
+    }
+}
+
+if (!function_exists('get_term_link')) {
+    function get_term_link(mixed $term): string|\WP_Error
+    {
+        if (is_object($term)) {
+            $tax = (string) ($term->taxonomy ?? 'category');
+            $slug = (string) ($term->slug ?? '');
+            return home_url('/' . $tax . '/' . $slug . '/');
+        }
+        return new \WP_Error('invalid_term', 'Term does not exist');
+    }
+}
+
+if (!function_exists('is_front_page')) {
+    function is_front_page(): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_front_page'] ?? false);
+    }
+}
+
+if (!function_exists('is_home')) {
+    function is_home(): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_home'] ?? false);
+    }
+}
+
+if (!function_exists('wp_list_categories')) {
+    function wp_list_categories(array $args = []): string
+    {
+        $terms = $GLOBALS['__es_stub_terms']['product_cat'] ?? [];
+        $out = '<ul>';
+        foreach ($terms as $term) {
+            $out .= '<li><a href="' . esc_url(get_term_link($term)) . '">' . esc_html((string) $term->name) . '</a></li>';
+        }
+        $out .= '</ul>';
+        return $out;
+    }
+}
+
+if (!function_exists('wp_nav_menu')) {
+    function wp_nav_menu(array $args = []): string
+    {
+        $GLOBALS['__wp_nav_menu_calls'][] = $args;
+        $walker = $args['walker'] ?? null;
+        if ($walker !== null && method_exists($walker, 'walk')) {
+            $items = wp_get_nav_menu_items($args['menu'] ?? 0);
+            if (is_array($items) && $items !== []) {
+                return (string) $walker->walk($items, (int) ($args['depth'] ?? 0));
+            }
+        }
+        return '';
+    }
+}
+
+/** کلاس پایه Walker_Nav_Menu — پیمایش بازگشتی استاندارد (walkerها walk را override می‌کنند و رشته برمی‌گردانند) */
+if (!class_exists('Walker_Nav_Menu')) {
+    class Walker_Nav_Menu
+    {
+        public array $db_fields = ['parent' => 'menu_item_parent', 'id' => 'db_id'];
+
+        public function walk(array $elements, int $max_depth, mixed ...$args): string
+        {
+            $out = '';
+            $children = [];
+            foreach ($elements as $el) {
+                $children[(int) ($el->menu_item_parent ?? 0)][] = $el;
+            }
+            $top = $children[0] ?? $elements;
+            $limit = ($max_depth === 0 || $max_depth === -1) ? PHP_INT_MAX : $max_depth;
+            foreach ($top as $el) {
+                $out .= $this->es_traverse($el, 0, $children, $limit, $args);
+            }
+            return $out;
+        }
+
+        private function es_traverse(object $el, int $depth, array $children, int $max_depth, array $args): string
+        {
+            $out  = '';
+            $id   = (int) ($el->{$this->db_fields['id']} ?? 0);
+            $kids = $children[$id] ?? [];
+            $out .= $this->start_el($el, $depth, $args);
+            if ($kids !== [] && $depth + 1 < $max_depth) {
+                $out .= $this->start_lvl($depth, $args);
+                foreach ($kids as $kid) {
+                    $out .= $this->es_traverse($kid, $depth + 1, $children, $max_depth, $args);
+                }
+                $out .= $this->end_lvl($depth, $args);
+            }
+            $out .= $this->end_el($el, $depth, $args);
+            return $out;
+        }
+
+        public function start_lvl(int $depth = 0, array $args = []): string { return ''; }
+        public function end_lvl(int $depth = 0, array $args = []): string { return ''; }
+        public function start_el(object $el, int $depth = 0, array $args = []): string { return ''; }
+        public function end_el(object $el, int $depth = 0, array $args = []): string { return ''; }
     }
 }
 

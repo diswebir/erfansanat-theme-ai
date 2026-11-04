@@ -1,7 +1,7 @@
 # Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس
 
 **فاز:** 04 — هدر، مگامنو، منوی موبایل و فوتر
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[PASSED]`
 **تست:** `temp/phase-04-header-footer-navigation/tests/test-task-02.php`
 
 ## 🎯 هدف
@@ -42,3 +42,11 @@
 - [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
 - [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
 - [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+
+## 🔄 چرخه اجرا
+- [x] READ MEMORY — refها/نقشه برش از HEADER_MAP
+- [x] THINK & PLAN — فرگمنت‌های byte-exact + نقاط داینامیک
+- [x] WRITE TEST — `test-task-02.php`
+- [x] IMPLEMENT — بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — پاس کامل (مجموع فاز ۴: 212/212)
+- [x] UPDATE MEMORY + COMMIT

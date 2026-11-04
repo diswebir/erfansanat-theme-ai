@@ -178,46 +178,46 @@
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
 ---
-## Phase 04 — هدر، مگامنو، منوی موبایل و فوتر `[PENDING]`
+## Phase 04 — هدر، مگامنو، منوی موبایل و فوتر `[PASSED]`
 **هدف فاز:** برش دقیق بلوک‌های مشترک ۱۲۸ صفحه به header.php/footer.php با Nav Walkerهای اختصاصی و اتصال به داشبورد — حفظ ۱۰۰٪ DOM و data-hookها
 **پوشه:** `temp/phase-04-header-footer-navigation/` · **تست جامع:** `tests/run-phase-04-tests.sh`
 
-### Task 4.1 — استخراج فایل‌های مرجع هدر/فوتر و سند نقشه برش `[PENDING]`
+### Task 4.1 — استخراج فایل‌های مرجع هدر/فوتر و سند نقشه برش `[PASSED]`
 - 🎯 قبل از برش، مرجع ثابت DOM و نقشه بلوک‌ها مستند شود تا تست‌های مقایسه‌ای فاز معیار داشته باشند
 - 📤 خروجی: `temp/phase-04-header-footer-navigation/refs/header-ref.html`؛ `temp/phase-04-header-footer-navigation/refs/footer-ref.html`؛ `temp/phase-04-header-footer-navigation/refs/HEADER_MAP.md` · **شروع‌کننده فاز**
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس `[PENDING]`
+### Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس `[PASSED]`
 - 🎯 هست استاندارد قالب: زبان/charset/body_class/wp_head/wp_body_open + تگ‌های hreflang داینامیک از متا
 - 📤 خروجی: `header.php` · **وابستگی:** Task 4.1, Task 3.14, Task 1.7
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.3 — header.php — بلوک هدر بالایی (لوگو، اکشن‌ها، شمارنده سبد) `[PENDING]`
+### Task 4.3 — header.php — بلوک هدر بالایی (لوگو، اکشن‌ها، شمارنده سبد) `[PASSED]`
 - 🎯 برش دقیق مارک‌آپ هدر بالایی با جایگزینی داینامیک لوگو/لینک‌ها/شمارنده سبد — بدون تغییر DOM
 - 📤 خروجی: `بسط header.php`؛ `template-parts/header/header-top.php` · **وابستگی:** Task 4.2, Task 2.3, Task 2.6
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.4 — MegaMenuWalker برای main-mega-menu `[PENDING]`
+### Task 4.4 — MegaMenuWalker برای main-mega-menu `[PASSED]`
 - 🎯 Walker اختصاصی تولید مارک‌آپ مگامنو تب‌دار (پنل محصولات/پروژه‌ها) دقیقاً مطابق میرور با آیتم‌های منوی وردپرس
 - 📤 خروجی: `inc/Nav/MegaMenuWalker.php` · **وابستگی:** Task 4.3, Task 1.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.5 — MobileWalker و سایدبار موبایل (off-canvas) `[PENDING]`
+### Task 4.5 — MobileWalker و سایدبار موبایل (off-canvas) `[PASSED]`
 - 🎯 منوی موبایل چندسطحی با آکاردئون (mobile-acc-*) دقیقاً مطابق سایدبار میرور
 - 📤 خروجی: `inc/Nav/MobileWalker.php`؛ `template-parts/header/mobile-sidebar.php` · **وابستگی:** Task 4.4
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.6 — footer.php — سه ستون، اطلاعات تماس داینامیک و scroll-top `[PENDING]`
+### Task 4.6 — footer.php — سه ستون، اطلاعات تماس داینامیک و scroll-top `[PASSED]`
 - 🎯 برش فوتر با جایگزینی ستون‌ها (منو/دسته‌بندی) و اطلاعات تماس از داشبورد
 - 📤 خروجی: `footer.php`؛ `template-parts/footer/footer-main.php` · **وابستگی:** Task 4.1, Task 2.6, Task 2.4
 - ✅ 3 شرط پاس · 🛠 6 گام اجرا
 
-### Task 4.7 — Walkerهای tolidat-sherkat و landing `[PENDING]`
+### Task 4.7 — Walkerهای tolidat-sherkat و landing `[PASSED]`
 - 🎯 دو موقعیت منوی ساده: تولیدات شرکت (فوتر/هدر) و منوی اسکرول لندینگ‌ها
 - 📤 خروجی: `inc/Nav/SimpleWalker.php`؛ `inc/Nav/LandingWalker.php` · **وابستگی:** Task 4.4
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 4.8 — تست جامع DOM هدر/فوتر در برابر مرجع استاتیک `[PENDING]`
+### Task 4.8 — تست جامع DOM هدر/فوتر در برابر مرجع استاتیک `[PASSED]`
 - 🎯 اسکریپت مقایسه ساختاری: تعداد و ترتیب data-hookها و کلاس‌های کلیدی خروجی رندر شده با ref میرور برابر باشد
 - 📤 خروجی: `بسط temp/phase-04…/tests/test-task-08.php (مقایسه DOM با DOMDocument)` · **وابستگی:** Task 4.3, Task 4.5, Task 4.6
 - ✅ 3 شرط پاس · 🛠 3 گام اجرا
@@ -626,46 +626,46 @@
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
 ---
-## Phase 04 — هدر، مگامنو، منوی موبایل و فوتر `[PENDING]`
+## Phase 04 — هدر، مگامنو، منوی موبایل و فوتر `[PASSED]`
 **هدف فاز:** برش دقیق بلوک‌های مشترک ۱۲۸ صفحه به header.php/footer.php با Nav Walkerهای اختصاصی و اتصال به داشبورد — حفظ ۱۰۰٪ DOM و data-hookها
 **پوشه:** `temp/phase-04-header-footer-navigation/` · **تست جامع:** `tests/run-phase-04-tests.sh`
 
-### Task 4.1 — استخراج فایل‌های مرجع هدر/فوتر و سند نقشه برش `[PENDING]`
+### Task 4.1 — استخراج فایل‌های مرجع هدر/فوتر و سند نقشه برش `[PASSED]`
 - 🎯 قبل از برش، مرجع ثابت DOM و نقشه بلوک‌ها مستند شود تا تست‌های مقایسه‌ای فاز معیار داشته باشند
 - 📤 خروجی: `temp/phase-04-header-footer-navigation/refs/header-ref.html`؛ `temp/phase-04-header-footer-navigation/refs/footer-ref.html`؛ `temp/phase-04-header-footer-navigation/refs/HEADER_MAP.md` · **شروع‌کننده فاز**
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس `[PENDING]`
+### Task 4.2 — header.php — shell سند، hreflang و فراخوانی‌های استاندارد وردپرس `[PASSED]`
 - 🎯 هست استاندارد قالب: زبان/charset/body_class/wp_head/wp_body_open + تگ‌های hreflang داینامیک از متا
 - 📤 خروجی: `header.php` · **وابستگی:** Task 4.1, Task 3.14, Task 1.7
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.3 — header.php — بلوک هدر بالایی (لوگو، اکشن‌ها، شمارنده سبد) `[PENDING]`
+### Task 4.3 — header.php — بلوک هدر بالایی (لوگو، اکشن‌ها، شمارنده سبد) `[PASSED]`
 - 🎯 برش دقیق مارک‌آپ هدر بالایی با جایگزینی داینامیک لوگو/لینک‌ها/شمارنده سبد — بدون تغییر DOM
 - 📤 خروجی: `بسط header.php`؛ `template-parts/header/header-top.php` · **وابستگی:** Task 4.2, Task 2.3, Task 2.6
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.4 — MegaMenuWalker برای main-mega-menu `[PENDING]`
+### Task 4.4 — MegaMenuWalker برای main-mega-menu `[PASSED]`
 - 🎯 Walker اختصاصی تولید مارک‌آپ مگامنو تب‌دار (پنل محصولات/پروژه‌ها) دقیقاً مطابق میرور با آیتم‌های منوی وردپرس
 - 📤 خروجی: `inc/Nav/MegaMenuWalker.php` · **وابستگی:** Task 4.3, Task 1.3
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.5 — MobileWalker و سایدبار موبایل (off-canvas) `[PENDING]`
+### Task 4.5 — MobileWalker و سایدبار موبایل (off-canvas) `[PASSED]`
 - 🎯 منوی موبایل چندسطحی با آکاردئون (mobile-acc-*) دقیقاً مطابق سایدبار میرور
 - 📤 خروجی: `inc/Nav/MobileWalker.php`؛ `template-parts/header/mobile-sidebar.php` · **وابستگی:** Task 4.4
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 4.6 — footer.php — سه ستون، اطلاعات تماس داینامیک و scroll-top `[PENDING]`
+### Task 4.6 — footer.php — سه ستون، اطلاعات تماس داینامیک و scroll-top `[PASSED]`
 - 🎯 برش فوتر با جایگزینی ستون‌ها (منو/دسته‌بندی) و اطلاعات تماس از داشبورد
 - 📤 خروجی: `footer.php`؛ `template-parts/footer/footer-main.php` · **وابستگی:** Task 4.1, Task 2.6, Task 2.4
 - ✅ 3 شرط پاس · 🛠 6 گام اجرا
 
-### Task 4.7 — Walkerهای tolidat-sherkat و landing `[PENDING]`
+### Task 4.7 — Walkerهای tolidat-sherkat و landing `[PASSED]`
 - 🎯 دو موقعیت منوی ساده: تولیدات شرکت (فوتر/هدر) و منوی اسکرول لندینگ‌ها
 - 📤 خروجی: `inc/Nav/SimpleWalker.php`؛ `inc/Nav/LandingWalker.php` · **وابستگی:** Task 4.4
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 4.8 — تست جامع DOM هدر/فوتر در برابر مرجع استاتیک `[PENDING]`
+### Task 4.8 — تست جامع DOM هدر/فوتر در برابر مرجع استاتیک `[PASSED]`
 - 🎯 اسکریپت مقایسه ساختاری: تعداد و ترتیب data-hookها و کلاس‌های کلیدی خروجی رندر شده با ref میرور برابر باشد
 - 📤 خروجی: `بسط temp/phase-04…/tests/test-task-08.php (مقایسه DOM با DOMDocument)` · **وابستگی:** Task 4.3, Task 4.5, Task 4.6
 - ✅ 3 شرط پاس · 🛠 3 گام اجرا

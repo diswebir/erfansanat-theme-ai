@@ -173,6 +173,10 @@ final class HreflangMeta {
 
     /** خروجی head برای شیء جاری (پست یا ترم) */
     public static function render_head(): void {
+        // هماهنگی با افزونه hreflangpch: در صورت فعال‌بودن فیلتر، قالب خروجی نمی‌دهد (جلوگیری از تکرار)
+        if (apply_filters('es_disable_builtin_hreflang', false)) {
+            return;
+        }
         $links = self::current_links();
         foreach ($links as $hreflang => $url) {
             if ($url === '' || isset(self::$emitted[$hreflang])) {
