@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 5 IN PROGRESS (7/12 TASKS DONE: 5.1–5.7 · 94/94 CONDITIONS · TESTS 01-07 GREEN)**
+**PHASE 5 IN PROGRESS (8/12 TASKS DONE: 5.1–5.8 · 105/105 CONDITIONS · TESTS 01-08 GREEN)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -94,6 +94,7 @@
 - 5.6 categories: ۶ کارت ۹فیلدی + CTA + هلپرهای termmeta (thumbnail/faq) + آیکون wifi — 12/12.
 - 5.7 catalog+services: catalog (۱۳ فیلد؛ file=PDF opt-in وگرنه shop) — services (رپیتر ۵ ردیفی [title,desc,icon,image]؛ کلاس‌های active فقط ردیف ۰؛ شمارنده «N / TOTAL» فارسی؛ preview ردیف ۰؛ building2 کلاس دوبل lucide-building-2) — 13/13. F_CLOSE فقط «>» (ref به </section ختم می‌شود و PREVIEW خودش بستن‌ها را دارد).
 - نکته 5.7: svgهای لوسیسک میرور در سکشن خدمات stroke-width=1.7 (نه ۲)؛ js میرور data-service-* را می‌راند → بدون JS سفارشی.
+- 5.8 aftersale+customers: aftersale تک‌بلوکی ۱۲فیلدی (نقشه SVG تزئینی ~۳۰KB عیناً حفظ؛ tel:tel:03191091011 typo میرور به‌عنوان default فیلد) — customers رپیتر [title,sub,icon] ×۱۲ پیش‌فرض (میرور لوگو/لینک ندارد؛ کارت icon+شماره+متن)؛ خالی → مخفی؛ 11/11.
 - رگرسیون پس از 5.7: فاز ۱ (۸/۸: 154 شرط) فاز ۲ (۹/۹: ۱۶۰ شرط) فاز ۴ (۲۱۲/۲۱۲) فاز ۵ (۹۴/۹۴) — همه سبز.
 
 ## رویدادهای فاز ۲ (2026-11-03)
