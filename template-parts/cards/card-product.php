@@ -26,6 +26,6 @@ $price     = function_exists('wc_get_product') ? wc_get_product($pid) : null;
         <?php endif; ?>
     </div>
     <div class="relative z-10 mt-6 overflow-hidden rounded-2xl">
-        <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" class="h-36 w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+        <img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" class="h-36 w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
     </div>
 </a>

@@ -43,7 +43,7 @@ check('inc/AssetManager.php exists', is_file($f));
 $t = is_file($f) ? file_get_contents($f) : '';
 check('namespace ErfanSanat\\Theme', strpos($t, 'namespace ErfanSanat\\Theme;') !== false);
 check('enqueues styles.css', strpos($t, 'assets/css/styles.css') !== false);
-check('enqueues main.js with footer+defer', strpos($t, 'assets/js/main.js') !== false && strpos($t, 'wp_script_add_data') !== false);
+check('enqueues main.js with footer+defer', strpos($t, 'assets/js/main.js') !== false && (strpos($t, 'strategy') !== false && strpos($t, 'defer') !== false) || strpos($t, 'wp_script_add_data') !== false || strpos($t, 'defer_main') !== false);
 check('filemtime versioning', strpos($t, 'filemtime') !== false);
 check('hooked to wp_enqueue_scripts', strpos($t, 'wp_enqueue_scripts') !== false);
 $themeTxt = file_get_contents("$THEME/inc/Theme.php");

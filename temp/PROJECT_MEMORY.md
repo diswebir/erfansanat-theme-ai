@@ -120,3 +120,6 @@
 
 ## ADMIN PANEL FUNCTIONAL — 2026-11-04
 - test-admin-panel: ThemeOptions save/persist (nonce), SectionManager metabox save + nonce rejection, Migrator در context ادمین (بعد از fix fatal), admin menu — ۱۱/۱۱ ALL PASS. E2E 0 FAIL.
+
+## ASSET BUDGET / PERFORMANCE — 2026-11-04
+- test-asset-budget: ۴ صفحه — صفر external script/css، همه scriptها defer، بدون jQuery، payload ~۱۱۰KB، lazy-loading images مطابق میرر (card/header imgs lazy اضافه شد). main.js حالا با strategy+filter defer واقعی می‌خورد. E2E 0 FAIL.

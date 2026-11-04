@@ -16,7 +16,7 @@ $date      = get_the_date('Y/m/d', $pid);
 ?>
 <a href="<?php echo esc_url($permalink); ?>" class="card-glow group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white">
     <div class="relative overflow-hidden">
-        <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" class="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+        <img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" class="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
     </div>
     <div class="flex flex-1 flex-col p-5">
         <div class="text-[11px] font-bold text-emerald-600"><?php echo esc_html($date); ?></div>

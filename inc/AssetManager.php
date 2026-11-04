@@ -22,6 +22,16 @@ final class AssetManager
     {
         add_action('wp_enqueue_scripts', [self::class, 'enqueue_base']);
         add_action('wp_enqueue_scripts', [self::class, 'enqueue_page'], 20);
+        add_filter('script_loader_tag', [self::class, 'defer_main'], 10, 2);
+    }
+
+    /** Force defer on the main bundle regardless of WP strategy support. */
+    public static function defer_main(string $tag, string $handle): string
+    {
+        if ($handle === 'erfansanat-main' && strpos($tag, 'defer') === false) {
+            $tag = str_replace('<script ', '<script defer ', $tag);
+        }
+        return $tag;
     }
 
     /**
@@ -45,9 +55,8 @@ final class AssetManager
             $js,
             [],
             self::version('assets/js/main.js'),
-            true // in footer
+            ['in_footer' => true, 'strategy' => 'defer']
         );
-        wp_script_add_data('erfansanat-main', 'defer', true);
     }
 
     /**
