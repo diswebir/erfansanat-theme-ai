@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[BLOCKED — depends on 8.11, 8.14, 8.15]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -55,3 +55,6 @@ escaping/sanitization sweep، WP_DEBUG صفر خطا، LiteSpeed-friendly (بد�
 
 ## پیام کامیت پیشنهادی
 `feat(phase-8): task 8.17 — ممیزی امنیت، کارایی و E2E نهایی`
+
+## Outcome / Blocker
+The full automated runner executed Phases 01–08, PHP lint, JS syntax, and the TODO/FIXME scan successfully. It intentionally exited 2 after the checks because Tasks 8.11, 8.14, and 8.15 require missing static drawer/resume/feedback UI sources. Task 8.17 cannot be marked passed until those strict static-to-dynamic blockers are resolved.

@@ -17,7 +17,7 @@
 | **Phase 5** | تبدیل صفحه اصلی (۱۵ سکشن) و کارت‌های استاندارد | `temp/phase-05-homepage-and-sections` | 20 | `[PASSED]` |
 | **Phase 6** | تبدیل قالب‌های ووکامرس، تک‌محصول، آرشیو و سبد/پرداخت | `temp/phase-06-woocommerce-and-products` | 20 | `[PASSED]` |
 | **Phase 7** | پروژه‌ها، وبلاگ، برگه‌های عمومی، خدمات و لندینگ آریا | `temp/phase-07-projects-blog-and-pages` | 20 | `[PENDING]` |
-| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[IN PROGRESS — 13/17; 8.11/8.14/8.15 BLOCKED]` |
+| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[BLOCKED — 13 passed; 8.11/8.14/8.15 static sources missing]` |
 
 **جمع کل تسک‌های اجرایی: 123 تسک** (۳ تسک پاس‌شده فاز ۱ + 120 تسک اتمیک فازهای ۲ تا ۸)
 
@@ -159,7 +159,7 @@
 - `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PASSED]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
 - `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
-- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Phase 7 approval was subsequently given; Phase 8 is now in progress.
+- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Phase 7 approval was subsequently given; Phase 8 is blocked at final sign-off by the missing static sources for Tasks 8.11, 8.14, and 8.15.
 
 ---
 
@@ -181,8 +181,8 @@
 - `[BLOCKED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه — مسیر امن و اعتبارسنجی فایل آماده است، اما template استخدام فاقد فرم/ورودی فایل است و طبق قانون استاتیک، markup جدید طراحی نشده است.
 - `[BLOCKED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback) — handler سمت سرور آماده است، اما هیچ markup/class استاتیک فرم موجود نیست و طبق قانون پروژه UI جدید ساخته نشده است.
 - `[PASSED]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
-- `[PENDING]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** ممیزی امنیت، کارایی و E2E نهایی
-- `[PENDING]` **Phase 8 Suite (`run-phase-08-tests.sh`):** اجرای همه 17 تست این فاز + گزارش و توقف برای تایید کارفرما (فاز به فاز).
+- `[BLOCKED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** ممیزی امنیت، کارایی و E2E نهایی — همه تست‌های خودکار سبزند، اما گیت آمادگی به‌دلیل ۳ blocker استاتیک exit 2 می‌دهد.
+- `[BLOCKED]` **Phase 8 Suite:** تست‌های خودکار 17 تسک اجرا و سبز شدند؛ تکمیل واقعی فاز تا رفع blockerهای 8.11، 8.14 و 8.15 قابل اعلام نیست.
 
 ---
 
