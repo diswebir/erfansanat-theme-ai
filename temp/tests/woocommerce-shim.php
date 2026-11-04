@@ -274,6 +274,29 @@ class ES_Shim_Cart {
 	public function get_cart_total(): string { return wc_price( $this->get_cart_contents_total() ); }
 	public function get_product_price( $product ): string { return $product->get_price_html(); }
 	public function get_product_subtotal( $product, int $quantity ): string { return wc_price( (float) $product->get_price() * $quantity ); }
+
+	// ── Coupons / tax / totals (mirrors the real WC_Cart API used by cart.php) ──.
+	protected array $coupons = array();
+
+	public function apply_coupon( string $code ): bool {
+		$code   = strtolower( trim( $code ) );
+		$valid  = apply_filters( 'es_shim_coupons', array( 'welcome10' => 0.10, 'off5' => 0.05 ) );
+		if ( '' === $code || ! isset( $valid[ $code ] ) ) {
+			return false;
+		}
+		$this->coupons[ $code ] = (float) $valid[ $code ];
+		return true;
+	}
+	public function remove_coupon( string $code ): void { unset( $this->coupons[ strtolower( $code ) ] ); }
+	public function get_applied_coupons(): array { return array_keys( $this->coupons ); }
+	public function get_discount_total(): float {
+		$rate = array_sum( $this->coupons );
+		return $this->get_cart_contents_total() * $rate;
+	}
+	public function get_cart_contents_taxes(): float { return $this->get_cart_contents_total() * 0.10; }
+	public function get_total(): float {
+		return $this->get_cart_contents_total() - $this->get_discount_total() + $this->get_cart_contents_taxes();
+	}
 }
 
 class ES_Shim_WC {

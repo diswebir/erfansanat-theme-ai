@@ -171,6 +171,22 @@ add_filter(
 			}
 		}
 
+		// Cart / checkout / account pages (P06-T022 / T024 / T026).
+		$es_wc_pages = array(
+			'cart'     => array( 'is_cart', 'woocommerce/cart/cart.php' ),
+			'checkout' => array( 'is_checkout', 'woocommerce/checkout/form-checkout.php' ),
+			'account'  => array( 'is_account_page', 'woocommerce/myaccount/my-account.php' ),
+		);
+		foreach ( $es_wc_pages as $es_slug => $es_conf ) {
+			$es_is_wc_page = ( function_exists( $es_conf[0] ) && call_user_func( $es_conf[0] ) ) || is_page( $es_slug );
+			if ( $es_is_wc_page ) {
+				$es_wc_template = ES_THEME_DIR . $es_conf[1];
+				if ( is_file( $es_wc_template ) ) {
+					return $es_wc_template;
+				}
+			}
+		}
+
 		// Product taxonomy archives (P06-T018 / T020).
 		$es_tax_map = array(
 			'product_cat'   => 'taxonomy-product_cat.php',
