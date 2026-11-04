@@ -175,9 +175,10 @@ foreach (['quote' => $quote, 'recruitment' => $recruitment, 'client feedback' =>
     }
 }
 $maliciousResume = $capture($base + ['action' => 'ese_submit_form', 'form_type' => 'recruitment', 'position' => 'Engineer', 'resume_url' => 'javascript:alert(1)', 'message' => 'I have enough experience to complete this application.']);
+$arrayResume = $capture($base + ['action' => 'ese_submit_form', 'form_type' => 'recruitment', 'position' => 'Engineer', 'resume_url' => ['https://example.test/cv'], 'message' => 'I have enough experience to complete this application.']);
 $invalidFeedback = $capture($base + ['action' => 'ese_submit_form', 'form_type' => 'client_feedback', 'product_id' => (string) $productId, 'rating' => '9', 'message' => 'This rating is outside the supported range.']);
-if (!empty($maliciousResume['success']) || !empty($invalidFeedback['success'])) {
-    fwrite(STDERR, "FAIL invalid resume scheme or feedback rating bypassed validation\n");
+if (!empty($maliciousResume['success']) || !empty($arrayResume['success']) || !empty($invalidFeedback['success'])) {
+    fwrite(STDERR, "FAIL invalid resume scheme, array-valued resume URL, or feedback rating bypassed validation\n");
     $failed++;
 }
 
@@ -218,11 +219,16 @@ if (count($createdIds) > 0) {
 }
 require_once $wpRoot . '/wp-admin/includes/template.php';
 $adminHtml = '';
+$originalGet = $_GET;
+$_GET['notice'] = ['updated'];
+$_GET['type'] = ['contact'];
+$_GET['form_status'] = ['new'];
 ob_start();
 $adminClass::render_inbox_page();
 $adminHtml = (string) ob_get_clean();
+$_GET = $originalGet;
 if (false === strpos($adminHtml, 'درخواست‌های سایت') || false !== strpos($adminHtml, '<script>alert(1)</script>')) {
-    fwrite(STDERR, "FAIL capability-bound inbox did not render safely\n");
+    fwrite(STDERR, "FAIL capability-bound inbox did not render safely with array-valued query filters\n");
     $failed++;
 }
 

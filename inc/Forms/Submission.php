@@ -180,8 +180,11 @@ final class Submission
             $department = self::text($input['department'] ?? '', 100);
             $experience = self::text($input['experience'] ?? '', 60);
             $message = self::text($input['message'] ?? '', self::MAX_MESSAGE_LENGTH, true);
-            $resumeUrl = self::http_url($input['resume_url'] ?? '');
-            if ('' === $position || self::length($message) < 20 || ('' !== trim((string) ($input['resume_url'] ?? '')) && '' === $resumeUrl)) {
+            $rawResumeUrl = $input['resume_url'] ?? '';
+            $resumeUrl = self::http_url($rawResumeUrl);
+            $resumeWasProvided = array_key_exists('resume_url', $input)
+                && (!is_scalar($rawResumeUrl) || '' !== trim((string) $rawResumeUrl));
+            if ('' === $position || self::length($message) < 20 || ($resumeWasProvided && '' === $resumeUrl)) {
                 return new \WP_Error('ese_invalid_application', 'Invalid application.', ['status' => 422]);
             }
             $fields['position'] = $position;
@@ -213,7 +216,8 @@ final class Submission
     public static function allow_request(?string $ip = null, ?string $type = null): bool
     {
         $ip = $ip ?? (isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : 'unknown');
-        $type = $type ?? (isset($_POST['form_type']) ? sanitize_key((string) $_POST['form_type']) : 'form');
+        $postedType = $_POST['form_type'] ?? 'form';
+        $type = $type ?? (is_scalar($postedType) ? sanitize_key((string) $postedType) : 'form');
         $key = 'ese_form_rate_' . substr(hash_hmac('sha256', $ip . '|' . $type, wp_salt('auth')), 0, 32);
         $count = (int) get_transient($key);
         if ($count >= self::RATE_LIMIT) {
@@ -269,9 +273,10 @@ final class Submission
             update_post_meta($postId, '_ese_notification_status', 'disabled');
             return;
         }
-        $recipient = is_array($settings) && !empty($settings['notification_email'])
-            ? sanitize_email((string) $settings['notification_email'])
-            : sanitize_email((string) get_option('admin_email'));
+        $rawRecipient = is_array($settings) && array_key_exists('notification_email', $settings)
+            ? $settings['notification_email']
+            : get_option('admin_email');
+        $recipient = is_scalar($rawRecipient) ? sanitize_email((string) $rawRecipient) : '';
         if (!is_email($recipient)) {
             update_post_meta($postId, '_ese_notification_status', 'no_recipient');
             return;

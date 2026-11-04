@@ -233,6 +233,21 @@ if (($invalidSort['orderby'] ?? null) !== ['menu_order' => 'ASC', 'date' => 'DES
     fwrite(STDERR, "FAIL unsupported product sort was not rejected\n");
     $failed++;
 }
+foreach ([
+    'date' => ['orderby' => 'date', 'order' => 'DESC'],
+    'title' => ['orderby' => 'title', 'order' => 'ASC'],
+] as $sortKey => $expectedSort) {
+    $sortArgs = $class::build_product_query_args(['orderby' => $sortKey]);
+    if (($sortArgs['orderby'] ?? null) !== $expectedSort['orderby'] || ($sortArgs['order'] ?? null) !== $expectedSort['order']) {
+        fwrite(STDERR, "FAIL supported WooCommerce sort '{$sortKey}' was not mapped to the expected query\n");
+        $failed++;
+    }
+}
+$malformedFilters = $class::build_product_query_args(['orderby' => ['date'], 'sale' => ['online']]);
+if (($malformedFilters['post__in'] ?? null) !== [0] || ($malformedFilters['orderby'] ?? null) !== ['menu_order' => 'ASC', 'date' => 'DESC']) {
+    fwrite(STDERR, "FAIL array-valued product filter was not rejected safely\n");
+    $failed++;
+}
 $attributeProjectFilters = ['query' => 'Project Probe', 'type' => $typeUrban->name, 'city' => $cityZagreb->slug, 'orderby' => 'popular', 'per_page' => 9];
 $projectResult = $class::filter_projects($attributeProjectFilters);
 if ((int) $projectResult['total'] !== 1 || false === strpos($projectResult['html'], 'Urban Project Probe') || false !== strpos($projectResult['html'], 'Bridge Project Probe')) {
@@ -296,6 +311,11 @@ if (!empty($invalidDispatch['success']) || empty($invalidDispatch['data']['messa
 $getDispatch = $captureRequest(['action' => 'ese_live_search', 'nonce' => $validNonce, 'query' => 'Probe'], 'GET');
 if (!empty($getDispatch['success']) || empty($getDispatch['data']['message']) || false === strpos((string) $getDispatch['data']['message'], 'POST')) {
     fwrite(STDERR, "FAIL non-POST AJAX request was not rejected\n");
+    $failed++;
+}
+$arrayActionDispatch = $captureRequest(['action' => ['ese_filter_products'], 'nonce' => $validNonce]);
+if (!empty($arrayActionDispatch['success'])) {
+    fwrite(STDERR, "FAIL array-valued AJAX action was not rejected\n");
     $failed++;
 }
 

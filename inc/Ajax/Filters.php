@@ -39,7 +39,8 @@ final class Filters
             wp_send_json_error(['message' => __('درخواست نامعتبر یا منقضی شده است.', 'erfansanat-theme')], 403);
         }
 
-        $action = isset($_POST['action']) ? sanitize_key(wp_unslash($_POST['action'])) : '';
+        $rawAction = isset($_POST['action']) ? wp_unslash($_POST['action']) : '';
+        $action = is_scalar($rawAction) ? sanitize_key((string) $rawAction) : '';
         $input = self::unslash_input($_POST);
         $started = microtime(true);
 
@@ -108,7 +109,8 @@ final class Filters
             }
         }
 
-        $saleMode = isset($input['sale']) ? sanitize_key((string) $input['sale']) : 'all';
+        $rawSaleMode = $input['sale'] ?? 'all';
+        $saleMode = is_scalar($rawSaleMode) ? sanitize_key((string) $rawSaleMode) : '';
         if (!in_array($saleMode, ['all', 'online', 'inquiry'], true)) {
             $args['post__in'] = [0];
             $saleMode = 'all';
@@ -177,10 +179,13 @@ final class Filters
             $args['tax_query'] = $taxQuery;
         }
 
-        $sort = isset($input['orderby']) ? sanitize_key((string) $input['orderby']) : 'menu_order';
+        $rawSort = $input['orderby'] ?? 'menu_order';
+        $sort = is_scalar($rawSort) ? sanitize_key((string) $rawSort) : '';
         $sorts = [
             'menu_order' => ['orderby' => ['menu_order' => 'ASC', 'date' => 'DESC']],
             'newest' => ['orderby' => 'date', 'order' => 'DESC'],
+            'date' => ['orderby' => 'date', 'order' => 'DESC'],
+            'title' => ['orderby' => 'title', 'order' => 'ASC'],
             'price' => ['meta_key' => '_price', 'orderby' => 'meta_value_num', 'order' => 'ASC'],
             'price-desc' => ['meta_key' => '_price', 'orderby' => 'meta_value_num', 'order' => 'DESC'],
             'popularity' => ['meta_key' => 'number2-viewc', 'orderby' => 'meta_value_num', 'order' => 'DESC'],
@@ -230,7 +235,8 @@ final class Filters
         if (count($taxQuery) > 1) {
             $args['tax_query'] = $taxQuery;
         }
-        $sort = isset($input['orderby']) ? sanitize_key((string) $input['orderby']) : 'newest';
+        $rawSort = $input['orderby'] ?? 'newest';
+        $sort = is_scalar($rawSort) ? sanitize_key((string) $rawSort) : '';
         if ('popular' === $sort) {
             $args['meta_key'] = 'number2-viewc';
             $args['orderby'] = 'meta_value_num';

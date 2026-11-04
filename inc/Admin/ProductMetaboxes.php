@@ -219,7 +219,8 @@ final class ProductMetaboxes
         ) {
             return;
         }
-        $nonce = isset($_POST[self::NONCE_NAME]) ? sanitize_text_field(wp_unslash($_POST[self::NONCE_NAME])) : '';
+        $rawNonce = isset($_POST[self::NONCE_NAME]) ? wp_unslash($_POST[self::NONCE_NAME]) : '';
+        $nonce = is_string($rawNonce) ? sanitize_text_field($rawNonce) : '';
         if ('' === $nonce || !wp_verify_nonce($nonce, self::NONCE_ACTION)) {
             return;
         }
@@ -230,7 +231,7 @@ final class ProductMetaboxes
         $payload = wp_unslash($_POST['es_product_meta']);
         if (!empty($_POST[self::PRESENT_NAME]) && is_array($_POST[self::PRESENT_NAME])) {
             foreach ($_POST[self::PRESENT_NAME] as $key => $present) {
-                if ('1' === (string) $present && !array_key_exists($key, $payload)) {
+                if (is_scalar($present) && '1' === (string) $present && !array_key_exists($key, $payload)) {
                     $payload[$key] = [];
                 }
             }

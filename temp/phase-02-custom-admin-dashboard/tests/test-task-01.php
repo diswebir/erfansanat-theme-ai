@@ -83,6 +83,10 @@ if (!has_action('admin_menu', [\ErfanSanat\Theme\Admin\ThemeOptions::class, 'reg
     fwrite(STDERR, "FAIL custom admin menu was not registered\n");
     $failed++;
 }
+$originalGet = $_GET;
+$_GET['page'] = ['erfansanat-theme-options'];
+\ErfanSanat\Theme\Admin\ThemeOptions::enqueue_assets('malformed-settings-hook');
+$_GET = $originalGet;
 ob_start();
 \ErfanSanat\Theme\Admin\ThemeOptions::render_page();
 $page = ob_get_clean();

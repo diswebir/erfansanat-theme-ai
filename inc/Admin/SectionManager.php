@@ -151,7 +151,8 @@ final class SectionManager
             return;
         }
 
-        $nonce = isset($_POST[self::NONCE_NAME]) ? sanitize_text_field(wp_unslash($_POST[self::NONCE_NAME])) : '';
+        $rawNonce = isset($_POST[self::NONCE_NAME]) ? wp_unslash($_POST[self::NONCE_NAME]) : '';
+        $nonce = is_string($rawNonce) ? sanitize_text_field($rawNonce) : '';
         if ('' === $nonce || !wp_verify_nonce($nonce, self::NONCE_ACTION)) {
             return;
         }

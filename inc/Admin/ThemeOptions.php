@@ -353,7 +353,6 @@ final class ThemeOptions
             wp_send_json_error(['message' => __('دسترسی کافی ندارید.', 'erfansanat-theme')], 403);
         }
 
-        $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (false === check_ajax_referer(self::NONCE_ACTION, 'nonce', false)) {
             wp_send_json_error(['message' => __('درخواست منقضی یا نامعتبر است.', 'erfansanat-theme')], 403);
         }
@@ -455,8 +454,9 @@ final class ThemeOptions
      */
     public static function enqueue_assets(string $hook): void
     {
+        $requestedPage = isset($_GET['page']) ? wp_unslash($_GET['page']) : '';
         $isOptionsPage = (self::$pageHook && self::$pageHook === $hook)
-            || (isset($_GET['page']) && 'erfansanat-theme-options' === sanitize_key(wp_unslash($_GET['page'])));
+            || (is_scalar($requestedPage) && 'erfansanat-theme-options' === sanitize_key((string) $requestedPage));
         if (!$isOptionsPage) {
             return;
         }

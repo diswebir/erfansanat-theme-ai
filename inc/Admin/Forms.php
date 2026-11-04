@@ -46,9 +46,11 @@ final class Forms
         }
         $settings = get_option('ese_form_settings', []);
         $settings = is_array($settings) ? $settings : [];
-        $recipient = !empty($settings['notification_email']) ? (string) $settings['notification_email'] : (string) get_option('admin_email');
+        $rawRecipient = !empty($settings['notification_email']) ? $settings['notification_email'] : get_option('admin_email');
+        $recipient = is_scalar($rawRecipient) ? (string) $rawRecipient : '';
         $enabled = !array_key_exists('notifications_enabled', $settings) || !empty($settings['notifications_enabled']);
-        $notice = isset($_GET['notice']) ? sanitize_key(wp_unslash($_GET['notice'])) : '';
+        $rawNotice = isset($_GET['notice']) ? wp_unslash($_GET['notice']) : '';
+        $notice = is_scalar($rawNotice) ? sanitize_key((string) $rawNotice) : '';
         $statusLabels = self::status_labels();
         ?>
         <div class="wrap">
@@ -87,7 +89,8 @@ final class Forms
         }
         $postId = isset($_POST['submission_id']) ? absint($_POST['submission_id']) : 0;
         check_admin_referer('ese_update_form_status_' . $postId);
-        $status = isset($_POST['form_status']) ? sanitize_key(wp_unslash($_POST['form_status'])) : '';
+        $rawStatus = isset($_POST['form_status']) ? wp_unslash($_POST['form_status']) : '';
+        $status = is_scalar($rawStatus) ? sanitize_key((string) $rawStatus) : '';
         if ($postId && Submission::set_status($postId, $status)) {
             self::redirect('updated');
         }
@@ -101,13 +104,18 @@ final class Forms
             wp_die(esc_html__('درخواست نامعتبر است.', 'erfansanat-theme'), '', ['response' => 403]);
         }
         check_admin_referer('ese_save_form_settings');
-        $email = isset($_POST['notification_email']) ? sanitize_email(wp_unslash($_POST['notification_email'])) : '';
+        $rawEmail = isset($_POST['notification_email']) ? wp_unslash($_POST['notification_email']) : '';
+        if (!is_scalar($rawEmail)) {
+            self::redirect('settings_error');
+        }
+        $email = sanitize_email((string) $rawEmail);
         if ('' !== $email && !is_email($email)) {
             self::redirect('settings_error');
         }
+        $rawEnabled = isset($_POST['notifications_enabled']) ? wp_unslash($_POST['notifications_enabled']) : '';
         update_option('ese_form_settings', [
             'notification_email' => $email,
-            'notifications_enabled' => isset($_POST['notifications_enabled']) && '1' === (string) wp_unslash($_POST['notifications_enabled']),
+            'notifications_enabled' => is_scalar($rawEnabled) && '1' === (string) $rawEnabled,
         ], false);
         self::redirect('updated');
     }
@@ -162,11 +170,13 @@ final class Forms
     /** Render the filtered inbox table. */
     private static function render_submission_list(array $statusLabels): void
     {
-        $type = isset($_GET['type']) ? sanitize_key(wp_unslash($_GET['type'])) : '';
+        $rawType = isset($_GET['type']) ? wp_unslash($_GET['type']) : '';
+        $type = is_scalar($rawType) ? sanitize_key((string) $rawType) : '';
         if (!isset(Submission::schemas()[$type])) {
             $type = '';
         }
-        $status = isset($_GET['form_status']) ? sanitize_key(wp_unslash($_GET['form_status'])) : '';
+        $rawStatus = isset($_GET['form_status']) ? wp_unslash($_GET['form_status']) : '';
+        $status = is_scalar($rawStatus) ? sanitize_key((string) $rawStatus) : '';
         if (!isset($statusLabels[$status])) {
             $status = '';
         }

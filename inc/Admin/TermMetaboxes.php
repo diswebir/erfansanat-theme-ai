@@ -148,7 +148,8 @@ final class TermMetaboxes
     /** Save nonce-protected, capability-checked term metadata. */
     public static function save_term_meta(int $termId, string $taxonomy): void
     {
-        $nonce = isset($_POST[self::NONCE_NAME]) ? sanitize_text_field(wp_unslash($_POST[self::NONCE_NAME])) : '';
+        $rawNonce = isset($_POST[self::NONCE_NAME]) ? wp_unslash($_POST[self::NONCE_NAME]) : '';
+        $nonce = is_string($rawNonce) ? sanitize_text_field($rawNonce) : '';
         if ('' === $nonce || !wp_verify_nonce($nonce, self::NONCE_ACTION_PREFIX . $taxonomy)) {
             return;
         }
@@ -161,7 +162,7 @@ final class TermMetaboxes
         $payload = wp_unslash($_POST['es_term_meta']);
         if (!empty($_POST['es_term_repeaters_present']) && is_array($_POST['es_term_repeaters_present'])) {
             foreach ($_POST['es_term_repeaters_present'] as $key => $present) {
-                if ('1' === (string) $present && !array_key_exists($key, $payload)) {
+                if (is_scalar($present) && '1' === (string) $present && !array_key_exists($key, $payload)) {
                     $payload[$key] = [];
                 }
             }

@@ -11,6 +11,18 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - The real Chromium E2E exercised 390px and 1280px viewports, layout overflow/grid behavior, form labels, AJAX payload/nonces, success/error/reset states, and private-error non-disclosure. The API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
 - Phase 8.1 fixture endpoint timing: maximum **3.00 ms** in the latest complete regression run (an earlier full run measured 2.00 ms) and **4.00 ms** in a focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
 
+## Independent audit follow-up — 2026-11-04
+
+The separate source review found concrete defects beyond the original phase checklist. The working-tree fixes below are intentionally narrow; they do not substantiate the claim of 80 bugs.
+
+1. **AJAX product ordering omitted supported WooCommerce values (functional bug).** `date` and `title` were accepted by the archive/WooCommerce UI but absent from `Filters::build_product_query_args()`, so the AJAX refresh could silently use its default menu-order sort. Added explicit date-descending and title-ascending mappings. Regression tests now assert both query mappings.
+2. **Malformed array-shaped request values could trigger PHP warnings/type errors.** The affected paths included the public AJAX `action`, product `sale`/`orderby`, recruitment `resume_url`, admin inbox query filters/settings, theme-options page detection, and metabox nonce/repeater-presence handling. Added scalar/type checks before sanitization/casts; removed an unused theme-options nonce sanitizer that ran before the nonce verifier. Invalid public filter/action/resume inputs are now rejected safely; malformed admin filters fall back to empty/default values or fail closed.
+3. **Notification settings could also contain malformed stored values.** Admin display/submission paths now type-check the recipient and checkbox values, and a non-scalar notification recipient becomes an empty recipient rather than being cast to a string.
+
+**Verification:** Added regression assertions for the product sort map, array-valued AJAX action and product filters, array-valued resume URL, array-valued theme-options page, and array-valued inbox query filters. The entire eight-phase + DOM/Chromium runner passed after the code fixes; Phase 2 and Phase 8 runners were re-run after the final malformed-admin-input assertions, and both passed with an empty `WP_DEBUG` log. The malformed nonce/repeater guards in individual metabox save callbacks were reviewed and linted but are not separately exercised by a dedicated malformed-nonce test.
+
+These findings are a scoped review result, not an exhaustive proof that the theme has exactly three defects or that the user's stated 80 are confirmed. Other visually plausible issues remain findings only after reproducible evidence.
+
 ## Compatibility and SEO review
 
 - Theme-owned legacy `hreflang` output escapes URLs and is suppressed when SEOPress is detected, avoiding duplicate alternates. Phase 3/4 integration tests cover post/term output and the SEOPress guard.
