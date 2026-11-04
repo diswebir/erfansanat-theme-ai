@@ -387,6 +387,41 @@ final class Schema {
 					'list' => 'لیستی',
 				),
 			),
+
+			// ── Home / hero (P05-T005) ───────────────────────────────────.
+			// The main hero video is a global theme option, independent from
+			// the per-page project slides (AC-01). Poster + preload are
+			// configurable (AC-03); an empty video falls back to an image
+			// (AC-02).
+			'hero_video_id'           => array(
+				'type'    => 'media',
+				'default' => 0,
+				'label'   => 'ویدیوی اصلی هیرو (رسانه)',
+				'tab'     => 'home',
+			),
+			'hero_video_poster'       => array(
+				'type'    => 'media',
+				'default' => 0,
+				'label'   => 'پوستر ویدیوی هیرو (تصویر)',
+				'tab'     => 'home',
+			),
+			'hero_video_preload'      => array(
+				'type'    => 'select',
+				'default' => 'metadata',
+				'label'   => 'پیش‌بارگذاری ویدیوی هیرو',
+				'tab'     => 'home',
+				'choices' => array(
+					'auto'     => 'کامل (auto)',
+					'metadata' => 'فقط فراداده (metadata)',
+					'none'     => 'بدون پیش‌بارگذاری (none)',
+				),
+			),
+			'hero_video_fallback'     => array(
+				'type'    => 'media',
+				'default' => 0,
+				'label'   => 'تصویر جایگزین هیرو (وقتی ویدیو خالی است)',
+				'tab'     => 'home',
+			),
 		);
 	}
 
@@ -397,6 +432,7 @@ final class Schema {
 	 */
 	public static function tabs(): array {
 		$tabs = array(
+			'home'     => array( 'title' => 'صفحه اصلی و هیرو', 'icon' => 'dashicons-admin-home' ),
 			'header'   => array( 'title' => 'هدر، اعلان و لوگو', 'icon' => 'dashicons-align-full-width' ),
 			'megamenu' => array( 'title' => 'مگامنو', 'icon' => 'dashicons-menu-alt3' ),
 			'footer'   => array( 'title' => 'فوتر، تماس و شبکه‌ها', 'icon' => 'dashicons-admin-site-alt3' ),

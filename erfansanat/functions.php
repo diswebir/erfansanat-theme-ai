@@ -40,6 +40,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
 
 // Dashboard option tabs — P02-T010+.
+\ErfanSanat\Theme\Options\Tabs\HomeTab::boot();
 \ErfanSanat\Theme\Options\Tabs\HeaderTab::boot();
 \ErfanSanat\Theme\Options\Tabs\MegaMenuTab::boot();
 \ErfanSanat\Theme\Options\Tabs\FooterTab::boot();
