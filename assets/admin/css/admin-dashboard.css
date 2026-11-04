@@ -58,6 +58,27 @@ body.wp-admin .media-modal textarea {
     font-family: inherit;
 }
 
+/* The theme disables Gutenberg and uses the Classic Editor canvas. */
+body#tinymce,
+body.mce-content-body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+body.post-type-post #title,
+body.post-type-post #content,
+body.post-type-post #excerpt,
+body.post-type-page #title,
+body.post-type-page #content,
+body.post-type-page #excerpt,
+body.post-type-product #title,
+body.post-type-product #content,
+body.post-type-product #excerpt,
+body.post-type-projects #title,
+body.post-type-projects #content,
+body.post-type-projects #excerpt {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
 .es-admin-wrap {
     direction: rtl;
     font-family: 'Vazirmatn', Tahoma, sans-serif;

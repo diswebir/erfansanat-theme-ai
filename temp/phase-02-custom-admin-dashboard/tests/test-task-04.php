@@ -19,6 +19,13 @@ foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin.woff2', 'vazirmatn-latin-ex
 }
 $assert(str_contains($adminCss, 'font-display: swap') && str_contains($adminCss, 'unicode-range: U+0600-06FF'), 'Arabic font face uses swap and Persian/Arabic glyph range');
 $assert(str_contains($adminCss, 'body.toplevel_page_erfansanat-theme') && str_contains($adminCss, "font-family: 'Vazirmatn'"), 'Vazirmatn is applied to the theme dashboard and controls');
+$assert(str_contains($adminCss, 'body#tinymce') && str_contains($adminCss, 'body.mce-content-body'), 'Classic Editor canvas uses Vazirmatn');
+$assert(str_contains($adminCss, 'body.post-type-page #title') && str_contains($adminCss, 'body.post-type-product #content'), 'Classic Editor title and text-mode fields use Vazirmatn');
+$editorStyles = isset($GLOBALS['editor_styles']) && is_array($GLOBALS['editor_styles']) ? $GLOBALS['editor_styles'] : [];
+$assert(in_array('assets/admin/css/admin-dashboard.css', $editorStyles, true), 'Classic Editor registers the local Vazirmatn stylesheet');
+$editorStyleUrls = function_exists('get_editor_stylesheets') ? get_editor_stylesheets() : [];
+$expectedEditorStyleUrl = ERFANSANAT_THEME_URI . '/assets/admin/css/admin-dashboard.css';
+$assert(in_array($expectedEditorStyleUrl, $editorStyleUrls, true), 'Classic Editor resolves the stylesheet to the local theme URL');
 $assert(str_contains($adminCss, '.media-modal') && str_contains($adminCss, 'font-family: inherit'), 'Media library dialog inherits Vazirmatn without replacing icon fonts');
 $assert(str_contains($adminCss, ".postbox[id^='erfansanat-']"), 'Theme metaboxes inherit the admin font');
 $assert(str_contains($adminCss, 'body.taxonomy-product_cat') && str_contains($adminCss, 'body.taxonomy-city'), 'Theme taxonomy screens inherit the admin font');

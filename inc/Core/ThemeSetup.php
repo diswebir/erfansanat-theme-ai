@@ -45,6 +45,9 @@ final class ThemeSetup implements ServiceInterface
             ]
         );
 
+        // Keep the classic visual editor aligned with the locally hosted admin typography.
+        add_editor_style('assets/admin/css/admin-dashboard.css');
+
         add_theme_support(
             'custom-logo',
             [
