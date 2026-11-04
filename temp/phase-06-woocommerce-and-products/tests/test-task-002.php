@@ -69,6 +69,9 @@ if ( es_load_wp() ) {
 	es_check( 'breadcrumb شامل دسته محصول', false !== strpos( $html, 'درخت نوری</a>' ) );
 
 	// ── AC-02: hooks fire and replace the shell fallback ──────────────────.
+	// Isolate the mechanism: later Phase-6 tasks (T006) hook real content here,
+	// so clear them first to test the shell's hook-or-fallback in isolation.
+	remove_all_actions( 'woocommerce_single_product_summary' );
 	add_action( 'woocommerce_single_product_summary', static function () { echo '<!--ES-SUMMARY-HOOK-->'; } );
 	$html_hook = $render( $pid );
 	es_check( 'AC-02: هوک summary اجرا می‌شود', false !== strpos( $html_hook, '<!--ES-SUMMARY-HOOK-->' ) );

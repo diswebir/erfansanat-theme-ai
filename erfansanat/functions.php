@@ -69,3 +69,10 @@ add_action(
 	},
 	20
 );
+add_action(
+	'woocommerce_single_product_summary',
+	static function () {
+		get_template_part( 'template-parts/product/purchase' ); // P06-T006.
+	},
+	10
+);
