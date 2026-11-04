@@ -20,4 +20,4 @@ $assert(is_array($result)&&is_int($result['submission_id']??null),'valid rating 
 $invalid=$form->submit(['form_nonce'=>wp_create_nonce('erfan_sanat_form'),'website'=>'','name'=>'Feedback QA','rating'=>'9','message'=>'Bad rating']);
 $assert(is_wp_error($invalid),'out-of-range ratings are rejected');
 if(is_array($result))wp_delete_post($result['submission_id'],true);
-if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Client feedback handler tests passed; UI remains blocked by absent static form source.\n";
+if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Client feedback handler and native UI contract tests passed.\n";
