@@ -1,6 +1,6 @@
 # P04-T012 — Markup مودال جستجو
 
-> فاز 4: هدر، مگامنو، منوی موبایل و فوتر · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 4: هدر، مگامنو، منوی موبایل و فوتر · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `4.1` · وابستگی‌ها: `P04-T004`
 
 ## هدف دقیق
@@ -21,20 +21,20 @@ shell مودال جستجو با data-search-modal و input/results ساخته �
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: data-search-modal/open/close/input حفظ شوند.
-- [ ] AC-02: نتایج خالی/لودینگ placeholder نباشد.
-- [ ] AC-03: دسترسی کیبورد داشته باشد.
+- [x] AC-01: data-search-modal/open/close/input حفظ شوند.
+- [x] AC-02: نتایج خالی/لودینگ placeholder نباشد.
+- [x] AC-03: دسترسی کیبورد داشته باشد.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: باز/بسته‌شدن مودال کار کند.
-- [ ] SC-02: focus به input برود.
+- [x] SC-01: باز/بسته‌شدن مودال کار کند.
+- [x] SC-02: focus به input برود.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-04-header-footer-navigation/tests/test-task-012.php`
@@ -44,3 +44,7 @@ shell مودال جستجو با data-search-modal و input/results ساخته �
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-03)
+- تست اختصاصی: `php temp/phase-04-header-footer-navigation/tests/test-task-012.php` → **16 passed, 0 failed, 0 pending**.
