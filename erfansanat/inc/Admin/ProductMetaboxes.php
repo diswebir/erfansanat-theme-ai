@@ -27,6 +27,12 @@ final class ProductMetaboxes {
 		'product-feature2_copy' => array( 'add-new-feature', 'vaule_of_variable' ),
 	);
 
+	/** Usage / FAQ repeaters (P03-T018): meta key => historical subkeys. */
+	public const USAGE_FAQ_KEYS = array(
+		'usage_product' => array( 'add-new-usage' ),
+		'faq'           => array( 'name_question', 'answer_question' ),
+	);
+
 	private static bool $booted = false;
 
 	public static function boot(): void {
@@ -52,6 +58,7 @@ final class ProductMetaboxes {
 		add_meta_box( 'es-product-files', __( 'کاتالوگ و گالری', 'erfansanat' ), array( __CLASS__, 'render_files' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-relations', __( 'پروژه‌ها و کاربردهای مرتبط', 'erfansanat' ), array( __CLASS__, 'render_relations' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-features', __( 'مشخصات فنی (ویژگی‌ها)', 'erfansanat' ), array( __CLASS__, 'render_features' ), 'product', 'normal', 'default' );
+		add_meta_box( 'es-product-usage-faq', __( 'کاربردها و سوالات متداول', 'erfansanat' ), array( __CLASS__, 'render_usage_faq' ), 'product', 'normal', 'default' );
 	}
 
 	/**
@@ -76,6 +83,7 @@ final class ProductMetaboxes {
 		self::save_files( $post_id );
 		self::save_relations( $post_id );
 		self::save_features( $post_id );
+		self::save_usage_faq( $post_id );
 	}
 
 	/**
@@ -457,11 +465,12 @@ final class ProductMetaboxes {
 	 * Sanitize repeater rows against the declared subkeys; fully empty rows
 	 * are dropped, order is preserved.
 	 *
-	 * @param mixed           $value   Rows (array or JSON string).
-	 * @param array<int,string> $subkeys Allowed subkeys.
+	 * @param mixed           $value     Rows (array or JSON string).
+	 * @param array<int,string> $subkeys   Allowed subkeys.
+	 * @param array<int,string> $multiline Subkeys sanitized as textareas.
 	 * @return array<int,array<string,string>>
 	 */
-	private static function sanitize_repeater_rows( $value, array $subkeys ): array {
+	private static function sanitize_repeater_rows( $value, array $subkeys, array $multiline = array() ): array {
 		$items = LegacyMeta::decode( $value );
 		$clean = array();
 
@@ -471,7 +480,10 @@ final class ProductMetaboxes {
 			}
 			$row = array();
 			foreach ( $subkeys as $subkey ) {
-				$row[ $subkey ] = sanitize_text_field( (string) ( $item[ $subkey ] ?? '' ) );
+				$raw_value      = (string) ( $item[ $subkey ] ?? '' );
+				$row[ $subkey ] = in_array( $subkey, $multiline, true )
+					? sanitize_textarea_field( $raw_value )
+					: sanitize_text_field( $raw_value );
 			}
 			if ( '' !== trim( implode( '', $row ) ) ) {
 				$clean[] = $row;
@@ -479,5 +491,74 @@ final class ProductMetaboxes {
 		}
 
 		return $clean;
+	}
+
+	/**
+	 * Render the usage / FAQ repeaters (P03-T018).
+	 *
+	 * @param \WP_Post $post Post.
+	 */
+	public static function render_usage_faq( $post ): void {
+		wp_nonce_field( 'es_product_usage_faq', 'es_product_usage_faq_nonce' );
+
+		$labels = array(
+			'usage_product' => __( 'کاربردهای محصول', 'erfansanat' ),
+			'faq'           => __( 'سوالات متداول', 'erfansanat' ),
+		);
+
+		foreach ( self::USAGE_FAQ_KEYS as $meta_key => $subkeys ) {
+			echo '<div class="es-repeater"><h4>' . esc_html( $labels[ $meta_key ] ) . '</h4>';
+			$items   = LegacyMeta::get( $post->ID, $meta_key );
+			$items[] = array_fill_keys( $subkeys, '' ); // New empty row.
+
+			foreach ( $items as $i => $item ) {
+				echo '<div class="es-repeater-row">';
+				foreach ( $subkeys as $subkey ) {
+					$value = (string) ( is_array( $item ) ? ( $item[ $subkey ] ?? '' ) : '' );
+					if ( 'answer_question' === $subkey ) {
+						printf(
+							'<p><textarea name="es_usage_faq[%1$s][%2$d][%3$s]" class="widefat" rows="2" placeholder="%3$s">%4$s</textarea></p>',
+							esc_attr( $meta_key ),
+							(int) $i,
+							esc_attr( $subkey ),
+							esc_textarea( $value )
+						);
+					} else {
+						printf(
+							'<p><input type="text" name="es_usage_faq[%1$s][%2$d][%3$s]" value="%4$s" class="widefat" placeholder="%3$s" /></p>',
+							esc_attr( $meta_key ),
+							(int) $i,
+							esc_attr( $subkey ),
+							esc_attr( $value )
+						);
+					}
+				}
+				echo '</div>';
+			}
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Save the usage / FAQ repeaters. A question with an empty answer is kept
+	 * (AC-03); fully empty rows are dropped; item-0 format is preserved.
+	 *
+	 * @param int $post_id Post id.
+	 */
+	public static function save_usage_faq( $post_id ): void {
+		if ( ! isset( $_POST['es_product_usage_faq_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['es_product_usage_faq_nonce'] ) ), 'es_product_usage_faq' ) ) {
+			return;
+		}
+		if ( ! isset( $_POST['es_usage_faq'] ) || ! is_array( $_POST['es_usage_faq'] ) ) {
+			return;
+		}
+
+		$raw = wp_unslash( $_POST['es_usage_faq'] );
+		foreach ( self::USAGE_FAQ_KEYS as $meta_key => $subkeys ) {
+			if ( ! array_key_exists( $meta_key, $raw ) ) {
+				continue;
+			}
+			LegacyMeta::set( $post_id, $meta_key, self::sanitize_repeater_rows( $raw[ $meta_key ], $subkeys, array( 'answer_question' ) ) );
+		}
 	}
 }
