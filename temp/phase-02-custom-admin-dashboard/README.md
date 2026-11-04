@@ -1,6 +1,6 @@
 # Phase 2 — داشبورد اختصاصی ادمین و Section Builder
 
-تعداد تسک اتمیک: **18** · وضعیت: `[PENDING]`
+تعداد تسک اتمیک: **19** · وضعیت: `[PENDING]`
 
 | شناسه | تسک | تسک قبلی | وابستگی | وضعیت |
 |---|---|---|---|---|
@@ -22,5 +22,6 @@
 | `P02-T016` | SectionManager: UI ترتیب و فعال‌سازی | `2.3` | P02-T015 | `[PASSED]` |
 | `P02-T017` | SectionManager: ویرایش محتوای سکشن | `2.3` | P02-T006, P02-T007, P02-T016 | `[PASSED]` |
 | `P02-T018` | SectionManager: API رندر و کش | `2.3` | P02-T015, P02-T017 | `[PASSED]` |
+| `P02-T019` | ادغام کامل وزیرمتن در پنل پیشخوان | `2.2` | P02-T003, P02-T004, P02-T016 | `[PASSED]` |
 
 اجرای همه تست‌ها: `bash temp/phase-02-custom-admin-dashboard/tests/run-phase-tests.sh`

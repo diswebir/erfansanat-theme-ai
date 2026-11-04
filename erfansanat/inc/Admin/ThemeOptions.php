@@ -102,7 +102,7 @@ final class ThemeOptions {
 		wp_enqueue_style(
 			'es-admin-options',
 			ES_ASSETS_URI . 'admin/options.css',
-			array(),
+			array( Typography::HANDLE ),
 			is_file( $css ) ? (string) filemtime( $css ) : ES_VERSION
 		);
 

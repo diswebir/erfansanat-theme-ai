@@ -3,13 +3,8 @@
  * Loaded ONLY on the dashboard screen (never on the front-end).
  */
 
-@font-face {
-	font-family: "Vazirmatn";
-	src: url("../fonts/vazirmatn-arabic.woff2") format("woff2");
-	font-weight: 100 900;
-	font-style: normal;
-	font-display: swap;
-}
+/* Vazirmatn font faces live in admin/font.css (P02-T019, shared across all
+   theme admin screens). This file only styles the dashboard layout. */
 
 .es-dashboard {
 	--es-brand: #047857;

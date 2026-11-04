@@ -36,6 +36,10 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Admin\TermMetaboxes::boot();
 \ErfanSanat\Theme\Admin\HreflangMetabox::boot();
 
+// Admin typography (Vazirmatn) — P02-T019. Boots before the dashboard so the
+// shared font stylesheet is registered ahead of dashboard/metabox assets.
+\ErfanSanat\Theme\Admin\Typography::boot();
+
 // Custom admin dashboard — P02-T003.
 \ErfanSanat\Theme\Admin\ThemeOptions::boot();
 
