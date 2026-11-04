@@ -1,7 +1,7 @@
 # Task 5.12 — تست جامع رندر صفحه اصلی (مقایسه با index.html و سکشن‌های toggle)
 
 **فاز:** 05 — تبدیل صفحه اصلی و کامپوننت‌های ماژولار
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 9/9 · رگرسیون ۱۲/۱۲]`
 **تست:** `temp/phase-05-homepage-and-sections/tests/test-task-12.php`
 
 ## 🎯 هدف
@@ -27,14 +27,15 @@
 - تست سریع و بدون دیتابیس واقعی (stub)
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] رندر پیش‌فرض ساختاری مطابق میرور
-- [ ] toggle و reorder اثر کنند
-- [ ] args کوئری‌ها صحیح
+- [x] رندر پیش‌فرض ساختاری مطابق میرور (۱۵/۱۵ سکشن + ترتیب ORDER)
+- [x] toggle و reorder اثر کنند
+- [x] args کوئری‌ها صحیح (WP_Query مقالات + get_posts projects/گالری)
+- [x] دو سکشن باقی‌مانده projects-gallery/about-intro نیز ساخته شدند (اسکیم ۶ف/۲۳ف)
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-05-homepage-and-sections/tests/test-task-12.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-05-homepage-and-sections/tests/test-task-12.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 5 IN PROGRESS (11/12 TASKS DONE: 5.1–5.11 · 160/160 CONDITIONS · TESTS 01-11 GREEN)**
+**PHASE 5 COMPLETE (12/12 TASKS DONE: 5.1–5.12 · 169/169 CONDITIONS · TESTS 01-12 GREEN)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -99,6 +99,7 @@
 - 5.10 contact+map: contact تک‌بلوک ۱۹فیلدی (تلفن/ایمیل/ساعات: فیلد → گزینه مرکزی OptionsOutput::contact_args → خالی)؛ map: بستر SVG تزئینی میرور ↔ iframe ادمین با wp_kses (iframe لیست مجاز اتریبیوت)؛ نشانی/کدپستی از گزینه مرکزی در صورت خالی بودن فیلد؛ مخفی اگر desc+phone+email همه خالی (map: title+address)؛ استاب wp_kses به هارنس اضافه شد (اتریبیوت‌فیلتر واقعی)؛ 10/10. نکته: es_option کش استاتیک دارد → بعد از تغییر __wp_options باید es_option_reset_cache() صدا زده شود؛ گزینه‌ها زیر کلید erfansanat_theme_options نستد.
 - 5.11 کارت‌ها+quality: سه کارت استاندارد template-parts/cards/{card-product,card-project,card-post}.php (برش از shop/projects/blog.html) — کارت محصول: پوش data-product-* (دسته، purchasable=true_sale!=='false'، قیمت _price (خالی→۰)، ip/voltage از تاکسونومی pa_ip/pa_voltage، views=number2-viewc، rating=_wc_average_rating)؛ badge آنلاین/استعلام؛ تصویر: شاخص→گالری (galerry_produ/_product_image_gallery)→placeholder میرور؛ کیفیت raw اتریبیوت‌ها لاتین + نمایش فارسی. کارت پروژه: project_type/city ترم‌ها + finish-pro-time + es_rating. کارت مقاله: featured (پارامتر)، زمان مطالعه متا→برآورد. سکشن quality (جاافتاده از درخت تسک‌ها — رفیجستری داشت): دو رپیتر features/steps + باند فرآیند؛ آیکون‌های ۹گانه جدید (badge-check/cloud-rain/radio-tower/search/pencil-ruler/wrench/hard-hat/lightbulb) stroke=1.75؛ تأخیرها شامل «0.15000000000000002» میرور؛ 37/37.
 - رگرسیون پس از 5.7: فاز ۱ (۸/۸: 154 شرط) فاز ۲ (۹/۹: ۱۶۰ شرط) فاز ۴ (۲۱۲/۲۱۲) فاز ۵ (۹۴/۹۴) — همه سبز.
+- 5.12 about-intro + projects-gallery (آخرین دو سکشن ۱۵گانه): معرفی — ۲۳فیلد (badge/mono/since/3×title+desc/2×گالری[تصویر/alt/چیپ/عنوان]/CTA) با default تصاویر میرور؛ گالری — تب‌های [همه/تونل/urban] با ردیپر tabs(key/label/types)، گروه‌بندی get_posts(30,DESC) با تطبیق name ترم project_type، هر تب per_tab=5، سال از متا es_project_year → preg ارقام فارسی از finish-pro-time، خط متا «type · سال Y»، آرشیو es_page_url(projects)، مخفی اگر تب خالی یا بدون گروه؛ فیلترهای es_projects_gallery_args/es_projects_gallery_query_args؛ CSS نیازمندی‌ها در styles.css موجود (line-clamp-2 + [hidden])؛ JS تب‌ها با میرور home2 — بدون پورت. تست جامع: 9/9 (۱۵ سکشن + ترتیب + toggle/reorder + args WP_Query و get_posts) — رگرسیون کامل ۱۲ فایل/۱۶۹ شرط سبز.
 
 ## رویدادهای فاز ۲ (2026-11-03)
 - Task 2.2 (FieldRenderer+Sanitizer) به ابتدای فاز جابه‌جا شد (وابستگی 2.1) — D-014.

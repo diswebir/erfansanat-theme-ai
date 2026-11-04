@@ -282,7 +282,7 @@
 - 📤 خروجی: `template-parts/cards/card-product.php`؛ `template-parts/cards/card-project.php`؛ `template-parts/cards/card-post.php` · **وابستگی:** Task 1.2
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 5.12 — تست جامع رندر صفحه اصلی (مقایسه با index.html و سکشن‌های toggle) `[PENDING]`
+### Task 5.12 — تست جامع رندر صفحه اصلی (مقایسه با index.html و سکشن‌های toggle) `[DONE — 9/9 · رگرسیون ۱۲/۱۲]`
 - 🎯 رندر کامل front-page در حالت پیش‌فرض = ساختار میرور؛ تغییر ترتیب/حذف از ادمین اثر واقعی داشته باشد
 - 📤 خروجی: `بسط temp/phase-05…/tests/test-task-12.php` · **وابستگی:** Task 5.2 … 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
@@ -730,7 +730,7 @@
 - 📤 خروجی: `template-parts/cards/card-product.php`؛ `template-parts/cards/card-project.php`؛ `template-parts/cards/card-post.php` · **وابستگی:** Task 1.2
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 5.12 — تست جامع رندر صفحه اصلی (مقایسه با index.html و سکشن‌های toggle) `[PENDING]`
+### Task 5.12 — تست جامع رندر صفحه اصلی (مقایسه با index.html و سکشن‌های toggle) `[DONE — 9/9 · رگرسیون ۱۲/۱۲]`
 - 🎯 رندر کامل front-page در حالت پیش‌فرض = ساختار میرور؛ تغییر ترتیب/حذف از ادمین اثر واقعی داشته باشد
 - 📤 خروجی: `بسط temp/phase-05…/tests/test-task-12.php` · **وابستگی:** Task 5.2 … 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا

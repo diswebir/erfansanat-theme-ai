@@ -62,10 +62,26 @@ final class HomeSections {
             ],
         ];
         $items['projects-gallery'] = [
-            'label'  => __('گالری نمونه‌کارها', 'erfansanat'),
+            'label'  => __('گالری پروژه‌های صفحه اصلی', 'erfansanat'),
             'schema' => [
-                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'گالری نمونه‌کارها'],
-                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد پروژه', 'erfansanat'), 'default' => 6],
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'آرشیو تفکیکی پروژه‌های اجرایی'],
+                ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'نمونه‌کارهای اجراشده در '],
+                ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'کلان‌شهرهای کشور'],
+                ['key' => 'per_tab', 'type' => 'number', 'label' => __('تعداد کارت هر تب', 'erfansanat'), 'default' => 5],
+                ['key' => 'archive_text', 'type' => 'text', 'label' => __('متن دکمه آرشیو', 'erfansanat'), 'default' => 'مشاهده آرشیو کامل پروژه‌ها'],
+                [
+                    'key' => 'tabs', 'type' => 'repeater', 'label' => __('تب‌ها (تب اول = همه)', 'erfansanat'), 'add_label' => __('افزودن تب', 'erfansanat'),
+                    'fields' => [
+                        ['key' => 'key', 'type' => 'text', 'label' => __('کلید (all/tunnel/urban)', 'erfansanat')],
+                        ['key' => 'label', 'type' => 'text', 'label' => __('برچسب', 'erfansanat')],
+                        ['key' => 'types', 'type' => 'text', 'label' => __('فیلتر انواع پروژه (نام‌ها با |)', 'erfansanat')],
+                    ],
+                    'default' => [
+                        ['key' => 'all', 'label' => 'همه سازه‌های نوری', 'types' => ''],
+                        ['key' => 'tunnel', 'label' => 'تونل و درخت نوری', 'types' => 'تونل نوری|درخت نوری'],
+                        ['key' => 'urban', 'label' => 'میادین و بلوار', 'types' => 'المان‌های نورانی|نورپردازی میدان'],
+                    ],
+                ],
             ],
         ];
         $items['about'] = [
@@ -75,11 +91,29 @@ final class HomeSections {
         $items['about-intro'] = [
             'label'  => __('معرفی تاسیس شرکت', 'erfansanat'),
             'schema' => [
-                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => ''],
-                ['key' => 'body', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => ''],
-                ['key' => 'image', 'type' => 'media', 'label' => __('تصویر', 'erfansanat'), 'default' => ''],
-                ['key' => 'link_text', 'type' => 'text', 'label' => __('متن لینک', 'erfansanat'), 'default' => ''],
-                ['key' => 'link_url', 'type' => 'url', 'label' => __('لینک', 'erfansanat'), 'default' => ''],
+                ['key' => 'badge', 'type' => 'text', 'label' => __('برچسب گوشه', 'erfansanat'), 'default' => 'اصالت و هویت صنعتی کارخانه'],
+                ['key' => 'bg_image', 'type' => 'media', 'label' => __('تصویر پس‌زمینه', 'erfansanat'), 'default' => 'assets/images/hero.jpg'],
+                ['key' => 'bg_alt', 'type' => 'text', 'label' => __('alt پس‌زمینه', 'erfansanat'), 'default' => 'کارخانه دانش‌بنیان عرفان صنعت اصفهان'],
+                ['key' => 'mono', 'type' => 'text', 'label' => __('مونوگرام', 'erfansanat'), 'default' => 'ESE'],
+                ['key' => 'since', 'type' => 'text', 'label' => __('سال تاسیس', 'erfansanat'), 'default' => 'تاسیس کارخانه از سال ۱۳۸۰ خورشیدی'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'مرجع بومی‌سازی سازه‌های نوری و تجهیزات روشنایی شهری در ایران'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان با بهره‌گیری از خطوط تمام‌اتوماتیک تزریق پلیمر، واحد قالب‌سازی دقیق و آزمایشگاه کنترل کیفیت، محصولات خود را با استاندارد حفاظتی واقعی IP68 و کدهای رسمی سامانه ستاد و ایران‌کد (GS1) تولید و به سراسر کشور عرضه می‌نماید.'],
+                ['key' => 's1_title', 'type' => 'text', 'label' => __('آمار ۱ — عنوان', 'erfansanat'), 'default' => 'ISO 9001:2015'],
+                ['key' => 's1_desc', 'type' => 'text', 'label' => __('آمار ۱ — توضیح', 'erfansanat'), 'default' => 'مدیریت کیفیت'],
+                ['key' => 's2_title', 'type' => 'text', 'label' => __('آمار ۲ — عنوان', 'erfansanat'), 'default' => 'درجه حفاظت IP68'],
+                ['key' => 's2_desc', 'type' => 'text', 'label' => __('آمار ۲ — توضیح', 'erfansanat'), 'default' => 'تزریق مستقیم رزین'],
+                ['key' => 's3_title', 'type' => 'text', 'label' => __('آمار ۳ — عنوان', 'erfansanat'), 'default' => 'ایران‌کد GS1'],
+                ['key' => 's3_desc', 'type' => 'text', 'label' => __('آمار ۳ — توضیح', 'erfansanat'), 'default' => 'ثبت رسمی سامانه ستاد'],
+                ['key' => 'g1_image', 'type' => 'media', 'label' => __('گالری ۱', 'erfansanat'), 'default' => 'assets/images/light-tunnel.jpg'],
+                ['key' => 'g1_alt', 'type' => 'text', 'label' => __('alt گالری ۱', 'erfansanat'), 'default' => 'پروژه‌های تونل نوری عرفان صنعت'],
+                ['key' => 'g1_chip', 'type' => 'text', 'label' => __('چیپ گالری ۱', 'erfansanat'), 'default' => 'سازه و المان شهری'],
+                ['key' => 'g1_title', 'type' => 'text', 'label' => __('عنوان گالری ۱', 'erfansanat'), 'default' => 'تونل‌های نوری پیکسلی و کمانی'],
+                ['key' => 'g2_image', 'type' => 'media', 'label' => __('گالری ۲', 'erfansanat'), 'default' => 'assets/images/light-tree.jpg'],
+                ['key' => 'g2_alt', 'type' => 'text', 'label' => __('alt گالری ۲', 'erfansanat'), 'default' => 'تولید درختان نوری هوشمند'],
+                ['key' => 'g2_chip', 'type' => 'text', 'label' => __('چیپ گالری ۲', 'erfansanat'), 'default' => 'تولید انحصاری'],
+                ['key' => 'g2_title', 'type' => 'text', 'label' => __('عنوان گالری ۲', 'erfansanat'), 'default' => 'درختان نوری هوشمند NRF'],
+                ['key' => 'cta_text', 'type' => 'text', 'label' => __('دکمه گوشه', 'erfansanat'), 'default' => 'ارتباط مستقیم با کارخانه'],
+                ['key' => 'cta_url', 'type' => 'url', 'label' => __('لینک دکمه', 'erfansanat'), 'default' => '/contact/'],
             ],
         ];
         $items['history'] = [
