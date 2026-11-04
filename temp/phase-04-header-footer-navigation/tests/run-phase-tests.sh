@@ -6,7 +6,9 @@ ROOT="$(cd "$DIR/../../.." && pwd)"
 export PATH="$ROOT/temp/tools:$PATH"
 echo "================ هدر، مگامنو، منوی موبایل و فوتر ================"
 if [ -f "$ROOT/erfansanat/style.css" ]; then
-  wp theme activate erfansanat || exit 1
+  if ! wp theme is-active erfansanat --allow-root >/dev/null 2>&1; then
+    wp theme activate erfansanat --allow-root >/dev/null 2>&1 || { echo "[FAIL] cannot activate erfansanat"; exit 1; }
+  fi
 fi
 fail=0
 for t in "$DIR"/test-task-*.php; do

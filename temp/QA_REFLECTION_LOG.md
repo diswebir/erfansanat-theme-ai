@@ -93,3 +93,20 @@
   - **نقل‌قول dropdown:** `wp_dropdown_categories` با نقل‌قول تکی `name='city'` رندر می‌کند → تست با regex نقل‌قول‌agnostic اصلاح شد.
 - **نتیجه تست‌ها:** T001=15، T002=12، T003=15، T004=14، T005=13، T006=10، T007=10، T008=14، T009=12، T010=12، T011=12، T012=16، T013=10، T014=10، T015=16، T016=10، T017=13، T018=11، T019=13، T020=16، T021=10، T022=12، T023=11، T024=14 → **۳۰۱ چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-03-cpt-and-legacy-meta/tests/run-phase-tests.sh` → `PHASE RESULT: ALL PASS`. گارد activate سخت‌گیرانه شد.
 - **UPDATE MEMORY + Git:** وضعیت فاز ۳ PASSED؛ گام بعدی Phase 4 در انتظار تایید کاربر. همه کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai` و بلافاصله push شدند.
+
+---
+
+## 2026-11-04 — Phase 4 تکمیل شد (P04-T001..T020)
+- **READ MEMORY:** PROJECT_MEMORY + ۲۰ تسک فاز ۴ + DATA_BLUEPRINT + DOM مرجع خوانده شد. کاربر «ادامه بده» داد → اجرای پیوسته تا پایان فاز؛ گیت پایان فاز قبل از فاز ۵ باقی است.
+- **THINK & PLAN:** منوها با fallback واقعی (بدون داده ساختگی)؛ واکرهای NavWalkers هم‌DOM با مرجع تا main.js دست‌نخورده بماند؛ مگامنوها taxonomy-driven با آپشن‌های تب‌بندی؛ CTA/فوتر/هدر تماماً option-driven؛ hreflang استاندارد با تعویق به افزونه‌ها.
+- **WRITE TEST + IMPLEMENT:** برای هر ۲۰ تسک تست واقعی نوشته شد. فایل‌های هدف: `inc/Core/{Menus,NavWalkers,Hreflang}.php`, `header.php`, `footer.php`, `template-parts/header/{topbar,brand-row,mega-products,mega-projects,mega-corporate,mobile-menu,search-modal,cart-modal}.php`, `template-parts/global/{footer-info,cta-contact}.php`, `assets/js/navigation.js`, `inc/Options/Schema.php` + `Tabs/FooterTab.php` (وابستگی‌های ثبت‌شده)، `functions.php`.
+- **RUN TEST / SELF-CORRECT:**
+  - **باگ WP 7.1 Walker:** `Walker::display_element` حالا `$this->has_children` را روی خود واکر ست می‌کند؛ واکرها باید همین را بخوانند (نه args->has_children به‌تنهایی). در T005 کشف و در همه واکرها اعمال شد.
+  - **محدودیت هارنس (T015):** فراخوانی دوم `get_header()`/`get_footer()` در یک درخواست، بافر خروجی را خالی می‌کند (wp_footer دوباره). تست‌های رندر چندحالته به رندر واحد + چک لایه داده یا `get_template_part` مستقیم تغییر کردند.
+  - **main.js دست‌نخورده:** Escape/focus برای کشوی موبایل در main.js نبود → `navigation.js` کمکی (فقط افزایشی). هرگز main.js ویرایش نشد.
+  - **Python f-string + بک‌اسلش PHP:** ساخت قالب با f-string خطای SyntaxError می‌داد → الگوی raw-string + `.replace('__TOKEN__',…)` برای تولید PHP (T014/T016).
+  - **اتریبیوت‌های بی‌اثر مرجع:** `custom` (Framer) در main.js مصرف نمی‌شود و در هیچ part نگه داشته نشد؛ `grid-Floor` در styles.css نیست ولی برای parity DOM در footer ماند.
+  - **انحراف ثبت‌شده T013:** دکمه نمونه‌ساز `data-cart-modal-restore` با لینک واقعی فروشگاه جایگزین شد (داده واقعی فقط).
+  - **وابستگی‌های ثبت‌شده:** T008/T016 کلیدهای Schema را گسترش دادند (الگوی امن — P02-T001 فقط سازگاری کلید را چک می‌کند نه تعداد)؛ T018 کلاس hover را به fallback تولیدات اضافه کرد؛ T017/T019 boot در functions.php.
+- **نتیجه تست‌ها:** T001=14، T002=15، T003=9، T004=15، T005=13، T006=10، T007=14، T008=11، T009=16، T010=12، T011=11، T012=16، T013=18، T014=11، T015=14، T016=22، T017=23، T018=15، T019=18، T020=33 → **۳۱۰ چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-04-header-footer-navigation/tests/run-phase-tests.sh` → `PHASE RESULT: ALL PASS`. گارد activate سخت‌گیرانه شد. رگرسیون کامل فازهای ۱–۳: ۱۱۱+۲۶۰+۳۰۱ پاس. **تجمعی: ۹۸۲ چک.**
+- **UPDATE MEMORY + Git:** وضعیت فاز ۴ PASSED؛ گام بعدی Phase 5 در انتظار تایید کاربر. همه کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai` و بلافاصله push شدند (آخرین: `6ecbe7d`).

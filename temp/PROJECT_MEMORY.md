@@ -1,11 +1,14 @@
 # PROJECT_MEMORY — حافظه زنده پروژه (Active State)
 
-> آخرین به‌روزرسانی: 2026-11-03 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
+> آخرین به‌روزرسانی: 2026-11-04 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 3 PASSED** — همه ۲۴ تسک فاز ۳ پاس شدند.
+## وضعیت فعلی: **PHASE 4 PASSED** — همه ۲۰ تسک فاز ۴ پاس شدند.
 ```
-PHASE 3 PASSED — P03-T001..T024 PASSED (301 checks) — WAITING FOR USER APPROVAL FOR PHASE 4
+PHASE 4 PASSED — P04-T001..T020 PASSED (310 checks) — WAITING FOR USER APPROVAL FOR PHASE 5
 ```
+- **فاز ۴ کامل شد (هدر، مگامنو، منوی موبایل و فوتر):** ۴ مکان منو + fallback واقعی (`Core\Menus`)؛ پوسته header/footer با DOM عین مرجع؛ topbar/brand-row از options؛ `DesktopWalker` (مگامنوهای محصولات/پروژه‌ها/شرکتی از taxonomy + آپشن‌ها)؛ `MobileWalker` (کشو + آکاردئون + تب‌های داخلی مگا)؛ `navigation.js` کمکی (Escape/focus-trap/restore + scroll-spy لندینگ — main.js دست‌نخورده)؛ مودال جستجو (نتایج واقعی DB + data-search-item)؛ مودال سبد (payload واقعی WC + فیلتر `es_cart_modal_data` + حالت خالی واقعی + quick-add)؛ footer-info (برند/دسترسی سریع/دسته‌ها/تماس از options)؛ footer پایانی (کپی‌رایت/شبکه‌های امن/scroll-top)؛ CTA مشترک `id=contact` (۹ کلید `cta_*`، خاموش‌شدنی)؛ `Core\Hreflang` (link استاندارد از hrefmeta_*، تعویق به SEOPress/hreflangpch)؛ `TolidatWalker` (لیست تخت فوتر + fallback هم‌کلاس)؛ `LandingWalker` (لنگر سکشن‌ها + is-active + رندر opt-in)؛ ممیزی نهایی parity/a11y با fixture کامل.
+- نتیجه runner فاز ۴: `PHASE RESULT: ALL PASS` (۲۰ تست، **۳۱۰ چک پاس، ۰ fail/pending**). رگرسیون کامل فازهای ۱–۳ هم پاس (۱۱۱+۲۶۰+۳۰۱). **مجموع تجمعی: ۹۸۲ چک.**
+- شمارش چک هر تسک: T001=14، T002=15، T003=9، T004=15، T005=13، T006=10، T007=14، T008=11، T009=16، T010=12، T011=11، T012=16، T013=18، T014=11، T015=14، T016=22، T017=23، T018=15، T019=18، T020=33.
 - **فاز ۳ کامل شد (CPTها، تکسونومی‌ها و متاباکس‌های Legacy):** CPT بومی `projects` و `services`؛ تکسونومی‌های `project_type`/`city` (فارسی‌پذیر)؛ حفظ rewrite ووکامرس (`product`=/product/، `product_cat` با with_front=true و سلسله‌مراتب، `product-tag`، `product_brand`) بدون ثبت مجدد؛ نقشه ۱۸ ویژگی `pa_*`؛ flush نسخه‌دار فقط در فعال‌سازی/ارتقا؛ ریدایرکت ۳۰۱ aliasهای محصول/دسته/پروژه/شهر/نوع (نگاشت فیلترپذیر برای اسلاگ فارسی لایو)؛ ستون‌ها/فیلترهای ادمین پروژه؛ Codec متاهای Legacy (PHP/JSON item-0/list، حفظ فرمت، wp_slash-safe)؛ متاباکس‌های محصول (شناسه‌های صنعتی، عنوان/فروش، کاتالوگ/گالری با fallback، روابط، repeater مشخصات/کاربرد/FAQ)؛ Quick/Bulk Edit؛ متاباکس‌های پروژه (گالری ۵ کلیدی، تاریخ/محصولات)؛ متای دسته (thumbnail/FAQ)؛ Hreflang (پست/ترم)؛ شمارنده بازدید اتمیک.
 - نتیجه runner فاز ۳: `PHASE RESULT: ALL PASS` (۲۴ تست، **۳۰۱ چک پاس، ۰ fail/pending**).
 - شمارش چک هر تسک: T001=15، T002=12، T003=15، T004=14، T005=13، T006=10، T007=10، T008=14، T009=12، T010=12، T011=12، T012=16، T013=10، T014=10، T015=16، T016=10، T017=13، T018=11، T019=13، T020=16، T021=10، T022=12، T023=11، T024=14.
@@ -39,7 +42,14 @@ PHASE 3 PASSED — P03-T001..T024 PASSED (301 checks) — WAITING FOR USER APPRO
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**PHASE 4** — طبق `temp/MASTER_PLAN.md` (۲۰ تسک اتمیک). فاز ۳ کامل پاس شد (۳۰۱ چک)؛ در انتظار تایید کاربر برای شروع فاز ۴.
+**PHASE 5** — طبق `temp/MASTER_PLAN.md` (۲۱ تسک اتمیک: صفحه اصلی و سکشن‌ها). فاز ۴ کامل پاس شد (۳۱۰ چک)؛ در انتظار تایید کاربر برای شروع فاز ۵.
+- معماری فاز ۴ برای فازهای بعد: هدر/فوتر کامل و parity هستند؛ `get_header()`/`get_footer()` پوسته را می‌سازند و `main` با `pt-28` باز می‌شود. سکشن‌های صفحه اصلی (فاز ۵) باید داخل `main` و از طریق `Sections\Renderer` رندر شوند؛ CTA مشترک `id=contact` خودکار قبل از footer می‌آید (با `cta_enabled` خاموش‌شدنی).
+- `Core\Menus::render($loc,$args)` echo-aware با fallback؛ `page_url($slug)` برای لینک برگه‌ها (فیلتر `es_menu_page_url`). واکرها در `Core/NavWalkers.php` (یک فایل، چند کلاس — require دستی در functions.php): DesktopWalker/MobileWalker/TolidatWalker/LandingWalker.
+- `LandingWalker::render()` فقط وقتی منوی landing اختصاص‌یافته و پر باشد خروجی می‌دهد (برای page-templates لندینگ در فاز ۷). `data-landing-link` + scroll-spy در navigation.js.
+- `Core\Hreflang` روی `wp_head` اولویت ۵؛ با فعال‌بودن SEOPress/hreflangpch خودکار خاموش می‌شود (فیلتر `es_hreflang_enabled`).
+- آپشن‌های جدید فاز ۴: ۹ کلید `cta_*` در تب footer + `FooterTab::cta()`. فیلترها: `es_footer_quick_links`، `es_cart_modal_data`، `es_mega_products_tabs`.
+- **محدودیت هارنس:** `get_header()`+`get_footer()` در هر درخواست فقط یک‌بار قابل فراخوانی است (wp_footer دوم بافر را خالی می‌کند). تست‌های رندر چندحالته باید از `get_template_part` مستقیم یا رندر واحد + چک لایه داده استفاده کنند.
+- انحراف ثبت‌شده: دکمه `data-cart-modal-restore` مرجع (نمونه‌ساز) با لینک واقعی فروشگاه جایگزین شد (P04-T013). اتریبیوت‌های `custom` (باقی‌مانده Framer) و کلاس `grid-Floor` در مرجع بی‌اثرند؛ `custom` حذف شد، `grid-Floor` برای parity نگه داشته شد.
 - نکته معماری فاز ۳ برای فازهای بعد: همه کلیدهای متای legacy با املای دقیق در متاباکس‌ها مدیریت می‌شوند. `Core\LegacyMeta` codec مشترک (get/set/get_for_term/set_for_term) فرمت PHP/JSON item-0/list را حفظ می‌کند و **wp_slash** قبل از update_metadata می‌زند (هسته wp_unslash می‌کند). هرگز کلید با املای اصلاح‌شده نساز.
 - `Core\Rewrites` فقط فیلتر args می‌زند (ثبت مجدد product/product_cat ممنوع). flush نسخه‌دار (`es_rewrite_version`) فقط در after_switch_theme/admin_init.
 - `Core\LegacyRedirects::resolve()` نگاشت alias→canonical (فیلترهای `es_legacy_redirects_product_categories`/`_cities`/`_project_types` برای اسلاگ فارسی لایو).
