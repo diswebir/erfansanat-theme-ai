@@ -39,12 +39,16 @@ final class ProjectFilterQuery
             if ($value === '' || $value === 'همه' || strtolower($value) === 'all') continue;
             $term = get_term_by('slug', sanitize_title($value), $taxonomy);
             if (!$term) $term = get_term_by('name', $value, $taxonomy);
-            $taxQuery[] = [
-                'taxonomy' => $taxonomy,
-                'field' => 'term_id',
-                'terms' => $term instanceof \WP_Term ? [(int) $term->term_id] : [-1],
-                'include_children' => false,
-            ];
+            if ($term instanceof \WP_Term) {
+                $taxQuery[] = [
+                    'taxonomy' => $taxonomy,
+                    'field' => 'term_id',
+                    'terms' => [(int) $term->term_id],
+                    'include_children' => false,
+                ];
+            } else {
+                $args['post__in'] = [0];
+            }
         }
         if (count($taxQuery) > 1) $args['tax_query'] = $taxQuery;
 

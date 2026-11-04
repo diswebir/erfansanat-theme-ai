@@ -1133,145 +1133,98 @@
   function initBlogArchive() {
     var archive = document.querySelector('[data-blog-archive="true"]');
     if (!archive) return;
-
-    var searchInput = document.querySelector('[data-blog-search="true"]');
-    var catBtns = document.querySelectorAll("[data-blog-cat-btn]");
+    var searchInput = archive.querySelector('[data-blog-search="true"]');
+    var catBtns = archive.querySelectorAll("[data-blog-cat-btn]");
     var resetBtn = archive.querySelector('[data-blog-reset="true"]');
     var headingEl = archive.querySelector('[data-blog-heading="true"]');
     var countEl = archive.querySelector('[data-blog-count="true"]');
     var emptyEl = archive.querySelector('[data-blog-empty="true"]');
     var gridEl = archive.querySelector('[data-blog-grid="true"]');
-    var items = archive.querySelectorAll('[data-blog-item="true"]');
     var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
-    var perPage = paginationRoot
-      ? parseInt(paginationRoot.getAttribute("data-per-page") || "6", 10)
-      : 6;
+    if (!gridEl || !window.esThemeData || !window.esThemeData.ajaxUrl) return;
 
     var activeCat = "همه";
     var query = "";
     var currentPage = 1;
-
-    function renderBlogFilter() {
-      var q = query.trim();
-      var matchingItems = [];
-
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var itemCat = item.getAttribute("data-blog-category") || "";
-        var itemText = item.getAttribute("data-blog-search-text") || "";
-        var matchCat = activeCat === "همه" || itemCat === activeCat;
-        var matchQ = !q || itemText.indexOf(q) !== -1;
-
-        if (matchCat && matchQ) {
-          matchingItems.push(item);
-        } else {
-          item.classList.add("hidden");
-        }
+    var requestVersion = 0;
+    var debounceTimer = null;
+    if (headingEl) {
+      var currentHeading = headingEl.textContent.trim();
+      for (var h = 0; h < catBtns.length; h++) {
+        if (catBtns[h].getAttribute("data-blog-cat-btn") === currentHeading) activeCat = currentHeading;
       }
+    }
 
+    function syncCategoryButtons() {
       for (var c = 0; c < catBtns.length; c++) {
-        var btn = catBtns[c];
-        var bCat = btn.getAttribute("data-blog-cat-btn");
-        if (bCat === activeCat) {
-          btn.classList.add(
-            "bg-emerald-700",
-            "text-white",
-            "shadow-md",
-            "shadow-emerald-700/25"
-          );
-          btn.classList.remove(
-            "border",
-            "border-slate-200",
-            "bg-white",
-            "text-slate-600",
-            "hover:border-emerald-400",
-            "hover:text-emerald-700"
-          );
-        } else {
-          btn.classList.remove(
-            "bg-emerald-700",
-            "text-white",
-            "shadow-md",
-            "shadow-emerald-700/25"
-          );
-          btn.classList.add(
-            "border",
-            "border-slate-200",
-            "bg-white",
-            "text-slate-600",
-            "hover:border-emerald-400",
-            "hover:text-emerald-700"
-          );
-        }
-      }
-
-      if (headingEl && !window.location.pathname.includes("/category/")) {
-        headingEl.textContent = activeCat === "همه" && !q ? "آخرین مقالات" : "نتایج جستجو";
-      }
-      if (countEl) {
-        countEl.textContent = toFa(matchingItems.length);
+        var active = catBtns[c].getAttribute("data-blog-cat-btn") === activeCat;
+        catBtns[c].classList.toggle("bg-emerald-700", active);
+        catBtns[c].classList.toggle("text-white", active);
+        catBtns[c].classList.toggle("shadow-md", active);
+        catBtns[c].classList.toggle("border", !active);
+        catBtns[c].classList.toggle("border-slate-200", !active);
+        catBtns[c].classList.toggle("bg-white", !active);
+        catBtns[c].classList.toggle("text-slate-600", !active);
       }
       if (resetBtn) {
-        if (activeCat !== "همه" || q) {
-          resetBtn.classList.remove("hidden");
-          resetBtn.classList.add("inline-flex");
-        } else {
-          resetBtn.classList.add("hidden");
-          resetBtn.classList.remove("inline-flex");
-        }
+        var hasFilters = activeCat !== "همه" || query.trim() !== "";
+        resetBtn.classList.toggle("hidden", !hasFilters);
+        resetBtn.classList.toggle("inline-flex", hasFilters);
       }
-      if (emptyEl && gridEl) {
-        if (matchingItems.length === 0) {
-          emptyEl.classList.remove("hidden");
-          emptyEl.classList.add("block");
-          gridEl.classList.add("hidden");
-        } else {
-          emptyEl.classList.add("hidden");
-          emptyEl.classList.remove("block");
-          gridEl.classList.remove("hidden");
-        }
-      }
-
-      currentPage = updatePaginationUI(
-        paginationRoot,
-        matchingItems,
-        currentPage,
-        perPage,
-        function (action) {
-          if (action === "prev") currentPage = Math.max(1, currentPage - 1);
-          else if (action === "next") currentPage = currentPage + 1;
-          else currentPage = Number(action) || 1;
-          renderBlogFilter();
-          archive.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      );
     }
 
-    if (searchInput) {
-      searchInput.addEventListener("input", function () {
-        query = this.value || "";
-        currentPage = 1;
-        renderBlogFilter();
-      });
-    }
-    for (var i = 0; i < catBtns.length; i++) {
-      catBtns[i].addEventListener("click", function () {
-        activeCat = this.getAttribute("data-blog-cat-btn") || "همه";
-        currentPage = 1;
-        renderBlogFilter();
-      });
-    }
-    if (resetBtn) {
-      resetBtn.addEventListener("click", function () {
-        activeCat = "همه";
-        query = "";
-        currentPage = 1;
-        if (searchInput) searchInput.value = "";
-        renderBlogFilter();
-      });
+    function renderBlogFilter(debounce) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        if (!window.esThemeData.ajaxNonce) return;
+        var version = ++requestVersion;
+        var payload = new URLSearchParams();
+        payload.set("action", "erfan_sanat_ajax");
+        payload.set("nonce", window.esThemeData.ajaxNonce);
+        payload.set("route", "blog_filter");
+        payload.set("search", query.trim());
+        payload.set("category", activeCat);
+        payload.set("page", String(currentPage));
+        fetch(window.esThemeData.ajaxUrl, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+          body: payload.toString()
+        }).then(function (response) { return response.json(); }).then(function (result) {
+          if (version !== requestVersion || !result || !result.success) return;
+          gridEl.innerHTML = result.html || "";
+          var isEmpty = !!(result.data && result.data.empty);
+          if (emptyEl) {
+            emptyEl.classList.toggle("hidden", !isEmpty);
+            emptyEl.classList.toggle("block", isEmpty);
+          }
+          gridEl.classList.toggle("hidden", isEmpty);
+          if (countEl) countEl.textContent = toFa(result.count || 0);
+          if (headingEl && !window.location.pathname.includes("/category/")) headingEl.textContent = activeCat === "همه" && !query.trim() ? "آخرین مقالات" : "نتایج جستجو";
+          syncCategoryButtons();
+          if (paginationRoot) {
+            paginationRoot.innerHTML = result.data ? result.data.pagination_html || "" : "";
+            paginationRoot.classList.toggle("hidden", !(result.data && result.data.pages > 1));
+            paginationRoot.onclick = function (event) {
+              var target = event.target && event.target.closest ? event.target.closest("[data-page-btn], [data-page-prev], [data-page-next]") : null;
+              if (!target) return;
+              event.preventDefault();
+              if (target.hasAttribute("data-page-prev")) currentPage = Math.max(1, currentPage - 1);
+              else if (target.hasAttribute("data-page-next")) currentPage = Math.min(Number(result.data.pages) || 1, currentPage + 1);
+              else currentPage = Math.max(1, parseInt(target.getAttribute("data-page-btn") || "1", 10) || 1);
+              renderBlogFilter(false);
+              archive.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+          }
+        }).catch(function () {});
+      }, debounce === false ? 0 : 220);
     }
 
-    renderBlogFilter();
+    if (searchInput) searchInput.addEventListener("input", function () { query = this.value || ""; currentPage = 1; syncCategoryButtons(); renderBlogFilter(); });
+    for (var i = 0; i < catBtns.length; i++) catBtns[i].addEventListener("click", function () { activeCat = this.getAttribute("data-blog-cat-btn") || "همه"; currentPage = 1; syncCategoryButtons(); renderBlogFilter(false); });
+    if (resetBtn) resetBtn.addEventListener("click", function () { activeCat = "همه"; query = ""; currentPage = 1; if (searchInput) searchInput.value = ""; syncCategoryButtons(); renderBlogFilter(false); });
+    syncCategoryButtons();
+    renderBlogFilter(false);
   }
 
   /* ───────────────────────────────────────────────
