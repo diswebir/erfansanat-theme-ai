@@ -5,10 +5,10 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 5.18` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED — 7 PASS with WP query mocks; live DB/browser smoke unverified]` |
 | تست | `tests/test-task-19.php` |
 
-> پیشرفت: helperهای bounded/cached projects, posts, products و product_cat، versioned keys و invalidation implement شده‌اند; mock suite passes. Full homepage query count/cache-hit integration gate هنوز تکمیل نیست.
+> پیشرفت: helperهای bounded/cached projects و project-type tabs، posts, products و product_cat با versioned keys و invalidation پیاده شده‌اند. رندر mock صفحه کامل هر ۱۵ سکشن بدون warning است؛ درخواست‌های `WP_Query` و `get_terms` زیر سقف ۳۰ می‌مانند و رندر دوم query جدید نمی‌سازد. این سنجه تعداد SQL واقعی `$wpdb` نیست؛ اجرای live DB/browser همچنان تأیید نشده است.
 
 ## ۱. هدف
 

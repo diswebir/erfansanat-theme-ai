@@ -77,7 +77,8 @@ final class MenuItemFields implements ModuleInterface {
 		if ( 'nav-menus.php' !== $hook_suffix || ( function_exists( 'current_user_can' ) && ! current_user_can( 'edit_theme_options' ) ) ) { return; }
 		$base = function_exists( 'get_template_directory_uri' ) ? get_template_directory_uri() : '';
 		$version = defined( 'ES_THEME_VERSION' ) ? ES_THEME_VERSION : '1.0.0';
-		wp_enqueue_style( 'es-nav-fields', $base . '/assets/admin/nav-fields.css', array(), $version );
+		wp_enqueue_style( 'es-admin-fonts', $base . '/assets/admin/fonts.css', array(), $version );
+		wp_enqueue_style( 'es-nav-fields', $base . '/assets/admin/nav-fields.css', array( 'es-admin-fonts' ), $version );
 	}
 
 	/** Return the exact menu item meta key. */

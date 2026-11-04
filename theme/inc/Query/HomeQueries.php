@@ -33,6 +33,23 @@ final class HomeQueries implements ModuleInterface {
 		return self::posts( 'projects', $limit );
 	}
 
+	/** Recent published projects for one of the gallery's stable project-type tabs. */
+	public static function projects_by_type( string $slug, int $limit = 6 ): array {
+		if ( ! in_array( $slug, array( 'tunnel', 'urban' ), true ) ) { return array(); }
+		$limit = max( 1, min( 12, $limit ) );
+		$key = 'project_type_' . $slug . '_' . $limit;
+		return self::remember( $key, static function () use ( $slug, $limit ) {
+			if ( ! class_exists( \WP_Query::class ) ) { return array(); }
+			$query = new \WP_Query( array(
+				'post_type' => 'projects', 'post_status' => 'publish', 'posts_per_page' => $limit,
+				'no_found_rows' => true, 'update_post_meta_cache' => false, 'update_post_term_cache' => false,
+				'ignore_sticky_posts' => true,
+				'tax_query' => array( array( 'taxonomy' => 'project_type', 'field' => 'slug', 'terms' => $slug ) ),
+			) );
+			return is_array( $query->posts ?? null ) ? $query->posts : array();
+		} );
+	}
+
 	/** Recent published blog posts. */
 	public static function articles( int $limit = 4 ): array {
 		return self::posts( 'post', $limit );
@@ -94,6 +111,9 @@ final class HomeQueries implements ModuleInterface {
 		$keys = array();
 		foreach ( array( 'categories_', 'projects_', 'posts_', 'products_' ) as $prefix ) {
 			for ( $limit = 1; $limit <= 12; ++$limit ) { $keys[] = $prefix . $limit; }
+		}
+		foreach ( array( 'tunnel', 'urban' ) as $slug ) {
+			for ( $limit = 1; $limit <= 12; ++$limit ) { $keys[] = 'project_type_' . $slug . '_' . $limit; }
 		}
 		return $keys;
 	}

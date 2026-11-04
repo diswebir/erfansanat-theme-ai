@@ -43,6 +43,43 @@ $gallery['fields'][] = array(
 );
 $gallery['default_data']['items'] = array();
 
+$timeline = $section( 'timeline', 'تاریخچه شرکت', 'template-parts/home/section-timeline.php' );
+$timeline_content_path = __DIR__ . '/home-content/timeline.json';
+$timeline_content = is_file( $timeline_content_path ) ? json_decode( (string) file_get_contents( $timeline_content_path ), true ) : array();
+$timeline_token_map = array(
+	array( 'T008', 'T010', 'T026', 'T027', 'T028', 'T029', 'T030', 'A005', 'A006' ),
+	array( 'T011', 'T013', 'T040', 'T041', 'T042', 'T043', 'T044', 'A013', 'A014' ),
+	array( 'T014', 'T016', 'T054', 'T055', 'T056', 'T057', 'T058', 'A021', 'A022' ),
+	array( 'T017', 'T019', 'T068', 'T069', 'T070', 'T071', 'T072', 'A029', 'A030' ),
+	array( 'T020', 'T022', 'T082', 'T083', 'T084', 'T085', 'T086', 'A037', 'A038' ),
+	array( 'T023', 'T025', 'T096', 'T097', 'T098', 'T099', 'T100', 'A045', 'A046' ),
+);
+$timeline_rows = array();
+foreach ( $timeline_token_map as $tokens ) {
+	$timeline_rows[] = array(
+		'year' => (string) ( $timeline_content[ $tokens[0] ]['value'] ?? '' ),
+		'milestone' => (string) ( $timeline_content[ $tokens[1] ]['value'] ?? '' ),
+		'title' => (string) ( $timeline_content[ $tokens[4] ]['value'] ?? '' ),
+		'summary' => (string) ( $timeline_content[ $tokens[5] ]['value'] ?? '' ),
+		'description' => (string) ( $timeline_content[ $tokens[6] ]['value'] ?? '' ),
+		'image' => (string) ( $timeline_content[ $tokens[7] ]['value'] ?? '' ),
+		'image_alt' => (string) ( $timeline_content[ $tokens[8] ]['value'] ?? '' ),
+	);
+}
+$timeline['fields'][] = array(
+	'id' => 'history', 'type' => 'repeater', 'label' => 'مراحل تاریخچه', 'default' => $timeline_rows,
+	'fields' => array(
+		array( 'id' => 'year', 'type' => 'text', 'label' => 'سال', 'default' => '' ),
+		array( 'id' => 'milestone', 'type' => 'text', 'label' => 'دسته دستاورد', 'default' => '' ),
+		array( 'id' => 'title', 'type' => 'text', 'label' => 'عنوان', 'default' => '' ),
+		array( 'id' => 'summary', 'type' => 'text', 'label' => 'خلاصه', 'default' => '' ),
+		array( 'id' => 'description', 'type' => 'textarea', 'label' => 'توضیحات', 'default' => '' ),
+		array( 'id' => 'image', 'type' => 'media', 'label' => 'تصویر مرحله', 'default' => '', 'return' => 'url', 'media_kind' => 'image' ),
+		array( 'id' => 'image_alt', 'type' => 'text', 'label' => 'توضیح تصویر', 'default' => '' ),
+	),
+);
+$timeline['default_data']['history'] = $timeline_rows;
+
 $services = $section( 'services', 'خدمات تخصصی', 'template-parts/home/section-services.php' );
 $services_content_path = __DIR__ . '/home-content/services.json';
 $services_content = is_file( $services_content_path ) ? json_decode( (string) file_get_contents( $services_content_path ), true ) : array();
@@ -108,7 +145,7 @@ $sections = array(
 	'gallery'       => $gallery,
 	'about'         => $about,
 	'establishment' => $section( 'establishment', 'درباره تأسیس شرکت', 'template-parts/home/section-about-establishment.php' ),
-	'timeline'      => $section( 'timeline', 'تاریخچه شرکت', 'template-parts/home/section-timeline.php' ),
+	'timeline'      => $timeline,
 	'products'      => $section( 'products', 'محصولات منتخب', 'template-parts/home/section-products.php' ),
 	'catalog'       => $catalog,
 	'services'      => $services,

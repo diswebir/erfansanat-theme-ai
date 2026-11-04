@@ -456,7 +456,7 @@
 | 5.2 — home1 hero | **4 PASS / 0 FAIL**؛ ریشه سکشن مرجع با end-tag واقعی استخراج شد (برش قبلی با 28,200 کاراکتر Unicode، در PHP به‌عنوان بایت تفسیر می‌شد و reference را کوتاه می‌کرد). ساختار tag/class از آستانه 99٪ گذشت؛ schema edit، product categories، 5 scenes، video poster/preload و empty-video fallback بررسی شد. `autoPlay`/`playsInline` به HTML استاندارد تبدیل شدند. |
 | 5.3 — معرفی پروژه‌ها | **5 PASS / 0 FAIL**؛ DOM ≥99٪، 3 کارت/لینک/تصویر، داده Schema قابل ویرایش و fallback امن. |
 | 5.6 — تأسیس شرکت | **4 PASS / 0 FAIL**؛ DOM، schema edit، fallback و عدم هاردکد بررسی شدند. |
-| 5.7 — timeline | **5 PASS / 0 FAIL**؛ 6 hook پیوسته، total و selectorهای main.js برابرند؛ repeater واقعی ویرایش‌پذیر هنوز تکمیل نیست، بنابراین وضعیت task pending است. |
+| 5.7 — timeline | **9 PASS / 0 FAIL**؛ شش milestone از repeater (سال، دسته، عنوان، خلاصه، توضیح، تصویر و alt) قابل ویرایش‌اند؛ ردیف پیش‌فرض با خروجی قبلی برابر است؛ حذف ردیف‌ها دکمه/پنل و `data-history-total` را همگام می‌کند. JS/مرورگر زنده هنوز آزمایش نشده، پس P6 و وضعیت task نهایی نیست. |
 | 5.10 — خدمات | **9 PASS / 0 FAIL**؛ 5-item repeater now edits title/description/image, service counters adapt to row count, and existing main.js hooks remain intact. Task pending only for service-destination links: the extracted reference uses `<button>` controls, not links, so adding links would alter its DOM/interaction contract. |
 | 5.11 — کیفیت | **4 PASS / 0 FAIL**؛ DOM و schema data/fallback بررسی شدند. |
 | 5.12 — پشتیبانی | **5 PASS / 0 FAIL**؛ DOM/schema data/fallback، no-script contract و static contact content بررسی شدند. |
@@ -473,7 +473,24 @@
 | 5.14 — مقالات | **6 PASS / 0 FAIL**؛ چهار مقاله از query cache، permalink، thumbnail، عنوان، excerpt، دسته و تاریخ `get_the_date` (سازگار با WP-Parsidate)؛ empty query سکشن را حذف می‌کند. |
 | 5.15 — CTA تماس | **5 PASS / 0 FAIL**؛ تلفن و ایمیل متن/لینک از `header.phone` و `header.email`. |
 | 5.16 — موقعیت تماس | **5 PASS / 0 FAIL** برای محتوای موجود: آدرس از `footer.address`، عدم third-party script و تماس امن. **Task همچنان pending** چون static reference شامل map/iframe/image map نیست و منبع نقشه‌ای برای استخراج/گزینش در repo پیدا نشد؛ چیزی برای ساختن بدون تغییر scope اضافه نشد. |
-| 5.19 — HomeQueries | **4 PASS / 0 FAIL**؛ cache keys نسخه‌دار، query bounded، cache-hit و invalidation تمام limitها؛ **Task pending** تا شمارش واقعی کل صفحه و cache-hit در full homepage integration اندازه‌گیری شود. |
+| 5.19 — HomeQueries | **7 PASS / 0 FAIL**؛ cache keys نسخه‌دار، queryهای bounded با project-type tabs، cache-hit/invalidation و رندر کامل هر ۱۵ سکشن؛ requestهای WP_Query/get_terms زیر سقف mock ۳۰ هستند و رندر دوم query جدید نمی‌سازد. Task mock پاس است؛ شمارش SQL واقعی `$wpdb` و live DB/browser هنوز تأیید نشده است. |
 | Regression | Phase 2 `104/104`, Phase 3 `66/66`, Phase 4 `48/48` PASS. Phase 3 اجرا با `run-phase.mjs` (runner لازم برای gate cumulative); fixture Task 3.9 اکنون Interface و WordPress stubs لازم را load می‌کند. |
 | محدودیت | رندرهای homepage و WP queryها با PHP-WASM و mock هستند؛ WordPress/WooCommerce زنده یا مرورگر سایت در این محیط در دسترس نیست. |
-| 5.18 — کارت‌های مشترک | **8 PASS / 0 FAIL**؛ partialهای product/project/post از fragmentهای واقعی reference، escaped args، data-product hooks و تصویر جایگزین؛ ref/class signature ≥99%. Task pending تا اتصال این partialها به مصرف‌کننده‌های آرشیو/مرتبط/جستجو (و نه فقط smoke render) تکمیل شود. |
+| 5.18 — کارت‌های مشترک | **10 PASS / 0 FAIL**؛ partialهای product/project/post از fragmentهای واقعی reference، escaped args، data-product hooks و تصویر جایگزین؛ ref/class signature ≥99%. حلقه‌ی `index.php` آرشیو/fallback جستجو را پوشش می‌دهد و override استاندارد `woocommerce/content-product.php` در آرشیو محصول و related-products همان partial را dispatch می‌کند. live WP/Woo/browser هنوز smoke نشده است. |
+
+## Admin UI — Vazirmatn integration (2026-11-04)
+- Added local `assets/admin/fonts.css` with the existing Vazirmatn Arabic, Latin-ext and Latin WOFF2 subsets, variable weights 100–900, `font-display: swap`, and no external font request.
+- Font styling is scoped to theme-owned dashboard/section builder UI, Appearance → Menus theme fields, the theme's Product/Project metaboxes, and Product Category term fields. It is not applied globally to unrelated wp-admin/plugin screens.
+- Font stylesheet is enqueued before dashboard/admin UI styles; metabox and menu screen loaders enqueue the same local font stylesheet. `admin.css` now uses Vazirmatn first with local system fallbacks.
+- `test-task-02.php`: **12 PASS / 0 FAIL**. Full Phase 2 via `run-phase.mjs`: **106 PASS / 0 FAIL / 0 PENDING**. Phase 2 gate now checks all preceding tests pass without relying on a brittle fixed assertion count. `git diff --check` passed.
+- Live WordPress rendering/font network behavior has not been browser-smoke-tested; local WOFF2 assets and enqueue wiring are checked by PHP-WASM tests.
+
+## Phase 5 — Task 5.4 gallery query/repeater integration (2026-11-04)
+- The three reference tabs (`all`, `tunnel`, `urban`) now use bounded cached `projects` and `project_type` queries. Existing reference card markup is cloned and filled with escaped project title, city/type, permalink, Jalali finish year, thumbnail/alt; missing thumbnails use the reference-local image fallback. Real result counts update tab badges and the content row count.
+- Added `archive.home_projects_limit` to the Archive settings tab (3–6, default 6); gallery queries clamp to at most six. Empty result sets retain the editable static fallback, avoiding warnings or an empty/broken section. `HomeQueries` caches each supported project-type/limit variant and invalidates them with existing post/term hooks.
+- `test-task-04.php`: **10 PASS / 0 FAIL** for reference DOM/fallback, real-post fixtures, counts, six-item cap, archive setting, escaped data, single URLs and empty queries. `test-task-19.php`: **7 PASS / 0 FAIL**, including full-page mock render/cache-hit verification. Phase 2 archive settings test: **5 PASS / 0 FAIL**.
+- Task 5.4 acceptance tests pass, but no live WordPress database or browser smoke test is available. Task 5.19 is now mock-test-passed; the Phase 5 final gate remains open.
+
+## Phase 5 — latest isolated sweep (2026-11-04)
+- `run-phase-isolated.mjs temp/phase-05-homepage-and-sections/tests`: **114 PASS / 0 FAIL / 10 PENDING across 21 files**; Task 5.19 includes a full 15-section query/cache-hit fixture and Task 5.18 covers index plus Woo product/related consumers. The focused gallery, timeline, shared-card, and query tests all pass. `node --check theme/assets/js/main.js` passes syntax-only validation; no jsdom/browser execution was performed.
+- Remaining pending checks are concentrated in Tasks 5.17 (why-ESE section absent from the 15-section reference; do not invent a 16th section), 5.20 (no separate alternate hero markup in the reference), and Task 5.21's full-gate checks; browser/JS and live WP/WooCommerce query/cache smoke tests are still unavailable. This is not a Phase 5 pass.

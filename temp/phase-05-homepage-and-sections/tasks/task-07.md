@@ -5,7 +5,7 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 2.11`، `Task 2.13` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[IN PROGRESS — repeater implemented; browser/JS acceptance remains unverified]` |
 | تست | `tests/test-task-07.php` |
 
 ## ۱. هدف

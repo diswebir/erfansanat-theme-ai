@@ -86,6 +86,8 @@ final class ProjectMeta implements ModuleInterface {
 	public static function enqueue_media( string $hook ): void {
 		if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) || ! function_exists( 'get_current_screen' ) ) { return; }
 		$screen = get_current_screen(); if ( ! is_object( $screen ) || 'projects' !== $screen->post_type ) { return; }
-		wp_enqueue_media(); wp_enqueue_script( 'es-admin-media', get_template_directory_uri() . '/assets/admin/media.js', array(), defined( 'ES_THEME_VERSION' ) ? ES_THEME_VERSION : '1.0.0', true );
+		$version = defined( 'ES_THEME_VERSION' ) ? ES_THEME_VERSION : '1.0.0';
+		wp_enqueue_style( 'es-admin-fonts', get_template_directory_uri() . '/assets/admin/fonts.css', array(), $version );
+		wp_enqueue_media(); wp_enqueue_script( 'es-admin-media', get_template_directory_uri() . '/assets/admin/media.js', array(), $version, true );
 	}
 }

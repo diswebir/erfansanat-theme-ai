@@ -24,6 +24,8 @@ final class HomeSectionMarkup {
 		self::apply_contact_options( $section, $defaults, $values );
 		if ( 'catalog' === $section ) { self::apply_catalog_file( $html, $defaults, $values, $data ); }
 		if ( 'about' === $section ) { self::apply_about_stats( $defaults, $values, $data ); }
+		if ( 'timeline' === $section ) { self::apply_timeline_repeater( $html, $defaults, $values, $data ); }
+		if ( 'gallery' === $section && class_exists( \ErfanSanat\Theme\Query\HomeQueries::class ) ) { self::apply_gallery_projects( $html, $defaults, $values ); }
 		if ( 'services' === $section ) { self::apply_services_repeater( $html, $defaults, $values, $data ); }
 		if ( 'clients' === $section && is_array( $overrides ) && empty( $overrides ) ) { return; }
 		if ( 'blog-preview' === $section && class_exists( \ErfanSanat\Theme\Query\HomeQueries::class ) ) {
@@ -63,6 +65,151 @@ final class HomeSectionMarkup {
 		}
 		if ( class_exists( \ErfanSanat\Theme\Nav\LegacyMarkup::class ) ) { $html = \ErfanSanat\Theme\Nav\LegacyMarkup::rewrite_links( $html ); }
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Every data token is escaped and all remaining template markup is trusted.
+	}
+
+	/** Replace gallery sample cards with bounded latest project queries, preserving the reference card markup. */
+	private static function apply_gallery_projects( string &$html, array $defaults, array &$values ): void {
+		$limit_value = function_exists( 'es_option' ) ? es_option( 'archive.home_projects_limit', '6' ) : '6';
+		$limit = is_scalar( $limit_value ) && is_numeric( $limit_value ) ? max( 1, min( 6, (int) $limit_value ) ) : 6;
+		$groups = array(
+			'all' => array( 'query' => static fn() => \ErfanSanat\Theme\Query\HomeQueries::projects( $limit ), 'count_token' => 'T004' ),
+			'tunnel' => array( 'query' => static fn() => \ErfanSanat\Theme\Query\HomeQueries::projects_by_type( 'tunnel', $limit ), 'count_token' => 'T006' ),
+			'urban' => array( 'query' => static fn() => \ErfanSanat\Theme\Query\HomeQueries::projects_by_type( 'urban', $limit ), 'count_token' => 'T008' ),
+		);
+		foreach ( $groups as $tab => $group ) {
+			$posts = $group['query']();
+			if ( ! is_array( $posts ) || ! $posts ) { continue; } // Keep editable static defaults as the intentional empty-query fallback.
+			$posts = array_slice( array_values( $posts ), 0, $limit );
+			self::set_value( $values, $defaults, $group['count_token'], self::persian_digits( (string) count( $posts ) ) );
+			$bounds = self::find_div_bounds( $html, 'data-home2-port-panel="' . $tab . '"' );
+			if ( ! is_array( $bounds ) ) { continue; }
+			$inner = substr( $html, $bounds[1], $bounds[2] - $bounds[1] );
+			if ( ! preg_match( '/<a\\b[^>]*>.*?<\\/a>/is', $inner, $matches ) ) { continue; }
+			$prototype = $matches[0];
+			$cards = array();
+			foreach ( $posts as $post ) {
+				if ( ! is_object( $post ) && ! is_array( $post ) ) { continue; }
+				$cards[] = self::render_gallery_project_card( $prototype, $defaults, $post );
+			}
+			if ( ! $cards ) { continue; }
+			$html = substr( $html, 0, $bounds[1] ) . implode( '', $cards ) . substr( $html, $bounds[2] );
+		}
+	}
+
+	/** Fill one clone of the reference gallery card with escaped project data. */
+	private static function render_gallery_project_card( string $template, array $defaults, $post ): string {
+		$post_id = is_object( $post ) ? (int) ( $post->ID ?? 0 ) : (int) ( $post['ID'] ?? 0 );
+		$title = $post_id && function_exists( 'get_the_title' ) ? (string) get_the_title( $post_id ) : ( is_object( $post ) ? (string) ( $post->post_title ?? '' ) : (string) ( $post['post_title'] ?? '' ) );
+		$url = $post_id && function_exists( 'get_permalink' ) ? (string) get_permalink( $post_id ) : '';
+		$image = $post_id && function_exists( 'get_the_post_thumbnail_url' ) ? (string) get_the_post_thumbnail_url( $post_id, 'large' ) : '';
+		$city = self::project_term_name( $post_id, 'city' );
+		$type = self::project_term_name( $post_id, 'project_type' );
+		$date = $post_id && function_exists( 'get_post_meta' ) ? get_post_meta( $post_id, 'finish-pro-time', true ) : '';
+		$date = is_scalar( $date ) ? trim( (string) $date ) : '';
+		if ( '' === $date && $post_id && function_exists( 'get_the_date' ) ) { $date = (string) get_the_date( 'Y', $post_id ); }
+		$year = '' !== $date ? preg_replace( '/[^0-9۰-۹]/u', '', substr( $date, 0, 4 ) ) : '';
+		$meta = '' !== $type ? $type : 'پروژه اجرایی';
+		if ( '' !== $year ) { $meta .= ' · سال ' . $year; }
+		$text_values = array( '' !== $city ? $city : 'پروژه اجرایی', $meta, $title, 'مشاهده جزئیات پروژه' );
+		$text_index = 0;
+		if ( preg_match_all( '/__ES_([AT][0-9]+)__/u', $template, $tokens ) ) {
+			foreach ( $tokens[1] as $key ) {
+				$definition = is_array( $defaults[ $key ] ?? null ) ? $defaults[ $key ] : array();
+				$kind = (string) ( $definition['kind'] ?? 'attr' );
+				$attribute = (string) ( $definition['attribute'] ?? '' );
+				$raw = is_scalar( $definition['value'] ?? null ) ? (string) $definition['value'] : '';
+				if ( 'href' === $attribute && '' !== $url ) { $raw = $url; }
+				elseif ( 'src' === $attribute && '' !== $image ) { $raw = $image; }
+				elseif ( 'alt' === $attribute ) { $raw = $title; }
+				elseif ( 'text' === $kind ) { $raw = $text_values[ $text_index ] ?? ''; ++$text_index; }
+				$template = str_replace( '__ES_' . $key . '__', self::escape_value( $raw, $kind ), $template );
+			}
+		}
+		return $template;
+	}
+
+	/** Resolve the first assigned project taxonomy term for a compact gallery label. */
+	private static function project_term_name( int $post_id, string $taxonomy ): string {
+		if ( $post_id < 1 || ! function_exists( 'get_the_terms' ) ) { return ''; }
+		$terms = get_the_terms( $post_id, $taxonomy );
+		if ( ! is_array( $terms ) || ! isset( $terms[0] ) ) { return ''; }
+		$term = $terms[0];
+		return is_object( $term ) && is_scalar( $term->name ?? null ) ? (string) $term->name : ( is_array( $term ) && is_scalar( $term['name'] ?? null ) ? (string) $term['name'] : '' );
+	}
+
+	/** Return offsets for a div wrapper containing a unique reference data hook. */
+	private static function find_div_bounds( string $html, string $needle ): ?array {
+		$position = strpos( $html, $needle );
+		if ( false === $position ) { return null; }
+		$start = strrpos( substr( $html, 0, $position ), '<div' );
+		if ( false === $start || ! preg_match_all( '/<\\/?div\\b[^>]*>/i', substr( $html, $start ), $tags, PREG_OFFSET_CAPTURE ) ) { return null; }
+		$depth = 0; $open_end = null; $close_start = null; $end = null;
+		foreach ( $tags[0] as $tag ) {
+			if ( str_starts_with( $tag[0], '</' ) ) { --$depth; }
+			else { ++$depth; if ( 1 === $depth ) { $open_end = $start + $tag[1] + strlen( $tag[0] ); } }
+			if ( 0 === $depth ) { $close_start = $start + $tag[1]; $end = $close_start + strlen( $tag[0] ); break; }
+		}
+		return null === $open_end || null === $close_start || null === $end ? null : array( $start, $open_end, $close_start, $end );
+	}
+
+	/** Bind timeline repeater items to the six-index scroll/history JS contract. */
+	private static function apply_timeline_repeater( string &$html, array $defaults, array &$values, array $data ): void {
+		$rows = is_array( $data['history'] ?? null ) ? array_values( $data['history'] ) : array();
+		if ( ! $rows ) { return; }
+		$map = array(
+			array( 'T008', 'T010', 'T026', 'T027', 'T028', 'T029', 'T030', 'A005', 'A006', 'T009', 'T035' ),
+			array( 'T011', 'T013', 'T040', 'T041', 'T042', 'T043', 'T044', 'A013', 'A014', 'T012', 'T049' ),
+			array( 'T014', 'T016', 'T054', 'T055', 'T056', 'T057', 'T058', 'A021', 'A022', 'T015', 'T063' ),
+			array( 'T017', 'T019', 'T068', 'T069', 'T070', 'T071', 'T072', 'A029', 'A030', 'T018', 'T077' ),
+			array( 'T020', 'T022', 'T082', 'T083', 'T084', 'T085', 'T086', 'A037', 'A038', 'T021', 'T091' ),
+			array( 'T023', 'T025', 'T096', 'T097', 'T098', 'T099', 'T100', 'A045', 'A046', 'T024', 'T105' ),
+		);
+		$rows = array_slice( $rows, 0, count( $map ) );
+		$total = count( $rows );
+		self::set_value( $values, $defaults, 'A000', (string) $total );
+		foreach ( $map as $index => $tokens ) {
+			if ( ! isset( $rows[ $index ] ) || ! is_array( $rows[ $index ] ) ) {
+				$html = (string) preg_replace( '/<button\\b(?=[^>]*data-home2-history-btn="' . $index . '")[^>]*>.*?<\\/button>/is', '', $html, 1 );
+				self::remove_history_panel( $html, $index );
+				continue;
+			}
+			$row = $rows[ $index ];
+			$year = is_scalar( $row['year'] ?? null ) ? (string) $row['year'] : '';
+			$milestone = is_scalar( $row['milestone'] ?? null ) ? (string) $row['milestone'] : '';
+			$title = is_scalar( $row['title'] ?? null ) ? (string) $row['title'] : '';
+			$summary = is_scalar( $row['summary'] ?? null ) ? (string) $row['summary'] : '';
+			$description = is_scalar( $row['description'] ?? null ) ? (string) $row['description'] : '';
+			$image = is_scalar( $row['image'] ?? null ) ? (string) $row['image'] : '';
+			$image_alt = is_scalar( $row['image_alt'] ?? null ) ? (string) $row['image_alt'] : '';
+			if ( '' !== $year ) {
+				self::set_value( $values, $defaults, $tokens[0], $year );
+				self::set_value( $values, $defaults, $tokens[2], 'سال ' . $year . ' خورشیدی' );
+			}
+			if ( '' !== $milestone ) { self::set_value( $values, $defaults, $tokens[1], $milestone ); self::set_value( $values, $defaults, $tokens[3], $milestone ); }
+			if ( '' !== $title ) { self::set_value( $values, $defaults, $tokens[4], $title ); }
+			if ( '' !== $summary ) { self::set_value( $values, $defaults, $tokens[5], $summary ); }
+			if ( '' !== $description ) { self::set_value( $values, $defaults, $tokens[6], $description ); }
+			if ( '' !== $image ) { self::set_value( $values, $defaults, $tokens[7], $image ); }
+			if ( '' !== $image_alt ) { self::set_value( $values, $defaults, $tokens[8], $image_alt ); }
+			self::set_value( $values, $defaults, $tokens[9], self::persian_digits( (string) ( $index + 1 ) ) );
+			self::set_value( $values, $defaults, $tokens[10], 'مرحله ' . self::persian_digits( (string) ( $index + 1 ) ) . ' از ' . self::persian_digits( (string) $total ) . ' ·' );
+		}
+		if ( isset( $rows[0]['year'] ) && is_scalar( $rows[0]['year'] ) ) { self::set_value( $values, $defaults, 'T006', 'گام ۱ از ' . self::persian_digits( (string) $total ) . ' (سال ' . (string) $rows[0]['year'] . ')' ); }
+	}
+
+	/** Remove a panel subtree and all of its descendants by balanced div depth. */
+	private static function remove_history_panel( string &$html, int $index ): void {
+		$needle = 'data-home2-history-panel="' . $index . '"';
+		$position = strpos( $html, $needle );
+		if ( false === $position ) { return; }
+		$start = strrpos( substr( $html, 0, $position ), '<div' );
+		if ( false === $start || ! preg_match_all( '/<\\/?div\\b[^>]*>/i', substr( $html, $start ), $tags, PREG_OFFSET_CAPTURE ) ) { return; }
+		$depth = 0; $end = null;
+		foreach ( $tags[0] as $tag ) {
+			$depth += str_starts_with( $tag[0], '</' ) ? -1 : 1;
+			if ( 0 === $depth ) { $end = $start + $tag[1] + strlen( $tag[0] ); break; }
+		}
+		if ( null !== $end ) { $html = substr( $html, 0, $start ) . substr( $html, $end ); }
 	}
 
 	/** Bind service repeater rows to the preserved five-button JS contract. */

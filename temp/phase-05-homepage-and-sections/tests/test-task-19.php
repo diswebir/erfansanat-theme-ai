@@ -19,7 +19,7 @@ class WP_Query {
 	public array $posts = array();
 	public function __construct( array $args ) {
 		$GLOBALS['es_p5_query_args'][] = $args;
-		for ( $i = 1; $i <= (int) $args['posts_per_page']; ++$i ) { $this->posts[] = (object) array( 'ID' => $i, 'post_type' => $args['post_type'] ); }
+		for ( $i = 1; $i <= (int) $args['posts_per_page']; ++$i ) { $this->posts[] = (object) array( 'ID' => $i, 'post_type' => $args['post_type'], 'post_title' => 'Fixture ' . $args['post_type'] . ' ' . $i, 'post_excerpt' => 'Fixture excerpt ' . $i ); }
 	}
 }
 require_once ES_REPO_ROOT . '/theme/inc/Contracts/ModuleInterface.php';
@@ -38,8 +38,35 @@ HomeQueries::articles( 4 );
 HomeQueries::products( 4 );
 $types = array_column( array_slice( $GLOBALS['es_p5_query_args'], $before ), 'post_type' );
 check( 'helperهای مقالات و محصولات درخواست نوع محتوای صحیح دارند', fn() => in_array( 'post', $types, true ) && in_array( 'product', $types, true ) && count( $categories ) === 1 );
+$typed_projects = HomeQueries::projects_by_type( 'tunnel', 99 ); $typed_args = end( $GLOBALS['es_p5_query_args'] ); $typed_count = count( $GLOBALS['es_p5_query_args'] ); HomeQueries::projects_by_type( 'tunnel', 99 ); $invalid_projects = HomeQueries::projects_by_type( 'not-a-tab', 6 );
+check( 'پروژه‌های هر تب با taxonomy محدود، query حداکثر ۱۲ ردیفی و cache اختصاصی خوانده می‌شوند', fn() => 12 === count( $typed_projects ) && 12 === ( $typed_args['posts_per_page'] ?? 0 ) && 'projects' === ( $typed_args['post_type'] ?? '' ) && 'tunnel' === ( $typed_args['tax_query'][0]['terms'] ?? '' ) && $typed_count === count( $GLOBALS['es_p5_query_args'] ) - 0 && array() === $invalid_projects );
 $module = new HomeQueries();
 $module->register();
 HomeQueries::on_save_post( 1, (object) array( 'post_type' => 'projects' ), true );
 check( 'save/delete/term hooks ثبت‌اند و invalidation همه variantهای cache را پاک می‌کند', fn() => in_array( 'save_post', $GLOBALS['es_p5_actions'], true ) && in_array( 'deleted_post', $GLOBALS['es_p5_actions'], true ) && in_array( 'edited_term', $GLOBALS['es_p5_actions'], true ) && in_array( 'set_object_terms', $GLOBALS['es_p5_actions'], true ) && empty( $GLOBALS['es_p5_transients'] ) && count( $GLOBALS['es_p5_deleted'] ) >= 48 );
+if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $id, $key, $single = false ) { if ( '_es_sections' === $key ) { return false; } return 'finish-pro-time' === $key ? '۱۴۰۴/۰۱/۰۱' : ''; } }
+if ( ! function_exists( 'get_the_title' ) ) { function get_the_title( $post ) { return is_object( $post ) ? (string) ( $post->post_title ?? '' ) : 'Fixture ' . (int) $post; } }
+if ( ! function_exists( 'get_permalink' ) ) { function get_permalink( $post ) { $id = is_object( $post ) ? (int) ( $post->ID ?? 0 ) : (int) $post; return 'https://example.test/post/' . $id . '/'; } }
+if ( ! function_exists( 'get_the_post_thumbnail_url' ) ) { function get_the_post_thumbnail_url( $id, $size = 'large' ) { return 'https://example.test/image/' . (int) $id . '.jpg'; } }
+if ( ! function_exists( 'get_the_terms' ) ) { function get_the_terms( $id, $taxonomy ) { return array( (object) array( 'name' => 'Term ' . $taxonomy, 'slug' => 'fixture' ) ); } }
+if ( ! function_exists( 'get_the_excerpt' ) ) { function get_the_excerpt( $post ) { return is_object( $post ) ? (string) ( $post->post_excerpt ?? '' ) : 'Fixture excerpt'; } }
+if ( ! function_exists( 'get_the_category' ) ) { function get_the_category( $id ) { return array( (object) array( 'name' => 'Updates' ) ); } }
+if ( ! function_exists( 'get_the_date' ) ) { function get_the_date( $format = '', $post = null ) { return '۱۴۰۵/۰۸/۰۴'; } }
+if ( ! function_exists( 'get_term_link' ) ) { function get_term_link( $term ) { return 'https://example.test/category/'; } }
+if ( ! function_exists( 'get_template_directory_uri' ) ) { function get_template_directory_uri() { return 'https://example.test/theme'; } }
+if ( ! function_exists( 'locate_template' ) ) { function locate_template( $templates, $load = false, $load_once = true, $args = array() ) { $template = is_array( $templates ) ? reset( $templates ) : $templates; $path = ES_REPO_ROOT . '/theme/' . $template; return is_file( $path ) ? $path : ''; } }
+if ( ! function_exists( 'get_template_part' ) ) { function get_template_part( $slug, $name = null, $args = array() ) { $path = ES_REPO_ROOT . '/theme/' . $slug . '.php'; if ( is_file( $path ) ) { $args = is_array( $args ) ? $args : array(); include $path; } } }
+require_once ES_REPO_ROOT . '/theme/inc/Sections/Registry.php';
+require_once ES_REPO_ROOT . '/theme/inc/Sections/Store.php';
+require_once ES_REPO_ROOT . '/theme/inc/Sections/Renderer.php';
+require_once ES_REPO_ROOT . '/theme/inc/Sections/HomeSectionMarkup.php';
+$GLOBALS['es_p5_query_args'] = array(); $GLOBALS['es_p5_terms_calls'] = 0; HomeQueries::invalidate();
+$warnings = array(); $rendered_templates = array();
+set_error_handler( static function ( $severity, $message ) use ( &$warnings ) { $warnings[] = $message; return true; } );
+ob_start(); \ErfanSanat\Theme\Sections\Renderer::render( 'home', 42 ); $homepage_once = (string) ob_get_clean();
+$query_count_once = count( $GLOBALS['es_p5_query_args'] ); $terms_count_once = $GLOBALS['es_p5_terms_calls'];
+ob_start(); \ErfanSanat\Theme\Sections\Renderer::render( 'home', 42 ); $homepage_twice = (string) ob_get_clean();
+restore_error_handler();
+check( 'رندر یکپارچه تمام ۱۵ سکشن بدون warning انجام می‌شود و مسیرهای query-aware خروجی می‌سازند', fn() => substr_count( $homepage_once, '<section' ) >= 15 && str_contains( $homepage_once, 'data-home2-port-panel="all"' ) && str_contains( $homepage_once, 'Fixture 1' ) && str_contains( $homepage_once, 'data-home2-history-panel="0"' ) && empty( $warnings ) );
+check( 'رندر کامل در سقف ۳۰ query می‌ماند و رندر دوم بدون query جدید از cache می‌آید', fn() => $query_count_once > 0 && ( $query_count_once + $terms_count_once ) <= 30 && $query_count_once === count( $GLOBALS['es_p5_query_args'] ) && $terms_count_once === $GLOBALS['es_p5_terms_calls'] && '' !== $homepage_twice );
 summary();

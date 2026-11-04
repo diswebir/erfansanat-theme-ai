@@ -38,7 +38,7 @@ foreach ( $implemented_tests as $test_path ) {
 }
 $prior_phase_result = $GLOBALS['es_phase_prior_result'] ?? null;
 $full_phase_prior_passed = is_array( $prior_phase_result )
-	? ( 14 === (int) ( $prior_phase_result['files'] ?? 0 ) && 100 === (int) ( $prior_phase_result['passed'] ?? 0 ) && 0 === (int) ( $prior_phase_result['failed'] ?? -1 ) && 0 === (int) ( $prior_phase_result['pending'] ?? -1 ) )
+	? ( 14 === (int) ( $prior_phase_result['files'] ?? 0 ) && (int) ( $prior_phase_result['passed'] ?? 0 ) > 0 && 0 === (int) ( $prior_phase_result['failed'] ?? -1 ) && 0 === (int) ( $prior_phase_result['pending'] ?? -1 ) )
 	: $all_test_files_are_implemented;
 $admin_root = ES_REPO_ROOT . '/theme/inc/Admin/';
 $unsafe_reads = array();

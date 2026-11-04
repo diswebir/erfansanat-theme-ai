@@ -81,7 +81,7 @@ if ( $available ) {
 	check( 'disabled archive filters are omitted from the renderable DOM list', fn() => ! in_array( 'price', $filters, true ) && ! in_array( 'rating', $filters, true ) && in_array( 'category', $filters, true ) );
 	$GLOBALS['es_mock_user_can'] = true;
 	$settings = \ErfanSanat\Theme\Admin\Tabs\ArchiveTab::render_settings();
-	check( 'archive admin settings include whitelisted controls and AJAX nonce', fn() => str_contains( $settings, 'name="nonce"' ) && str_contains( $settings, 'archive][columns' ) && str_contains( $settings, 'archive][posts_per_page' ) && str_contains( $settings, 'archive][filters][price' ) );
+	check( 'archive admin settings include whitelisted controls and AJAX nonce', fn() => str_contains( $settings, 'name="nonce"' ) && str_contains( $settings, 'archive][columns' ) && str_contains( $settings, 'archive][posts_per_page' ) && str_contains( $settings, 'archive][home_projects_limit' ) && str_contains( $settings, 'archive][filters][price' ) );
 } else {
 	for ( $i = 1; $i <= 5; $i++ ) { check( 'archive setting condition ' . $i, fn() => false ); }
 }

@@ -37,7 +37,11 @@ if ( $class_available ) {
 
 echo "== Task 2.2: admin menu and dashboard shell ==\n";
 check( 'admin menu module exists', fn() => $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' ) );
-check( 'admin CSS and JS assets exist', fn() => is_file( ES_REPO_ROOT . '/theme/assets/admin/admin.css' ) && is_file( ES_REPO_ROOT . '/theme/assets/admin/admin.js' ) );
+check( 'admin dashboard, script and local Vazirmatn assets exist', fn() => is_file( ES_REPO_ROOT . '/theme/assets/admin/admin.css' ) && is_file( ES_REPO_ROOT . '/theme/assets/admin/admin.js' ) && is_file( ES_REPO_ROOT . '/theme/assets/admin/fonts.css' ) && is_file( ES_REPO_ROOT . '/theme/assets/fonts/vazirmatn-arabic.woff2' ) && is_file( ES_REPO_ROOT . '/theme/assets/fonts/vazirmatn-latin.woff2' ) && is_file( ES_REPO_ROOT . '/theme/assets/fonts/vazirmatn-latin-ext.woff2' ) );
+$admin_font_css = (string) file_get_contents( ES_REPO_ROOT . '/theme/assets/admin/fonts.css' );
+check( 'local admin font stylesheet declares variable Arabic/Latin subsets with swap and theme UI scopes', fn() => 3 === substr_count( $admin_font_css, '@font-face' ) && 3 === substr_count( $admin_font_css, 'font-weight: 100 900' ) && 3 === substr_count( $admin_font_css, 'font-display: swap' ) && str_contains( $admin_font_css, 'vazirmatn-arabic.woff2' ) && str_contains( $admin_font_css, 'vazirmatn-latin-ext.woff2' ) && str_contains( $admin_font_css, 'vazirmatn-latin.woff2' ) && str_contains( $admin_font_css, '.es-admin' ) && str_contains( $admin_font_css, '#es-product-information' ) && str_contains( $admin_font_css, '#es-project-meta' ) && str_contains( $admin_font_css, '.es-nav-fields' ) );
+$admin_module_sources = array( 'AdminMenu.php', 'Metaboxes/ProductMeta.php', 'Metaboxes/ProjectMeta.php', 'Metaboxes/TermMeta.php' ); $admin_font_enqueue = true; foreach ( $admin_module_sources as $source_file ) { $source_path = ES_REPO_ROOT . '/theme/inc/Admin/' . $source_file; if ( 'AdminMenu.php' === $source_file ) { $source_path = ES_REPO_ROOT . '/theme/inc/Admin/' . $source_file; } $source = (string) file_get_contents( $source_path ); $admin_font_enqueue = $admin_font_enqueue && str_contains( $source, "'es-admin-fonts'" ) && str_contains( $source, 'assets/admin/fonts.css' ); }
+check( 'Vazirmatn stylesheet is enqueued by theme admin and all custom post/term editors', fn() => $admin_font_enqueue && str_contains( (string) file_get_contents( ES_REPO_ROOT . '/theme/inc/Nav/MenuItemFields.php' ), "'es-admin-fonts'" ) );
 
 if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' ) ) {
 	$class = '\\ErfanSanat\\Theme\\Admin\\AdminMenu';
@@ -62,10 +66,10 @@ if ( $class_available && class_exists( '\\ErfanSanat\\Theme\\Admin\\AdminMenu' )
 	$class::enqueue_assets( 'plugins.php' );
 	check( 'theme assets and media library stay off unrelated admin pages', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 0 && $GLOBALS['es_wp_media_enqueued'] === 0 );
 	$class::enqueue_assets( 'toplevel_page_erfansanat-theme' );
-	check( 'admin CSS, dashboard, media and repeater JS enqueue only on the theme dashboard', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 4 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][1][0] === 'script' && $GLOBALS['es_mock_enqueued'][2][1][0] === 'es-admin-media' && $GLOBALS['es_mock_enqueued'][3][1][0] === 'es-admin-repeater' && $GLOBALS['es_wp_media_enqueued'] === 1 );
+	check( 'Vazirmatn stylesheet loads before dashboard CSS and only on theme-owned screens', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 5 && $GLOBALS['es_mock_enqueued'][0][0] === 'style' && $GLOBALS['es_mock_enqueued'][0][1][0] === 'es-admin-fonts' && $GLOBALS['es_mock_enqueued'][0][1][1] === '/theme/assets/admin/fonts.css' && $GLOBALS['es_mock_enqueued'][1][1][0] === 'es-admin' && $GLOBALS['es_mock_enqueued'][1][1][2] === array( 'es-admin-fonts' ) && $GLOBALS['es_mock_enqueued'][2][0] === 'script' && $GLOBALS['es_mock_enqueued'][3][1][0] === 'es-admin-media' && $GLOBALS['es_mock_enqueued'][4][1][0] === 'es-admin-repeater' && $GLOBALS['es_wp_media_enqueued'] === 1 );
 	$class::enqueue_assets( 'erfansanat-theme_page_es-theme-sections' );
-	$section_assets = array_slice( $GLOBALS['es_mock_enqueued'], 8 );
-	check( 'section builder CSS and JS enqueue only on the section screen', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 10 && $section_assets[0][0] === 'style' && $section_assets[0][1][0] === 'es-admin-sections' && $section_assets[1][0] === 'script' && $section_assets[1][1][0] === 'es-admin-sections' );
+	$section_assets = array_slice( $GLOBALS['es_mock_enqueued'], 10 );
+	check( 'section builder CSS and JS enqueue only on the section screen', fn() => count( $GLOBALS['es_mock_enqueued'] ) === 12 && $section_assets[0][0] === 'style' && $section_assets[0][1][0] === 'es-admin-sections' && $section_assets[1][0] === 'script' && $section_assets[1][1][0] === 'es-admin-sections' );
 	$callback = $top[0]['args'][4] ?? null;
 	if ( is_callable( $callback ) ) { ob_start(); $callback(); $html = ob_get_clean(); } else { $html = ''; }
 	check( 'dashboard renderer outputs an escaped RTL admin shell', fn() => str_contains( $html, 'class="es-admin' ) && str_contains( $html, 'dir="rtl"' ) );

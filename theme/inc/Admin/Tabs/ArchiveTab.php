@@ -35,6 +35,13 @@ final class ArchiveTab implements ModuleInterface {
 				'options' => array( '6' => '۶ مورد', '9' => '۹ مورد', '12' => '۱۲ مورد', '24' => '۲۴ مورد' ),
 			),
 			array(
+				'id'      => 'archive.home_projects_limit',
+				'type'    => 'select',
+				'label'   => 'تعداد نمونه‌کارهای صفحه اصلی (حداکثر ۶)',
+				'default' => '6',
+				'options' => array( '3' => '۳ مورد', '4' => '۴ مورد', '5' => '۵ مورد', '6' => '۶ مورد' ),
+			),
+			array(
 				'id'      => 'archive.order',
 				'type'    => 'select',
 				'label'   => 'ترتیب پیش‌فرض',

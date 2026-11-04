@@ -5,10 +5,10 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 5.8`، `Task 5.14` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED — archive/search and Woo archive/related mock consumers; live Woo unverified]` |
 | تست | `tests/test-task-18.php` |
 
-> پیشرفت: `card-product`, `card-project`, `card-post` و قالب‌های کارتِ static از fragmentهای reference اضافه شده‌اند؛ test signature/escaping/placeholder سبز است. ادغام در consumerهای واقعیِ home/archive/related/search هنوز انجام نشده، پس Task باز است.
+> پیشرفت: `card-product`, `card-project`, `card-post` از fragmentهای reference رندر می‌شوند. آرشیو/fallback جستجو در `index.php` هر سه نوع را dispatch می‌کند و `woocommerce/content-product.php` همان کارت محصول را در حلقه‌های آرشیو محصول و related-products وصل می‌کند؛ data hooks برای فیلتر محصول حفظ شده و callbackهای core که markup تکراری/لینک تو‌در‌تو می‌ساختند موقتاً حذف و سپس بازیابی می‌شوند. تست‌های mock: **10 PASS**؛ نصب زنده WooCommerce/browser هنوز smoke نشده است.
 
 ## ۱. هدف
 

@@ -5,7 +5,7 @@
 | فاز | 5 — صفحه اصلی (۱۵ سکشن) و کامپوننت‌های ماژولار |
 | اندازه | `L` — بزرگ (~۲ روز) |
 | وابستگی | `Task 2.11`، `Task 2.13` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED — 10 PASS / 0 FAIL; WP database/browser smoke not run]` |
 | تست | `tests/test-task-04.php` |
 
 ## ۱. هدف

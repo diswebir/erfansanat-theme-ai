@@ -8,6 +8,8 @@
 | وضعیت | `[PENDING]` |
 | تست | `tests/test-task-17.php` |
 
+> محدودیت مرجع: صفحه‌ی static mirror دارای ۱۵ سکشن فعال است و سکشن مستقل `why-ese` / سکشن #16 در فایل مرجع یافت نشده؛ فعلاً چیزی به Registry اضافه نکن و Task را pending نگه دار تا scope از منبع معتبر روشن شود.
+
 ## ۱. هدف
 
 تبدیل سکشن «چرا عرفان صنعت (تمایزها و گواهینامه‌ها)» از `index.html` به `template-parts/home/section-why-ese.php` با اتصال کامل به Section Manager و بدون تغییر در `main.js`.

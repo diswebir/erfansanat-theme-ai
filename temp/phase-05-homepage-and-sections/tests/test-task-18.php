@@ -23,4 +23,37 @@ ob_start(); $args = array( 'post_id' => 43, 'title' => 'Outdoor lamp', 'url' => 
 check( 'کارت محصول همه data-product-* را پر می‌کند و تصویر خالی placeholder دارد', fn() => str_contains( $product, 'data-product-item="true"' ) && str_contains( $product, 'data-product-id="43"' ) && str_contains( $product, 'data-product-category="lighting"' ) && str_contains( $product, 'data-product-price="1200"' ) && str_contains( $product, 'data-product-stock="instock"' ) && str_contains( $product, '/assets/img/light-tunnel.jpg' ) );
 ob_start(); $args = array( 'title' => '<script>alert(1)</script>', 'url' => 'javascript:alert(1)', 'image' => 'https://example.test/safe.jpg' ); include ES_REPO_ROOT . '/theme/template-parts/cards/card-post.php'; $safe = (string) ob_get_clean();
 check( 'متن کارت escape و ورودی URL از پروتکل اجرایی رد می‌شود', fn() => ! str_contains( $safe, '<script>' ) && ! str_contains( $safe, 'href="javascript:' ) );
+$GLOBALS['es_card_loop_posts'] = array(
+	(object) array( 'ID' => 701, 'post_type' => 'product', 'post_title' => 'Lamp product' ),
+	(object) array( 'ID' => 702, 'post_type' => 'projects', 'post_title' => 'Urban project' ),
+	(object) array( 'ID' => 703, 'post_type' => 'post', 'post_title' => 'Company news' ),
+);
+$GLOBALS['es_card_loop_index'] = 0; $GLOBALS['es_card_current_post'] = null;
+if ( ! function_exists( 'get_header' ) ) { function get_header() {} }
+if ( ! function_exists( 'get_footer' ) ) { function get_footer() {} }
+if ( ! function_exists( 'have_posts' ) ) { function have_posts() { return $GLOBALS['es_card_loop_index'] < count( $GLOBALS['es_card_loop_posts'] ); } }
+if ( ! function_exists( 'the_post' ) ) { function the_post() { $GLOBALS['es_card_current_post'] = $GLOBALS['es_card_loop_posts'][ $GLOBALS['es_card_loop_index']++ ] ?? null; } }
+if ( ! function_exists( 'get_post' ) ) { function get_post( $id = null ) { return $GLOBALS['es_card_current_post']; } }
+if ( ! function_exists( 'get_the_ID' ) ) { function get_the_ID() { return (int) ( $GLOBALS['es_card_current_post']->ID ?? 0 ); } }
+if ( ! function_exists( 'get_post_type' ) ) { function get_post_type( $id = null ) { return (string) ( $GLOBALS['es_card_current_post']->post_type ?? '' ); } }
+if ( ! function_exists( 'get_the_title' ) ) { function get_the_title( $id = null ) { return (string) ( $GLOBALS['es_card_current_post']->post_title ?? '' ); } }
+if ( ! function_exists( 'get_permalink' ) ) { function get_permalink( $id = null ) { return 'https://example.test/post/' . (int) ( $id ?? get_the_ID() ) . '/'; } }
+if ( ! function_exists( 'get_the_post_thumbnail_url' ) ) { function get_the_post_thumbnail_url( $id = null, $size = 'large' ) { return 'https://example.test/image/' . (int) ( $id ?? get_the_ID() ) . '.jpg'; } }
+if ( ! function_exists( 'get_the_excerpt' ) ) { function get_the_excerpt( $id = null ) { return 'Fixture excerpt'; } }
+if ( ! function_exists( 'get_the_date' ) ) { function get_the_date( $format = '', $id = null ) { return '۱۴۰۵/۰۸/۰۴'; } }
+if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $id, $key, $single = false ) { return 'finish-pro-time' === $key ? '۱۴۰۴/۰۱/۰۱' : ''; } }
+if ( ! function_exists( 'get_the_terms' ) ) { function get_the_terms( $id, $taxonomy ) { if ( 'city' === $taxonomy ) { return array( (object) array( 'name' => 'تهران' ) ); } if ( 'project_type' === $taxonomy ) { return array( (object) array( 'name' => 'نورپردازی شهری' ) ); } if ( 'product_cat' === $taxonomy ) { return array( (object) array( 'name' => 'روشنایی', 'slug' => 'lighting' ) ); } return array(); } }
+if ( ! function_exists( 'get_the_category' ) ) { function get_the_category( $id = null ) { return array( (object) array( 'name' => 'خبرها' ) ); } }
+if ( ! function_exists( 'the_posts_pagination' ) ) { function the_posts_pagination() {} }
+if ( ! function_exists( 'esc_html_e' ) ) { function esc_html_e( $text, $domain = null ) { echo esc_html( $text ); } }
+if ( ! function_exists( 'get_template_part' ) ) { function get_template_part( $slug, $name = null, $args = array() ) { $path = ES_REPO_ROOT . '/theme/' . $slug . '.php'; if ( is_file( $path ) ) { $args = is_array( $args ) ? $args : array(); include $path; } } }
+if ( ! class_exists( 'EsCardMockProduct' ) ) { class EsCardMockProduct { public function get_id() { return 704; } public function is_visible() { return true; } public function get_name() { return 'Woo loop lamp'; } public function get_sku() { return 'SKU-704'; } public function get_price() { return '850'; } public function get_stock_status() { return 'instock'; } } }
+if ( ! function_exists( 'absint' ) ) { function absint( $value ) { return abs( (int) $value ); } }
+if ( ! function_exists( 'wc_product_class' ) ) { function wc_product_class( $class = '', $product = null ) { echo 'class="product ' . htmlspecialchars( (string) $class, ENT_QUOTES, 'UTF-8' ) . '"'; } }
+if ( ! function_exists( 'wc_get_product' ) ) { function wc_get_product( $id ) { return new EsCardMockProduct(); } }
+ob_start(); include ES_REPO_ROOT . '/theme/index.php'; $archive_cards = (string) ob_get_clean();
+check( 'index archive/search loop dispatches product, project and post results through shared card partials', fn() => str_contains( $archive_cards, 'data-product-item="true"' ) && str_contains( $archive_cards, 'data-product-category="lighting"' ) && str_contains( $archive_cards, 'تهران' ) && str_contains( $archive_cards, 'Urban project' ) && str_contains( $archive_cards, 'Company news' ) && str_contains( $archive_cards, 'grid-cols-1' ) );
+$product = new EsCardMockProduct();
+ob_start(); include ES_REPO_ROOT . '/theme/woocommerce/content-product.php'; $woo_loop_card = (string) ob_get_clean();
+check( 'WooCommerce product archive and related loops use the shared product card and preserve filter data', fn() => str_contains( $woo_loop_card, '<li class="product' ) && str_contains( $woo_loop_card, 'Woo loop lamp' ) && str_contains( $woo_loop_card, 'href="https://example.test/post/704/"' ) && str_contains( $woo_loop_card, 'data-product-item="true"' ) && str_contains( $woo_loop_card, 'data-product-id="704"' ) && str_contains( $woo_loop_card, 'data-product-category="lighting"' ) && str_contains( $woo_loop_card, 'data-product-price="850"' ) && str_contains( $woo_loop_card, 'data-product-stock="instock"' ) );
 summary();
