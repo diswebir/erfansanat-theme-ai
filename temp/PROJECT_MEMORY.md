@@ -303,4 +303,16 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - 3.17: once-per-session first-party cookie, bot filtering, LiteSpeed no-cache compatibility, shutdown writes to `number2-viewc`, and legacy read fallback.
 - 3.18: deterministic fixture round-trip and orphan-parent checks; complete focused suite: **18 files, 66 PASS / 0 FAIL / 0 PENDING**.
 - Admin input scan: **0 unsafe direct POST/GET reads**; PHP lint for all theme PHP files passes; admin JS syntax passes. `theme/assets/js/main.js` and `theme/assets/css/styles.css` unchanged.
-- Phase 4 not started; wait for explicit approval before proceeding.
+- Phase 4 شروع شد پس از تأیید کاربر؛ وضعیت به‌روز Tasks 4.1–4.7 در بخش انتهایی این فایل ثبت شده است.
+
+
+## §10 — Phase 4 progress (2026-11-04)
+- Tasks 4.1–4.3 باقی و پاس‌شده‌اند: head/SEO data، shared header/footer؛ Task 4.2/4.3 markup با static mirror تطبیق داشته است.
+- Tasks 4.4–4.5: `MegaMenuWalker`, `ProjectsMegaWalker`, `NavTerms` transient cache و safe `Icons`؛ داده menu از Appearance → Menus و ترم‌های پروژه از `city`/`project_type`; tests **9 PASS / 0 FAIL / 0 PENDING**.
+- Task 4.6: `MenuItemFields` با `wp_nav_menu_item_custom_fields` و `wp_update_nav_menu_item`، nonce/capability gate، menu-item meta whitelist و SVG icon allow-list؛ admin fields فقط در صفحه بومی `nav-menus.php`. **4 PASS**.
+- Task 4.7: `NavTab` در صفحه تنظیمات موجود، شامل announcement toggle و whitelisted mega/open-mode/header-size/sticky options؛ `NavConfig` preserves exact default markup and strips panels when mega menus are disabled. New small `nav-config.js`/`nav-config.css` assets adapt configured behavior without editing protected `main.js`/`styles.css`. **4 PASS**.
+- Focused tests Tasks 4.1–4.7: **7 files · 31 PASS / 0 FAIL / 0 PENDING**. PHP syntax parsed for all theme PHP; adapter JS `node --check`; `git diff --check` clean.
+- Remaining Phase 4 work: Tasks 4.9–4.12 (search modal, cart fragment, JS contract pass, DOM gate). Tests are mocked; live WordPress/browser rendering remains unverified.
+
+- Task 4.8: `MobileMenuWalker` renders nested accordions from `mobile-menu` location into the existing scroll region, keeping static content when no usable menu is assigned. `header.php` wraps the existing backdrop/aside in the exact `data-mobile-menu` hook expected by `main.js`, initially hidden and aria-hidden. Test **3 PASS**.
+- Cumulative Phase 4 Tasks 4.1–4.8: **8 test files · 35 PASS / 0 FAIL / 0 PENDING**; Phase 3 regression after kernel changes: **66/66 PASS**. Next Task 4.9.

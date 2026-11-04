@@ -392,3 +392,30 @@
 | پیاده‌سازی | HTML reference copied without redesign into shared template parts; route resolver escapes URLs; dashboard contact values are escaped and empty rows fail closed |
 | محدودیت | Static fallback remains until Tasks 4.4–4.6 connect Appearance → Menus and custom walkers; no live WordPress visual rendering available |
 | وضعیت | Tasks 4.1–4.3 `[PASSED]`; next: Task 4.4 |
+
+
+## Phase 4 — Tasks 4.4–4.7 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 4.4 — مگامنوی محصولات | **5 PASS**؛ تب/پنل و لینک از درخت WP، selectorهای main.js، SVG whitelist، static fallback بدون menu و transient term cache |
+| 4.5 — مگامنوی پروژه‌ها | **4 PASS**؛ پوشش `city` و `project_type`، لینک مستقیم `get_term_link`، حذف تب خالی، query/transient مشترک |
+| 4.6 — فیلدهای Appearance → Menus | **4 PASS**؛ فیلدهای custom در هوک بومی، ذخیره/بازیابی whitelist، عدم ساخت صفحه مدیریت جدا، رد آیکون نامعتبر و nonce نامعتبر |
+| 4.7 — تنظیمات نمایشی ناوبری | **4 PASS**؛ default markup بدون تغییر، حذف پنل‌ها با toggle، تنظیمات فقط whitelisted، نمایش اعلان در همان تب تنظیمات |
+| مجموع Tasks 4.1–4.7 | **7 test files · 32 PASS / 0 FAIL / 0 PENDING** (یک تست integration برای منوی اختصاص‌یافته افزوده شد) |
+| PHP/JS ایستا | `token_get_all(..., TOKEN_PARSE)` روی تمام PHPهای theme موفق؛ `node --check theme/assets/js/nav-config.js` موفق؛ `git diff --check` موفق |
+| قیود فایل | `theme/assets/js/main.js` و `theme/assets/css/styles.css` دست‌نخورده؛ adapterهای ناوبری فقط فایل‌های تازه‌اند |
+| محدودیت | تست‌ها PHP-WASM/mock هستند؛ UI واقعی وردپرس، ذخیره منو در سایت زنده و رندر مرورگر هنوز smoke-test نشده‌اند |
+| وضعیت | Tasks 4.1–4.7 `[PASSED]`; بعدی Task 4.8 |
+
+
+## Phase 4 — Task 4.8 (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| باز/بسته‌شدن off-canvas | **PASS**؛ wrapper `data-mobile-menu` با `hidden` و `aria-hidden=true` در آغاز، backdrop/close hooks داخل wrapper و موجود بودن selectorهای main.js؛ `main.js` بدون تغییر |
+| ساختار چندسطحی | **PASS**؛ `MobileMenuWalker` در محل محتوای scrollable، منوی `mobile-menu` را با سطوح accordion و hookهای `data-mobile-acc-*` رندر می‌کند |
+| fallback استاتیک | **PASS**؛ منوی تخصیص‌نیافته/خالی، scroll block مرجع را حفظ می‌کند |
+| تست | `test-task-08.php` → **3 PASS / 0 FAIL / 0 PENDING** |
+| cumulative Phase 4 | Tasks 4.1–4.8: **8 test files · 35 PASS / 0 FAIL / 0 PENDING**؛ regression Phase 3: **18 files · 66 PASS / 0 FAIL / 0 PENDING** |
+| وضعیت | Tasks 4.1–4.8 `[PASSED]`; بعدی Task 4.9 |

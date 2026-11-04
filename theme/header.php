@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 ob_start();
 require __DIR__ . '/template-parts/header/announcement.php';
 require __DIR__ . '/template-parts/header/static-header.html';
-require __DIR__ . '/template-parts/header/mobile-menu.html';
+require __DIR__ . '/template-parts/header/mobile-menu.php';
 $es_header_markup = (string) ob_get_clean();
 echo \ErfanSanat\Theme\Nav\HeaderMarkup::render( $es_header_markup ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup is trusted; announcement text and href values are escaped.
 ?>

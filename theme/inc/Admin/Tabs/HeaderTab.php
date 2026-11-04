@@ -21,7 +21,6 @@ final class HeaderTab implements ModuleInterface {
 	/** Declarative fields, with values sourced from the current static mirror. */
 	public static function fields(): array {
 		return array(
-			array( 'id' => 'header.announcement.enabled', 'type' => 'toggle', 'label' => 'نمایش نوار اعلان', 'default' => true ),
 			array( 'id' => 'header.announcement.text', 'type' => 'text', 'label' => 'متن نوار اعلان', 'default' => 'فروشگاه آنلاین (ارسال سریع)' ),
 			array( 'id' => 'header.announcement.url', 'type' => 'url', 'label' => 'لینک نوار اعلان', 'default' => '' ),
 			array( 'id' => 'header.tagline', 'type' => 'text', 'label' => 'شعار کوتاه', 'default' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE)' ),

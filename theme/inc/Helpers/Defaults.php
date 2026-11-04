@@ -35,6 +35,12 @@ final class Defaults {
 				'logo_id'      => 0,
 				'tagline'      => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE)',
 			),
+			'nav' => array(
+				'mega' => array( 'enabled' => true ),
+				'open_mode' => 'hover',
+				'header_height' => 'standard',
+				'sticky' => true,
+			),
 			'footer' => array(
 				'address'    => 'اصفهان، شهرستان خمینی‌شهر، شهرک صنعتی برق و الکترونیک، بلوار الکترونیک، فرعی دوم، پلاک ۱۱۹',
 				'work_hours' => 'شنبه تا پنجشنبه — ۷ صبح تا ۴:۳۰ بعدازظهر',

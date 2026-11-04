@@ -26,7 +26,48 @@ final class HeaderMarkup {
 			$html,
 			1
 		);
+		if ( class_exists( \ErfanSanat\Theme\Frontend\NavConfig::class ) ) { $html = \ErfanSanat\Theme\Frontend\NavConfig::apply_markup( $html ); }
+		$mega_enabled = ! class_exists( \ErfanSanat\Theme\Frontend\NavConfig::class ) || \ErfanSanat\Theme\Frontend\NavConfig::mega_enabled();
+		if ( $mega_enabled && function_exists( 'has_nav_menu' ) && has_nav_menu( 'tolidat-sherkat' ) ) {
+			$products = self::render_partial( 'template-parts/header/mega-products', static fn() => MegaMenuWalker::for_location( 'tolidat-sherkat' ) );
+			if ( '' !== $products ) { $html = self::replace_div( $html, 'data-mega-menu-products="true"', $products ); }
+		}
+		if ( $mega_enabled && function_exists( 'get_terms' ) ) {
+			$projects = self::render_partial( 'template-parts/header/mega-projects', static fn() => ProjectsMegaWalker::render() );
+			if ( '' !== $projects ) { $html = self::replace_div( $html, 'data-mega-menu-projects="true"', $projects ); }
+		}
+		if ( function_exists( 'has_nav_menu' ) && has_nav_menu( 'mobile-menu' ) && class_exists( MobileMenuWalker::class ) ) {
+			$mobile = MobileMenuWalker::for_location( 'mobile-menu' );
+			if ( '' !== $mobile ) { $html = self::replace_div( $html, 'class="flex-1 space-y-2.5 overflow-y-auto overscroll-contain px-3.5 py-3.5"', $mobile ); }
+		}
 		return LegacyMarkup::rewrite_links( $html );
+	}
+
+	/** Render the optional template part, falling back to the class renderer outside WordPress. */
+	private static function render_partial( string $slug, callable $fallback ): string {
+		if ( ! function_exists( 'get_template_part' ) ) { return (string) $fallback(); }
+		ob_start();
+		get_template_part( $slug );
+		$markup = (string) ob_get_clean();
+		return '' !== $markup ? $markup : (string) $fallback();
+	}
+
+	/** Replace one balanced DIV selected by a stable data attribute. */
+	private static function replace_div( string $html, string $marker, string $replacement ): string {
+		$position = strpos( $html, $marker );
+		if ( false === $position ) { return $html; }
+		$start = strrpos( substr( $html, 0, $position ), '<div' );
+		if ( false === $start ) { return $html; }
+		$depth = 0;
+		if ( ! preg_match_all( '/<\/?div\b[^>]*>/i', substr( $html, $start ), $matches, PREG_OFFSET_CAPTURE ) ) { return $html; }
+		foreach ( $matches[0] as $token ) {
+			if ( 0 === strpos( $token[0], '</' ) ) { --$depth; } else { ++$depth; }
+			if ( 0 === $depth ) {
+				$end = $start + $token[1] + strlen( $token[0] );
+				return substr( $html, 0, $start ) . $replacement . substr( $html, $end );
+			}
+		}
+		return $html;
 	}
 
 	private static function valid_url( string $url ): bool {

@@ -118,11 +118,11 @@
 | 4.1 | `head` سفارشی: `wp_head`، متا، Hreflang و JSON-LD پایه | `M` | `1.9`، `2.7` | `[PASSED]` | `inc/Frontend/Head.php` +1 |
 | 4.2 | `header.php`: نوار اعلان + لوگو + نوار ناوبری | `L` | `4.1`، `2.7` | `[PASSED]` | `header.php` +3 |
 | 4.3 | `footer.php` + بازگشت به بالا + اطلاعات تماس | `M` | `4.2` | `[PASSED]` | `footer.php` +3 |
-| 4.4 | Walker مگامنو محصولات (تب‌ها + ستون‌ها) | `L` | `4.2`، `1.11` | `[PENDING]` | `inc/Nav/MegaMenuWalker.php` +1 |
-| 4.5 | Walker مگامنو پروژه‌ها (تب نوع/شهر) | `L` | `4.2`، `1.11` | `[PENDING]` | `inc/Nav/ProjectsMegaWalker.php` +1 |
-| 4.6 | فیلدهای آیتم منو در Appearance → Menus | `L` | `2.7` | `[PENDING]` | `inc/Nav/MenuItemFields.php` +2 |
-| 4.7 | تنظیمات نمایشی منو در داشبورد (بدون مدیریت ساختار) | `M` | `4.6` | `[PENDING]` | `inc/Admin/Tabs/NavTab.php` +1 |
-| 4.8 | منوی موبایل off-canvas (`aside[data-mobile-sidebar]`) | `M` | `4.2` | `[PENDING]` | `template-parts/header/mobile-menu.php` |
+| 4.4 | Walker مگامنو محصولات (تب‌ها + ستون‌ها) | `L` | `4.2`، `1.11` | `[PASSED]` | `inc/Nav/MegaMenuWalker.php` +1 |
+| 4.5 | Walker مگامنو پروژه‌ها (تب نوع/شهر) | `L` | `4.2`، `1.11` | `[PASSED]` | `inc/Nav/ProjectsMegaWalker.php` +1 |
+| 4.6 | فیلدهای آیتم منو در Appearance → Menus | `L` | `2.7` | `[PASSED]` | `inc/Nav/MenuItemFields.php` +2 |
+| 4.7 | تنظیمات نمایشی منو در داشبورد (بدون مدیریت ساختار) | `M` | `4.6` | `[PASSED]` | `inc/Admin/Tabs/NavTab.php` +1 |
+| 4.8 | منوی موبایل off-canvas (`aside[data-mobile-sidebar]`) | `M` | `4.2` | `[PASSED]` | `template-parts/header/mobile-menu.php` |
 | 4.9 | `template-parts/header/search-modal.php` (مارک‌آپ مودال جستجو) | `M` | `4.1` | `[PENDING]` | `template-parts/header/search-modal.php` +1 |
 | 4.10 | شمارنده سبد خرید هدر (WooCommerce Fragment) | `M` | `4.2` | `[PENDING]` | `inc/Woo/HeaderCart.php` |
 | 4.11 | سازگاری کامل با `main.js` (بدون تغییر فایل JS) | `M` | `4.4`، `4.5`، `4.8` | `[PENDING]` | `inc/Frontend/InlineData.php` |
