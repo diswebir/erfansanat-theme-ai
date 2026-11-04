@@ -35,10 +35,13 @@ final class Theme
             Admin\SectionManager::hooks();
             Admin\ProductMetaboxes::hooks();
             Admin\LegacyMetaBoxes::hooks();
-            Admin\Migrator::hooks();
+            Migrator::hooks();
             add_action('admin_enqueue_scripts', [$this, 'admin_font']);
             add_action('admin_head', [$this, 'admin_font_css'], 1);
         }
+        // Vazirmatn on the login screen as well (login is not is_admin()).
+        add_action('login_enqueue_scripts', [$this, 'admin_font']);
+        add_action('login_head', [$this, 'admin_font_css'], 1);
         add_action('after_setup_theme', [$this, 'setup']);
         add_action('init', [$this, 'register_core'], 5);
         Data\Registrar::hooks();
@@ -64,7 +67,9 @@ final class Theme
         $uri = esc_url(ERFANSANAT_THEME_URI . 'assets/fonts/');
         echo '<style id="erfansanat-admin-font-face">'
             . '@font-face{font-family:"Vazirmatn";src:url("' . $uri . 'vazirmatn-arabic.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap;}'
-            . '#wpcontent,#wpwrap,.wp-admin,body.wp-admin{font-family:"Vazirmatn",Tahoma,Arial,sans-serif !important;}'
+            . 'body.login,body.wp-admin,#wpcontent,#wpwrap,#wpadminbar,.wp-admin .button,.wp-admin input,.wp-admin select,.wp-admin textarea,.wp-admin .metabox-holder,.wp-admin table,.wp-admin .notice,.wp-admin h1,.wp-admin h2,.wp-admin h3,.wp-admin .theme-options-wrap,.wp-admin .erfansanat-admin{font-family:"Vazirmatn",Tahoma,Arial,sans-serif !important;}'
+            . 'body.login .login form,body.login .message,body.login #loginform{font-family:"Vazirmatn",Tahoma,Arial,sans-serif;}'
+            . '#wpadminbar *{font-family:"Vazirmatn",Tahoma,Arial,sans-serif !important;}'
             . '</style>' . "\n";
     }
 

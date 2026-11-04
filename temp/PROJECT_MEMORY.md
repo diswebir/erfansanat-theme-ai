@@ -114,3 +114,6 @@
 
 ## STRICT RENDER + POT — 2026-11-04
 - test-strict-render: ۲۳ صفحه با E_ALL رندر شد — صفر warning/notice/deprecation از قالب. languages/erfansanat.pot با ۷۸ رشته استخراج شد. E2E 0 FAIL.
+
+## ADMIN FONT FULL + JSON-LD + fa_IR.mo — 2026-11-04
+- فونت وزیرمتن حالا کل پنل ادمین + صفحه لاگین + adminbar + metaboxها + صفحات تنظیمات قالب را کاver می‌کند (admin-font.css کامل + inline @font-face). JSON-LD (Organization/Product/BlogPosting) به wp_head اضافه شد. fa_IR.mo ساخته شد. Bug fatal \ErfanSanat\Theme\Admin\Migrator (namespace اشتباه) در WP_ADMIN=true رفع شد. تست ۱۴/۱۴ ALL PASS، E2E 0 FAIL.

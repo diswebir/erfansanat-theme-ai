@@ -102,3 +102,6 @@
 
 ## STRICT RENDER + POT — 2026-11-04
 - 23 page renders under E_ALL: zero theme warnings/notices/deprecations. Generated languages/erfansanat.pot (78 strings). E2E ALL-PASS 0 FAILs.
+
+## ADMIN FONT FULL + JSON-LD + fa_IR.mo — 2026-11-04
+- Vazirmatn now covers entire admin incl. login screen, admin bar, metaboxes, theme option pages. JSON-LD schema (Organization/Product/BlogPosting) in wp_head. fa_IR.mo generated. Fixed real fatal: Admin\Migrator wrong namespace crashed admin context. 14/14 ALL PASS, E2E 0 FAILs.

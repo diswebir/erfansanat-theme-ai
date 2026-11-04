@@ -27,7 +27,7 @@ foreach ($phpFiles as $f) {
     if (preg_match('/\b(eval|assert|system|exec|shell_exec|passthru)\s*\(/', $stripped)) $evals[] = $rel;
     foreach (preg_split('/\n/', $c) as $ln) {
         $code = preg_replace('#^\s*(\*|//).*$#', '', $ln); // strip comment lines
-        if (preg_match('#https?://(?!localhost|127\.0\.0\.1|erfansanat\.com|wordpress\.org|w\.org|(www\.)?w3\.org|(t\.me|wa\.me|twitter\.com|x\.com|instagram\.com|linkedin\.com|youtube\.com|aparat\.com)|github\.com|developers\.googleapis|\.\.\.)[a-z0-9.-]+#i', $code, $m)) $extUrls[] = "$rel -> {$m[0]}";
+        if (preg_match('#https?://(?!localhost|127\.0\.0\.1|erfansanat\.com|wordpress\.org|w\.org|(www\.)?w3\.org|schema\.org|(t\.me|wa\.me|twitter\.com|x\.com|instagram\.com|linkedin\.com|youtube\.com|aparat\.com)|github\.com|developers\.googleapis|\.\.\.)[a-z0-9.-]+#i', $code, $m)) $extUrls[] = "$rel -> {$m[0]}";
     }
 }
 check('no raw superglobals without nonce (outside Ajax handlers)', $rawSuper === []);
@@ -44,7 +44,7 @@ foreach ($jsFiles as $f) {
     $c = file_get_contents($f->getPathname());
     $code = preg_replace('#^\s*\*.*$#m', '', preg_replace('#//.*$#m', '', $c));
     if (preg_match('/\beval\s*\(|new\s+Function|document\.write/', $code)) $jsIssues[] = $f->getFilename().': eval/write';
-    if (preg_match('#https?://(?!localhost|127\.0\.0\.1|erfansanat\.com|(www\.)?w3\.org|\.\.\.)[a-z0-9.-]+#i', $code, $m)) $jsIssues[] = $f->getFilename().': ext '.$m[0];
+    if (preg_match('#https?://(?!localhost|127\.0\.0\.1|erfansanat\.com|(www\.)?w3\.org|schema\.org|\.\.\.)[a-z0-9.-]+#i', $code, $m)) $jsIssues[] = $f->getFilename().': ext '.$m[0];
 }
 check('JS clean: no eval/document.write/external URLs', $jsIssues === []);
 foreach ($jsIssues as $x) echo "   $x\n";
