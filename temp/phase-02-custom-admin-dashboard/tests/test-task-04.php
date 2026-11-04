@@ -25,6 +25,25 @@ $assert(AdminAssets::shouldEnqueueStyle('edit.php', 'projects'), 'Font styleshee
 $assert(!AdminAssets::shouldEnqueueStyle('post.php', 'unrelated_cpt'), 'Font stylesheet remains scoped away from unrelated post types');
 $a=new AdminAssets(); $a->enqueue('plugins.php');
 $assert(!wp_style_is('erfansanat-admin','enqueued'),'Not enqueued on unrelated admin page');
+if (!class_exists('WP_Screen')) {
+    require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+}
+if (!function_exists('get_current_screen')) {
+    require_once ABSPATH . 'wp-admin/includes/screen.php';
+}
+$screenFactory = new ReflectionClass(WP_Screen::class);
+$productScreen = $screenFactory->newInstanceWithoutConstructor();
+$productScreen->post_type = 'product';
+$GLOBALS['current_screen'] = $productScreen;
+$a->enqueue('post.php');
+$assert(wp_style_is('erfansanat-admin','enqueued'),'Font CSS enqueued for a theme product metabox screen');
+wp_dequeue_style('erfansanat-admin');
+$unrelatedScreen = $screenFactory->newInstanceWithoutConstructor();
+$unrelatedScreen->post_type = 'unrelated_cpt';
+$GLOBALS['current_screen'] = $unrelatedScreen;
+$a->enqueue('post.php');
+$assert(!wp_style_is('erfansanat-admin','enqueued'),'Font CSS stays off unrelated custom post screens');
+$GLOBALS['current_screen'] = null;
 $a->enqueue('toplevel_page_'.ThemeOptions::PAGE_SLUG);
 $assert(wp_style_is('erfansanat-admin','enqueued'),'CSS enqueued on dashboard page');
 $assert(wp_script_is('erfansanat-admin','enqueued'),'JS enqueued on dashboard page');
