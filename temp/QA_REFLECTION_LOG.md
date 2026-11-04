@@ -191,3 +191,10 @@
 4. **\u200c در رشته تک‌کوتیشن تست هم literal می‌ماند** (تکرار درس ۵.۹ این‌بار در SIG تست): grep برای `\\u200c` در فایل تست و جایگزینی با U+200C واقعی — دو SIG (projects-gallery و fixture ترم project_type).
 5. **assert آرگومان get_posts در رندر کامل دو صدا دارد:** args[0] = سکشن projects (posts_per_page=3)، args[1] = گالری (numberposts=30) — فقط [0] را چک کردن باعث FAIL کاذب شد.
 6. **CSS لازم نبود:** `.line-clamp-2` و `[hidden]{display:none!important}` هر دو در styles.css کامپایل‌شده تیلویند موجودند؛ JS سوییچ تب‌ها عمداً پورت نشده (js میرور home2 می‌راند — مثل data-service-*).
+
+## تسک ۶.۱ — Wrapper ووکامرس + Setup (2026-11-04)
+**نتیجه:** 18/18 شرط · رگرسیون سریع فاز ۴/۵ سبز
+1. **shell میرور:** همه صفحات ووکامرس داخل `<main>` بدون اتریبیوت بعد از get_header (هدر+منوی موبایل) هستند → wrapper دقیقاً `get_header(); echo '<main>'; woocommerce_content(); echo '</main>'; get_footer();`.
+2. **shell_exec در wasm ممنوع:** php -l داخل تست با popen/proc_open هنگ می‌کند (خطای «unsupported» شیم) → چک لغوی با token_get_all و آستانه توکن (فایل‌های کوچک wrapper < ۵۰ توکن‌اند؛ آستانه ۱۲).
+3. **آپشن ستون‌ها از قبل در اسکیم بود:** archives.products_columns (select ۲/۳/۴، پیش‌فرض ۴) از فاز ۲ → Setup فقط می‌خواند + کلمپ ۲..۴؛ merge پیش‌فرض ThemeOptions یعنی حتی بدون __wp_options مقدار '4' برمی‌گردد.
+4. **Setup بدون گارد WC:** remove_action/add_filter روی هوک‌های غایب بی‌خطرند → init همیشه اجرا می‌شود (فقط پاکسازی نمایش، نه منطق پرداخت).

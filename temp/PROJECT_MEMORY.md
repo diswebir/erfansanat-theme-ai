@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 5 COMPLETE (12/12 TASKS DONE: 5.1–5.12 · 169/169 CONDITIONS · TESTS 01-12 GREEN)**
+**PHASE 6 IN PROGRESS (1/11 TASKS DONE: 6.1 · PHASE 5 COMPLETE 12/12 · 187 CONDITIONS GREEN)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -84,6 +84,9 @@
 - قیمت‌ها «تومان» (IRT)؛ RTL؛ JSON-LDها داینامیک شوند.
 - `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
+
+## رویدادهای فاز ۶ (2026-11-04)
+- 6.1 wrapper+Setup: woocommerce.php (شل میرور: get_header → <main> → woocommerce_content → get_footer)؛ inc/Woo/Setup.php (حذف breadcrumb/sidebar/related + woocommerce_show_page_title=false؛ فیلتر woocommerce_enqueue_styles فقط blockui+select2؛ loop_shop_columns از archives.products_columns با کلمپ ۲..۴) — 18/18.
 
 ## رویدادهای فاز ۵ (2026-11-04)
 - 5.1 قرارداد Registry/SectionManager/فرونت‌پیج + ۱۵ wrapper — 24/24.

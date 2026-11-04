@@ -49,6 +49,10 @@ final class Theme {
             Data\WooRewrite::init();
         }
 
+        if (class_exists(Woo\Setup::class)) {
+            Woo\Setup::init();
+        }
+
         if (class_exists(Admin\ProductMetaboxes::class)) {
             Admin\ProductMetaboxes::init();
         }

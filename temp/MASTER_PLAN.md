@@ -292,7 +292,7 @@
 **هدف فاز:** تبدیل صفحات ووکامرس با پوسته دقیق میرور؛ منطق true_sale و سازگاری کامل افزونه‌های فعال
 **پوشه:** `temp/phase-06-woocommerce-and-products/` · **تست جامع:** `tests/run-phase-06-tests.sh`
 
-### Task 6.1 — Wrapper ووکامرس و پاکسازی پیش‌فرض‌های آن `[PENDING]`
+### Task 6.1 — Wrapper ووکامرس و پاکسازی پیش‌فرض‌های آن `[DONE — 18/18]`
 - 🎯 صفحات ووکامرس داخل shell قالب رندر شوند و خروجی‌های پیش‌فرض تکراری (breadcrumb/سایدبار/related) حذف شوند
 - 📤 خروجی: `woocommerce.php`؛ `inc/Woo/Setup.php` · **وابستگی:** Task 4.2, Task 4.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -740,7 +740,7 @@
 **هدف فاز:** تبدیل صفحات ووکامرس با پوسته دقیق میرور؛ منطق true_sale و سازگاری کامل افزونه‌های فعال
 **پوشه:** `temp/phase-06-woocommerce-and-products/` · **تست جامع:** `tests/run-phase-06-tests.sh`
 
-### Task 6.1 — Wrapper ووکامرس و پاکسازی پیش‌فرض‌های آن `[PENDING]`
+### Task 6.1 — Wrapper ووکامرس و پاکسازی پیش‌فرض‌های آن `[DONE — 18/18]`
 - 🎯 صفحات ووکامرس داخل shell قالب رندر شوند و خروجی‌های پیش‌فرض تکراری (breadcrumb/سایدبار/related) حذف شوند
 - 📤 خروجی: `woocommerce.php`؛ `inc/Woo/Setup.php` · **وابستگی:** Task 4.2, Task 4.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
