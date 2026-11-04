@@ -78,3 +78,18 @@
   - **Renderer:** `locate_template` + fallback امن → template-part ناموجود fatal نمی‌دهد؛ کش per-page/context با invalidation روی `erfansanat_sections_updated`.
 - **نتیجه تست‌ها:** T001=16، T002=10، T003=9، T004=24، T005=30، T006=19، T007=18، T008=13، T009=24، T010=11، T011=7، T012=10، T013=10، T014=9، T015=14، T016=12، T017=14، T018=10 → **۲۶۰ چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-02-custom-admin-dashboard/tests/run-phase-tests.sh` → `PHASE RESULT: ALL PASS`. گارد activate در runner مانند فاز ۱ سخت‌گیرانه شد (`is-active` + `--allow-root`).
 - **UPDATE MEMORY + Git:** وضعیت فاز ۲ PASSED؛ گام بعدی Phase 3 در انتظار تایید کاربر. همه کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai` و بلافاصله push شدند.
+
+---
+
+## 2026-11-03 — Phase 3 تکمیل شد (P03-T001..T024)
+- **READ MEMORY:** PROJECT_MEMORY + ۲۴ تسک فاز ۳ + DATA_BLUEPRINT خوانده شد. کاربر «ادامه بده و برو فاز بعدی رو کامل کن» داد → اجرای پیوسته تا پایان فاز.
+- **THINK & PLAN:** CPT/تکسونومی بومی با guard ثبت تکراری؛ rewrite ووکامرس فقط با فیلتر args (نه ثبت مجدد)؛ codec مشترک LegacyMeta زیربنای همه متاباکس‌ها؛ ریدایرکت‌ها با نگاشت فیلترپذیر برای اسلاگ فارسی لایو (D3).
+- **WRITE TEST + IMPLEMENT:** برای هر ۲۴ تسک تست واقعی نوشته شد. فایل‌های هدف: `inc/Core/{PostTypes,Taxonomies,Rewrites,AttributeMap,LegacyRedirects,LegacyMeta,ViewCounter}.php`, `inc/Admin/{ProjectColumns,ProductMetaboxes,ProductQuickEdit,ProjectMetaboxes,TermMetaboxes,HreflangMetabox}.php`, `functions.php`.
+- **RUN TEST / SELF-CORRECT:**
+  - **Regression #3 workspace:** میانه فاز، `.git` به `8eddaff` برگشت و پوشه‌های gitignore حذف شدند؛ چون همه کامیت‌های قبلی push شده بودند، چیزی از دست نرفت. **بازیابی:** `git fetch` + `git reset --mixed origin/arena/...` (کار کامیت‌نشده T016 حفظ شد) + `setup-harness.sh` + فعال‌سازی قالب + permalink. قاعده push-بعد-از-هر-کامیت دوباره نجات‌بخش بود.
+  - **باگ slashing (مهم):** `update_metadata` هسته `wp_unslash` می‌کند → بک‌اسلش‌های `\u` در JSON حذف می‌شدند (ترم‌متای فارسی خراب می‌شد). **اصلاح:** `wp_slash($value)` قبل از update_metadata در LegacyMeta. این کشف برای همه متاباکس‌های بعدی حیاتی بود.
+  - **باگ hierarchical rewrite:** product_cat باید `rewrite['hierarchical']=true` هم داشته باشد تا URL تودرتو حفظ شود (SC-02 T005).
+  - **باگ ایزولاسیون تست (چندبار):** هوک‌های `save_post_*`/`created_*` هنگام ساخت پست/ترم جدید در تست، `$_POST` باقی‌مانده را ذخیره می‌کردند. **اصلاح:** پاک‌سازی `$_POST` قبل از ساخت fixture جدید در تست‌های T015/T020/T022.
+  - **نقل‌قول dropdown:** `wp_dropdown_categories` با نقل‌قول تکی `name='city'` رندر می‌کند → تست با regex نقل‌قول‌agnostic اصلاح شد.
+- **نتیجه تست‌ها:** T001=15، T002=12، T003=15، T004=14، T005=13، T006=10، T007=10، T008=14، T009=12، T010=12، T011=12، T012=16، T013=10، T014=10، T015=16، T016=10، T017=13، T018=11، T019=13، T020=16، T021=10، T022=12، T023=11، T024=14 → **۳۰۱ چک پاس، ۰ fail، ۰ pending**. `bash temp/phase-03-cpt-and-legacy-meta/tests/run-phase-tests.sh` → `PHASE RESULT: ALL PASS`. گارد activate سخت‌گیرانه شد.
+- **UPDATE MEMORY + Git:** وضعیت فاز ۳ PASSED؛ گام بعدی Phase 4 در انتظار تایید کاربر. همه کامیت‌ها روی برنچ `arena/7378effd-erfansanat-theme-ai` و بلافاصله push شدند.

@@ -2,10 +2,13 @@
 
 > آخرین به‌روزرسانی: 2026-11-03 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 2 PASSED** — همه ۱۸ تسک فاز ۲ پاس شدند.
+## وضعیت فعلی: **PHASE 3 PASSED** — همه ۲۴ تسک فاز ۳ پاس شدند.
 ```
-PHASE 2 PASSED — P02-T001..T018 PASSED (260 checks) — WAITING FOR USER APPROVAL FOR PHASE 3
+PHASE 3 PASSED — P03-T001..T024 PASSED (301 checks) — WAITING FOR USER APPROVAL FOR PHASE 4
 ```
+- **فاز ۳ کامل شد (CPTها، تکسونومی‌ها و متاباکس‌های Legacy):** CPT بومی `projects` و `services`؛ تکسونومی‌های `project_type`/`city` (فارسی‌پذیر)؛ حفظ rewrite ووکامرس (`product`=/product/، `product_cat` با with_front=true و سلسله‌مراتب، `product-tag`، `product_brand`) بدون ثبت مجدد؛ نقشه ۱۸ ویژگی `pa_*`؛ flush نسخه‌دار فقط در فعال‌سازی/ارتقا؛ ریدایرکت ۳۰۱ aliasهای محصول/دسته/پروژه/شهر/نوع (نگاشت فیلترپذیر برای اسلاگ فارسی لایو)؛ ستون‌ها/فیلترهای ادمین پروژه؛ Codec متاهای Legacy (PHP/JSON item-0/list، حفظ فرمت، wp_slash-safe)؛ متاباکس‌های محصول (شناسه‌های صنعتی، عنوان/فروش، کاتالوگ/گالری با fallback، روابط، repeater مشخصات/کاربرد/FAQ)؛ Quick/Bulk Edit؛ متاباکس‌های پروژه (گالری ۵ کلیدی، تاریخ/محصولات)؛ متای دسته (thumbnail/FAQ)؛ Hreflang (پست/ترم)؛ شمارنده بازدید اتمیک.
+- نتیجه runner فاز ۳: `PHASE RESULT: ALL PASS` (۲۴ تست، **۳۰۱ چک پاس، ۰ fail/pending**).
+- شمارش چک هر تسک: T001=15، T002=12، T003=15، T004=14، T005=13، T006=10، T007=10، T008=14، T009=12، T010=12، T011=12، T012=16، T013=10، T014=10، T015=16، T016=10، T017=13، T018=11، T019=13، T020=16، T021=10، T022=12، T023=11، T024=14.
 - **فاز ۲ کامل شد (داشبورد اختصاصی + Section Builder):** Schema/Store آپشن‌ها (`erfansanat_theme_options`)، `es_option()` با کش، منوی ادمین + AJAX امن (nonce/cap)، UI تب‌بندی RTL/ARIA، FieldRenderer (پایه/media/link/icon/repeater)، Sanitizer per-type، تب‌های Header/MegaMenu/Footer/Brand/Archive، و Section Builder کامل: `Sections\Schema` (۱۳ سکشن خانه + about/contact/arya)، `SectionManager` (متای نسخه‌دار `_es_sections_v1`، ترتیب/فعال/شناسه یکتا، ویرایش فیلد schema-only)، `Admin\SectionMetabox` (drag&drop + AJAX امن)، `Sections\Renderer` (رندر ترتیبی enabled-only + کش + fallback امن).
 - نتیجه runner فاز ۲: `PHASE RESULT: ALL PASS` (۱۸ تست، **۲۶۰ چک پاس، ۰ fail/pending**).
 - شمارش چک هر تسک: T001=16، T002=10، T003=9، T004=24، T005=30، T006=19، T007=18، T008=13، T009=24، T010=11، T011=7، T012=10، T013=10، T014=9، T015=14، T016=12، T017=14، T018=10.
@@ -36,9 +39,12 @@ PHASE 2 PASSED — P02-T001..T018 PASSED (260 checks) — WAITING FOR USER APPRO
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
 ## گام بعدی (پس از تایید کاربر)
-**PHASE 3** — طبق `temp/MASTER_PLAN.md` (۲۴ تسک اتمیک). فاز ۲ کامل پاس شد (۲۶۰ چک)؛ در انتظار تایید کاربر برای شروع فاز ۳.
-- نکته معماری فاز ۲ برای فازهای بعد: template-partهای سکشن‌ها هنوز slice نشده‌اند (فاز ۵/۷)؛ `Sections\Renderer` تا آن زمان fallback ساختاری امن می‌دهد. مسیر قرارداد: `template-parts/sections/{context}/section-{type}.php`. هر سکشن `{id,type,enabled,order,fields}`. کش رندر با اکشن `erfansanat_sections_updated` invalid می‌شود.
-- `SectionManager::save_section_fields` فقط کلیدهای schema را نگه می‌دارد؛ مقدار خالی فیلد را حذف نمی‌کند؛ media/link/icon با `Sanitizer::sanitize_field` پاک‌سازی می‌شوند.
+**PHASE 4** — طبق `temp/MASTER_PLAN.md` (۲۰ تسک اتمیک). فاز ۳ کامل پاس شد (۳۰۱ چک)؛ در انتظار تایید کاربر برای شروع فاز ۴.
+- نکته معماری فاز ۳ برای فازهای بعد: همه کلیدهای متای legacy با املای دقیق در متاباکس‌ها مدیریت می‌شوند. `Core\LegacyMeta` codec مشترک (get/set/get_for_term/set_for_term) فرمت PHP/JSON item-0/list را حفظ می‌کند و **wp_slash** قبل از update_metadata می‌زند (هسته wp_unslash می‌کند). هرگز کلید با املای اصلاح‌شده نساز.
+- `Core\Rewrites` فقط فیلتر args می‌زند (ثبت مجدد product/product_cat ممنوع). flush نسخه‌دار (`es_rewrite_version`) فقط در after_switch_theme/admin_init.
+- `Core\LegacyRedirects::resolve()` نگاشت alias→canonical (فیلترهای `es_legacy_redirects_product_categories`/`_cities`/`_project_types` برای اسلاگ فارسی لایو).
+- `Core\ViewCounter` افزایش اتمیک SQL (`meta_value + 1`)؛ `number-viewc` فقط fallback خواندن.
+- template-partهای سکشن‌ها هنوز slice نشده‌اند (فاز ۵/۷)؛ `Sections\Renderer` fallback امن می‌دهد.
 
 ## نکات یادآوری برای تسک‌های آینده
 - املای تاریخی متاها مقدس است: `foure-image`, `galerry_produ`, `english_titl`, `vaule_of_variable`, `usage_countr`, `mortabet_mahsole_2`, `number2-viewc`.
