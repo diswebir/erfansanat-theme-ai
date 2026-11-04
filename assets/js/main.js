@@ -457,39 +457,84 @@
 
     var openBtns = archiveRoot.querySelectorAll('[data-archive-drawer-open="true"]');
     var closeBtns = archiveRoot.querySelectorAll('[data-archive-drawer-close="true"]');
+    var clearBtns = archiveRoot.querySelectorAll('[data-archive-drawer-clear], [data-filter-clear]');
+    var applyBtns = archiveRoot.querySelectorAll('[data-archive-drawer-apply]');
     var backdrop = archiveRoot.querySelector('[data-archive-drawer-backdrop="true"]');
+    var controlSelector = '[data-product-search], [data-product-purchase-mode], [data-product-price-range], [data-product-category-filter], [data-product-attribute-filter], [data-project-search], [data-project-type-filter], [data-project-location-filter], [data-project-sort], [data-blog-search]';
+    var syncing = false;
 
     function setOpen(openState) {
       if (openState) {
         drawer.classList.remove("hidden");
         drawer.classList.add("flex");
+        drawer.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
       } else {
         drawer.classList.add("hidden");
         drawer.classList.remove("flex");
+        drawer.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
       }
+      for (var i = 0; i < openBtns.length; i++) openBtns[i].setAttribute("aria-expanded", String(openState));
     }
 
-    for (var i = 0; i < openBtns.length; i++) {
-      openBtns[i].addEventListener("click", function () {
-        setOpen(true);
-      });
-    }
-    for (var j = 0; j < closeBtns.length; j++) {
-      closeBtns[j].addEventListener("click", function () {
-        setOpen(false);
-      });
-    }
-    if (backdrop) {
-      backdrop.addEventListener("click", function () {
-        setOpen(false);
-      });
-    }
-    window.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !drawer.classList.contains("hidden")) {
-        setOpen(false);
+    function controlKey(control) {
+      var explicit = control.getAttribute("data-archive-filter-control");
+      if (explicit) return "custom:" + explicit;
+      var attrs = ["data-product-search", "data-product-purchase-mode", "data-product-price-range", "data-product-category-filter", "data-product-attribute-filter", "data-project-search", "data-project-type-filter", "data-project-location-filter", "data-project-sort", "data-blog-search"];
+      for (var i = 0; i < attrs.length; i++) {
+        if (!control.hasAttribute(attrs[i])) continue;
+        var value = control.getAttribute(attrs[i]) || "";
+        if (attrs[i] === "data-product-attribute-filter") value += ":" + (control.getAttribute("data-product-attribute-value") || "");
+        return attrs[i] + ":" + value;
       }
+      return "";
+    }
+
+    function syncFilterControls(source) {
+      if (syncing) return;
+      var key = controlKey(source);
+      if (!key) return;
+      syncing = true;
+      var controls = archiveRoot.querySelectorAll(controlSelector);
+      for (var i = 0; i < controls.length; i++) {
+        var peer = controls[i];
+        if (peer === source || controlKey(peer) !== key) continue;
+        if (peer.type === "checkbox" || peer.type === "radio") peer.checked = source.checked;
+        else peer.value = source.value;
+        peer.dispatchEvent(new Event(source.type === "input" ? "input" : "change", { bubbles: true }));
+      }
+      syncing = false;
+    }
+
+    var filterControls = archiveRoot.querySelectorAll(controlSelector);
+    for (var fc = 0; fc < filterControls.length; fc++) {
+      filterControls[fc].addEventListener("input", function () { syncFilterControls(this); });
+      filterControls[fc].addEventListener("change", function () { syncFilterControls(this); });
+    }
+
+    function clearFilters() {
+      var controls = archiveRoot.querySelectorAll(controlSelector);
+      syncing = true;
+      for (var i = 0; i < controls.length; i++) {
+        var control = controls[i];
+        if (control.type === "checkbox") control.checked = false;
+        else if (control.type === "radio") control.checked = (control.getAttribute("data-product-purchase-mode") === "all") || control.defaultChecked;
+        else if (control.tagName === "SELECT") control.selectedIndex = 0;
+        else if (control.tagName === "INPUT") control.value = "";
+      }
+      syncing = false;
+      for (var j = 0; j < controls.length; j++) controls[j].dispatchEvent(new Event(controls[j].type === "range" ? "input" : "change", { bubbles: true }));
+      setOpen(false);
+    }
+
+    for (var i = 0; i < openBtns.length; i++) openBtns[i].addEventListener("click", function () { setOpen(true); });
+    for (var j = 0; j < closeBtns.length; j++) closeBtns[j].addEventListener("click", function () { setOpen(false); });
+    for (var c = 0; c < clearBtns.length; c++) clearBtns[c].addEventListener("click", clearFilters);
+    for (var a = 0; a < applyBtns.length; a++) applyBtns[a].addEventListener("click", function () { setOpen(false); });
+    if (backdrop) backdrop.addEventListener("click", function () { setOpen(false); });
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !drawer.classList.contains("hidden")) setOpen(false);
     });
   }
 

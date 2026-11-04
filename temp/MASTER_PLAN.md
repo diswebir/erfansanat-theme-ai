@@ -175,7 +175,7 @@
 - `[PASSED]` **Task 8.8 (`task-08.md` / `test-task-08.php`):** اتصال JS فیلتر محصولات بدون تغییر URL
 - `[PASSED]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
 - `[PASSED]` **Task 8.10 (`task-10.md` / `test-task-10.php`):** فیلتر وبلاگ (دسته و جستجو)
-- `[PENDING]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل و همگام‌سازی وضعیت
+- `[BLOCKED]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل و همگام‌سازی وضعیت — آرشیوها فاقد markup استاتیک `data-archive-drawer` هستند؛ طبق Strict Static-to-Dynamic Rule هیچ DOM/CSS جدیدی طراحی نشده است.
 - `[PENDING]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PENDING]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
 - `[PENDING]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه

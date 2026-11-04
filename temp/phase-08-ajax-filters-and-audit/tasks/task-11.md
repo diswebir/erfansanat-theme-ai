@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[BLOCKED — missing static drawer markup]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -55,3 +55,6 @@ initArchiveDrawer: یک وضعیت فیلتر واحد برای دسکتاپ/م�
 
 ## پیام کامیت پیشنهادی
 `feat(phase-8): task 8.11 — دراور فیلتر موبایل و همگام‌سازی وضعیت`
+
+## Blocker
+The repository has no `data-archive-drawer` markup in the product, project, or blog archive templates. Under the static-to-dynamic constraint, this task adds only JS behavior for the documented drawer hooks and does not invent the missing drawer DOM/CSS; browser-level drawer behavior cannot be considered complete until the static markup is restored/provided.
