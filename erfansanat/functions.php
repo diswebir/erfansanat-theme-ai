@@ -122,6 +122,13 @@ add_action(
 	},
 	10
 );
+add_action(
+	'es_product_reviews_panel',
+	static function () {
+		get_template_part( 'template-parts/product/reviews' ); // P06-T014.
+	},
+	10
+);
 
 // P06-T007: additive max-quantity guard for the no-Woo fallback stepper only.
 add_action(
