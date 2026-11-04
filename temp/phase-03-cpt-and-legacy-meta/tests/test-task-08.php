@@ -8,7 +8,7 @@ $GLOBALS['es_phase3_postmeta'] = array();
 $GLOBALS['es_phase3_termmeta'] = array();
 $GLOBALS['es_phase3_meta_calls'] = 0;
 if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $id, $key = '', $single = false ) { $GLOBALS['es_phase3_meta_calls']++; if ( '' === $key ) { return $GLOBALS['es_phase3_postmeta'][ $id ] ?? array(); } return $GLOBALS['es_phase3_postmeta'][ $id ][ $key ] ?? ''; } }
-if ( ! function_exists( 'update_post_meta' ) ) { function update_post_meta( $id, $key, $value ) { $GLOBALS['es_phase3_postmeta'][ $id ][ $key ] = $value; return true; } }
+if ( ! function_exists( 'update_post_meta' ) ) { function update_post_meta( $id, $key, $value ) { $GLOBALS['es_phase3_postmeta'][ $id ][ $key ] = $value; if ( isset( $GLOBALS['es_phase3_meta_updates'] ) ) { $GLOBALS['es_phase3_meta_updates'][] = array( $id, $key, $value ); } if ( isset( $GLOBALS['es_phase3_product_meta'][ $id ] ) ) { $GLOBALS['es_phase3_product_meta'][ $id ][ $key ] = $value; } return true; } }
 if ( ! function_exists( 'get_term_meta' ) ) { function get_term_meta( $id, $key = '', $single = false ) { $GLOBALS['es_phase3_meta_calls']++; if ( '' === $key ) { return $GLOBALS['es_phase3_termmeta'][ $id ] ?? array(); } return $GLOBALS['es_phase3_termmeta'][ $id ][ $key ] ?? ''; } }
 if ( ! function_exists( 'update_term_meta' ) ) { function update_term_meta( $id, $key, $value ) { $GLOBALS['es_phase3_termmeta'][ $id ][ $key ] = $value; return true; } }
 

@@ -17,7 +17,7 @@ if ( ! function_exists( 'update_option' ) ) { function update_option( $name, $va
 if ( ! function_exists( 'flush_rewrite_rules' ) ) { function flush_rewrite_rules( $hard = true ) { $GLOBALS['es_phase3_flush_calls']++; } }
 if ( ! function_exists( 'is_404' ) ) { function is_404() { return ! empty( $GLOBALS['es_phase3_is_404'] ); } }
 if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return ! empty( $GLOBALS['es_phase3_admin'] ); } }
-if ( ! function_exists( 'current_user_can' ) ) { function current_user_can( $capability ) { return 'manage_options' === $capability; } }
+if ( ! function_exists( 'current_user_can' ) ) { function current_user_can( $capability, $object_id = null ) { return in_array( $capability, array( 'manage_options', 'edit_post' ), true ); } }
 if ( ! function_exists( 'add_submenu_page' ) ) { function add_submenu_page( $parent, $page_title, $menu_title, $capability, $slug, $callback ) { $GLOBALS['es_phase3_submenus'][ $slug ] = compact( 'parent', 'page_title', 'menu_title', 'capability', 'slug', 'callback' ); return $slug; } }
 if ( ! function_exists( 'home_url' ) ) { function home_url( $path = '/' ) { return 'https://example.test' . '/' . ltrim( $path, '/' ); } }
 if ( ! function_exists( 'esc_html' ) ) { function esc_html( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); } }

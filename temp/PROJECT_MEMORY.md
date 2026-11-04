@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.8 پاس شده‌اند؛ ادامه از Task 3.9.
+**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.9 پاس شده‌اند؛ ادامه از Task 3.10.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
-| آخرین تسک پاس‌شده | 3.8 — MetaRepository + JetEngine codec (4 PASS / 0 FAIL؛ Tasks 3.1–3.8: 31 PASS / 0 FAIL) |
+| آخرین تسک پاس‌شده | 3.9 — Product identity metabox (4 PASS / 0 FAIL؛ Tasks 3.1–3.9: 35 PASS / 0 FAIL) |
 | دروازه تأیید | Gate 1 و Gate 2: ✅؛ کاربر Phase 3 را در 2026-11-04 صریحاً تأیید کرد؛ Gate 3 پس از Task 3.18 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,7 +46,7 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 3 از Task 3.9: محصول identity metabox با کلیدهای دقیق موجود در DATA_BLUEPRINT (از جمله `english_titl`).
+- ادامه Phase 3 از Task 3.10: product catalog media and gallery synchronization, retaining the exact legacy keys and WooCommerce gallery format.
 - اجرای مستقل تست هر Task و تکمیل/همگام‌سازی سند و suite متناظر پیش از ادامه.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
@@ -285,3 +285,8 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - `ErfanSanat\\Theme\\Meta\\RepeaterCodec` preserves array/JSON/PHP-serialized/CSV formats; global `es_meta()` and `es_term_meta()` helpers are loaded by bootstrap.
 - Cache test: 10 reads of one key trigger 1 lookup. Round-trip tests preserve `item-0` exactly and retain source encoding. **4 PASS**.
 - Theme kernel registers the repository; focused Phase 3 suite through 3.8: **31 PASS / 0 FAIL**. Next: Task 3.9.
+
+### Phase 3 progress — Task 3.9
+- Registered a native product meta box with capability and per-product nonce checks, autosave/revision guards, and a `save_post_product` handler.
+- Identity fields preserve all ten exact keys from the blueprint, especially `english_titl`; `true_sale` is persisted only for strict string values `true`/`false`.
+- All text inputs are unslashed, scalar-checked and sanitized; missing/invalid nonce blocks writes. **4 PASS**. Next: Task 3.10.

@@ -340,3 +340,13 @@
 | Cache + term/post helpers | **PASS**; 10 reads = 1 lookup, `es_meta`/`es_term_meta` work |
 | Integration | MetaRepository registered in Theme; bootstrap loads global helper functions |
 | تجمعی | Tasks 3.1–3.8: **31 PASS / 0 FAIL** |
+
+## Phase 3 — Task 3.9 (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| CRUD 10 کلید محصول | **PASS**؛ field render + save |
+| املای legacy | **PASS**؛ `english_titl` حفظ و `english_title` ساخته نمی‌شود |
+| true_sale | **PASS**؛ فقط `true`/`false` پذیرفته می‌شود |
+| nonce/capability | **PASS**؛ نبود nonce هرگونه write را متوقف می‌کند |
+| مجموع Phase 3 متمرکز | Tasks 3.1–3.9: **35 PASS / 0 FAIL** |
