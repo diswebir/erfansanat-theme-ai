@@ -1,0 +1,29 @@
+<?php
+/**
+ * Contract-test scaffold for task 6.1: صفحه تک‌محصول.
+ * Run from repository root with: php temp/phase-06-woocommerce-and-products/tests/test-task-01.php
+ * This planning-stage test is expected to fail until its task is implemented.
+ */
+$root = dirname(__DIR__, 3);
+$checks = [
+    ['single-product.php', 'true_sale'],
+    ['single-product.php', 'galerry_produ'],
+    ['single-product.php', 'woocommerce_template_single_add_to_cart']
+];
+$failed = 0;
+foreach ($checks as [$relative, $needle]) {
+    $path = $root . DIRECTORY_SEPARATOR . $relative;
+    if (!is_file($path)) {
+        fwrite(STDERR, "FAIL missing file: {$relative}\n");
+        $failed++;
+        continue;
+    }
+    $source = file_get_contents($path);
+    if ($source === false || strpos($source, $needle) === false) {
+        fwrite(STDERR, "FAIL missing contract `{$needle}` in {$relative}\n");
+        $failed++;
+    } else {
+        fwrite(STDOUT, "PASS {$relative} contains `{$needle}`\n");
+    }
+}
+exit($failed === 0 ? 0 : 1);
