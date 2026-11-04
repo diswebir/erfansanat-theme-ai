@@ -280,3 +280,14 @@
 | تست اختصاصی | **4 PASS / 0 FAIL / 0 PENDING**: صفر خروجی خاموش، fallback فایل/exception، ادامه رندر، ترتیب ذخیره و داده args |
 | Suite Phase 2 | **96 PASS / 0 FAIL / 6 PENDING**؛ pendingها فقط Tasks 2.14–2.15 |
 | وضعیت | Task 2.13 `[PASSED]`; بعدی: Task 2.14 |
+
+## Phase 2 — Task 2.14 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | تست 4 شرطی قبل از ماژول: **0 PASS / 4 FAIL / 0 PENDING** |
+| پیاده‌سازی | `ImportExport` در صفحه Tools؛ JSON export/attach، import از فایل کوچک یا textarea، فیلتر Schema، پشتیبان خودکار و reset انتخابی |
+| تست اختصاصی | **4 PASS / 0 FAIL / 0 PENDING**؛ round-trip تنظیمات و meta سکشن، snapshot backup، malformed JSON، type/keys ناشناخته و حفظ گروه‌های خارج هدف |
+| امنیت | admin-post endpointها nonce + `manage_options`; upload تا 1MB با پسوند JSON و `is_uploaded_file`; reset علاوه بر nonce نیاز به checkbox تأیید دارد |
+| Suite Phase 2 | **100 PASS / 0 FAIL / 3 PENDING**؛ فقط Task 2.15 pending است |
+| وضعیت | Task 2.14 `[PASSED]`; بعدی: Task 2.15 (final gate) |

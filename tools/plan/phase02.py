@@ -242,7 +242,7 @@ dict(id='2.13', size='M', deps=['2.11'],
 dict(id='2.14', size='M', deps=['2.1'],
   title='صادرات/واردات تنظیمات و `Reset` ایمن',
   desc='ابزار پشتیبان‌گیری JSON از `erfansanat_theme_options` + `_es_sections`، import با اعتبارسنجی schema، و reset انتخاب‌شده (فقط تب مربوطه) با تأیید دو مرحله‌ای.',
-  files=['inc/Admin/ImportExport.php'],
+  files=['inc/Admin/ImportExport.php','inc/Admin/AdminMenu.php','inc/Theme.php'],
   steps=[
    'Export: `application/json` با `Content-Disposition` + nonce.',
    'Import: `json_decode` + بازبینی schema (کلیدهای ناشناخته حذف) + گزارش تغییرات.',

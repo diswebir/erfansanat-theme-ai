@@ -191,7 +191,7 @@ final class AdminMenu implements ModuleInterface {
 			return;
 		}
 		if ( 'es-theme-tools' === $slug ) {
-			echo ScriptsTab::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The renderer escapes field values and emits trusted tab markup.
+			echo ScriptsTab::render_settings() . ImportExport::render_settings(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Both renderers escape values and emit trusted admin forms.
 			return;
 		}
 		if ( 'es-theme-sections' === $slug ) {

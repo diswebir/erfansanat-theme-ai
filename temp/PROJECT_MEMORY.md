@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.13 پاس شده‌اند؛ ادامه Phase 2 از Task 2.14.
+**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.14 پاس شده‌اند؛ ادامه Phase 2 از Task 2.15 (گیت).
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.13 — Section Renderer (4 PASS / 0 FAIL؛ مجموع Phase 2: 96 PASS، 0 FAIL، 6 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.14 — Import/Export + scoped Reset (4 PASS / 0 FAIL؛ مجموع Phase 2: 100 PASS، 0 FAIL، 3 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,9 +46,9 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 2 از Task 2.14: ابزار Export/Import و Reset محدود تنظیمات.
+- اجرای Task 2.15: گیت نهایی Phase 2 — تست کامل، مرور امنیتی، اسکن sanitize و سنجش زمان ذخیره.
 - `Store` داده هر صفحه را در `_es_sections` روی post meta نگه می‌دارد؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
-- پس از هر تسک: تست اختصاصی، ثبت نتیجه در QA، به‌روزرسانی این حافظه و کامیت روی شاخه فعال.
+- پس از گیت: توقف در Gate 2 و انتظار برای تأیید صریح کاربر پیش از شروع Phase 3.
 
 ## ۶. وضعیت هارنس تست
 - PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
@@ -247,3 +247,11 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Each rendered section is isolated in an output buffer; a thrown template error discards partial markup and allows later sections to continue.
 - Test: **4 PASS / 0 FAIL / 0 PENDING** (disabled output, missing/throwing template, continuation, order and args). Full Phase 2 suite: **96 PASS / 0 FAIL / 6 PENDING** (only Tasks 2.14–2.15 pending).
 - Next: Task 2.14 — Import/Export and limited Reset; Gate 2 remains after Task 2.15.
+
+### Task 2.14 — PASS
+- `ImportExport` در صفحه ابزارها، export JSON با فرمت/نسخه، `Content-Disposition` و nonce، import با حد 1MB و schema-based filtering، و reset محدود به group انتخابی ارائه می‌کند.
+- فایل واردشده فقط فیلدهای ثبت‌شده در `Schema` را می‌پذیرد؛ type mismatch و group/page ناشناخته نادیده گرفته می‌شوند، JSON نامعتبر رد می‌شود و options موجودِ schemaشده حفظ می‌شوند.
+- قبل از import، snapshot تنظیمات و section state در `erfansanat_theme_options_backup` و `erfansanat_theme_sections_backup` نوشته می‌شود؛ مقصد sectionها فقط از slugs صفحه‌های شناخته‌شده در همین سایت حل می‌شود.
+- Reset با nonce، `manage_options` و checkbox تأیید صریح فقط یکی از header/footer/social/brand/archive/scripts/sections را reset می‌کند.
+- تست اختصاصی: **4 PASS / 0 FAIL / 0 PENDING** (round-trip options + `_es_sections`, malformed/malicious JSON, scoped reset). Full Phase 2 suite: **100 PASS / 0 FAIL / 3 PENDING** (فقط Task 2.15).
+- بعدی: Task 2.15؛ پس از Gate 2 توقف و تا تأیید صریح، Phase 3 را آغاز نکن.
