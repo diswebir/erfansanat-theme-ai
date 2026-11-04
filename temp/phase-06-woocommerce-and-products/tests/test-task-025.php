@@ -16,6 +16,8 @@ es_check( 'AC-01: اطلاعات واقعی سفارش', es_contains( 'template-
 if ( es_load_wp() ) {
 	require_once ES_THEME . '/functions.php';
 	require ES_ROOT . '/temp/tests/woocommerce-shim.php';
+	require_once ABSPATH . 'wp-admin/includes/user.php';
+	$es_uniq = uniqid();
 
 	$fa = static function ( $v ) {
 		$map = array();
@@ -23,15 +25,16 @@ if ( es_load_wp() ) {
 		return strtr( (string) $v, $map );
 	};
 
-	$owner = (int) wp_insert_user( array( 'user_login' => 'es_owner_t025', 'user_pass' => wp_generate_password(), 'role' => 'customer' ) );
-	$other = (int) wp_insert_user( array( 'user_login' => 'es_other_t025', 'user_pass' => wp_generate_password(), 'role' => 'customer' ) );
-	$admin = (int) wp_insert_user( array( 'user_login' => 'es_admin_t025', 'user_pass' => wp_generate_password(), 'role' => 'administrator' ) );
+	$owner = (int) wp_insert_user( array( 'user_login' => 'es_owner_t025_' . $es_uniq, 'user_pass' => wp_generate_password(), 'role' => 'customer' ) );
+	$other = (int) wp_insert_user( array( 'user_login' => 'es_other_t025_' . $es_uniq, 'user_pass' => wp_generate_password(), 'role' => 'customer' ) );
+	$admin = (int) wp_insert_user( array( 'user_login' => 'es_admin_t025_' . $es_uniq, 'user_pass' => wp_generate_password(), 'role' => 'administrator' ) );
 
 	$pid = (int) wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => 'ریسه صنعتی', 'post_name' => 'thankyou-p1' ) );
 	update_post_meta( $pid, '_price', '300000' );
 	update_post_meta( $pid, 'true_sale', 'true' );
 
 	$order = wc_create_order();
+	$es_order_id = $order->get_id();
 	$order->add_product( wc_get_product( $pid ), 2 );
 	$order->set_address( array( 'first_name' => 'سارا محمدی', 'phone' => '09131234567', 'address_1' => 'اصفهان، خیابان چهارباغ', 'city' => 'اصفهان' ) );
 	$order->calculate_totals();
@@ -83,11 +86,11 @@ if ( es_load_wp() ) {
 	$html_thanks = (string) ob_get_clean();
 	es_check( 'AC-01: صفحه رسید، خلاصه سفارش را نشان می‌دهد', false !== strpos( $html_thanks, 'data-order-summary="true"' ) && false !== strpos( $html_thanks, 'data-thankyou-page="true"' ) );
 	es_check( 'AC-01: پیش‌فاکتور در رسید جاسازی شد', false !== strpos( $html_thanks, 'data-proforma="true"' ) );
-	unset( $GLOBALS['order'] );
+	$GLOBALS['order'] = null;
 
 	wp_set_current_user( 0 );
 	wp_delete_post( $pid, true );
-	wp_delete_post( $order->get_id(), true );
+	wp_delete_post( $es_order_id, true );
 	wp_delete_user( $owner );
 	wp_delete_user( $other );
 	wp_delete_user( $admin );
