@@ -1,0 +1,158 @@
+/**
+ * داشبورد اختصاصی عرفان صنعت — استایل ادمین (RTL، بدون وابستگی خارجی)
+ */
+
+
+/* فونت وزیرمتن — همان زیرمجموعه‌های میرور (مسیر نسبی از assets/admin به assets/fonts) */
+@font-face{font-family:Vazirmatn;font-style:normal;font-weight:100 900;font-display:swap;src:url('../fonts/vazirmatn-arabic.woff2')format("woff2");unicode-range:U+6??,U+750-77F,U+870-88E,U+890-891,U+897-8E1,U+8E3-8FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:Vazirmatn;font-style:normal;font-weight:100 900;font-display:swap;src:url('../fonts/vazirmatn-latin-ext.woff2')format("woff2");unicode-range:U+100-2BA,U+2BD-2C5,U+2C7-2CC,U+2CE-2D7,U+2DD-2FF,U+304,U+308,U+329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Vazirmatn;font-style:normal;font-weight:100 900;font-display:swap;src:url('../fonts/vazirmatn-latin.woff2')format("woff2");unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+.es-admin {
+    --es-brand: #059669;
+    --es-brand-dark: #065f46;
+    --es-bg: #f6f8f7;
+    --es-card: #fff;
+    --es-border: #e2e8f0;
+    --es-text: #0f172a;
+    --es-muted: #64748b;
+    max-width: 1080px;
+    margin-inline-end: 0;
+    direction: rtl;
+    font-family: Vazirmatn, Tahoma, sans-serif;
+}
+
+.es-admin__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 16px 0 20px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--es-brand-dark), var(--es-brand));
+    border-radius: 14px;
+    color: #fff;
+}
+
+.es-admin__title {
+    margin: 0;
+    font-size: 22px;
+    color: #fff !important;
+    font-weight: 700;
+}
+
+.es-admin__subtitle { margin: 6px 0 0; opacity: .9; font-size: 13px; }
+
+.es-admin__save.button { background: #fff !important; color: var(--es-brand-dark) !important; border: 0 !important; font-weight: 700; }
+.es-admin__save.is-busy { opacity: .7; pointer-events: none; }
+
+.es-admin__nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 0 0 16px;
+    padding: 6px;
+    background: var(--es-card);
+    border: 1px solid var(--es-border);
+    border-radius: 12px;
+}
+
+.es-admin__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--es-muted);
+}
+.es-admin__nav-btn:hover { background: var(--es-bg); color: var(--es-text); }
+.es-admin__nav-btn.is-active { background: var(--es-brand); border-color: var(--es-brand); color: #fff; }
+
+.es-admin__form { display: block; }
+.es-admin__panel {
+    background: var(--es-card);
+    border: 1px solid var(--es-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 0 0 16px;
+}
+.es-admin__panel-desc { margin: 0 0 16px; color: var(--es-muted); font-size: 13px; }
+
+/* فیلدها */
+.es-field { display: grid; grid-template-columns: 220px 1fr; gap: 8px 18px; align-items: start; padding: 14px 0; border-bottom: 1px dashed var(--es-border); }
+.es-field:last-child { border-bottom: 0; }
+.es-field__label { font-weight: 600; font-size: 13.5px; color: var(--es-text); padding-top: 6px; }
+.es-field__help { grid-column: 2; margin: 0; color: var(--es-muted); font-size: 12px; line-height: 1.8; }
+
+.es-input { width: 100%; max-width: 480px; border: 1px solid var(--es-border); border-radius: 8px; padding: 7px 12px; font-size: 13.5px; background: #fff; }
+.es-input:focus { border-color: var(--es-brand); box-shadow: 0 0 0 2px rgba(5,150,105,.15); outline: 0; }
+.es-input--textarea { max-width: 640px; line-height: 1.9; font-family: inherit; }
+.es-input--select { max-width: 320px; }
+
+.es-color { display: inline-flex; align-items: center; gap: 10px; }
+.es-color__picker { width: 52px; height: 34px; padding: 2px; border: 1px solid var(--es-border); border-radius: 8px; background: #fff; cursor: pointer; }
+.es-color__code { color: var(--es-muted); font-size: 12px; direction: ltr; }
+
+.es-switch { appearance: none; width: 46px; height: 26px; border-radius: 999px; background: #cbd5e1; position: relative; cursor: pointer; transition: background .2s; vertical-align: middle; }
+.es-switch::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; }
+.es-switch:checked { background: var(--es-brand); }
+.es-switch:checked::after { transform: translateX(-20px); }
+
+.es-media { display: flex; align-items: center; gap: 14px; }
+.es-media__preview-wrap { min-width: 72px; }
+.es-media__preview { max-width: 72px; max-height: 56px; border-radius: 8px; border: 1px solid var(--es-border); }
+.es-media__actions { display: flex; flex-direction: column; gap: 6px; }
+
+/* Repeater */
+.es-repeater { max-width: 680px; }
+.es-repeater__rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+.es-repeater__row { border: 1px solid var(--es-border); border-radius: 10px; background: #fcfdfc; }
+.es-repeater__row-head { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-bottom: 1px solid var(--es-border); background: var(--es-bg); border-radius: 10px 10px 0 0; }
+.es-repeater__drag { cursor: grab; color: var(--es-muted); font-size: 15px; }
+.es-repeater__row-num { font-size: 12px; color: var(--es-muted); font-weight: 700; }
+.es-repeater__remove { margin-inline-start: auto; border: 0; background: transparent; color: #b91c1c; cursor: pointer; font-size: 14px; }
+.es-repeater__row-fields { padding: 4px 12px 12px; }
+.es-repeater__row-fields .es-field { grid-template-columns: 150px 1fr; }
+.es-repeater__add { border-radius: 8px !important; }
+
+.es-admin__footer { color: var(--es-muted); font-size: 12px; padding: 10px 4px 30px; }
+
+/* Toast */
+.es-admin-toast {
+    position: fixed;
+    bottom: 26px;
+    inset-inline-end: 26px;
+    z-index: 999999;
+    padding: 12px 22px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all .25s;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+.es-admin-toast.is-visible { opacity: 1; transform: translateY(0); }
+.es-admin-toast--success { background: var(--es-brand); }
+.es-admin-toast--error { background: #dc2626; }
+
+@media (max-width: 782px) {
+    .es-field { grid-template-columns: 1fr; }
+    .es-field__help { grid-column: 1; }
+    .es-repeater__row-fields .es-field { grid-template-columns: 1fr; }
+}
+
+/* وراثت کامل وزیرمتن برای کنترل‌های فرم و دکمه‌های وردپرس داخل پنل */
+.es-admin button,
+.es-admin input,
+.es-admin select,
+.es-admin textarea,
+.es-admin .button {
+    font-family: inherit;
+}

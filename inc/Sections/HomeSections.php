@@ -1,0 +1,518 @@
+<?php
+/**
+ * ثبت سکشن‌های صفحه اصلی در SectionManager — ترتیب پیش‌فرض عین میرور index.html
+ *
+ * refها: temp/phase-05-homepage-and-sections/refs/*.html (۱۵ سکشن سطح‌بالا، byte-exact)
+ * حالت متای خالی = رندر کامل میرور (پیش‌فرض‌های اسکیم = مقادیر میرور)
+ *
+ * @package ErfanSanat
+ */
+declare(strict_types=1);
+
+namespace ErfanSanat\Theme\Sections;
+
+final class HomeSections {
+
+    /** ترتیب سکشن‌ها — عین ترتیب <section>های سطح‌بالای index.html */
+    public const ORDER = [
+        'hero-home1',
+        'projects',
+        'projects-gallery',
+        'about',
+        'about-intro',
+        'history',
+        'categories',
+        'catalog',
+        'services',
+        'quality',
+        'aftersale',
+        'customers',
+        'blog-preview',
+        'contact',
+        'map',
+    ];
+
+    public static function init(): void {
+        add_filter('es_sections_registry', [self::class, 'register']);
+    }
+
+    /**
+     * ثبت همه سکشن‌ها با اسکیم فیلدها (مقادیر پیش‌فرض = میرور)
+     *
+     * @param array<string,array> $registry
+     * @return array<string,array>
+     */
+    public static function register(array $registry): array {
+        $items = [];
+        $registry['page'] ??= [];
+
+        // ── تعریف سکشن‌ها (به ترتیب میرور) ──
+        $items['hero-home1'] = [
+            'label'  => __('هیرو — طرح ۱ (نوتچ و صحنه‌ها)', 'erfansanat'),
+            'schema' => self::hero_schema(),
+        ];
+        $items['projects'] = [
+            'label'  => __('پروژه‌های شاخص', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'نمونه‌کارهای شاخص'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('عنوان (بخش سبز بعد از «پروژه‌های»)', 'erfansanat'), 'default' => 'نورپردازی شهری'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'اجرای تخصصی پروژه‌های نورپردازی برای شهرداری‌ها و سازمان‌های زیباسازی؛ تلفیق مهندسی سازه، استاندارد حفاظتی IP68 و زیبایی‌شناسی شهری.'],
+                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد پروژه', 'erfansanat'), 'default' => 3],
+                ['key' => 'handpicked', 'type' => 'text', 'label' => __('آیدی پروژه‌های انتخابی (با کاما — اختیاری)', 'erfansanat'), 'default' => ''],
+            ],
+        ];
+        $items['projects-gallery'] = [
+            'label'  => __('گالری پروژه‌های صفحه اصلی', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'آرشیو تفکیکی پروژه‌های اجرایی'],
+                ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'نمونه‌کارهای اجراشده در '],
+                ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'کلان‌شهرهای کشور'],
+                ['key' => 'per_tab', 'type' => 'number', 'label' => __('تعداد کارت هر تب', 'erfansanat'), 'default' => 5],
+                ['key' => 'archive_text', 'type' => 'text', 'label' => __('متن دکمه آرشیو', 'erfansanat'), 'default' => 'مشاهده آرشیو کامل پروژه‌ها'],
+                [
+                    'key' => 'tabs', 'type' => 'repeater', 'label' => __('تب‌ها (تب اول = همه)', 'erfansanat'), 'add_label' => __('افزودن تب', 'erfansanat'),
+                    'fields' => [
+                        ['key' => 'key', 'type' => 'text', 'label' => __('کلید (all/tunnel/urban)', 'erfansanat')],
+                        ['key' => 'label', 'type' => 'text', 'label' => __('برچسب', 'erfansanat')],
+                        ['key' => 'types', 'type' => 'text', 'label' => __('فیلتر انواع پروژه (نام‌ها با |)', 'erfansanat')],
+                    ],
+                    'default' => [
+                        ['key' => 'all', 'label' => 'همه سازه‌های نوری', 'types' => ''],
+                        ['key' => 'tunnel', 'label' => 'تونل و درخت نوری', 'types' => 'تونل نوری|درخت نوری'],
+                        ['key' => 'urban', 'label' => 'میادین و بلوار', 'types' => 'المان‌های نورانی|نورپردازی میدان'],
+                    ],
+                ],
+            ],
+        ];
+        $items['about'] = [
+            'label'  => __('درباره شرکت + آمار', 'erfansanat'),
+            'schema' => self::about_schema(),
+        ];
+        $items['about-intro'] = [
+            'label'  => __('معرفی تاسیس شرکت', 'erfansanat'),
+            'schema' => [
+                ['key' => 'badge', 'type' => 'text', 'label' => __('برچسب گوشه', 'erfansanat'), 'default' => 'اصالت و هویت صنعتی کارخانه'],
+                ['key' => 'bg_image', 'type' => 'media', 'label' => __('تصویر پس‌زمینه', 'erfansanat'), 'default' => 'assets/images/hero.jpg'],
+                ['key' => 'bg_alt', 'type' => 'text', 'label' => __('alt پس‌زمینه', 'erfansanat'), 'default' => 'کارخانه دانش‌بنیان عرفان صنعت اصفهان'],
+                ['key' => 'mono', 'type' => 'text', 'label' => __('مونوگرام', 'erfansanat'), 'default' => 'ESE'],
+                ['key' => 'since', 'type' => 'text', 'label' => __('سال تاسیس', 'erfansanat'), 'default' => 'تاسیس کارخانه از سال ۱۳۸۰ خورشیدی'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'مرجع بومی‌سازی سازه‌های نوری و تجهیزات روشنایی شهری در ایران'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان با بهره‌گیری از خطوط تمام‌اتوماتیک تزریق پلیمر، واحد قالب‌سازی دقیق و آزمایشگاه کنترل کیفیت، محصولات خود را با استاندارد حفاظتی واقعی IP68 و کدهای رسمی سامانه ستاد و ایران‌کد (GS1) تولید و به سراسر کشور عرضه می‌نماید.'],
+                ['key' => 's1_title', 'type' => 'text', 'label' => __('آمار ۱ — عنوان', 'erfansanat'), 'default' => 'ISO 9001:2015'],
+                ['key' => 's1_desc', 'type' => 'text', 'label' => __('آمار ۱ — توضیح', 'erfansanat'), 'default' => 'مدیریت کیفیت'],
+                ['key' => 's2_title', 'type' => 'text', 'label' => __('آمار ۲ — عنوان', 'erfansanat'), 'default' => 'درجه حفاظت IP68'],
+                ['key' => 's2_desc', 'type' => 'text', 'label' => __('آمار ۲ — توضیح', 'erfansanat'), 'default' => 'تزریق مستقیم رزین'],
+                ['key' => 's3_title', 'type' => 'text', 'label' => __('آمار ۳ — عنوان', 'erfansanat'), 'default' => 'ایران‌کد GS1'],
+                ['key' => 's3_desc', 'type' => 'text', 'label' => __('آمار ۳ — توضیح', 'erfansanat'), 'default' => 'ثبت رسمی سامانه ستاد'],
+                ['key' => 'g1_image', 'type' => 'media', 'label' => __('گالری ۱', 'erfansanat'), 'default' => 'assets/images/light-tunnel.jpg'],
+                ['key' => 'g1_alt', 'type' => 'text', 'label' => __('alt گالری ۱', 'erfansanat'), 'default' => 'پروژه‌های تونل نوری عرفان صنعت'],
+                ['key' => 'g1_chip', 'type' => 'text', 'label' => __('چیپ گالری ۱', 'erfansanat'), 'default' => 'سازه و المان شهری'],
+                ['key' => 'g1_title', 'type' => 'text', 'label' => __('عنوان گالری ۱', 'erfansanat'), 'default' => 'تونل‌های نوری پیکسلی و کمانی'],
+                ['key' => 'g2_image', 'type' => 'media', 'label' => __('گالری ۲', 'erfansanat'), 'default' => 'assets/images/light-tree.jpg'],
+                ['key' => 'g2_alt', 'type' => 'text', 'label' => __('alt گالری ۲', 'erfansanat'), 'default' => 'تولید درختان نوری هوشمند'],
+                ['key' => 'g2_chip', 'type' => 'text', 'label' => __('چیپ گالری ۲', 'erfansanat'), 'default' => 'تولید انحصاری'],
+                ['key' => 'g2_title', 'type' => 'text', 'label' => __('عنوان گالری ۲', 'erfansanat'), 'default' => 'درختان نوری هوشمند NRF'],
+                ['key' => 'cta_text', 'type' => 'text', 'label' => __('دکمه گوشه', 'erfansanat'), 'default' => 'ارتباط مستقیم با کارخانه'],
+                ['key' => 'cta_url', 'type' => 'url', 'label' => __('لینک دکمه', 'erfansanat'), 'default' => '/contact/'],
+            ],
+        ];
+        $items['history'] = [
+            'label'  => __('تایم‌لاین تاریخچه', 'erfansanat'),
+            'schema' => self::history_schema(),
+        ];
+        $items['categories'] = [
+            'label'  => __('دسته‌بندی تولیدات', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'تولیدات تخصصی کارخانه'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'عرفان صنعت اصفهان'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'تولید صنعتی تجهیزات نورپردازی شهری با عایق‌بندی تزریق مستقیم، بدنه پلی‌کربنات نشکن و کنترلرهای مرکزی بی‌سیم.'],
+                ['key' => 'feature_title', 'type' => 'text', 'label' => __('چیپ ویژگی — عنوان', 'erfansanat'), 'default' => 'کنترل هوشمند یکپارچه'],
+                ['key' => 'feature_sub', 'type' => 'text', 'label' => __('چیپ ویژگی — زیرعنوان', 'erfansanat'), 'default' => 'پشتیبانی از پروتکل بی‌سیم NRF و WiFi'],
+                [
+                    'key' => 'cards', 'type' => 'repeater', 'label' => __('کارت‌های تولیدات (حداکثر ۶)', 'erfansanat'), 'add_label' => __('افزودن کارت', 'erfansanat'),
+                    'fields' => [
+                        ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                        ['key' => 'sub', 'type' => 'text', 'label' => __('زیرعنوان سبز', 'erfansanat')],
+                        ['key' => 'desc', 'type' => 'text', 'label' => __('توضیح نوار پایین', 'erfansanat')],
+                        ['key' => 'chip', 'type' => 'text', 'label' => __('چیپ فنی (IP68…)', 'erfansanat')],
+                        ['key' => 'flag', 'type' => 'text', 'label' => __('پرچم (اختیاری)', 'erfansanat')],
+                        ['key' => 'price', 'type' => 'text', 'label' => __('قیمت/وضعیت (اختیاری)', 'erfansanat')],
+                        ['key' => 'image', 'type' => 'media', 'label' => __('تصویر', 'erfansanat')],
+                        ['key' => 'alt', 'type' => 'text', 'label' => __('alt تصویر', 'erfansanat')],
+                        ['key' => 'url', 'type' => 'url', 'label' => __('لینک', 'erfansanat')],
+                    ],
+                    'default' => [
+                        ['title' => 'درختان نوری هوشمند', 'sub' => 'مدل‌های دلسا · آرتام · آتریسا · ایلومینا', 'desc' => '۱۶ میلیون رنگ · کنترل بی‌سیم با اپلیکیشن · پیکسل RGB', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/light-tree.jpg', 'alt' => 'درختان نوری هوشمند', 'url' => '/product/artam-light-tree/'],
+                        ['title' => 'المان نوری خورشیدنما', 'sub' => '۳۲ پره و ۴۸ پره فول‌کالر', 'desc' => 'قطر تا ۳.۳ متر · پروتکل NRF · +۲۳۰۰ پیکسل', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/sun-light.jpg', 'alt' => 'المان نوری خورشیدنما', 'url' => '/product/sun-light-48/'],
+                        ['title' => 'لوستر نوری فضای باز', 'sub' => 'مدل‌های فروغ و شمسه', 'desc' => 'ارتفاع تا ۷ متر · ریسه سوزنی متراکم', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/chandelier.jpg', 'alt' => 'لوستر نوری فضای باز', 'url' => '/product/foroogh-chandelier/'],
+                        ['title' => 'ریسه‌های LED ضدآب', 'sub' => 'سوزنی · فندقی · بلوطی · انگشتی', 'desc' => 'تزریق مستقیم پلیمری · پلی‌کربنات نشکن', 'chip' => 'IP68', 'flag' => 'خرید آنلاین', 'price' => 'از ۶۵,۰۰۰ تومان', 'image' => 'assets/images/string-lights.jpg', 'alt' => 'ریسه‌های LED ضدآب', 'url' => '/product/needle-string-lights/'],
+                        ['title' => 'پوینت لایت پیکسل', 'sub' => 'قطر ۴ و ۶ سانتی‌متر پلی‌کربنات', 'desc' => 'فول‌کالر هوشمند · قاب نگهدارنده PLT', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/light-sphere.jpg', 'alt' => 'پوینت لایت پیکسل', 'url' => '/product/point-light-pixel/'],
+                        ['title' => 'والواشر و لینیرلایت', 'sub' => 'نورپردازی خطی نما و پل', 'desc' => 'پوشش یکنواخت نور · بدنه آلومینیوم اکسترود', 'chip' => 'IP67', 'flag' => 'خرید آنلاین', 'price' => 'استعلام و خرید آنلاین', 'image' => 'assets/images/light-tunnel.jpg', 'alt' => 'والواشر و لینیرلایت', 'url' => '/product/wall-washer/'],
+                    ],
+                ],
+                ['key' => 'cta_badge', 'type' => 'text', 'label' => __('کارت CTA — نشان', 'erfansanat'), 'default' => 'ساخت سفارشی'],
+                ['key' => 'cta_title', 'type' => 'text', 'label' => __('کارت CTA — عنوان', 'erfansanat'), 'default' => 'طراحی و ساخت المان'],
+                ['key' => 'cta_title2', 'type' => 'text', 'label' => __('کارت CTA — عنوان سبز', 'erfansanat'), 'default' => 'مطابق طرح اختصاصی شما'],
+                ['key' => 'cta_desc', 'type' => 'textarea', 'label' => __('کارت CTA — توضیح', 'erfansanat'), 'default' => 'واحد مهندسی و قالب‌سازی کارخانه آماده طراحی سه‌بعدی و ساخت سازه‌های نوری سفارشی برای میادین و بوستان‌هاست.'],
+                ['key' => 'cta_button', 'type' => 'text', 'label' => __('کارت CTA — متن دکمه', 'erfansanat'), 'default' => 'ثبت سفارش اختصاصی'],
+                ['key' => 'cta_url', 'type' => 'url', 'label' => __('کارت CTA — لینک', 'erfansanat'), 'default' => '/contact/'],
+            ],
+        ];
+        $items['catalog'] = [
+            'label'  => __('دانلود کاتالوگ جامع', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مرجع مشخصات فنی · کدهای سامانه ستاد · کد ملی کالا GS1'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'کاتالوگ جامع محصولات عرفان صنعت اصفهان (ویرایش ۱۴۰۴)'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => 'مشخصات فنی کامل، ابعاد سازه، توان مصرفی، درجه حفاظت IP68 و راهنمای نصب بیش از ۱۲۵ محصول تخصصی نورپردازی شهری در کاتالوگ رسمی کارخانه گردآوری شده است.'],
+                ['key' => 'file', 'type' => 'media', 'label' => __('فایل PDF کاتالوگ (خالی = لینک فروشگاه)', 'erfansanat'), 'default' => ''],
+                ['key' => 'button_url', 'type' => 'url', 'label' => __('لینک دکمه (بدون فایل)', 'erfansanat'), 'default' => '/shop/'],
+                ['key' => 'button_text', 'type' => 'text', 'label' => __('متن دکمه', 'erfansanat'), 'default' => 'مشاهده و دریافت کاتالوگ محصولات'],
+                ['key' => 'note', 'type' => 'text', 'label' => __('یادداشت کنار دکمه', 'erfansanat'), 'default' => 'شامل +۱۲۵ محصول تخصصی · آماده ارائه به شهرداری‌ها'],
+                ['key' => 'bg_image', 'type' => 'media', 'label' => __('تصویر پس‌زمینه', 'erfansanat'), 'default' => 'assets/images/light-tunnel.jpg'],
+                ['key' => 'bg_alt', 'type' => 'text', 'label' => __('alt پس‌زمینه', 'erfansanat'), 'default' => 'کاتالوگ جامع محصولات عرفان صنعت'],
+                ['key' => 'cover', 'type' => 'media', 'label' => __('تصویر جلد', 'erfansanat'), 'default' => 'assets/images/light-tree.jpg'],
+                ['key' => 'cover_alt', 'type' => 'text', 'label' => __('alt جلد', 'erfansanat'), 'default' => 'جلد کاتالوگ محصولات ESE'],
+                ['key' => 'version', 'type' => 'text', 'label' => __('برچسب نسخه', 'erfansanat'), 'default' => 'نسخه ۱۴۰۴'],
+                ['key' => 'cover_kicker', 'type' => 'text', 'label' => __('زیرعنوان جلد', 'erfansanat'), 'default' => 'کاتالوگ فنی و اجرایی'],
+                ['key' => 'cover_title', 'type' => 'text', 'label' => __('عنوان جلد', 'erfansanat'), 'default' => 'محصولات نورپردازی شهری'],
+            ],
+        ];
+        $items['services'] = [
+            'label'  => __('خدمات تخصصی (تب‌دار)', 'erfansanat'),
+            'schema' => self::services_schema(),
+        ];
+        $items['quality'] = [
+            'label'  => __('مزیت‌های رقابتی کارخانه', 'erfansanat'),
+            'schema' => self::quality_schema(),
+        ];
+        $items['aftersale'] = [
+            'label'  => __('خدمات پس از فروش', 'erfansanat'),
+            'schema' => [
+                ['key' => 'badge', 'type' => 'text', 'label' => __('برچسب گوشه بالا', 'erfansanat'), 'default' => 'شبکه خدمات پس از فروش ESE'],
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('زیربرچسب', 'erfansanat'), 'default' => 'پوشش سراسری ۳۱ استان کشور با مرکزیت کارخانه اصفهان'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'پشتیبانی فنی و گارانتی تعویض در سراسر ایران'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => 'همراهی عرفان صنعت با شهرداری‌ها و پیمانکاران پس از تحویل کالا آغاز می‌شود. ارائه نقشه‌های اجرایی، اعزام تیم نصب، تامین قطعات اصلی و ۲۴ ماه گارانتی تعویض سریع در تمامی ۳۱ استان کشور تضمین شده است.'],
+                ['key' => 's1_title', 'type' => 'text', 'label' => __('کارت ۱ — عنوان', 'erfansanat'), 'default' => 'ارسال مستقیم'],
+                ['key' => 's1_desc', 'type' => 'text', 'label' => __('کارت ۱ — توضیح', 'erfansanat'), 'default' => 'از کارخانه مرکزی اصفهان'],
+                ['key' => 's2_title', 'type' => 'text', 'label' => __('کارت ۲ — عنوان', 'erfansanat'), 'default' => '۲۴ ماه گارانتی'],
+                ['key' => 's2_desc', 'type' => 'text', 'label' => __('کارت ۲ — توضیح', 'erfansanat'), 'default' => 'ضمانت تعویض بی‌قیدوشرط'],
+                ['key' => 's3_title', 'type' => 'text', 'label' => __('کارت ۳ — عنوان', 'erfansanat'), 'default' => '۵ سال پشتیبانی'],
+                ['key' => 's3_desc', 'type' => 'text', 'label' => __('کارت ۳ — توضیح', 'erfansanat'), 'default' => 'تامین قطعات در ۳۱ استان'],
+                ['key' => 'phone', 'type' => 'text', 'label' => __('تلفن پشتیبانی', 'erfansanat'), 'default' => '۰۳۱-۹۱۰۹۱۰۱۱'],
+                ['key' => 'phone_url', 'type' => 'text', 'label' => __('لینک تلفن (بایت‌دقیق میرور: tel:tel:…)', 'erfansanat'), 'default' => 'tel:tel:03191091011'],
+            ],
+        ];
+        $items['customers'] = [
+            'label'  => __('مشتریان و سازمان‌های همکار', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'شبکه گسترده کارفرمایان'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'همکار عرفان صنعت'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'افتخار همراهی با بیش از ۱۸۰ شهرداری، سازمان زیباسازی و پیمانکار عمرانی در سراسر کشور'],
+                [
+                    'key' => 'rows', 'type' => 'repeater', 'label' => __('مشتریان', 'erfansanat'), 'add_label' => __('افزودن مشتری', 'erfansanat'),
+                    'fields' => [
+                        ['key' => 'title', 'type' => 'text', 'label' => __('نام سازمان', 'erfansanat')],
+                        ['key' => 'sub', 'type' => 'text', 'label' => __('توضیح کوتاه', 'erfansanat')],
+                        ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ],
+                    'default' => [
+                        ['title' => 'شهرداری اصفهان', 'sub' => 'پروژه‌های تونل و المان نوری', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری شیراز', 'sub' => 'نورپردازی بلوار و میادین', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری مشهد', 'sub' => 'درختان نوری و ریسه IP68', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری کرج', 'sub' => 'تامین تجهیزات روشنایی', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری اهواز', 'sub' => 'پروژه‌های ساحلی و پل‌ها', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری یزد', 'sub' => 'المان‌های نوری بافت تاریخی', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری تبریز', 'sub' => 'سازه‌های نوری مقاوم به سرما', 'icon' => 'landmark'],
+                        ['title' => 'سامانه ستاد دولت', 'sub' => 'تامین‌کننده رسمی ثبت‌شده', 'icon' => 'landmark'],
+                        ['title' => 'مرکز ملی ایران‌کد', 'sub' => 'دارای کد ملی کالا GS1', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری ورامین', 'sub' => 'لوسترهای ستون و بلوار', 'icon' => 'landmark'],
+                        ['title' => 'شهرداری ارومیه', 'sub' => 'نورپردازی پارک‌ها و معابر', 'icon' => 'landmark'],
+                        ['title' => 'سازمان زیباسازی', 'sub' => 'طراحی و ساخت المان حجمی', 'icon' => 'landmark'],
+                    ],
+                ],
+            ],
+        ];
+        $items['blog-preview'] = [
+            'label'  => __('ویترین مقالات', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'دانشنامه و مجله فنی'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'راهنماهای تخصصی نورپردازی'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'بررسی فنی تجهیزات LED، استانداردهای حفاظتی IP68 و راهنمای خرید المان‌های نوری شهری'],
+                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد مقالات', 'erfansanat'), 'default' => 4],
+                ['key' => 'archive_text', 'type' => 'text', 'label' => __('متن دکمه آرشیو', 'erfansanat'), 'default' => 'مشاهده آرشیو مقالات'],
+                ['key' => 'chip_fallback', 'type' => 'text', 'label' => __('چیپ بدون دسته', 'erfansanat'), 'default' => 'مجله علمی'],
+            ],
+        ];
+        $items['contact'] = [
+            'label'  => __('تماس با ما', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مشاوره مهندسی و استعلام قیمت مستقیم از کارخانه'],
+                ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'روشنایی و هویت بصری متمایز را به '],
+                ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'شهر خود'],
+                ['key' => 'title_post', 'type' => 'text', 'label' => __('عنوان — بخش پایانی', 'erfansanat'), 'default' => ' دعوت کنید'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن دعوت', 'erfansanat'), 'default' => 'واحد مهندسی فروش عرفان صنعت اصفهان آماده ارائه مشاوره تخصصی، طراحی سه‌بعدی المان‌های نوری، صدور پیش‌فاکتور رسمی سامانه تدارکات الکترونیکی دولت (ستاد) و ارسال مستقیم به سراسر کشور است.'],
+                ['key' => 'cta1_text', 'type' => 'text', 'label' => __('دکمه اصلی', 'erfansanat'), 'default' => 'تماس مستقیم با کارشناسان فروش'],
+                ['key' => 'cta1_url', 'type' => 'text', 'label' => __('لینک دکمه اصلی', 'erfansanat'), 'default' => 'tel:031-91091011'],
+                ['key' => 'cta2_text', 'type' => 'text', 'label' => __('دکمه دوم', 'erfansanat'), 'default' => 'درخواست پیش‌فاکتور رسمی ستاد'],
+                ['key' => 'cta2_url', 'type' => 'url', 'label' => __('لینک دکمه دوم', 'erfansanat'), 'default' => '/contact/'],
+                ['key' => 'phone_label', 'type' => 'text', 'label' => __('برچسب تلفن', 'erfansanat'), 'default' => 'تماس مستقیم با واحد فروش و مهندسی'],
+                ['key' => 'phone', 'type' => 'text', 'label' => __('تلفن (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => '۰۳۱ - ۹۱۰۹۱۰۱۱'],
+                ['key' => 'phone_url', 'type' => 'text', 'label' => __('لینک تلفن (خالی = tel از گزینه)', 'erfansanat'), 'default' => 'tel:031-91091011'],
+                ['key' => 'phone_sub', 'type' => 'text', 'label' => __('زیرنویس تلفن', 'erfansanat'), 'default' => '۱۰ خط ویژه'],
+                ['key' => 'email_label', 'type' => 'text', 'label' => __('برچسب ایمیل', 'erfansanat'), 'default' => 'پست الکترونیک سازمانی'],
+                ['key' => 'email', 'type' => 'text', 'label' => __('ایمیل (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'info@erfansanat.com'],
+                ['key' => 'email_sub', 'type' => 'text', 'label' => __('زیرنویس ایمیل', 'erfansanat'), 'default' => 'دریافت استعلام فنی و پیش‌فاکتور رسمی'],
+                ['key' => 'hours_label', 'type' => 'text', 'label' => __('برچسب ساعات', 'erfansanat'), 'default' => 'ساعات پاسخگویی کارخانه'],
+                ['key' => 'hours', 'type' => 'text', 'label' => __('ساعات (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'شنبه تا پنجشنبه · ۷:۰۰ الی ۱۶:۳۰'],
+                ['key' => 'hours_sub', 'type' => 'text', 'label' => __('زیرنویس ساعات', 'erfansanat'), 'default' => 'پشتیبانی تلفنی پروژه‌ها در تمام ایام هفته'],
+            ],
+        ];
+        $items['map'] = [
+            'label'  => __('نقشه کارخانه', 'erfansanat'),
+            'schema' => [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس کارت', 'erfansanat'), 'default' => 'مراجعه حضوری و بازدید از خط تولید'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان کارت', 'erfansanat'), 'default' => 'نشانی کارخانه و دفتر مرکزی اصفهان'],
+                ['key' => 'address', 'type' => 'textarea', 'label' => __('نشانی (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'اصفهان، شهرستان خمینی‌شهر، شهرک صنعتی برق و الکترونیک، بلوار الکترونیک، فرعی دوم، پلاک ۱۱۹'],
+                ['key' => 'postal', 'type' => 'text', 'label' => __('کدپستی (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'کدپستی: ۸۴۱۸۱۴۸۶۷۸'],
+                ['key' => 'embed', 'type' => 'textarea', 'label' => __('کد iframe نقشه (خالی = نقشه SVG میرور)', 'erfansanat'), 'default' => ''],
+                ['key' => 'directions_text', 'type' => 'text', 'label' => __('متن لینک مسیریابی', 'erfansanat'), 'default' => 'مسیریابی و ثبت درخواست بازدید'],
+                ['key' => 'directions_url', 'type' => 'url', 'label' => __('لینک مسیریابی', 'erfansanat'), 'default' => '/contact/'],
+                ['key' => 'pin_title', 'type' => 'text', 'label' => __('عنوان پین', 'erfansanat'), 'default' => 'کارخانه دانش‌بنیان عرفان صنعت اصفهان (ESE)'],
+                ['key' => 'pin_sub', 'type' => 'text', 'label' => __('زیرنویس پین', 'erfansanat'), 'default' => 'اصفهان · شهرک صنعتی جی · مشاهده جزئیات تماس'],
+                ['key' => 'pin_url', 'type' => 'url', 'label' => __('لینک پین', 'erfansanat'), 'default' => '/contact/'],
+            ],
+        ];
+        foreach ($items as $id => $def) {
+            $registry['page'][] = [
+                'id'     => (string) $id,
+                'label'  => (string) $def['label'],
+                'schema' => is_array($def['schema'] ?? null) ? $def['schema'] : [],
+            ];
+        }
+        return $registry;
+    }
+
+    /** تعاریف مسطح (id => def) — برای تست‌ها و خوانش مستقیم */
+    public static function definitions(): array {
+        $items = [];
+        foreach ((array) apply_filters('es_sections_registry', [])['page'] ?? [] as $item) {
+            if (is_array($item) && isset($item['id'])) {
+                $items[(string) $item['id']] = $item;
+            }
+        }
+        return $items;
+    }
+
+    /** اسکیم هیرو: رپیتر صحنه‌ها + ویدیو */
+    private static function hero_schema(): array {
+        return [
+            ['key' => 'video', 'type' => 'media', 'label' => __('ویدیوی درون‌خطی', 'erfansanat'), 'default' => 'assets/media/hero-video.mp4'],
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس نوتچ', 'erfansanat'), 'default' => 'المان‌های نوری شهری · استاندارد IP68'],
+            ['key' => 'title', 'type' => 'text', 'label' => __('عنوان نوتچ (h1)', 'erfansanat'), 'default' => 'وقتی کیفیت و ماندگاری مهمه'],
+            ['key' => 'brand_line', 'type' => 'text', 'label' => __('نوار برند نوتچ', 'erfansanat'), 'default' => 'عرفان صنعت انتخاب توئه...'],
+            ['key' => 'video_scene', 'type' => 'number', 'label' => __('اندیس صحنه ویدیویی', 'erfansanat'), 'default' => 0],
+            [
+                'key' => 'scenes', 'type' => 'repeater', 'label' => __('صحنه‌های هیرو', 'erfansanat'), 'add_label' => __('افزودن صحنه', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'name', 'type' => 'text', 'label' => __('نام صحنه (دکمه)', 'erfansanat')],
+                    ['key' => 'image', 'type' => 'media', 'label' => __('تصویر پس‌زمینه', 'erfansanat')],
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان صحنه', 'erfansanat')],
+                    ['key' => 'cta_text', 'type' => 'text', 'label' => __('متن CTA', 'erfansanat')],
+                    ['key' => 'cta_url', 'type' => 'url', 'label' => __('لینک CTA', 'erfansanat')],
+                ],
+                'default' => [
+                    ['name' => 'معرفی شرکت', 'image' => 'assets/images/hero.jpg', 'title' => 'تیزر رسمی خط تولید و پروژه‌های عرفان صنعت اصفهان', 'cta_text' => 'درباره کارخانه', 'cta_url' => '/about/'],
+                    ['name' => 'استان البرز', 'image' => 'assets/images/light-tunnel.jpg', 'title' => 'تونل نوری نیم‌آرک پارک جهان‌نما', 'cta_text' => 'مشاهده پروژه', 'cta_url' => '/projects/half-arch-tunnel-alborz/'],
+                    ['name' => 'استان اصفهان', 'image' => 'assets/images/sun-light.jpg', 'title' => 'آذین‌بندی نوری میدان و بلوار شهدا اصفهان', 'cta_text' => 'مشاهده پروژه', 'cta_url' => '/projects/esfahan-shohada-square/'],
+                    ['name' => 'استان خراسان رضوی', 'image' => 'assets/images/light-tree.jpg', 'title' => 'درختان نوری هوشمند آرتام مشهد', 'cta_text' => 'مشاهده پروژه', 'cta_url' => '/projects/artam-tree-midan/'],
+                    ['name' => 'استان خوزستان', 'image' => 'assets/images/light-sphere.jpg', 'title' => 'المان حجمی و نیم‌هرم نوری اهواز', 'cta_text' => 'مشاهده پروژه', 'cta_url' => '/projects/ahvaz-semi-pyramid-light/'],
+                ],
+            ],
+            [
+                'key' => 'strip_items', 'type' => 'repeater', 'label' => __('نوار پربازدیدترین دسته‌بندی‌ها', 'erfansanat'), 'add_label' => __('افزودن کارت', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('نام آیکون lucide', 'erfansanat')],
+                    ['key' => 'name', 'type' => 'text', 'label' => __('نام دسته', 'erfansanat')],
+                    ['key' => 'sub', 'type' => 'text', 'label' => __('زیرعنوان', 'erfansanat')],
+                    ['key' => 'count_text', 'type' => 'text', 'label' => __('متن شمارنده', 'erfansanat')],
+                    ['key' => 'url', 'type' => 'url', 'label' => __('لینک', 'erfansanat')],
+                ],
+                'default' => [
+                    ['icon' => 'cpu', 'name' => 'پوینت لایت پیکسل', 'sub' => '۴ و ۶ سانتی پلی‌کربنات', 'count_text' => '۱۲ مدل', 'url' => '/product_cat/point-light/'],
+                    ['icon' => 'sparkles', 'name' => 'ریسه سوزنی IP68', 'sub' => 'تزریق مستقیم ضدآب', 'count_text' => '۸ رنگ', 'url' => '/product_cat/needle-thread/'],
+                    ['icon' => 'trees', 'name' => 'درخت نوری هوشمند', 'sub' => 'مدل‌های دلسا و آرتام', 'count_text' => '۱۰ مدل', 'url' => '/product_cat/light-tree/'],
+                    ['icon' => 'lightbulb', 'name' => 'ریسه بلوطی و فندقی', 'sub' => 'هفت‌رنگ و فول‌کالر', 'count_text' => '۱۴ مدل', 'url' => '/product_cat/acorn-thread/'],
+                    ['icon' => 'waves', 'name' => 'والواشر و لینیرلایت', 'sub' => 'نورپردازی نمای ساختمان و پل', 'count_text' => '۱۸ مدل', 'url' => '/product_cat/wall-washer/'],
+                    ['icon' => 'sun', 'name' => 'المان خورشیدنما', 'sub' => '۳۲ و ۴۸ پره فول‌کالر', 'count_text' => '۶ مدل', 'url' => '/product_cat/sun-light-elements/'],
+                    ['icon' => 'flame', 'name' => 'لوستر و المان شهری', 'sub' => 'آذین‌بندی بلوار و میادین', 'count_text' => '۱۵ مدل', 'url' => '/product_cat/light-chandelier/'],
+                ],
+            ],
+            [
+                'key' => 'quick_links', 'type' => 'repeater', 'label' => __('چیپ‌های ابری (حداکثر ۸)', 'erfansanat'), 'add_label' => __('افزودن چیپ', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'label', 'type' => 'text', 'label' => __('برچسب', 'erfansanat')],
+                    ['key' => 'url', 'type' => 'url', 'label' => __('لینک', 'erfansanat')],
+                ],
+                'default' => [
+                    ['label' => 'نورپردازی شهری', 'url' => '/projects/'],
+                    ['label' => 'تونل نوری', 'url' => '/project_type/light-tunnel/'],
+                    ['label' => 'درخت نوری', 'url' => '/product_cat/light-tree/'],
+                    ['label' => 'المان میادین', 'url' => '/product_cat/urban-lighting-elements/'],
+                    ['label' => 'ریسه ضدآب IP68', 'url' => '/product_cat/needle-thread/'],
+                    ['label' => 'پوینت لایت پیکسل', 'url' => '/product_cat/point-light/'],
+                    ['label' => 'والواشر خطی', 'url' => '/product_cat/wall-washer/'],
+                    ['label' => 'فول‌کالر هوشمند', 'url' => '/product_cat/hazelnut-thread/'],
+                ],
+            ],
+        ];
+    }
+
+    /** اسکیم درباره: فیلدها + رپیتر آمار */
+    private static function about_schema(): array {
+        return [
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'درباره شرکت دانش‌بنیان عرفان صنعت اصفهان'],
+            ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => '۲۵ سال'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'شرکت دانش‌بنیان عرفان صنعت اصفهان (ESE) با تمرکز بر طراحی و تولید صنعتی تجهیزات روشنایی و المان‌های نوری شهری، طیف کاملی از محصولات استاندارد را به شهرداری‌ها، سازمان‌های زیباسازی و پیمانکاران عمرانی ارائه می‌دهد. تمامی تولیدات کارخانه با عایق‌بندی تزریق مستقیم IP68 و سازگاری کامل با اقلیم‌های مختلف کشور تولید می‌شوند.'],
+            [
+                'key' => 'points', 'type' => 'repeater', 'label' => __('چک‌لیست', 'erfansanat'), 'add_label' => __('افزودن مورد', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'text', 'type' => 'text', 'label' => __('متن', 'erfansanat')],
+                ],
+                'default' => [
+                    ['text' => 'طراحی، تولید و اجرای صفر تا صد پروژه‌های روشنایی شهری و میادین'],
+                    ['text' => 'دارای گواهینامه بین‌المللی ISO 9001:2015 و ثبت رسمی در سامانه ستاد'],
+                    ['text' => '۲۴ ماه گارانتی تعویض بی‌قیدوشرط کارخانه + ۵ سال خدمات پس از فروش'],
+                ],
+            ],
+            ['key' => 'cta_text', 'type' => 'text', 'label' => __('متن دکمه', 'erfansanat'), 'default' => 'آشنایی با خط تولید کارخانه'],
+            ['key' => 'cta_url', 'type' => 'url', 'label' => __('لینک دکمه', 'erfansanat'), 'default' => '/about/'],
+            ['key' => 'image', 'type' => 'media', 'label' => __('تصویر کارخانه', 'erfansanat'), 'default' => 'assets/images/factory.jpg'],
+            ['key' => 'image_alt', 'type' => 'text', 'label' => __('alt تصویر', 'erfansanat'), 'default' => 'کارخانه و خط تولید عرفان صنعت اصفهان'],
+            ['key' => 'image_caption', 'type' => 'text', 'label' => __('زیرنویس تصویر', 'erfansanat'), 'default' => 'خط تولید صنعتی · شهرک صنعتی جی اصفهان'],
+            ['key' => 'image_title', 'type' => 'text', 'label' => __('عنوان روی تصویر', 'erfansanat'), 'default' => 'تولید تخصصی المان‌های نوری و ریسه‌های تزریق مستقیم'],
+            [
+                'key' => 'stats', 'type' => 'repeater', 'label' => __('آمار شمارنده', 'erfansanat'), 'add_label' => __('افزودن آمار', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'target', 'type' => 'text', 'label' => __('عدد هدف', 'erfansanat')],
+                    ['key' => 'suffix', 'type' => 'text', 'label' => __('پسوند (+ یا ٪)', 'erfansanat')],
+                    ['key' => 'label', 'type' => 'text', 'label' => __('برچسب', 'erfansanat')],
+                    ['key' => 'sub', 'type' => 'text', 'label' => __('زیربرچسب', 'erfansanat')],
+                ],
+                'default' => [
+                    ['target' => '850', 'suffix' => '+', 'label' => 'پروژه تکمیل‌شده', 'sub' => 'در کلان‌شهرهای ایران و عراق'],
+                    ['target' => '100', 'suffix' => '+', 'label' => 'نیروی متخصص', 'sub' => 'واحد طراحی، قالب‌سازی و مونتاژ'],
+                    ['target' => '289', 'suffix' => '+', 'label' => 'کارفرمای سازمانی', 'sub' => 'شهرداری‌ها و سازمان‌های عمرانی'],
+                    ['target' => '125', 'suffix' => '+', 'label' => 'محصول تخصصی', 'sub' => 'دارای کد ملی کالا GS1'],
+                ],
+            ],
+        ];
+    }
+
+    /** اسکیم تایم‌لاین: رپیتر مراحل */
+    private static function history_schema(): array {
+        return [
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مسیر رشد و تکامل صنعتی'],
+            ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'عرفان صنعت اصفهان (۱۳۸۰ تا ۱۴۰۵)'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'بیش از دو دهه مهندسی و بومی‌سازی؛ از تاسیس کارخانه در سال ۱۳۸۰ تا عبور از ۸۵۰ پروژه شهری و ورود به صنعت نیروگاه‌های خورشیدی با برند «سانیرما» در سال ۱۴۰۵'],
+            [
+                'key' => 'stages', 'type' => 'repeater', 'label' => __('مراحل تایم‌لاین', 'erfansanat'), 'add_label' => __('افزودن مرحله', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'year', 'type' => 'text', 'label' => __('سال', 'erfansanat')],
+                    ['key' => 'name', 'type' => 'text', 'label' => __('نام کوتاه (دکمه)', 'erfansanat')],
+                    ['key' => 'badge', 'type' => 'text', 'label' => __('نشان', 'erfansanat')],
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان مرحله', 'erfansanat')],
+                    ['key' => 'subline', 'type' => 'text', 'label' => __('زیرعنوان', 'erfansanat')],
+                    ['key' => 'body', 'type' => 'textarea', 'label' => __('متن', 'erfansanat')],
+                    ['key' => 's1_label', 'type' => 'text', 'label' => __('ویژگی ۱ — برچسب', 'erfansanat')],
+                    ['key' => 's1_value', 'type' => 'text', 'label' => __('ویژگی ۱ — مقدار', 'erfansanat')],
+                    ['key' => 's2_label', 'type' => 'text', 'label' => __('ویژگی ۲ — برچسب', 'erfansanat')],
+                    ['key' => 's2_value', 'type' => 'text', 'label' => __('ویژگی ۲ — مقدار', 'erfansanat')],
+                    ['key' => 'hint', 'type' => 'text', 'label' => __('راهنمای پیل', 'erfansanat')],
+                    ['key' => 'caption', 'type' => 'text', 'label' => __('کپشن تصویر', 'erfansanat')],
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون چیپ سال (lucide)', 'erfansanat')],
+                    ['key' => 'image', 'type' => 'media', 'label' => __('تصویر اصلی', 'erfansanat')],
+                    ['key' => 'image2', 'type' => 'media', 'label' => __('تصویر گالری ۱', 'erfansanat')],
+                    ['key' => 'image3', 'type' => 'media', 'label' => __('تصویر گالری ۲', 'erfansanat')],
+                    ['key' => 'image_alt', 'type' => 'text', 'label' => __('alt تصاویر', 'erfansanat')],
+                ],
+                'default' => [
+                    ['year' => '۱۳۸۰', 'name' => 'فاز تاسیس صنعتی', 'badge' => 'فاز تاسیس صنعتی', 'icon' => 'award', 'title' => 'تاسیس مجموعه و آغاز تولید صنعتی', 'subline' => 'شروع یک حرکت مهندسی هدفمند در صنعت روشنایی اصفهان', 'body' => 'شرکت عرفان صنعت اصفهان فعالیت تخصصی خود را با هدف بومی‌سازی تجهیزات روشنایی و سازه‌های نوری شهری آغاز کرد. تمرکز بر کیفیت عایق‌بندی و طول عمر بالا از همان روز نخست، پایه‌گذار اعتماد شهرداری‌های سراسر کشور به محصولات ESE شد.', 's1_label' => 'ظرفیت خط تولید', 's1_value' => 'فاز نخست صنعتی', 's2_label' => 'حوزه تخصصی', 's2_value' => 'المان‌های نوری شهری', 'hint' => 'با اسکرول به پایین سال بعد را ببینید', 'caption' => 'دستاوردهای اجرایی سال ۱۳۸۰', 'image' => 'assets/images/hero.jpg', 'image2' => 'assets/images/light-tunnel.jpg', 'image3' => 'assets/images/light-tree.jpg', 'image_alt' => 'تاسیس مجموعه و آغاز تولید صنعتی'],
+                    ['year' => '۱۳۹۲', 'name' => 'استاندارد IP68', 'badge' => 'استاندارد IP68', 'icon' => 'award', 'title' => 'راه‌اندازی خط تزریق مستقیم ریسه‌های IP68', 'subline' => 'تولید انبوه ریسه‌های سوزنی، بلوطی و فندقی ضدآب', 'body' => 'با تجهیز کارخانه به ماشین‌آلات تمام‌اتوماتیک تزریق PVC و پلی‌کربنات، تولید ریسه‌های ال‌ای‌دی با استاندارد واقعی IP68 آغاز گردید تا مشکل نفوذ آب و سوختن لامپ‌ها در فضای باز شهری برای همیشه برطرف شود.', 's1_label' => 'درجه حفاظت', 's1_value' => 'استاندارد واقعی IP68', 's2_label' => 'تکنولوژی ساخت', 's2_value' => 'تزریق مستقیم پلیمری', 'hint' => 'با اسکرول به پایین سال بعد را ببینید', 'caption' => 'دستاوردهای اجرایی سال ۱۳۹۲', 'image' => 'assets/images/light-tunnel.jpg', 'image2' => 'assets/images/hero.jpg', 'image3' => 'assets/images/light-sphere.jpg', 'image_alt' => 'راه‌اندازی خط تزریق مستقیم ریسه‌های IP68'],
+                    ['year' => '۱۳۹۷', 'name' => 'هوشمندسازی NRF', 'badge' => 'هوشمندسازی NRF', 'icon' => 'award', 'title' => 'تولید درختان نوری هوشمند و پوینت‌لایت پیکسلی', 'subline' => 'ورود به عرصه نورپردازی هوشمند فول‌کالر (RGB / DMX)', 'body' => 'طراحی و ساخت درختان نوری هوشمند مدل دلسا و آرتام با تنه کامپوزیت نشکن و بردهای کنترل مرکزی بی‌سیم (NRF)، تحولی بزرگ در زیباسازی میادین و پارک‌های شهری ایجاد نمود.', 's1_label' => 'کنترلر مرکزی', 's1_value' => 'همگام‌سازی بی‌سیم NRF', 's2_label' => 'طول عمر مفید', 's2_value' => 'بیش از ۵۰,۰۰۰ ساعت', 'hint' => 'با اسکرول به پایین سال بعد را ببینید', 'caption' => 'دستاوردهای اجرایی سال ۱۳۹۷', 'image' => 'assets/images/light-tree.jpg', 'image2' => 'assets/images/light-sphere.jpg', 'image3' => 'assets/images/light-tunnel.jpg', 'image_alt' => 'تولید درختان نوری هوشمند و پوینت‌لایت پیکسلی'],
+                    ['year' => '۱۴۰۱', 'name' => 'گواهینامه‌های رسمی', 'badge' => 'گواهینامه‌های رسمی', 'icon' => 'award', 'title' => 'اخذ گواهینامه ISO 9001:2015 و کدهای GS1', 'subline' => 'تثبیت جایگاه دانش‌بنیان و تامین‌کننده رسمی سامانه ستاد', 'body' => 'دریافت گواهینامه‌های بین‌المللی مدیریت کیفیت، ثبت ملی کالاها در سامانه ایران‌کد (GS1) و حضور فعال در سامانه تدارکات الکترونیکی دولت (ستاد) جهت تسهیل خریدهای سازمانی شهرداری‌ها.', 's1_label' => 'استاندارد کیفیت', 's1_value' => 'ISO 9001:2015', 's2_label' => 'شناسه کالا', 's2_value' => 'ثبت رسمی ایران‌کد GS1', 'hint' => 'با اسکرول به پایین سال بعد را ببینید', 'caption' => 'دستاوردهای اجرایی سال ۱۴۰۱', 'image' => 'assets/images/light-sphere.jpg', 'image2' => 'assets/images/light-tree.jpg', 'image3' => 'assets/images/hero.jpg', 'image_alt' => 'اخذ گواهینامه ISO 9001:2015 و کدهای GS1'],
+                    ['year' => '۱۴۰۴', 'name' => '+۸۵۰ پروژه شهری', 'badge' => '+۸۵۰ پروژه شهری', 'icon' => 'award', 'title' => 'عبور از مرز ۸۵۰ پروژه موفق در ایران و عراق', 'subline' => 'توسعه سبد محصولات به بیش از ۱۲۵ تجهیز تخصصی نوری', 'body' => 'عرفان صنعت اصفهان به عنوان مرجع نخست طراحی و تولید المان‌های نوری شهری، علاوه بر پوشش کامل کلان‌شهرهای ایران، اجرای پروژه‌های شاخص نورپردازی در شهرهای مذهبی و تجاری عراق را نیز در کارنامه خود ثبت کرد.', 's1_label' => 'پروژه‌های اجرا شده', 's1_value' => '+۸۵۰ پروژه شهری', 's2_label' => 'تنوع محصولات', 's2_value' => '+۱۲۵ محصول تخصصی', 'hint' => 'با اسکرول به پایین سال بعد را ببینید', 'caption' => 'دستاوردهای اجرایی سال ۱۴۰۴', 'image' => 'assets/images/light-tunnel.jpg', 'image2' => 'assets/images/light-tree.jpg', 'image3' => 'assets/images/hero.jpg', 'image_alt' => 'عبور از مرز ۸۵۰ پروژه موفق در ایران و عراق'],
+                    ['year' => '۱۴۰۵', 'name' => 'برند سانیرما (Sunirma)', 'badge' => 'برند سانیرما (Sunirma)', 'icon' => 'sun', 'title' => 'ورود به حوزه تولید نیروگاه‌های خورشیدی با برند سانیرما', 'subline' => 'توسعه زیرساخت‌های انرژی پاک و سامانه‌های فتوولتائیک صنعتی', 'body' => 'در سال ۱۴۰۵، شرکت دانش‌بنیان عرفان صنعت اصفهان با راه‌اندازی برند تخصصی «سانیرما» (Sunirma) وارد عرصه طراحی، تولید سازه‌ها و احداث نیروگاه‌های خورشیدی و سامانه‌های روشنایی سولار شد تا تجربه دو دهه مهندسی برق و سازه را در خدمت تولید انرژی تجدیدپذیر قرار دهد.', 's1_label' => 'برند تخصصی انرژی خورشیدی', 's1_value' => 'سانیرما (Sunirma)', 's2_label' => 'حوزه فعالیت جدید', 's2_value' => 'تولید و احداث نیروگاه خورشیدی', 'hint' => 'آخرین دستاورد (۱۴۰۵ — برند سانیرما)', 'caption' => 'نیروگاه‌های خورشیدی برند سانیرما — ۱۴۰۵', 'image' => 'assets/images/sun-light.jpg', 'image2' => 'assets/images/factory.jpg', 'image3' => 'assets/images/hero.jpg', 'image_alt' => 'ورود به حوزه تولید نیروگاه‌های خورشیدی با برند سانیرما'],
+                ],
+            ],
+        ];
+    }
+
+    /** اسکیم خدمات: رپیتر ردیف‌های تب‌دار */
+    private static function services_schema(): array {
+        return [
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'خدمات مهندسی و اجرایی'],
+            ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'نورپردازی شهری'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'از طراحی سه‌بعدی تا تولید صنعتی و اجرای کامل در محل؛ راهکارهای جامع برای شهرداری‌ها و سازمان‌های عمرانی'],
+            [
+                'key' => 'rows', 'type' => 'repeater', 'label' => __('خدمات', 'erfansanat'), 'add_label' => __('افزودن خدمت', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان خدمت', 'erfansanat')],
+                    ['key' => 'desc', 'type' => 'textarea', 'label' => __('توضیح', 'erfansanat')],
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ['key' => 'image', 'type' => 'media', 'label' => __('تصویر پیش‌نمایش', 'erfansanat')],
+                ],
+                'default' => [
+                    ['title' => 'نورپردازی میادین شهری', 'desc' => 'خلق نقطه کانونی بصری در قلب شهر با المان‌های حجمی و سازه‌های نوری شاخص', 'icon' => 'landmark', 'image' => 'assets/images/light-sphere.jpg'],
+                    ['title' => 'نورپردازی خیابان و بلوار', 'desc' => 'آذین‌بندی و روشنایی یکنواخت مسیرهای شهری با لوسترهای ستون و ریسه‌های IP68', 'icon' => 'milestone', 'image' => 'assets/images/hero.jpg'],
+                    ['title' => 'نورپردازی پل و تقاطع‌ها', 'desc' => 'نمای نورانی پل‌های سواره و پیاده با پوینت‌لایت‌های پیکسلی و والواشرهای خطی', 'icon' => 'waypoints', 'image' => 'assets/images/string-lights.jpg'],
+                    ['title' => 'طراحی و ساخت المان‌های شهری', 'desc' => 'ساخت تونل‌های نوری و درختان هوشمند با هویت بصری اختصاصی برای هر شهر', 'icon' => 'sparkles', 'image' => 'assets/images/light-element.jpg'],
+                    ['title' => 'نورپردازی نمای ابنیه و ساختمان', 'desc' => 'روشنایی معماری نمای ساختمان‌های اداری، تاریخی و مراکز عمومی شهر', 'icon' => 'building2', 'image' => 'assets/images/chandelier.jpg'],
+                ],
+            ],
+        ];
+    }
+
+    /** اسکیم مزیت‌های رقابتی: دو رپیتر ویژگی/گام */
+    private static function quality_schema(): array {
+        return [
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مزیت‌های رقابتی کارخانه'],
+            ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'استانداردهای '],
+            ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'کیفیت و ماندگاری'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'تجهیزات نورپردازی شهری سرمایه‌گذاری بلندمدت هستند؛ هر محصول عرفان صنعت برای سال‌ها کارکرد مداوم در فضای باز مهندسی شده است.'],
+            [
+                'key' => 'features', 'type' => 'repeater', 'label' => __('ویژگی‌ها', 'erfansanat'), 'add_label' => __('افزودن ویژگی', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ['key' => 'badge', 'type' => 'text', 'label' => __('برچسب مونو', 'erfansanat')],
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                    ['key' => 'desc', 'type' => 'textarea', 'label' => __('توضیح', 'erfansanat')],
+                ],
+                'default' => [
+                    ['icon' => 'badge-check', 'badge' => 'ISO 9001:2015', 'title' => 'مدیریت کیفیت بین‌المللی', 'desc' => 'کنترل کیفیت دقیق در تمامی مراحل قالب‌سازی، تزریق پلیمر و مونتاژ بردهای الکترونیکی'],
+                    ['icon' => 'cloud-rain', 'badge' => 'IP67 / IP68', 'title' => 'عایق‌بندی تزریق مستقیم', 'desc' => 'مقاومت کامل در برابر نفوذ آب، رطوبت شدید، گرد و غبار و تابش مستقیم UV خورشید'],
+                    ['icon' => 'radio-tower', 'badge' => 'NRF + WiFi', 'title' => 'کنترل و همگام‌سازی هوشمند', 'desc' => 'مدیریت بی‌سیم افکت‌های نوری و طیف ۱۶ میلیون رنگ بدون نیاز به سیم‌کشی دیتا بین المان‌ها'],
+                    ['icon' => 'shield-check', 'badge' => '۲۴ ماه گارانتی', 'title' => 'گارانتی تعویض + ۵ سال خدمات', 'desc' => 'ضمانت رسمی تعویض کارخانه و تامین پایدار قطعات یدکی برای شهرداری‌ها و پیمانکاران'],
+                ],
+            ],
+            ['key' => 'process_pre', 'type' => 'text', 'label' => __('فرآیند — بخش اول', 'erfansanat'), 'default' => 'فرآیند اجرای پروژه در عرفان صنعت؛'],
+            ['key' => 'process_hl', 'type' => 'text', 'label' => __('فرآیند — بخش سبز', 'erfansanat'), 'default' => 'از ایده تا درخشش در شهر'],
+            ['key' => 'process_label', 'type' => 'text', 'label' => __('برچسب گام‌ها', 'erfansanat'), 'default' => '۵ گام استاندارد مهندسی و اجرایی'],
+            [
+                'key' => 'steps', 'type' => 'repeater', 'label' => __('گام‌های اجرا', 'erfansanat'), 'add_label' => __('افزودن گام', 'erfansanat'),
+                'fields' => [
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
+                    ['key' => 'step', 'type' => 'text', 'label' => __('برچسب گام', 'erfansanat')],
+                    ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                    ['key' => 'sub', 'type' => 'text', 'label' => __('زیرنویس', 'erfansanat')],
+                ],
+                'default' => [
+                    ['icon' => 'search', 'step' => 'گام ۱', 'title' => 'مشاوره و نیازسنجی', 'sub' => 'بررسی ابعاد و اقلیم پروژه'],
+                    ['icon' => 'pencil-ruler', 'step' => 'گام ۲', 'title' => 'طراحی سه‌بعدی اختصاصی', 'sub' => 'شبیه‌سازی قبل از ساخت'],
+                    ['icon' => 'wrench', 'step' => 'گام ۳', 'title' => 'تولید صنعتی در کارخانه', 'sub' => 'متریال پلی‌کربنات و IP68'],
+                    ['icon' => 'hard-hat', 'step' => 'گام ۴', 'title' => 'نصب و اجرای ایمن', 'sub' => 'توسط تیم فنی مجرب'],
+                    ['icon' => 'lightbulb', 'step' => 'گام ۵', 'title' => 'پشتیبانی و گارانتی', 'sub' => '۲۴ ماه ضمانت تعویض'],
+                ],
+            ],
+        ];
+    }
+}
