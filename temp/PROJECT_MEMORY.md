@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 6 IN PROGRESS (5/11 TASKS DONE: 6.1–6.5 · PHASE 5 COMPLETE 12/12)**
+**PHASE 6 IN PROGRESS (6/11 TASKS DONE: 6.1–6.6 · PHASE 5 COMPLETE 12/12)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -86,6 +86,16 @@
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## رویدادهای فاز ۶ (2026-11-04)
+
+### ۶.۶ (تسک ششم) — مرتبط‌ها و دیدگاه‌ها + ادغام فونت پنل (2026-11-04)
+- خروجی‌ها: `related-projects.php` (SEC-A 195281→ کارت-پروژه روشن از متای project-ids CSV)، `related-products.php` (SEC-C هم‌دسته product_cat به‌جز خود، count=3، فیلتر es_product_related_args)، `reviews.php` (پنل کامل تب reviews) + `inc/Woo/Reviews.php` (ذخیره rating/es_review_org در comment_meta + ایمیل placeholder مهمان).
+- specs-tabs: پنل reviews وقتی در tabs باشد از reviews.php رندر می‌شود (ob_start) — فعال‌سازی تب همچنان با فیلتر es_product_specs_args[has_reviews] (پیش‌فرض false قفل بایت‌دقیق ۶.۳).
+- chip کارت SEC-C = اولین دسته‌ای که دسته مشترک نیست (بج نوع اختصاصی میرور).
+- فرم دیدگاه دستی با action=wp-comments-post.php + hidden comment_post_ID؛ فیلدهای میرور data-review-* حفظ شد.
+- **آفست‌های پایتونی (کاراکتری) را هرگز در PHP (بایتی) استفاده نکن** — برش مرجع در تست‌ها همیشه با strpos الگویی.
+- استاب‌های جدید: get_comments/get_comment_meta/add_comment_meta/get_comment_date (رشته غیرعددی مستقیم)/wp_parse_url؛ get_posts گسترش: include/post__in/post__not_in/posts_per_page/tax_query (بر __es_stub_post_term_map).
+- ادغام فونت وزیرمتن پنل: @font-face سه زیرمجموعه از styles.css به assets/admin/admin.css + وراثت button/input/.button + preload در admin_head (AdminAssets::preload_fonts) — تست 21/21 (temp/phase-02…/tests/test-font-vazirmatn.php).
+
 
 ### ۶.۵ (تسک پنجم) — ناحیه خرید محصول (2026-11-04)
 - خروجی‌ها: `template-parts/single-product/purchase.php` (برش بایت‌دقیق ۷۰۲۵ بایتی wall-washer از wrapper تا قبل از `</section>`) + `inc/Woo/PurchaseFlow.php` (فیلتر woocommerce_is_purchasable + متن دکمه‌ها).

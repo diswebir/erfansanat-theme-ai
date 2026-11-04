@@ -326,6 +326,11 @@ open(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php'), 'w', en
 "    echo strtr($ES_DOC_CARD, ['{ES_URL}' => esc_url($es_docs_url), '{ES_ICON}' => 'lucide lucide-file-text h-5 w-5', '{ES_BADGE}' => 'PDF', '{ES_TITLE}' => esc_html('کاتالوگ فنی ' . $es_title), '{ES_SUB}' => 'مشخصات و رنگ‌بندی — PDF']);\n"
 "    echo $ES_DOC_TAIL;\n"
 "}\n"
+"if (in_array('reviews', $es_tabs, true)) {\n"
+"    ob_start();\n"
+"    es_get_template('template-parts/single-product/reviews.php', ['pid' => $es_pid]);\n"
+"    echo (string) ob_get_clean();\n"
+"}\n"
 "echo '</div></div></section>';\n")
 
 print('specs-tabs.php:', os.path.getsize(os.path.join(ROOT, 'template-parts/single-product/specs-tabs.php')))

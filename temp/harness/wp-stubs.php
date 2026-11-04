@@ -852,13 +852,46 @@ if (!function_exists('get_posts')) {
         $GLOBALS['__es_stub_get_posts_args'][] = $args;
         $posts = $GLOBALS['__es_stub_posts'] ?? [];
         $type  = $args['post_type'] ?? 'post';
-        $num   = (int) ($args['numberposts'] ?? 5);
+        $num   = (int) ($args['numberposts'] ?? ($args['posts_per_page'] ?? 5));
+        $include = array_map('intval', (array) ($args['include'] ?? ($args['post__in'] ?? [])));
+        $not_in  = array_map('intval', (array) ($args['post__not_in'] ?? []));
+        $taxes = [];
+        foreach ((array) ($args['tax_query'] ?? []) as $tq) {
+            if (is_array($tq) && isset($tq['taxonomy'])) {
+                $taxes[(string) $tq['taxonomy']] = array_map('intval', (array) ($tq['terms'] ?? []));
+            }
+        }
         $out = [];
         foreach ($posts as $post) {
             if ((string) ($post->post_type ?? '') !== (string) $type) {
                 continue;
             }
+            $pid = (int) ($post->ID ?? 0);
+            if ($include !== [] && !in_array($pid, $include, true)) {
+                continue;
+            }
+            if ($not_in !== [] && in_array($pid, $not_in, true)) {
+                continue;
+            }
+            $ok = true;
+            foreach ($taxes as $tax => $terms) {
+                // map ممکن است آبجکت ترم باشد — term_id
+                $have_ids = [];
+                foreach (($GLOBALS['__es_stub_post_term_map'][$pid][$tax] ?? []) as $t) {
+                    $have_ids[] = is_object($t) ? (int) ($t->term_id ?? 0) : (int) $t;
+                }
+                if (array_intersect($terms, $have_ids) === []) {
+                    $ok = false;
+                    break;
+                }
+            }
+            if (!$ok) {
+                continue;
+            }
             $out[] = $post;
+        }
+        if ($include !== []) {
+            usort($out, static fn($a, $b) => array_search((int) $a->ID, $include, true) <=> array_search((int) $b->ID, $include, true));
         }
         return array_slice($out, 0, max($num, 0));
     }
@@ -1339,4 +1372,62 @@ if (!function_exists('wp_kses')) {
             return '<' . $m[1] . $attrs . '>';
         }, $clean) ?? $clean;
     }
+}
+
+/* ─── استاب‌های دیدگاه (تسک ۶.۶) ─── */
+if (!function_exists('get_comments')) {
+    function get_comments(array $args = []): array
+    {
+        $pid   = (int) ($args['post_id'] ?? 0);
+        $status = (string) ($args['status'] ?? '');
+        $out = [];
+        foreach (($GLOBALS['__es_stub_comments'] ?? []) as $c) {
+            if ($pid > 0 && (int) ($c->comment_post_ID ?? 0) !== $pid) {
+                continue;
+            }
+            if ($status !== '' && (string) ($c->comment_approved ?? '') !== $status) {
+                continue;
+            }
+            $out[] = $c;
+        }
+        return $out;
+    }
+}
+if (!function_exists('get_comment_meta')) {
+    function get_comment_meta(int $comment_id, string $key, bool $single = false): mixed
+    {
+        $meta = $GLOBALS['__wp_comment_meta'][$comment_id] ?? [];
+        $val = $meta[$key] ?? ($single ? '' : []);
+        return $single && is_array($val) && isset($val[0]) ? $val[0] : $val;
+    }
+}
+if (!function_exists('add_comment_meta')) {
+    function add_comment_meta(int $comment_id, string $key, mixed $value, bool $unique = false): bool
+    {
+        $GLOBALS['__wp_comment_meta'][$comment_id] = ($GLOBALS['__wp_comment_meta'][$comment_id] ?? []);
+        if ($unique && isset($GLOBALS['__wp_comment_meta'][$comment_id][$key])) {
+            return false;
+        }
+        $GLOBALS['__wp_comment_meta'][$comment_id][$key] = $value;
+        return true;
+    }
+}
+if (!function_exists('get_comment_date')) {
+    function get_comment_date(string $format = 'Y/m/d', int|object|null $comment = null): string
+    {
+        $cid = is_object($comment) ? (int) ($comment->comment_ID ?? 0) : (int) ($comment ?? 0);
+        $raw = (string) ($GLOBALS['__es_stub_comment_dates'][$cid] ?? '');
+        if ($raw === '') {
+            return '';
+        }
+        return ctype_digit($raw) ? date($format, (int) $raw) : $raw;
+    }
+}
+if (!function_exists('wp_parse_url')) {
+    function wp_parse_url(string $url, int $component = -1): mixed
+    {
+        return parse_url($url, $component);
+    }
+}
+if (!function_exists('current_user_id') && false) {
 }

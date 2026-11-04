@@ -1,7 +1,7 @@
 # Task 6.6 — single-product — پروژه‌های مرتبط، محصولات مرتبط و دیدگاه‌ها
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 22/22]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-06.php`
 
 ## 🎯 هدف

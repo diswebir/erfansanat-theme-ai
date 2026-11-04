@@ -57,6 +57,10 @@ final class Theme {
             Woo\PurchaseFlow::init();
         }
 
+        if (class_exists(Woo\Reviews::class)) {
+            Woo\Reviews::init();
+        }
+
         if (class_exists(Admin\ProductMetaboxes::class)) {
             Admin\ProductMetaboxes::init();
         }

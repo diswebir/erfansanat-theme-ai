@@ -317,7 +317,7 @@
 - 📤 خروجی: `template-parts/single-product/purchase.php`؛ `inc/Woo/PurchaseFlow.php` · **وابستگی:** Task 6.2, Task 3.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.6 — single-product — پروژه‌های مرتبط، محصولات مرتبط و دیدگاه‌ها `[PENDING]`
+### Task 6.6 — single-product — پروژه‌های مرتبط، محصولات مرتبط و دیدگاه‌ها `[DONE — 22/22]`
 - 🎯 اتصال روابط متا + دیدگاه‌های ووکامرس با مارک‌آپ review میرور
 - 📤 خروجی: `template-parts/single-product/related-projects.php`؛ `template-parts/single-product/related-products.php`؛ `template-parts/single-product/reviews.php` · **وابستگی:** Task 6.2, Task 3.10
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -765,7 +765,7 @@
 - 📤 خروجی: `template-parts/single-product/purchase.php`؛ `inc/Woo/PurchaseFlow.php` · **وابستگی:** Task 6.2, Task 3.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.6 — single-product — پروژه‌های مرتبط، محصولات مرتبط و دیدگاه‌ها `[PENDING]`
+### Task 6.6 — single-product — پروژه‌های مرتبط، محصولات مرتبط و دیدگاه‌ها `[DONE — 22/22]`
 - 🎯 اتصال روابط متا + دیدگاه‌های ووکامرس با مارک‌آپ review میرور
 - 📤 خروجی: `template-parts/single-product/related-projects.php`؛ `template-parts/single-product/related-products.php`؛ `template-parts/single-product/reviews.php` · **وابستگی:** Task 6.2, Task 3.10
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا

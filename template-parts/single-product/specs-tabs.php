@@ -170,4 +170,9 @@ if ($es_docs_url !== '') {
     echo strtr($ES_DOC_CARD, ['{ES_URL}' => esc_url($es_docs_url), '{ES_ICON}' => 'lucide lucide-file-text h-5 w-5', '{ES_BADGE}' => 'PDF', '{ES_TITLE}' => esc_html('کاتالوگ فنی ' . $es_title), '{ES_SUB}' => 'مشخصات و رنگ‌بندی — PDF']);
     echo $ES_DOC_TAIL;
 }
+if (in_array('reviews', $es_tabs, true)) {
+    ob_start();
+    es_get_template('template-parts/single-product/reviews.php', ['pid' => $es_pid]);
+    echo (string) ob_get_clean();
+}
 echo '</div></div></section>';
