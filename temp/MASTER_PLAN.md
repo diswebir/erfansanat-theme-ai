@@ -17,7 +17,7 @@
 | **Phase 5** | تبدیل صفحه اصلی (۱۵ سکشن) و کارت‌های استاندارد | `temp/phase-05-homepage-and-sections` | 20 | `[PASSED]` |
 | **Phase 6** | تبدیل قالب‌های ووکامرس، تک‌محصول، آرشیو و سبد/پرداخت | `temp/phase-06-woocommerce-and-products` | 20 | `[PASSED]` |
 | **Phase 7** | پروژه‌ها، وبلاگ، برگه‌های عمومی، خدمات و لندینگ آریا | `temp/phase-07-projects-blog-and-pages` | 20 | `[PENDING]` |
-| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[IN PROGRESS — 8/17]` |
+| **Phase 8** | جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی | `temp/phase-08-ajax-filters-and-audit` | 17 | `[IN PROGRESS — 9/17]` |
 
 **جمع کل تسک‌های اجرایی: 123 تسک** (۳ تسک پاس‌شده فاز ۱ + 120 تسک اتمیک فازهای ۲ تا ۸)
 
@@ -173,7 +173,7 @@
 - `[PASSED]` **Task 8.6 (`task-06.md` / `test-task-06.php`):** فیلترهای ۱۸ ویژگی pa_*
 - `[PASSED]` **Task 8.7 (`task-07.md` / `test-task-07.php`):** رندر نتایج فیلتر و صفحه‌بندی AJAX محصولات
 - `[PASSED]` **Task 8.8 (`task-08.md` / `test-task-08.php`):** اتصال JS فیلتر محصولات بدون تغییر URL
-- `[PENDING]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
+- `[PASSED]` **Task 8.9 (`task-09.md` / `test-task-09.php`):** فیلتر پروژه‌ها (نوع، شهر، جستجو)
 - `[PENDING]` **Task 8.10 (`task-10.md` / `test-task-10.php`):** فیلتر وبلاگ (دسته و جستجو)
 - `[PENDING]` **Task 8.11 (`task-11.md` / `test-task-11.php`):** دراور فیلتر موبایل و همگام‌سازی وضعیت
 - `[PENDING]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها

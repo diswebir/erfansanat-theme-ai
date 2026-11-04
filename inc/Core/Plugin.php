@@ -84,6 +84,7 @@ final class Plugin
             \ErfanSanat\Theme\Ajax\LiveSearchProducts::class,
             \ErfanSanat\Theme\Ajax\LiveSearchProjectsPosts::class,
             \ErfanSanat\Theme\Ajax\ProductFilterEndpoint::class,
+            \ErfanSanat\Theme\Ajax\ProjectFilterEndpoint::class,
             DeBloat::class,
             AssetManager::class,
             \ErfanSanat\Theme\Admin\ThemeOptions::class,

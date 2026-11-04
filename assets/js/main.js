@@ -610,133 +610,82 @@
   function initProjectsArchive() {
     var archive = document.querySelector('[data-projects-archive="true"]');
     if (!archive) return;
-
     initArchiveDrawer(archive);
 
     var searchInputs = archive.querySelectorAll('[data-project-search="true"]');
+    var typeSelect = archive.querySelector('[data-project-type-filter="true"]');
+    var locationSelect = archive.querySelector('[data-project-location-filter="true"]');
     var sortSelect = archive.querySelector('[data-project-sort="true"]');
     var gridEl = archive.querySelector('[data-project-grid="true"]');
     var countEls = archive.querySelectorAll('[data-project-count="true"]');
     var emptyEl = archive.querySelector('[data-project-empty="true"]');
     var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
-    var perPage = paginationRoot
-      ? parseInt(paginationRoot.getAttribute("data-per-page") || "6", 10)
-      : 6;
+    if (!gridEl || !window.esThemeData || !window.esThemeData.ajaxUrl) return;
 
-    var activeType = archive.getAttribute("data-initial-type") || "همه";
-    var activeLoc = archive.getAttribute("data-initial-location") || "همه";
     var searchQuery = "";
-    var sortBy = "newest";
     var currentPage = 1;
+    var requestVersion = 0;
+    var debounceTimer = null;
 
-    try {
-      var params = new URLSearchParams(window.location.search);
-      var qType = params.get("type");
-      var qLoc = params.get("location");
-      var qPage = params.get("page");
-      if (qType) activeType = qType;
-      if (qLoc) activeLoc = qLoc;
-      if (qPage) currentPage = Math.max(1, parseInt(qPage, 10) || 1);
-    } catch (_e) {}
-
-    function renderProjectsFilter() {
-      if (!gridEl) return;
-      var allItems = Array.prototype.slice.call(
-        gridEl.querySelectorAll('[data-project-item="true"]')
-      );
-
-      // Sort items in DOM if needed
-      allItems.sort(function (a, b) {
-        if (sortBy === "popular") {
-          var vA = parseInt(a.getAttribute("data-project-views") || "0", 10);
-          var vB = parseInt(b.getAttribute("data-project-views") || "0", 10);
-          return vB - vA;
-        }
-        if (sortBy === "rating") {
-          var rA = parseFloat(a.getAttribute("data-project-rating") || "0");
-          var rB = parseFloat(b.getAttribute("data-project-rating") || "0");
-          return rB - rA;
-        }
-        var dA = a.getAttribute("data-project-date") || "";
-        var dB = b.getAttribute("data-project-date") || "";
-        return dB.localeCompare(dA);
-      });
-
-      for (var s = 0; s < allItems.length; s++) {
-        gridEl.appendChild(allItems[s]);
-      }
-
-      var q = searchQuery.trim();
-      var matchingItems = [];
-
-      for (var i = 0; i < allItems.length; i++) {
-        var item = allItems[i];
-        var pType = item.getAttribute("data-project-type") || "";
-        var pLoc = item.getAttribute("data-project-location") || "";
-        var pText = item.getAttribute("data-project-search-text") || "";
-        var matchType = activeType === "همه" || pType === activeType;
-        var matchLoc = activeLoc === "همه" || pLoc === activeLoc;
-        var matchQuery = !q || pText.indexOf(q) !== -1;
-
-        if (matchType && matchLoc && matchQuery) {
-          matchingItems.push(item);
-        } else {
-          item.classList.add("hidden");
-        }
-      }
-
-      for (var c = 0; c < countEls.length; c++) {
-        countEls[c].textContent = toFa(matchingItems.length);
-      }
-
-      if (emptyEl && gridEl) {
-        if (matchingItems.length === 0) {
-          emptyEl.classList.remove("hidden");
-          emptyEl.classList.add("block");
-          gridEl.classList.add("hidden");
-        } else {
-          emptyEl.classList.add("hidden");
-          emptyEl.classList.remove("block");
-          gridEl.classList.remove("hidden");
-        }
-      }
-
-      currentPage = updatePaginationUI(
-        paginationRoot,
-        matchingItems,
-        currentPage,
-        perPage,
-        function (action) {
-          if (action === "prev") currentPage = Math.max(1, currentPage - 1);
-          else if (action === "next") currentPage = currentPage + 1;
-          else currentPage = Number(action) || 1;
-          renderProjectsFilter();
-          archive.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      );
+    function renderProjectsFilter(debounce) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        if (!window.esThemeData.ajaxNonce) return;
+        var version = ++requestVersion;
+        var payload = new URLSearchParams();
+        payload.set("action", "erfan_sanat_ajax");
+        payload.set("nonce", window.esThemeData.ajaxNonce);
+        payload.set("route", "project_filter");
+        payload.set("search", searchQuery.trim());
+        payload.set("project_type", typeSelect ? typeSelect.value : archive.getAttribute("data-initial-type") || "همه");
+        payload.set("city", locationSelect ? locationSelect.value : archive.getAttribute("data-initial-location") || "همه");
+        payload.set("sort", sortSelect ? (sortSelect.value || "newest") : "newest");
+        payload.set("page", String(currentPage));
+        fetch(window.esThemeData.ajaxUrl, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+          body: payload.toString()
+        }).then(function (response) { return response.json(); }).then(function (result) {
+          if (version !== requestVersion || !result || !result.success) return;
+          gridEl.innerHTML = result.html || "";
+          var isEmpty = !!(result.data && result.data.empty);
+          if (emptyEl) {
+            emptyEl.classList.toggle("hidden", !isEmpty);
+            emptyEl.classList.toggle("block", isEmpty);
+          }
+          gridEl.classList.toggle("hidden", isEmpty);
+          for (var i = 0; i < countEls.length; i++) countEls[i].textContent = toFa(result.count || 0);
+          if (paginationRoot) {
+            paginationRoot.innerHTML = result.data ? result.data.pagination_html || "" : "";
+            paginationRoot.classList.toggle("hidden", !(result.data && result.data.pages > 1));
+            paginationRoot.onclick = function (event) {
+              var target = event.target && event.target.closest ? event.target.closest("[data-page-btn], [data-page-prev], [data-page-next]") : null;
+              if (!target) return;
+              event.preventDefault();
+              if (target.hasAttribute("data-page-prev")) currentPage = Math.max(1, currentPage - 1);
+              else if (target.hasAttribute("data-page-next")) currentPage = Math.min(Number(result.data.pages) || 1, currentPage + 1);
+              else currentPage = Math.max(1, parseInt(target.getAttribute("data-page-btn") || "1", 10) || 1);
+              renderProjectsFilter(false);
+              archive.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+          }
+        }).catch(function () {});
+      }, debounce === false ? 0 : 220);
     }
 
     for (var s = 0; s < searchInputs.length; s++) {
       searchInputs[s].addEventListener("input", function () {
-        var val = this.value || "";
-        searchQuery = val;
+        searchQuery = this.value || "";
         currentPage = 1;
-        for (var k = 0; k < searchInputs.length; k++) {
-          if (searchInputs[k] !== this) searchInputs[k].value = val;
-        }
+        for (var k = 0; k < searchInputs.length; k++) if (searchInputs[k] !== this) searchInputs[k].value = searchQuery;
         renderProjectsFilter();
       });
     }
-
-    if (sortSelect) {
-      sortSelect.addEventListener("change", function () {
-        sortBy = this.value || "newest";
-        currentPage = 1;
-        renderProjectsFilter();
-      });
-    }
-
-    renderProjectsFilter();
+    if (typeSelect) typeSelect.addEventListener("change", function () { currentPage = 1; renderProjectsFilter(false); });
+    if (locationSelect) locationSelect.addEventListener("change", function () { currentPage = 1; renderProjectsFilter(false); });
+    if (sortSelect) sortSelect.addEventListener("change", function () { currentPage = 1; renderProjectsFilter(false); });
+    renderProjectsFilter(false);
   }
 
   /* ───────────────────────────────────────────────
