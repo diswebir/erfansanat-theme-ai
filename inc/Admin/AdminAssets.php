@@ -26,6 +26,8 @@ final class AdminAssets {
             [],
             \ErfanSanat\Theme\Frontend\AssetManager::version('assets/admin/admin.css')
         );
+        // پیش‌بارگذاری فونت وزیرمتن — پنل با همان فونت میرور رندر شود
+        add_action('admin_head', [self::class, 'preload_fonts']);
         wp_enqueue_script(
             'erfansanat-admin',
             ERFANSANAT_URI . 'assets/admin/admin.js',
@@ -41,5 +43,13 @@ final class AdminAssets {
             'errorText'  => __('خطا در ذخیره‌سازی؛ دوباره تلاش کنید.', 'erfansanat'),
             'networkText' => __('خطای شبکه؛ اتصال اینترنت را بررسی کنید.', 'erfansanat'),
         ]);
+    }
+
+    /** پیش‌بارگذاری سه زیرمجموعه وزیرمتن در head پنل (سریع‌ترین FOUT ممکن) */
+    public static function preload_fonts(): void {
+        $base = ERFANSANAT_URI . 'assets/fonts/';
+        foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin-ext.woff2', 'vazirmatn-latin.woff2'] as $file) {
+            echo '<link rel="preload" href="' . esc_url($base . $file) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+        }
     }
 }
