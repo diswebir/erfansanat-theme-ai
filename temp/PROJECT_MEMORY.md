@@ -105,3 +105,6 @@
 
 ## I18N + RSS/SITEMAP — 2026-11-03
 - test-i18n-rss: locale=fa_IR، بدون هیچ dir=ltr هاردکد (بجز mailto/tel)، textdomain erfansanat، RSS feed با item/link/title، WP_Sitemaps index با submap.posts — 11/11 ALL PASS. E2E 0 FAIL.
+
+## REMAINING PAGES + COMMENTS/REST — 2026-11-03
+- test-fidelity-remaining: fidelity صفحات باقی‌مانده میرر — faq/services/recruitment/refund/licenses/cart/checkout/blog همه ۱۰۰٪، blog-single ۹۳.۷٪، search ۹۹.۵٪، 404 structural PASS. test-comments-rest: comment insert/approve/list + template render + REST (posts/types/projects/product routes, es_form_entry مخفی) — ۱۴/۱۴ ALL PASS. E2E 0 FAIL.

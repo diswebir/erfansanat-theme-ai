@@ -93,3 +93,6 @@
 
 ## I18N + RSS/SITEMAP — 2026-11-03
 - Real-WP test: fa_IR locale, no hardcoded LTR (only mailto/tel), text domain consistent (88 calls), RSS2 feed renders items, core XML sitemap index renders with posts submap. 11/11 ALL PASS, E2E 0 FAILs.
+
+## REMAINING PAGES + COMMENTS/REST — 2026-11-03
+- All remaining mirror pages fidelity-tested: 7 pages at 100% sigs, blog-single 93.7%, search 99.5%, 404 structural. Comments flow (insert/approve/render) + REST API (posts, types, projects, product; form CPT private) 14/14 ALL PASS. E2E 0 FAILs.
