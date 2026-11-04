@@ -1,6 +1,6 @@
 # نقشه راه ارشد پروژه
 
-> وضعیت فعلی: Phases 1–7 تکمیل و regression شده‌اند؛ Tasks 7.1–7.3 نیز پاس شده‌اند. Phase 8 هنوز شروع نشده و به مجوز مستقل نیاز دارد.
+> وضعیت فعلی: Phases 1–7 regression شده‌اند و Task 8.1 پاس است؛ Tasks 8.2–8.3 همچنان pending هستند و پیش از شروع به مجوز جداگانه نیاز دارند.
 
 ## گیت‌های ورودی و تصمیمات
 
@@ -15,7 +15,7 @@
 - [PASSED] کاربر پس از Task 4.1 برای Task 4.2 نیز «اوکیه ادامه بده» گفت؛ پیاده‌سازی مگامنو/منوهای موبایل مجاز شد.
 - [PASSED] کاربر Phase 5 را مجاز کرد و پس از Task 5.1 اجرای Task 5.2 را تأیید کرد؛ هر دو تسک پاس شدند.
 - [PASSED] کاربر اجرای Task 6.1 را صریحاً مجاز کرد؛ سپس تکمیل remainder Phase 6 (Tasks 6.2 و 6.3) را نیز مجاز کرد. هر سه تسک Phase 6 تکمیل شدند.
-- [PASSED] کاربر ورود به Phase 7 را مجاز کرد؛ Tasks 7.1–7.3 به‌ترتیب پیاده‌سازی و integration/regression شدند. Phase 8 خارج از محدوده این مجوز است.
+- [PASSED] کاربر ورود به Phase 7 را مجاز کرد؛ Tasks 7.1–7.3 به‌ترتیب پیاده‌سازی و integration/regression شدند. سپس Task 8.1 با مجوز مستقل اجرا و پاس شد؛ Task 8.2 و Task 8.3 همچنان نیازمند تأیید هستند.
 
 ## فازها و تسک‌ها
 
@@ -69,9 +69,9 @@
 
 ### Phase 8 — جستجوی AJAX، فیلترها، فرم‌ها و ممیزی (`phase-08-ajax-filters-and-audit`)
 
-- [PENDING] **8.1 جستجوی زنده و فیلترهای AJAX** — شروط پذیرش در `phase-08-ajax-filters-and-audit/tasks/task-01.md`; تست در `phase-08-ajax-filters-and-audit/tests/test-task-01.php`.
-- [PENDING] **8.2 فرم‌های اختصاصی** — شروط پذیرش در `phase-08-ajax-filters-and-audit/tasks/task-02.md`; تست در `phase-08-ajax-filters-and-audit/tests/test-task-02.php`.
-- [PENDING] **8.3 ممیزی نهایی و E2E** — شروط پذیرش در `phase-08-ajax-filters-and-audit/tasks/task-03.md`; تست در `phase-08-ajax-filters-and-audit/tests/test-task-03.php`.
+- [PASSED] **8.1 جستجوی زنده و فیلترهای AJAX** — endpointهای امن، فیلترهای ترکیبی محصول/پروژه، جست‌وجوی زنده، sort/pagination و clear؛ تست fixture و regression فازهای 1–7 پاس شدند؛ حداکثر latency fixture در regression نهایی 2ms بدون network.
+- [PENDING — نیازمند مجوز کاربر] **8.2 فرم‌های اختصاصی** — شروط پذیرش در `phase-08-ajax-filters-and-audit/tasks/task-02.md`; تست در `phase-08-ajax-filters-and-audit/tests/test-task-02.php`.
+- [PENDING — نیازمند مجوز کاربر] **8.3 ممیزی نهایی و E2E** — شروط پذیرش در `phase-08-ajax-filters-and-audit/tasks/task-03.md`; تست در `phase-08-ajax-filters-and-audit/tests/test-task-03.php`.
 - تست یکپارچه: `phase-08-ajax-filters-and-audit/tests/run-phase-tests.sh`
 
 ## محیط تست محلی

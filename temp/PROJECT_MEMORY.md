@@ -1,14 +1,14 @@
 # حافظه زنده پروژه
 
-- وضعیت: `Phases 1–7 PASSED; Tasks 7.1–7.3 complete; Phase 8 not yet authorized.`
+- وضعیت: `Phases 1–7 regression PASSED; Phase 8 Task 8.1 PASSED; Tasks 8.2–8.3 pending separate approval.`
 - شاخه فعال: `arena/8fc7b5b7-erfansanat-theme-ai`.
 - میرور پیوست در `static-mirror/`؛ 128 فایل HTML و assets محلی.
 - محیط: Node و curl موجود؛ PHP native/WP-CLI/PHPUnit/PHPCS/xmllint موجود نیستند؛ PHP WASM 8.5.12 به‌صورت محلی در `node_modules/` فراهم شد و برای lint و smoke tests قابل استفاده است. WordPress production/native دائمی نیست؛ برای آزمون، WordPress 7.2-beta4 (build 65250) و SQLite با PHP WASM در `node_modules/.cache/ese-wp-test/` نصب/فعال است؛ این مسیر در Git نادیده گرفته می‌شود.
 - اسناد مرجع: `PROJECT_GOAL.md`, `DATA_BLUEPRINT.md`, `STATIC_TEMPLATE_MAP.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md`.
 - تصمیم‌های کاربر: صفحات هم‌نام دو مسیر محصول مقایسه/ادغام شوند؛ خدمات یک CPT مستقل؛ تمام سکشن‌های منتخب قابل ویرایش؛ فیلترها AJAX.
 - Stage 1: درخت 8 فاز و 22 تسک ساخته شد؛ task briefها، 22 contract tests، 8 phase runners و 1 all-phases runner تولید شدند.
-- آخرین تسک‌های پاس‌شده: 7.1، 7.2 و 7.3؛ Phases 1–7 تکمیل‌اند. قالب‌های پروژه، بلاگ، جستجو، 404، برگه‌های ویژه و landingها نیز آماده‌اند.
-- گام بعدی خارج از مجوز فعلی است: Phase 8 شروع نشود تا کاربر مجوز بدهد. Phase 7 را با `PHP_BIN="$PWD/node_modules/.bin/php-wasm-cli" sh temp/phase-07-projects-blog-and-pages/tests/run-phase-tests.sh` می‌توان مجدداً تست کرد. Harness: `temp/setup-wordpress-test.sh`.
+- آخرین تسک‌های پاس‌شده: Task 8.1؛ Phases 1–7 تکمیل و regression شده‌اند. قالب‌های پروژه، بلاگ، جستجو، 404، برگه‌های ویژه و landingها نیز آماده‌اند.
+- Task 8.1 پاس شد؛ اجرای Task 8.2 (فرم‌ها) و Task 8.3 (ممیزی/E2E) همچنان خارج از محدوده است و پیش از شروع نیاز به تأیید کاربر دارد. تست هدفمند Task 8.1: `PHP_BIN="$PWD/node_modules/.bin/php-wasm-cli" PHASE_TASKS=01 sh temp/phase-08-ajax-filters-and-audit/tests/run-phase-tests.sh`. Regression فازهای 1–7 نیز پاس است. Harness: `temp/setup-wordpress-test.sh`.
 - توجه: اسلاگ نهایی خدمات باید با URLهای زنده تطبیق داده شود؛ برای محصولات URL canonical مطابق بلوپرینت حفظ می‌شود.
 
 - Task 1.1 QA: PHP WASM 8.5.12 روی 26 فایل PHP lint پاس؛ contract test پاس؛ WordPress integration test واقعی (WordPress 7.2-beta3 + SQLite) و render fallback پاس؛ WP_DEBUG log خالی است.
@@ -82,10 +82,16 @@
 - No WooCommerce cart, checkout or account transaction template override was added. Core shortcodes/blocks, gateway rendering, lifecycle, and plugin hooks remain in control; before/after main-content actions are preserved.
 - RTL/responsive visual-only styling covers classic WooCommerce markup and cart/checkout blocks. On transactional pages, the theme localStorage purchase journey does not initialize; its header cart button routes to the native Woo cart URL, leaving native checkout/cart forms and their JS untouched.
 - Task 6.3 integration test covers native shortcode content for all three contexts, wrapper/cart URL, no unsafe template overrides, styling contracts, and no JS interception of native Woo forms. Passed. The Phase 6 runner detects explicit `FAIL` output as well as nonzero statuses because PHP WASM does not always propagate PHP `exit(1)`.
-- Phase 6 full runner (Tasks 6.1–6.3) passed; WP_DEBUG log was cleared before run and remained empty. Phase 1–5 regression tests and syntax/diff checks also passed after updating the asset migration test to recognize reviewed Phase 6 stylesheet/JS extensions. Phase 7 was subsequently authorized and passed; Phase 8 remains outside current scope.
+- Phase 6 full runner (Tasks 6.1–6.3) passed; WP_DEBUG log was cleared before run and remained empty. Phase 1–5 regression tests and syntax/diff checks also passed after updating the asset migration test to recognize reviewed Phase 6 stylesheet/JS extensions. Phase 7 was subsequently authorized and passed; Task 8.1 was later authorized and passed, while Tasks 8.2–8.3 remain out of scope pending approval.
 
 ## Phase 7 / Tasks 7.1–7.3 result
 - WordPress integration tests pass for projects and taxonomies, blog/search/404 and safe view counting, plus all eight special-page templates and their editable SectionManager content/repeaters.
 - `page.php` routes canonical and Persian legacy page slugs to named templates while keeping WooCommerce transaction-page routing intact. Arya and SmartElement schemas are registered. Recruitment repeaters include categories and retain the existing `data-recruit-*` filtering hooks; FAQs use native `<details>`; page content and shortcodes remain available for Phase 8's secure form integration.
 - Phase 7 runner checks test output for `FAIL` (PHP WASM may return zero for PHP-level failures) and enforces an empty WP_DEBUG log. Tasks 7.1–7.3 plus the Phase 1–6 regression runners passed; targeted PHP lint passed.
 - Test harness used disposable WordPress 7.2-beta4/build 65250 with SQLite and PHP WASM. No WooCommerce transaction templates or custom form submission handlers were added.
+
+## Phase 8 / Task 8.1 result — AJAX live search and archive filters
+- Implemented `ErfanSanat\Theme\Ajax\Filters` with public and authenticated AJAX hooks for `ese_live_search`, `ese_filter_products`, and `ese_filter_projects`; handlers accept POST only, verify the localized nonce, bound/sanitize inputs, whitelist ordering, escape rendered output, and use WP_Query/prepared search SQL.
+- Product archive AJAX supports text/SKU, category, min/max price, `true_sale`, `pa_ip-rating`/`pa_input-voltage`, sort, clear, and pagination. Project archive supports text, `project_type`, city, count, popularity/newest sorting, and pagination. Responses replace results in place; JS debounces and aborts stale requests, updates counts/status/history, and falls back to local UI when AJAX is unavailable.
+- `test-task-01.php` uses WordPress fixtures for composable filters, SQL/XSS safety, nonce dispatch, SKU lookup, sort/pagination and endpoint timing. Task test passed at max 2ms PHP WASM fixture time (query/render only; network latency excluded). Regression Phases 1–7 passed; WP_DEBUG empty; `node --check` and `git diff --check` passed.
+- Task 8.1 is `[PASSED]`. Do not begin Task 8.2 or 8.3 without additional user authorization.

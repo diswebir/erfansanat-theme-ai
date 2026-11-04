@@ -76,7 +76,7 @@ $renderedProjectCount = $wp_query instanceof WP_Query ? max(1, (int) $wp_query->
                     <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                         <div>
                             <h2 class="text-sm font-black text-slate-900"><?php echo esc_html__('فیلتر و آرشیو پروژه‌ها', 'erfansanat-theme'); ?></h2>
-                            <p class="mt-1 text-xs font-semibold text-slate-500"><?php echo esc_html(number_format_i18n($totalProjects)); ?> <?php echo esc_html__('پروژه در آرشیو', 'erfansanat-theme'); ?></p>
+                            <p class="mt-1 text-xs font-semibold text-slate-500"><span data-project-count="true"><?php echo esc_html(number_format_i18n($totalProjects)); ?></span> <?php echo esc_html__('پروژه در آرشیو', 'erfansanat-theme'); ?></p>
                         </div>
                         <?php if ($currentTerm instanceof WP_Term) : ?><a href="<?php echo esc_url($archiveUrl); ?>" class="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-emerald-700"><?php echo esc_html__('همه پروژه‌ها', 'erfansanat-theme'); ?></a><?php endif; ?>
                     </div>
@@ -84,7 +84,7 @@ $renderedProjectCount = $wp_query instanceof WP_Query ? max(1, (int) $wp_query->
                     <input id="project-sidebar-search" type="search" data-project-search="true" placeholder="<?php echo esc_attr__('نام پروژه، شهر یا نوع سازه...', 'erfansanat-theme'); ?>" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none" />
                     <nav aria-label="<?php echo esc_attr__('آرشیو نوع پروژه', 'erfansanat-theme'); ?>" class="border-t border-slate-100 pt-4">
                         <h3 class="mb-2 text-xs font-black text-slate-800"><?php echo esc_html__('نوع پروژه', 'erfansanat-theme'); ?></h3>
-                        <a href="<?php echo esc_url($archiveUrl); ?>" class="mb-1 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-bold <?php echo !$isProjectTypeArchive ? 'bg-emerald-700 text-white' : 'text-slate-700 hover:bg-emerald-50'; ?>"><span><?php echo esc_html__('همه انواع پروژه‌ها', 'erfansanat-theme'); ?></span><span><?php echo esc_html(number_format_i18n($totalProjects)); ?></span></a>
+                        <a href="<?php echo esc_url($archiveUrl); ?>" data-project-filter-type="all" class="mb-1 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-bold <?php echo !$isProjectTypeArchive ? 'bg-emerald-700 text-white' : 'text-slate-700 hover:bg-emerald-50'; ?>"><span><?php echo esc_html__('همه انواع پروژه‌ها', 'erfansanat-theme'); ?></span><span><span data-project-count="true"><?php echo esc_html(number_format_i18n($totalProjects)); ?></span></span></a>
                         <?php foreach ($projectTypeTerms as $filterTerm) :
                             if (!$filterTerm instanceof WP_Term) { continue; }
                             $filterUrl = get_term_link($filterTerm);
@@ -96,7 +96,7 @@ $renderedProjectCount = $wp_query instanceof WP_Query ? max(1, (int) $wp_query->
                     </nav>
                     <nav aria-label="<?php echo esc_attr__('آرشیو شهر پروژه', 'erfansanat-theme'); ?>" class="border-t border-slate-100 pt-4">
                         <h3 class="mb-2 text-xs font-black text-slate-800"><?php echo esc_html__('شهر محل اجرا', 'erfansanat-theme'); ?></h3>
-                        <a href="<?php echo esc_url($archiveUrl); ?>" class="mb-1 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-bold <?php echo !$isCityArchive ? 'bg-emerald-700 text-white' : 'text-slate-700 hover:bg-emerald-50'; ?>"><span><?php echo esc_html__('همه شهرها', 'erfansanat-theme'); ?></span><span><?php echo esc_html(number_format_i18n($totalProjects)); ?></span></a>
+                        <a href="<?php echo esc_url($archiveUrl); ?>" class="mb-1 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-bold <?php echo !$isCityArchive ? 'bg-emerald-700 text-white' : 'text-slate-700 hover:bg-emerald-50'; ?>"><span><?php echo esc_html__('همه شهرها', 'erfansanat-theme'); ?></span><span><span data-project-count="true"><?php echo esc_html(number_format_i18n($totalProjects)); ?></span></span></a>
                         <?php foreach ($cityTerms as $filterTerm) :
                             if (!$filterTerm instanceof WP_Term) { continue; }
                             $filterUrl = get_term_link($filterTerm);
@@ -111,8 +111,10 @@ $renderedProjectCount = $wp_query instanceof WP_Query ? max(1, (int) $wp_query->
 
             <div class="min-w-0 lg:col-span-8 xl:col-span-9">
                 <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-                    <div><h2 class="text-base font-black text-slate-900"><?php echo esc_html($currentTerm instanceof WP_Term ? sprintf(__('پروژه‌های اجراشده در %s', 'erfansanat-theme'), $currentTerm->name) : __('همه پروژه‌های نورپردازی شهری', 'erfansanat-theme')); ?></h2><p class="mt-1 text-xs text-slate-500"><?php echo esc_html(number_format_i18n($totalProjects)); ?> <?php echo esc_html__('پروژه', 'erfansanat-theme'); ?></p></div>
+                    <div><h2 class="text-base font-black text-slate-900"><?php echo esc_html($currentTerm instanceof WP_Term ? sprintf(__('پروژه‌های اجراشده در %s', 'erfansanat-theme'), $currentTerm->name) : __('همه پروژه‌های نورپردازی شهری', 'erfansanat-theme')); ?></h2><p class="mt-1 text-xs text-slate-500"><span data-project-count="true"><?php echo esc_html(number_format_i18n($totalProjects)); ?></span> <?php echo esc_html__('پروژه', 'erfansanat-theme'); ?></p></div>
                     <label for="project-sort-select" class="flex items-center gap-2 text-xs font-bold text-slate-600"><span><?php echo esc_html__('مرتب‌سازی:', 'erfansanat-theme'); ?></span><select id="project-sort-select" data-project-sort="true" class="rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs font-bold text-slate-800"><option value="newest"><?php echo esc_html__('جدیدترین پروژه‌ها', 'erfansanat-theme'); ?></option><option value="popular"><?php echo esc_html__('پربازدیدترین', 'erfansanat-theme'); ?></option><option value="rating"><?php echo esc_html__('بالاترین امتیاز', 'erfansanat-theme'); ?></option></select></label>
+                    <button type="button" data-project-filter-clear="true" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:border-emerald-300 hover:text-emerald-800"><?php echo esc_html__('پاک‌کردن فیلترها', 'erfansanat-theme'); ?></button>
+                    <span class="sr-only" role="status" aria-live="polite" data-project-ajax-status="true"></span>
                     <button type="button" data-archive-drawer-open="true" class="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-3.5 py-2 text-xs font-extrabold text-white lg:hidden"><?php echo esc_html__('فیلتر و آرشیو', 'erfansanat-theme'); ?></button>
                 </div>
 
@@ -151,10 +153,9 @@ $renderedProjectCount = $wp_query instanceof WP_Query ? max(1, (int) $wp_query->
                     'screen_reader_text' => __('صفحه‌بندی پروژه‌ها', 'erfansanat-theme'),
                     'class' => 'mt-8 flex flex-wrap items-center justify-center gap-2',
                 ]);
-                if ($pagination) {
-                    echo wp_kses_post($pagination);
-                }
                 ?>
+                <div data-project-server-pagination="true"><?php if ($pagination) { echo wp_kses_post($pagination); } ?></div>
+                <div class="hidden mt-7 flex flex-wrap items-center justify-center gap-2" data-project-ajax-pagination="true" aria-label="<?php echo esc_attr__('صفحه‌بندی پروژه‌ها', 'erfansanat-theme'); ?>"></div>
             </div>
         </div>
 

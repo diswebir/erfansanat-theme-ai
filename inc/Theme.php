@@ -23,6 +23,7 @@ final class Theme
         AssetManager::register();
         TemplateParts::register();
         HomepageData::register();
+        Ajax\Filters::register();
         Admin\ThemeOptions::register();
         Admin\SectionManager::register();
         ContentTypes::register();

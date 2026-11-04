@@ -604,6 +604,73 @@
     return safePage;
   }
 
+  function ajaxRequest(action, fields, signal) {
+    if (!window.eseAjax || !window.eseAjax.ajaxUrl || typeof window.fetch !== "function") {
+      return Promise.reject(new Error("AJAX unavailable"));
+    }
+    var body = new URLSearchParams();
+    body.append("action", action);
+    body.append("nonce", window.eseAjax.nonce || "");
+    Object.keys(fields || {}).forEach(function (key) {
+      var value = fields[key];
+      if (Array.isArray(value)) {
+        value.forEach(function (item) { body.append(key + "[]", String(item)); });
+      } else if (value !== undefined && value !== null) {
+        body.append(key, String(value));
+      }
+    });
+    return window.fetch(window.eseAjax.ajaxUrl, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+      body: body.toString(),
+      signal: signal
+    }).then(function (response) {
+      if (!response.ok) throw new Error("Request failed");
+      return response.json();
+    }).then(function (payload) {
+      if (!payload || !payload.success || !payload.data) throw new Error("Invalid response");
+      return payload.data;
+    });
+  }
+
+  function renderAjaxPagination(root, page, pages, onSelect) {
+    if (!root) return;
+    root.textContent = "";
+    var safePages = Math.max(1, Number(pages) || 1);
+    var safePage = Math.min(safePages, Math.max(1, Number(page) || 1));
+    root.classList.toggle("hidden", safePages <= 1);
+    root.classList.toggle("flex", safePages > 1);
+    function addButton(label, target, disabled, current) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.disabled = !!disabled;
+      button.setAttribute("data-ajax-page", String(target));
+      button.className = current
+        ? "grid h-9 w-9 place-items-center rounded-xl bg-emerald-700 text-xs font-black text-white"
+        : "grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 disabled:opacity-40";
+      if (current) button.setAttribute("aria-current", "page");
+      root.appendChild(button);
+    }
+    addButton("‹", safePage - 1, safePage <= 1, false);
+    var first = Math.max(1, safePage - 2);
+    var last = Math.min(safePages, first + 4);
+    first = Math.max(1, last - 4);
+    for (var i = first; i <= last; i++) addButton(toFa(i), i, false, i === safePage);
+    addButton("›", safePage + 1, safePage >= safePages, false);
+    var summary = document.createElement("span");
+    summary.className = "px-2 text-xs font-semibold text-slate-500";
+    summary.textContent = "صفحه " + toFa(safePage) + " از " + toFa(safePages);
+    root.appendChild(summary);
+    root.onclick = function (event) {
+      var button = event.target && event.target.closest ? event.target.closest("[data-ajax-page]") : null;
+      if (!button || button.disabled) return;
+      event.preventDefault();
+      onSelect(Math.min(safePages, Math.max(1, Number(button.getAttribute("data-ajax-page")) || 1)));
+    };
+  }
+
   /* ───────────────────────────────────────────────
      7. Projects Archive Filter, Sort & Pagination
      ─────────────────────────────────────────────── */
@@ -620,14 +687,63 @@
     var emptyEl = archive.querySelector('[data-project-empty="true"]');
     var paginationRoot = archive.querySelector('[data-pagination-root="true"]');
     var perPage = paginationRoot
-      ? parseInt(paginationRoot.getAttribute("data-per-page") || "6", 10)
-      : Math.max(1, gridEl ? gridEl.querySelectorAll('[data-project-item="true"]').length : 6);
+      ? parseInt(paginationRoot.getAttribute("data-per-page") || "9", 10)
+      : 9;
 
     var activeType = archive.getAttribute("data-initial-type") || "همه";
     var activeLoc = archive.getAttribute("data-initial-location") || "همه";
     var searchQuery = "";
     var sortBy = "newest";
     var currentPage = 1;
+    var ajaxEnabled = !!(window.eseAjax && window.eseAjax.ajaxUrl && typeof window.fetch === "function");
+    var ajaxPagination = archive.querySelector('[data-project-ajax-pagination="true"]');
+    var serverPagination = archive.querySelector('[data-project-server-pagination="true"]');
+    var ajaxStatus = archive.querySelector('[data-project-ajax-status="true"]');
+    var ajaxTimer = null;
+    var ajaxController = null;
+    var requestSequence = 0;
+
+    function loadProjectsAjax() {
+      if (!ajaxEnabled || !gridEl) return;
+      if (ajaxTimer) clearTimeout(ajaxTimer);
+      ajaxTimer = setTimeout(function () {
+        if (ajaxController && ajaxController.abort) ajaxController.abort();
+        ajaxController = typeof AbortController !== "undefined" ? new AbortController() : null;
+        var sequence = ++requestSequence;
+        var fields = { query: searchQuery, type: activeType, city: activeLoc, orderby: sortBy, page: currentPage, per_page: perPage };
+        if (ajaxStatus) ajaxStatus.textContent = "در حال بارگذاری پروژه‌ها…";
+        if (gridEl) gridEl.setAttribute("aria-busy", "true");
+        ajaxRequest("ese_filter_projects", fields, ajaxController ? ajaxController.signal : undefined).then(function (data) {
+          if (sequence !== requestSequence) return;
+          gridEl.innerHTML = data.html || "";
+          gridEl.removeAttribute("aria-busy");
+          if (serverPagination) serverPagination.classList.add("hidden");
+          if (ajaxPagination) ajaxPagination.classList.remove("hidden");
+          if (emptyEl) emptyEl.classList.toggle("hidden", Number(data.total) > 0);
+          for (var i = 0; i < countEls.length; i++) countEls[i].textContent = toFa(Number(data.total) || 0);
+          currentPage = Number(data.page) || 1;
+          renderAjaxPagination(ajaxPagination, currentPage, data.pages, function (nextPage) {
+            currentPage = nextPage;
+            loadProjectsAjax();
+            archive.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+          if (ajaxStatus) ajaxStatus.textContent = (Number(data.total) || 0) + " پروژه یافت شد.";
+          try {
+            var url = new URL(window.location.href);
+            if (activeType && activeType !== "همه") url.searchParams.set("type", activeType); else url.searchParams.delete("type");
+            if (activeLoc && activeLoc !== "همه") url.searchParams.set("location", activeLoc); else url.searchParams.delete("location");
+            if (searchQuery) url.searchParams.set("search", searchQuery); else url.searchParams.delete("search");
+            if (currentPage > 1) url.searchParams.set("page", String(currentPage)); else url.searchParams.delete("page");
+            window.history.replaceState({}, "", url.toString());
+          } catch (_e) {}
+        }).catch(function (error) {
+          if (error && error.name === "AbortError") return;
+          if (sequence !== requestSequence) return;
+          gridEl.removeAttribute("aria-busy");
+          if (ajaxStatus) ajaxStatus.textContent = "بارگذاری پروژه‌ها انجام نشد؛ دوباره تلاش کنید.";
+        });
+      }, searchQuery ? 250 : 0);
+    }
 
     try {
       var params = new URLSearchParams(window.location.search);
@@ -637,9 +753,16 @@
       if (qType) activeType = qType;
       if (qLoc) activeLoc = qLoc;
       if (qPage) currentPage = Math.max(1, parseInt(qPage, 10) || 1);
+      var qSearch = params.get("search");
+      if (qSearch) searchQuery = qSearch.slice(0, 100);
+      if (searchQuery) for (var qIdx = 0; qIdx < searchInputs.length; qIdx++) searchInputs[qIdx].value = searchQuery;
     } catch (_e) {}
 
     function renderProjectsFilter() {
+      if (ajaxEnabled) {
+        loadProjectsAjax();
+        return;
+      }
       if (!gridEl) return;
       var allItems = Array.prototype.slice.call(
         gridEl.querySelectorAll('[data-project-item="true"]')
@@ -735,6 +858,32 @@
         renderProjectsFilter();
       });
     }
+    archive.addEventListener("click", function (event) {
+      var clearButton = event.target && event.target.closest ? event.target.closest('[data-project-filter-clear="true"]') : null;
+      if (clearButton) {
+        event.preventDefault();
+        activeType = "همه";
+        activeLoc = "همه";
+        searchQuery = "";
+        currentPage = 1;
+        for (var i = 0; i < searchInputs.length; i++) searchInputs[i].value = "";
+        renderProjectsFilter();
+        return;
+      }
+      var link = event.target && event.target.closest ? event.target.closest("nav[aria-label] a[href]") : null;
+      if (!link || !archive.contains(link)) return;
+      var nav = link.closest("nav[aria-label]");
+      var label = nav ? (nav.getAttribute("aria-label") || "") : "";
+      if (label.indexOf("نوع") === -1 && label.indexOf("شهر") === -1) return;
+      event.preventDefault();
+      var firstLink = nav.querySelector("a[href]");
+      var valueNode = link.querySelector("span");
+      var value = link === firstLink ? "همه" : (valueNode ? valueNode.textContent.trim() : link.textContent.trim());
+      if (label.indexOf("نوع") !== -1) activeType = value;
+      else activeLoc = value;
+      currentPage = 1;
+      renderProjectsFilter();
+    });
 
     renderProjectsFilter();
   }
@@ -771,15 +920,84 @@
     var searchQuery = "";
     var sortBy = sortSelect ? (sortSelect.value || "menu_order") : "menu_order";
     var currentPage = 1;
+    var minPrice = 0;
+    var initialCategory = archive.getAttribute("data-product-archive-category") || "";
+    var selectedCategory = initialCategory;
+    var archiveTag = archive.getAttribute("data-product-archive-tag") || "";
+    var ajaxEnabled = !!(window.eseAjax && window.eseAjax.ajaxUrl && typeof window.fetch === "function");
+    var ajaxStatus = archive.querySelector('[data-product-ajax-status="true"]');
+    var fallbackPagination = archive.querySelector(".woocommerce-pagination-fallback");
+    var ajaxTimer = null;
+    var ajaxController = null;
+    var requestSequence = 0;
+
+    function loadProductsAjax() {
+      if (!ajaxEnabled || !gridEl) return;
+      if (ajaxTimer) clearTimeout(ajaxTimer);
+      ajaxTimer = setTimeout(function () {
+        if (ajaxController && ajaxController.abort) ajaxController.abort();
+        ajaxController = typeof AbortController !== "undefined" ? new AbortController() : null;
+        var sequence = ++requestSequence;
+        var fields = {
+          query: searchQuery, category: selectedCategory, tag: archiveTag, sale: purchaseMode,
+          min_price: minPrice, max_price: maxPrice, ip: selectedIps, voltage: selectedVoltages,
+          orderby: sortBy, page: currentPage, per_page: perPage
+        };
+        gridEl.setAttribute("aria-busy", "true");
+        if (ajaxStatus) ajaxStatus.textContent = "در حال بارگذاری محصولات…";
+        ajaxRequest("ese_filter_products", fields, ajaxController ? ajaxController.signal : undefined).then(function (data) {
+          if (sequence !== requestSequence) return;
+          gridEl.innerHTML = data.html || "";
+          gridEl.removeAttribute("aria-busy");
+          if (fallbackPagination) fallbackPagination.classList.add("hidden");
+          var hasResults = Number(data.total) > 0;
+          if (emptyEl) emptyEl.classList.toggle("hidden", hasResults);
+          gridEl.classList.toggle("hidden", !hasResults);
+          for (var i = 0; i < countEls.length; i++) countEls[i].textContent = toFa(Number(data.total) || 0);
+          if (purchBadge) purchBadge.classList.toggle("hidden", purchaseMode !== "online");
+          currentPage = Number(data.page) || 1;
+          renderAjaxPagination(paginationRoot, currentPage, data.pages, function (nextPage) {
+            currentPage = nextPage;
+            renderProductsFilter();
+            archive.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+          if (ajaxStatus) ajaxStatus.textContent = (Number(data.total) || 0) + " محصول یافت شد.";
+          try {
+            var url = new URL(window.location.href);
+            if (searchQuery) url.searchParams.set("search", searchQuery); else url.searchParams.delete("search");
+            if (selectedCategory && selectedCategory !== initialCategory) url.searchParams.set("category", selectedCategory); else url.searchParams.delete("category");
+            if (purchaseMode !== "all") url.searchParams.set("purchasable", purchaseMode === "online" ? "true" : "false"); else url.searchParams.delete("purchasable");
+            if (currentPage > 1) url.searchParams.set("page", String(currentPage)); else url.searchParams.delete("page");
+            window.history.replaceState({}, "", url.toString());
+          } catch (_e) {}
+        }).catch(function (error) {
+          if (error && error.name === "AbortError") return;
+          if (sequence !== requestSequence) return;
+          gridEl.removeAttribute("aria-busy");
+          if (ajaxStatus) ajaxStatus.textContent = "بارگذاری محصولات انجام نشد؛ دوباره تلاش کنید.";
+        });
+      }, searchQuery ? 250 : 0);
+    }
 
     try {
       var params = new URLSearchParams(window.location.search);
       if (params.get("purchasable") === "true") purchaseMode = "online";
+      else if (params.get("purchasable") === "false") purchaseMode = "inquiry";
+      if (params.get("category")) selectedCategory = params.get("category");
+      if (params.get("search")) searchQuery = params.get("search").slice(0, 100);
       var qPage = params.get("page");
       if (qPage) currentPage = Math.max(1, parseInt(qPage, 10) || 1);
     } catch (_e) {}
+    if (searchQuery) for (var searchIdx = 0; searchIdx < searchInputs.length; searchIdx++) searchInputs[searchIdx].value = searchQuery;
+    for (var purchaseIdx = 0; purchaseIdx < purchaseRadios.length; purchaseIdx++) {
+      purchaseRadios[purchaseIdx].checked = purchaseRadios[purchaseIdx].getAttribute("data-product-purchase-mode") === purchaseMode;
+    }
 
     function renderProductsFilter() {
+      if (ajaxEnabled) {
+        loadProductsAjax();
+        return;
+      }
       if (!gridEl) return;
       var allItems = Array.prototype.slice.call(
         gridEl.querySelectorAll("[data-product-item]")
@@ -985,11 +1203,41 @@
 
     if (sortSelect) {
       sortSelect.addEventListener("change", function () {
-        sortBy = this.value || "popular";
+        sortBy = this.value || "menu_order";
         currentPage = 1;
         renderProductsFilter();
       });
     }
+    archive.addEventListener("click", function (event) {
+      var categoryLink = event.target && event.target.closest ? event.target.closest('[data-product-category-filter]') : null;
+      if (categoryLink && archive.contains(categoryLink)) {
+        event.preventDefault();
+        var categoryValue = categoryLink.getAttribute("data-product-category-filter") || "";
+        selectedCategory = categoryValue === "all" ? "" : categoryValue;
+        currentPage = 1;
+        renderProductsFilter();
+        return;
+      }
+      var clearButton = event.target && event.target.closest ? event.target.closest('[data-product-filter-clear="true"]') : null;
+      if (!clearButton) return;
+      event.preventDefault();
+      purchaseMode = "all";
+      minPrice = 0;
+      maxPrice = 3000000;
+      selectedIps = [];
+      selectedVoltages = [];
+      selectedCategory = initialCategory;
+      searchQuery = "";
+      currentPage = 1;
+      if (sortSelect) { sortBy = "menu_order"; sortSelect.value = "menu_order"; }
+      for (var i = 0; i < searchInputs.length; i++) searchInputs[i].value = "";
+      for (var i = 0; i < purchaseRadios.length; i++) purchaseRadios[i].checked = purchaseRadios[i].getAttribute("data-product-purchase-mode") === "all";
+      for (var i = 0; i < priceSliders.length; i++) priceSliders[i].value = "3000000";
+      for (var i = 0; i < priceLabels.length; i++) priceLabels[i].textContent = "تا " + formatToman(3000000);
+      for (var i = 0; i < ipCheckboxes.length; i++) ipCheckboxes[i].checked = false;
+      for (var i = 0; i < voltageCheckboxes.length; i++) voltageCheckboxes[i].checked = false;
+      renderProductsFilter();
+    });
 
     renderProductsFilter();
   }
@@ -1805,8 +2053,47 @@
     });
 
     if (searchInput) {
+      var productResults = searchModal ? searchModal.querySelector('[data-global-search-products="true"]') : null;
+      var projectResults = searchModal ? searchModal.querySelector('[data-global-search-projects="true"]') : null;
+      var initialProductResults = productResults ? productResults.innerHTML : "";
+      var initialProjectResults = projectResults ? projectResults.innerHTML : "";
+      var liveSearchEnabled = !!(window.eseAjax && window.eseAjax.ajaxUrl && typeof window.fetch === "function");
+      var liveSearchTimer = null;
+      var liveSearchController = null;
+      var liveSearchSequence = 0;
+      var liveSearchStatus = document.createElement("span");
+      liveSearchStatus.className = "sr-only";
+      liveSearchStatus.setAttribute("role", "status");
+      liveSearchStatus.setAttribute("aria-live", "polite");
+      searchModal.appendChild(liveSearchStatus);
       searchInput.addEventListener("input", function () {
-        var q = (this.value || "").trim().toLowerCase();
+        var q = (this.value || "").trim().slice(0, 100);
+        if (liveSearchEnabled) {
+          if (liveSearchTimer) clearTimeout(liveSearchTimer);
+          if (liveSearchController && liveSearchController.abort) liveSearchController.abort();
+          if (!q) {
+            if (productResults) productResults.innerHTML = initialProductResults;
+            if (projectResults) projectResults.innerHTML = initialProjectResults;
+            liveSearchStatus.textContent = "";
+            return;
+          }
+          liveSearchTimer = setTimeout(function () {
+            liveSearchController = typeof AbortController !== "undefined" ? new AbortController() : null;
+            var sequence = ++liveSearchSequence;
+            liveSearchStatus.textContent = "در حال جستجو…";
+            ajaxRequest("ese_live_search", { query: q }, liveSearchController ? liveSearchController.signal : undefined).then(function (data) {
+              if (sequence !== liveSearchSequence) return;
+              if (productResults) productResults.innerHTML = data.products_html || "";
+              if (projectResults) projectResults.innerHTML = data.projects_html || "";
+              liveSearchStatus.textContent = "نتایج جستجو به‌روز شد.";
+            }).catch(function (error) {
+              if (error && error.name === "AbortError") return;
+              if (sequence === liveSearchSequence) liveSearchStatus.textContent = "جستجو موقتاً در دسترس نیست.";
+            });
+          }, 250);
+          return;
+        }
+        q = q.toLowerCase();
         for (var idx = 0; idx < searchItems.length; idx++) {
           var item = searchItems[idx];
           var text = (item.getAttribute("data-search-item") || "").toLowerCase();

@@ -78,6 +78,14 @@ final class AssetManager
             self::asset_version($path),
             true
         );
+        wp_localize_script(
+            self::SCRIPT_HANDLE,
+            'eseAjax',
+            [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('ese_public_filters'),
+            ]
+        );
     }
 
     /**

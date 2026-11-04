@@ -104,7 +104,7 @@ $renderTermLinks = static function (array $terms, string $taxonomy, string $sele
         }
         $isSelected = $term->slug === $selectedSlug;
         ?>
-        <a class="flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-bold transition <?php echo $isSelected ? 'bg-emerald-700 text-white' : 'text-slate-600 hover:bg-emerald-50 hover:text-emerald-800'; ?>" href="<?php echo esc_url($link); ?>">
+        <a data-product-category-filter="<?php echo esc_attr('product_cat' === $taxonomy ? $term->slug : ''); ?>" class="flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-bold transition <?php echo $isSelected ? 'bg-emerald-700 text-white' : 'text-slate-600 hover:bg-emerald-50 hover:text-emerald-800'; ?>" href="<?php echo esc_url($link); ?>">
             <span><?php echo esc_html($term->name); ?></span><span class="text-[10px] opacity-70"><?php echo esc_html(number_format_i18n((int) $term->count)); ?></span>
         </a>
         <?php
@@ -152,9 +152,9 @@ $renderFilters = static function (string $suffix) use ($categoryTerms, $ipTerms,
             <div class="max-h-80 space-y-1 overflow-y-auto">
                 <?php if ('product_cat' === $context && $archiveTerm instanceof WP_Term) : ?>
                     <?php $catLink = get_term_link($archiveTerm); ?>
-                    <?php if (!is_wp_error($catLink)) : ?><a class="flex items-center justify-between rounded-xl bg-emerald-700 px-3 py-2.5 text-xs font-bold text-white" href="<?php echo esc_url($catLink); ?>"><?php echo esc_html($archiveTerm->name); ?><span><?php echo esc_html(number_format_i18n((int) $archiveTerm->count)); ?></span></a><?php endif; ?>
+                    <?php if (!is_wp_error($catLink)) : ?><a data-product-category-filter="<?php echo esc_attr($archiveTerm->slug); ?>" class="flex items-center justify-between rounded-xl bg-emerald-700 px-3 py-2.5 text-xs font-bold text-white" href="<?php echo esc_url($catLink); ?>"><?php echo esc_html($archiveTerm->name); ?><span><?php echo esc_html(number_format_i18n((int) $archiveTerm->count)); ?></span></a><?php endif; ?>
                 <?php else : ?>
-                    <a class="flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-emerald-50" href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>"><?php echo esc_html__('همه محصولات', 'erfansanat-theme'); ?></a>
+                    <a data-product-category-filter="all" class="flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-emerald-50" href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>"><?php echo esc_html__('همه محصولات', 'erfansanat-theme'); ?></a>
                 <?php endif; ?>
                 <?php $renderTermLinks($categoryTerms, 'product_cat', 'product_cat' === $context && $archiveTerm instanceof WP_Term ? $archiveTerm->slug : ''); ?>
             </div>
@@ -167,7 +167,7 @@ $renderFilters = static function (string $suffix) use ($categoryTerms, $ipTerms,
 };
 
 $contextMarker = 'product_cat' === $context ? 'data-product-category-archive="true"' : ('product_tag' === $context ? 'data-product-tag-archive="true"' : 'data-product-shop-archive="true"');
-$initialCategory = 'product_cat' === $context && $archiveTerm instanceof WP_Term ? $archiveTerm->name : __('همه', 'erfansanat-theme');
+$initialCategory = 'product_cat' === $context && $archiveTerm instanceof WP_Term ? $archiveTerm->slug : __('همه', 'erfansanat-theme');
 $mainQueryCount = $archiveQuery ? (int) $archiveQuery->post_count : count($queriedProducts);
 $archivePageCount = max(1, (int) ceil($mainQueryCount / 9));
 $displayCount = $archiveQuery ? (int) $archiveQuery->found_posts : $mainQueryCount;
@@ -188,7 +188,7 @@ $displayCount = $archiveQuery ? (int) $archiveQuery->found_posts : $mainQueryCou
         <nav class="mb-6 flex flex-wrap gap-2" aria-label="<?php echo esc_attr__('برچسب‌های محصولات', 'erfansanat-theme'); ?>"><?php foreach ($tagTerms as $tagTerm) : ?><?php if ($tagTerm instanceof WP_Term) : ?><?php $tagLink = get_term_link($tagTerm); ?><?php if (!is_wp_error($tagLink)) : ?><a class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 hover:border-emerald-300 hover:text-emerald-800" href="<?php echo esc_url($tagLink); ?>"><?php echo esc_html($tagTerm->name); ?></a><?php endif; ?><?php endif; ?><?php endforeach; ?></nav>
     <?php endif; ?>
 
-    <section class="grid items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)]" data-products-archive="true" data-initial-category="<?php echo esc_attr($initialCategory); ?>" data-items-per-page="9">
+    <section class="grid items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)]" data-products-archive="true" data-initial-category="<?php echo esc_attr($initialCategory); ?>" data-product-archive-category="<?php echo esc_attr('product_cat' === $context && $archiveTerm instanceof WP_Term ? $archiveTerm->slug : ''); ?>" data-product-archive-tag="<?php echo esc_attr('product_tag' === $context && $archiveTerm instanceof WP_Term ? $archiveTerm->slug : ''); ?>" data-items-per-page="9">
         <aside class="hidden lg:block" aria-label="<?php echo esc_attr__('فیلترهای فروشگاه', 'erfansanat-theme'); ?>"><?php $renderFilters('desktop'); ?></aside>
 
         <div class="min-w-0">
@@ -202,6 +202,8 @@ $displayCount = $archiveQuery ? (int) $archiveQuery->found_posts : $mainQueryCou
                     <?php else : ?>
                         <label class="flex items-center gap-2 text-xs font-bold text-slate-600"><span><?php echo esc_html__('مرتب‌سازی', 'erfansanat-theme'); ?></span><select class="rounded-lg border border-slate-200 bg-white px-2 py-2 text-xs" name="orderby" data-product-sort="true"><option value="menu_order"><?php echo esc_html__('پیش‌فرض', 'erfansanat-theme'); ?></option><option value="popularity"><?php echo esc_html__('محبوب‌ترین', 'erfansanat-theme'); ?></option><option value="rating"><?php echo esc_html__('بالاترین امتیاز', 'erfansanat-theme'); ?></option><option value="price"><?php echo esc_html__('ارزان‌ترین', 'erfansanat-theme'); ?></option><option value="price-desc"><?php echo esc_html__('گران‌ترین', 'erfansanat-theme'); ?></option></select></label>
                     <?php endif; ?>
+                    <button type="button" data-product-filter-clear="true" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:border-emerald-300 hover:text-emerald-800"><?php echo esc_html__('پاک‌کردن فیلترها', 'erfansanat-theme'); ?></button>
+                    <span class="sr-only" role="status" aria-live="polite" data-product-ajax-status="true"></span>
                 </div>
             </div>
 
