@@ -1189,3 +1189,77 @@ if (!function_exists('wp_reset_vars')) {
     function wp_reset_vars(array $vars = []): void {
     }
 }
+
+/** استاب WP_Query (فاز ۵: ویترین مقالات) — آرگومان‌ها ثبت و پست‌ها از گلوبال */
+if (!class_exists('WP_Query')) {
+    class WP_Query {
+        public array $posts;
+        public int $found_posts;
+        public function __construct(array $args = []) {
+            $GLOBALS['__es_stub_wp_query_args'][] = $args;
+            $this->posts = is_array($GLOBALS['__es_stub_wp_query_posts'] ?? null) ? $GLOBALS['__es_stub_wp_query_posts'] : [];
+            $this->found_posts = count($this->posts);
+        }
+        public function have_posts(): bool {
+            return $this->posts !== [];
+        }
+        /** @return array<int, object> */
+        public function get_posts(): array {
+            return $this->posts;
+        }
+    }
+}
+
+/** استاب get_the_title */
+if (!function_exists('get_the_title')) {
+    function get_the_title(int|object $post = null): string {
+        if (is_object($post)) {
+            return (string) ($post->post_title ?? '');
+        }
+        $cur = $GLOBALS['__es_stub_current_post'] ?? null;
+        return is_object($cur) ? (string) ($cur->post_title ?? '') : '';
+    }
+}
+
+/** استاب get_the_excerpt */
+if (!function_exists('get_the_excerpt')) {
+    function get_the_excerpt(int|object $post = null): string {
+        if (is_object($post)) {
+            return (string) ($post->post_excerpt ?? '');
+        }
+        $cur = $GLOBALS['__es_stub_current_post'] ?? null;
+        return is_object($cur) ? (string) ($cur->post_excerpt ?? '') : '';
+    }
+}
+
+/** استاب get_the_date — تاریخ نمایشی از گلوبال (رفتار i18n فارسی در تولید شبیه‌سازی می‌شود) */
+if (!function_exists('get_the_date')) {
+    function get_the_date(string $format = '', int|object $post = null): string|int|false {
+        $pid = is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
+        if (isset($GLOBALS['__es_stub_post_dates'][$pid])) {
+            return (string) $GLOBALS['__es_stub_post_dates'][$pid];
+        }
+        $raw = is_object($post) ? (string) ($post->post_date ?? 'now') : 'now';
+        return gmdate($format === '' ? 'j F Y' : $format, strtotime($raw) ?: time());
+    }
+}
+
+/** استاب get_the_category روی نقشه ترم گلوبال */
+if (!function_exists('get_the_category')) {
+    function get_the_category(int|object|null $post = null): array {
+        $pid = is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
+        $terms = $GLOBALS['__es_stub_post_term_map'][$pid]['category'] ?? [];
+        return is_array($terms) ? $terms : [];
+    }
+}
+
+/** استاب wp_trim_words */
+if (!function_exists('wp_trim_words')) {
+    function wp_trim_words(string $text, int $num_words = 55, string $more = '&hellip;'): string {
+        $words = preg_split('/\s+/u', trim($text)) ?: [];
+        if (count($words) <= $num_words) {
+            return trim($text);
+        }
+        return implode(' ', array_slice($words, 0, $num_words)) . $more;
+    }
+}

@@ -201,8 +201,12 @@ final class HomeSections {
         $items['blog-preview'] = [
             'label'  => __('ویترین مقالات', 'erfansanat'),
             'schema' => [
-                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => ''],
-                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد مقاله', 'erfansanat'), 'default' => 3],
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'دانشنامه و مجله فنی'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'راهنماهای تخصصی نورپردازی'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'بررسی فنی تجهیزات LED، استانداردهای حفاظتی IP68 و راهنمای خرید المان‌های نوری شهری'],
+                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد مقالات', 'erfansanat'), 'default' => 4],
+                ['key' => 'archive_text', 'type' => 'text', 'label' => __('متن دکمه آرشیو', 'erfansanat'), 'default' => 'مشاهده آرشیو مقالات'],
+                ['key' => 'chip_fallback', 'type' => 'text', 'label' => __('چیپ بدون دسته', 'erfansanat'), 'default' => 'مجله علمی'],
             ],
         ];
         $items['contact'] = [
