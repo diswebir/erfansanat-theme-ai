@@ -85,6 +85,7 @@ if ( isset( $_POST['es_checkout_submit'] ) ) {
 			'address_1'  => $es_data['customer_address'],
 			'city'       => $es_data['customer_city'],
 		) );
+		update_post_meta( $es_order->get_id(), '_order_key', 'wc_order_' . wp_generate_password( 13, false ) );
 		update_post_meta( $es_order->get_id(), '_es_buyer_type', $es_data['buyer_type'] );
 		update_post_meta( $es_order->get_id(), '_es_payment_method', $es_data['payment_method'] );
 		update_post_meta( $es_order->get_id(), '_es_customer_notes', $es_data['customer_notes'] );
