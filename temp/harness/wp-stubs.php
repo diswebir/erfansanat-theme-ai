@@ -1160,6 +1160,13 @@ if (!function_exists('checked')) {
     }
 }
 
+if (!function_exists('get_comments_number')) {
+    function get_comments_number(int|object|null $post = null): int
+    {
+        $id = is_object($post) ? ($post->ID ?? 0) : (int) ($post ?? ($GLOBALS['__es_stub_current_id'] ?? 0));
+        return (int) ($GLOBALS['__es_stub_comment_counts'][$id] ?? 0);
+    }
+}
 if (!function_exists('get_the_ID')) {
     function get_the_ID(): int
     {

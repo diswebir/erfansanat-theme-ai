@@ -302,7 +302,7 @@
 - 📤 خروجی: `single-product.php`؛ `template-parts/single-product/hero.php`؛ `template-parts/single-product/gallery.php` · **وابستگی:** Task 6.1, Task 3.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.3 — single-product — تب‌های مشخصات و جدول ۱۸ ویژگی فنی (pa_*) `[PENDING]`
+### Task 6.3 — single-product — تب‌های مشخصات و جدول ۱۸ ویژگی فنی (pa_*) `[DONE — 17/17]`
 - 🎯 تب‌بندی prod-tab میرور با جدول کامل اتریبیوت‌ها + شناسه‌های قانونی
 - 📤 خروجی: `template-parts/single-product/specs-tabs.php` · **وابستگی:** Task 6.2, Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -750,7 +750,7 @@
 - 📤 خروجی: `single-product.php`؛ `template-parts/single-product/hero.php`؛ `template-parts/single-product/gallery.php` · **وابستگی:** Task 6.1, Task 3.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.3 — single-product — تب‌های مشخصات و جدول ۱۸ ویژگی فنی (pa_*) `[PENDING]`
+### Task 6.3 — single-product — تب‌های مشخصات و جدول ۱۸ ویژگی فنی (pa_*) `[DONE — 17/17]`
 - 🎯 تب‌بندی prod-tab میرور با جدول کامل اتریبیوت‌ها + شناسه‌های قانونی
 - 📤 خروجی: `template-parts/single-product/specs-tabs.php` · **وابستگی:** Task 6.2, Task 3.5
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا

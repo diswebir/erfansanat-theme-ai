@@ -16,6 +16,14 @@ final class Setup {
 
     public static function init(): void {
         /**
+         * این ماژول فقط پاکسازی لایه نمایش فرانت‌اند است؛ در ادمین/اجکس کاری نمی‌کند
+         * (قرارداد فاز ۱: در ادمین هیچ remove_action/remove_filter از قالب اجرا نمی‌شود).
+         */
+        if (function_exists('is_admin') && is_admin()) {
+            return;
+        }
+
+        /**
          * حذف خروجی‌های پیش‌فرض ووکامرس — breadcrumb سفارشی میرور در فاز ۶ رندر می‌شود.
          */
         remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);

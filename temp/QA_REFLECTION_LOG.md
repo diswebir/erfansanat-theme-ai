@@ -206,3 +206,11 @@
 3. **__es_locate_override:** برای include قالبی که es_get_template دارد ولی شل خالی می‌خواهیم (بدون هدر/فوتر)، __es_theme_dir را خالی کن و مسیر پارتیال‌ها را با override بده.
 4. **shell_exec در wasm هنگ می‌کند** (نه خطا) — timeout بیرونی لازم بود؛ چک لغوی داخل تست فقط با token_get_all.
 5. زنجیره تصویر: thumbnail → galerry_produ/_product_image_gallery/gallery-filed/image-2..6 (ProductGallery::get_ids) → placeholder light-tree.jpg.
+
+## تسک ۶.۳ — تب‌های مشخصات و شناسه‌های قانونی (2026-11-04)
+**نتیجه:** 17/17 شرط (مقایسه بایت‌دقیق پنل specs) · رگرسیون کامل ۵۴ فایل سبز
+1. **ریست سندباکس #۴:** فایل‌ها از اسنپ‌شات برگشتند ولی گیت به 8eddaff رفته بود → ترمیم: fetch + reset --mixed origin-tip (فقط تغییرات همان نوبت uncommitted ماندند). زیرساخت: شیم PHP v6 بازنویسی شد (زیر) + میرور دوباره استخراج شد (فقط سگمنت اول zip).
+2. **شیم v6 روی @php-wasm/node@3.1.62:** (الف) processId باید به loadNodeRuntime پاس شود: {emscriptenOptions:{processId:process.pid}} — «PHPLoader.processId must be set before init» (ب) کلاس PHP از @php-wasm/universal می‌آید نه node (ج) مونت با createNodeFsMountHandler('/') روی /host (د) run({code}) هنگ می‌کند → writeFile به /tmp + run({scriptPath}) (ه) اجرای مستقیم /host/path (نه eval/base64) تا <?php و declare(strict_types) سالم بمانند (و) process.exit صریح لازم است وگرنه هندل‌های mount پروسه را زنده نگه می‌دارند (ز) -l = wrapper با token_get_all روی مسیر /host.
+3. **Woo\Setup در ادمین گارد شد:** remove_actionهای بوت (breadcrumb/sidebar/related) قرارداد فاز ۱ «در ادمین هیچ حذفی» را می‌شکست (رد شدن تست ۱.۵) → is_admin() early-return؛ رفتار فرانت تغییری نمی‌کند.
+4. **مقایسه بایت‌دقیق باید در محدوده واقعی تسک باشد:** مرجع کامل سکشن شامل پنل desc/reviews است که مال ۶.۴/۶.۶ — مقایسه از data-prod-tab-panel="specs" تا پایان (وگرنه FAIL کاذب).
+5. جدول از _product_attributes می‌خواند (is_taxonomy → get_the_terms.name، وگرنه value)؛ شناسه‌ها فقط مقدار-دار؛ تب فعال همیشه اولین تب رندرشده؛ فیلتر es_product_specs_args برای has_desc/has_reviews.
