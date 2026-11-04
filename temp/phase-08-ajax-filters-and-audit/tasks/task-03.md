@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[PASSED]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -22,6 +22,7 @@ LiveSearch پروژه‌ها و پست‌ها برای مودال سراسری �
 
 ## فایل‌های هدف (Target Files)
 - `inc/Ajax/LiveSearchProjectsPosts.php`
+- `assets/js/main.js` (wire the existing global-search modal to both AJAX routes)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** مودال جستجو (Phase 4)

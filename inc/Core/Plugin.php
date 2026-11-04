@@ -82,6 +82,7 @@ final class Plugin
             ThemeSetup::class,
             \ErfanSanat\Theme\Ajax\AjaxController::class,
             \ErfanSanat\Theme\Ajax\LiveSearchProducts::class,
+            \ErfanSanat\Theme\Ajax\LiveSearchProjectsPosts::class,
             DeBloat::class,
             AssetManager::class,
             \ErfanSanat\Theme\Admin\ThemeOptions::class,

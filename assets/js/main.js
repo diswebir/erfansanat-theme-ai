@@ -1728,11 +1728,49 @@
     }
 
     // 14e. Global AJAX Search Modal (jet-ajax-search)
-    var searchModal = document.querySelector('[data-search-modal="true"]');
-    var searchOpenBtns = document.querySelectorAll('[data-search-modal-open="true"]');
-    var searchCloseBtns = document.querySelectorAll('[data-search-modal-close="true"]');
-    var searchInput = document.querySelector('[data-global-search-input="true"]');
+    var searchModal = document.querySelector("[data-search-modal]");
+    var searchOpenBtns = document.querySelectorAll("[data-search-modal-open]");
+    var searchCloseBtns = document.querySelectorAll("[data-search-modal-close]");
+    var searchInput = document.querySelector("[data-global-search-input]");
     var searchItems = document.querySelectorAll("[data-search-item]");
+    var searchProductsResults = document.querySelector("[data-global-search-products]");
+    var searchContentResults = document.querySelector("[data-global-search-projects]");
+    var searchDebounceTimer = null;
+    var searchRequestVersion = 0;
+
+    function requestGlobalSearch(route, query, requestVersion) {
+      if (!window.esThemeData || !window.esThemeData.ajaxUrl || !window.esThemeData.ajaxNonce) return Promise.resolve(null);
+      var payload = new URLSearchParams();
+      payload.set("action", "erfan_sanat_ajax");
+      payload.set("nonce", window.esThemeData.ajaxNonce);
+      payload.set("route", route);
+      payload.set("query", query);
+      return fetch(window.esThemeData.ajaxUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: payload.toString()
+      }).then(function (response) { return response.json(); }).then(function (result) {
+        if (requestVersion !== searchRequestVersion || !result || !result.success) return null;
+        return result;
+      }).catch(function () { return null; });
+    }
+
+    function renderGlobalSearch(query) {
+      var normalized = (query || "").trim();
+      var version = ++searchRequestVersion;
+      if (normalized.length < 2) {
+        if (searchProductsResults) searchProductsResults.innerHTML = "";
+        if (searchContentResults) searchContentResults.innerHTML = "";
+        return;
+      }
+      requestGlobalSearch("product_search", normalized, version).then(function (result) {
+        if (result && searchProductsResults) searchProductsResults.innerHTML = result.html || "";
+      });
+      requestGlobalSearch("content_search", normalized, version).then(function (result) {
+        if (result && searchContentResults) searchContentResults.innerHTML = result.html || "";
+      });
+    }
 
     function syncSearchButtonsState(isOpen) {
       for (var s = 0; s < searchOpenBtns.length; s++) {
@@ -1806,7 +1844,8 @@
 
     if (searchInput) {
       searchInput.addEventListener("input", function () {
-        var q = (this.value || "").trim().toLowerCase();
+        var rawQuery = (this.value || "").trim();
+        var q = rawQuery.toLowerCase();
         for (var idx = 0; idx < searchItems.length; idx++) {
           var item = searchItems[idx];
           var text = (item.getAttribute("data-search-item") || "").toLowerCase();
@@ -1816,6 +1855,8 @@
             item.classList.add("hidden");
           }
         }
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(function () { renderGlobalSearch(rawQuery); }, 250);
       });
     }
   }

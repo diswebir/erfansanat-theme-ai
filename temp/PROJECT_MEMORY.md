@@ -2,7 +2,7 @@
 
 ## وضعیت فعلی (Current Stage & Status)
 - **مرحله فعلی:** `PHASE 8 IN PROGRESS — TASK 8.1 PASSED; CONTINUE TASK-BY-TASK`
-- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20; Phase 8 has started with explicit user approval. Tasks 8.1–8.2 passed targeted tests; Phase 8 is not complete.`
+- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20; Phase 8 has started with explicit user approval. Tasks 8.1–8.3 passed targeted tests; Phase 8 is not complete.`
 - **آخرین فاز پاس‌شده:** Phase 2 — داشبورد ادمین (آپشن واحد `erfansanat_theme_options` + `es_option()`)، تب‌های هدر/فوتر/ظاهر/فیلترها (۲۵ toggle شامل ۱۸ `pa_*`) و SectionManager کامل (`_es_sections` + Drag&Drop + `es_render_sections()`); سوئیت فاز ۲: ۱۵/۱۵ پاس و رگرسیون فاز ۱ سبز.
 - **آخرین فاز پاس‌شده:** Phase 3 — CPT `projects`، تکسونومی‌های `project_type`/`city`/`product_brand`، گارد Rewrite ووکامرس، ریدایرکت ۳۰۱ `/project/`، موتور `LegacyMeta` (فرمت `item-0` جت‌انجین)، متاباکس‌های کامل محصول/پروژه/ترم با کلیدهای دقیق دیتابیس زنده، Hreflang و `ViewCounter`؛ سوئیت فاز ۳: ۱۷/۱۷ پاس، رگرسیون فازهای ۱ و ۲ سبز.
 - **آخرین فاز پاس‌شده:** Phase 5 — front-page با ۱۵ سکشن پیش‌فرض SectionManager (هیرو ۵ صحنه‌ای با ویدیو و data-home1-*، پروژه‌ها، شمارنده‌ها، تایم‌لاین، محصولات، خدمات تب‌دار data-service-*، مقالات و CTA) + ۳ کارت استاندارد؛ سوئیت فاز ۵: ۲۰/۲۰ پاس، رگرسیون فازهای ۱ تا ۴ سبز. نکته: static-mirror در ریست سندباکس حذف شد و فاز ۴ بازسازی شد (11/11).
@@ -97,3 +97,4 @@
 - WooCommerce 11.2.1 integration environment: installed from user-provided `/tmp/arena-coding-uploads/woocommerce.11.2.1.zip.png` (ZIP signature verified); plugin active in `/opt/wp-testbed`. Full suites Phase 1–7 currently pass.
 - Phase 8 started after user approval. Task 8.1 passed targeted tests: public/logged-in AJAX route registration, `erfan_sanat_ajax` nonce, safe recursive request sanitization, standard success/error JSON shape, and additive frontend nonce localization. Generic route callbacks are registered through `erfan_sanat_ajax_routes`; Phase 8 remains in progress.
 - Phase 8 Task 8.2 passed: public product-search route searches published product titles and WooCommerce `_sku` only (not post content), caps results, returns the existing product-card markup including thumbnail and price/inquiry state, and handles empty/too-short input. Task 8.1–8.2 tests and Phase 1 regression passed.
+- Phase 8 Task 8.3 passed: project/post search returns separate result groups with existing card templates; the global modal is now wired to both server routes using the dedicated nonce, debounced input, stale-response suppression, and the static template’s actual presence-only data attributes. Phase 8 Tasks 8.1–8.3 pass; static mirror remains absent, so no exact-parity claim is made.
