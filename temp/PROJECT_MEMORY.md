@@ -2,7 +2,7 @@
 
 ## وضعیت جاری
 
-`STAGE 1 - PHASE 3 COMPLETE - AWAITING APPROVAL`
+`STAGE 1 - PHASE 4 COMPLETE - AWAITING APPROVAL`
 
 - تاریخ شروع: 2026-11-03.
 - شاخه کار: `arena/de593948-erfansanat-theme-ai`.
@@ -93,3 +93,14 @@
 - **Task 3.2 PASSED**: `inc/Data/LegacyMeta.php` + `inc/Admin/ProductMetaboxes.php`. PHPUnit ۱۲/۹۵، HTTP ۱۳/۱۳. باگ بحرانی unslash در `update_metadata()` شناسایی و رفع شد.
 - **Task 3.3 PASSED**: `ProjectMetaboxes` + `TermMetaboxes` + `ContentMetaboxes`. PHPUnit ۱۲/۱۲۹، HTTP ۹/۹ (کل فاز ۳: ۳۷/۳۷).
 - **Phase 3 کامل شد** و منتظر تأیید کاربر برای Phase 4 است.
+- **Phase 3 کامل شد** (commit `3a5259d` + گزارش `bbe97a6`) و PR #2 باز است.
+
+## وضعیت فاز ۴
+
+- **Task 4.1 PASSED**: `header.php` و `footer.php` از DOM مرجع برش خوردند؛ نوار اعلان، تاپ‌بار، برند، `<nav aria-label="منوی اصلی">` با چهار تریگر مگامنو، دکمه جستجو (فرم GET واقعی)، سبد خرید با `data-header-cart-badge` و دکمهٔ منوی موبایل. فوتر چهار ستونی با نشان‌ها، دسترسی سریع، دسته‌بندی محصولات، اطلاعات تماس، کپی‌رایت و `data-scroll-top`. PHPUnit ۸/۸۱، HTTP ۳۰/۳۰.
+- **Task 4.2 PASSED**: `inc/Navigation/{MenuTree,MegaMenu,MobileMenu}.php` + `template-parts/navigation/header-search.php`. چهار محل منو آزمون دارند؛ بلوک‌های مگامنو از ترم‌های واقعی (۴ تب محصول، ۲ تب پروژه، خدمات، ۵ برگهٔ شرکتی) ساخته می‌شوند. PHPUnit ۱۱/۱۰۰، HTTP ۲۴/۲۴.
+- **انحراف مستند**: `id="home"` مرجع تکراری است؛ پوستهٔ تم `id="erfansanat-page"` گرفت و `id="home"` تنها روی هیرو ماند. آزمون HTTP وجود ID تکراری را رد می‌کند.
+- **سه نقص واقعی** که آزمون‌ها گرفتند: نبودِ `aria-controls` روی تریگرهای مگامنو، چاپ پوستهٔ خالی برای بلوک ناشناخته، و نبودِ ریل‌های تب `data-mega-proj-tab` / `data-mobile-*` که JS منتقل‌شده به آن‌ها وابسته است.
+- **رگرسیون اصلاح‌شده**: بررسی «primary navigation is present» در فاز ۲ به کلاس پوستهٔ موقت (`erfansanat-menu`) وابسته بود؛ به قرارداد جدید (لندمارک `<nav>` + هوک مگامنو) به‌روزرسانی شد.
+- **Phase 4 کامل شد**: جمع فاز ۱۹ تست / ۱۸۱ assertion، HTTP 54/54؛ رگرسیون فازهای ۱–۳ سبز (PHPUnit 32/788، 35/192، 36/359 و HTTP 83/83، 49/49، 37/37)؛ PHPCS روی ۴۲ فایل تمیز.
+- **تصمیم به‌تعویق‌افتاده**: تأیید بصری مگامنو/کشو در مرورگر واقعی انجام نشده (کرومیوم در دسترس نیست) و باید در استیجینگ تکرار شود.
