@@ -254,12 +254,11 @@ final class FieldRenderer {
 	private static function link( string $id, string $name, string $key, $value, array $field ): string {
 		$link = self::normalize_link( $value );
 
-		$html  = '<div class="es-link" data-es-link="' . esc_attr( $id ) . '">';
+		$html  = '<div class="es-link" data-es-link="' . esc_attr( $id ) . '" data-es-link-key="' . esc_attr( $key ) . '">';
 		$html .= sprintf(
-			'<input type="url" id="%s" name="%s[url]" data-es-key="%s" data-es-link-url class="regular-text" placeholder="https://" value="%s" />',
+			'<input type="url" id="%s" name="%s[url]" data-es-link-url class="regular-text" placeholder="https://" value="%s" />',
 			esc_attr( $id ),
 			esc_attr( $name ),
-			esc_attr( $key ),
 			esc_attr( $link['url'] )
 		);
 		$html .= sprintf(

@@ -12,3 +12,6 @@ Thumbs.db
 *.log
 __pycache__/
 *.pyc
+
+# Generated visual previews (rebuild via temp/build-admin-preview.php)
+preview/

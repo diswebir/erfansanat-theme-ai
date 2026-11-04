@@ -212,6 +212,11 @@ final class ThemeOptions {
 	 * Render the fields of a tab via the FieldRenderer (P02-T005+).
 	 */
 	private static function render_tab_content( string $tab_id ): void {
+		if ( 'overview' === $tab_id ) {
+			DashboardOverview::render();
+			return;
+		}
+
 		if ( class_exists( FieldRenderer::class ) ) {
 			FieldRenderer::render_tab( $tab_id );
 		}

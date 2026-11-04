@@ -30,7 +30,9 @@
 	font-weight: 100 900;
 	font-style: normal;
 	font-display: swap;
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	/* ZWNJ/ZWJ (U+200C-200E) are intentionally left to the Arabic/Persian
+	   subset so Persian half-spaces always render from the correct face. */
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200F-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 body.es-admin-vazirmatn,
@@ -69,4 +71,37 @@ body.es-admin-vazirmatn input[dir="ltr"].code {
 body.es-admin-vazirmatn input[type="number"],
 body.es-admin-vazirmatn .tabular-nums {
 	font-variant-numeric: tabular-nums;
+}
+
+/* Crisper Persian rendering across the theme admin screens. */
+body.es-admin-vazirmatn {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+/* Overview panel + status readout inherit the Persian face explicitly so no
+   element falls back to the default wp-admin font. */
+.es-dashboard .es-overview,
+.es-dashboard .es-overview :is(h2, h3, p, span, a, th, td, table),
+.es-dashboard .es-stat-card__value,
+.es-dashboard .es-stat-card__label,
+.es-dashboard .es-stat-card__pending,
+.es-dashboard .es-status-table,
+.es-dashboard .es-quick-action {
+	font-family: var(--es-admin-font, "Vazirmatn", "Segoe UI", Tahoma, sans-serif);
+}
+
+/* Stat numbers and status values align cleanly in Persian. */
+.es-dashboard .es-stat-card__value,
+.es-dashboard .es-status-table td {
+	font-variant-numeric: tabular-nums;
+}
+
+/* WP chrome rendered inside the dashboard page (notices, help, screen meta)
+   also uses the Persian face for a consistent experience. */
+body.es-admin-vazirmatn .es-dashboard ~ .notice,
+body.es-admin-vazirmatn .es-dashboard .notice,
+body.es-admin-vazirmatn .es-dashboard :is(.screen-meta, #screen-meta, .metabox-prefs) {
+	font-family: var(--es-admin-font, "Vazirmatn", "Segoe UI", Tahoma, sans-serif);
 }

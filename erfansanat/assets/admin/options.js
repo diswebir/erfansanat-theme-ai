@@ -108,11 +108,32 @@
 		}
 	}
 
+	function collectLinkGroups(values) {
+		// Link fields store an object {url, label, target}; collect each group
+		// as a whole so the label/target are never lost on save.
+		dashboard.querySelectorAll("[data-es-link-key]").forEach(function (group) {
+			if (group.closest("template")) {
+				return;
+			}
+			var key = group.getAttribute("data-es-link-key");
+			var urlInput = group.querySelector("[data-es-link-url]");
+			var labelInput = group.querySelector("[data-es-link-label]");
+			var targetInput = group.querySelector("[data-es-link-target]");
+			values[key] = {
+				url: urlInput ? urlInput.value : "",
+				label: labelInput ? labelInput.value : "",
+				target: targetInput && targetInput.checked ? "_blank" : "_self"
+			};
+		});
+	}
+
 	function collectValues() {
 		var values = {};
+		collectLinkGroups(values);
 		dashboard.querySelectorAll("[data-es-key]").forEach(function (input) {
-			// Skip inputs that live inside a <template> (repeater prototype).
-			if (input.closest("template")) {
+			// Skip inputs that live inside a <template> (repeater prototype)
+			// or inside a link group (already collected as an object).
+			if (input.closest("template") || input.closest("[data-es-link-key]")) {
 				return;
 			}
 			var key = input.getAttribute("data-es-key");
@@ -163,7 +184,30 @@
 				})
 				.finally(function () {
 					saveButton.disabled = false;
+					dirty = false;
+					saveButton.classList.remove("is-dirty");
 				});
 		});
 	}
+
+	// ── Unsaved-changes guard ────────────────────────────────────────────────
+	var dirty = false;
+	dashboard.addEventListener("input", function () {
+		dirty = true;
+		if (saveButton) {
+			saveButton.classList.add("is-dirty");
+		}
+	});
+	dashboard.addEventListener("change", function () {
+		dirty = true;
+		if (saveButton) {
+			saveButton.classList.add("is-dirty");
+		}
+	});
+	window.addEventListener("beforeunload", function (event) {
+		if (dirty) {
+			event.preventDefault();
+			event.returnValue = "";
+		}
+	});
 })();

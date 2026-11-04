@@ -444,6 +444,7 @@ final class Schema {
 	 */
 	public static function tabs(): array {
 		$tabs = array(
+			'overview' => array( 'title' => 'پیشخوان', 'icon' => 'dashicons-dashboard' ),
 			'home'     => array( 'title' => 'صفحه اصلی و هیرو', 'icon' => 'dashicons-admin-home' ),
 			'header'   => array( 'title' => 'هدر، اعلان و لوگو', 'icon' => 'dashicons-align-full-width' ),
 			'megamenu' => array( 'title' => 'مگامنو', 'icon' => 'dashicons-menu-alt3' ),
