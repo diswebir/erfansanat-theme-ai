@@ -33,6 +33,7 @@ use ErfanSanat\Theme\Content\Taxonomies;
 use ErfanSanat\Theme\Frontend\ArchiveConfig;
 use ErfanSanat\Theme\Frontend\CustomCode;
 use ErfanSanat\Theme\Frontend\InlineCss;
+use ErfanSanat\Theme\Frontend\Head;
 use ErfanSanat\Theme\Meta\MetaRepository;
 use ErfanSanat\Theme\Meta\Views;
 use ErfanSanat\Theme\Performance\DeBloat;
@@ -110,6 +111,7 @@ final class Theme {
 		$this->register_module( 'archive-config', new ArchiveConfig() );
 		$this->register_module( 'scripts-tab', new ScriptsTab() );
 		$this->register_module( 'custom-code', new CustomCode() );
+		$this->register_module( 'head', new Head() );
 		$this->register_module( 'brand-tab', new BrandTab() );
 		$this->register_module( 'inline-css', new InlineCss() );
 		$this->register_module( 'header-tab', new HeaderTab() );

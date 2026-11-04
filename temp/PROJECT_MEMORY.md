@@ -1,13 +1,13 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — Phase 3 (Tasks 3.1–3.18) تکمیل شد؛ Gate 3 سبز: 66 PASS / 0 FAIL / 0 PENDING.
+**آخرین به‌روزرسانی:** 2026-11-04 — با اجازه ادامهٔ کاربر Phase 4 شروع شد؛ Task 4.1 پاس: 4 PASS / 0 FAIL / 0 PENDING.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
-| فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
-| آخرین تسک پاس‌شده | 3.18 — Phase 3 integration gate (18 files, 66 PASS / 0 FAIL / 0 PENDING) |
-| دروازه تأیید | Gate 1, Gate 2, Gate 3: ✅؛ Phase 4 در انتظار تأیید جداگانه کاربر است |
+| فاز جاری | Phase 4 — هدر، مگامنو، منوی موبایل و فوتر / ۱۲ تسک اتمیک |
+| آخرین تسک پاس‌شده | 4.1 — custom head metadata/Hreflang/JSON-LD (4 PASS / 0 FAIL / 0 PENDING) |
+| دروازه تأیید | Gate 1, Gate 2, Gate 3: ✅؛ کاربر ادامهٔ کار به Phase 4 را در 2026-11-04 مجاز کرد؛ Gate 4 پس از Task 4.12 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
 
@@ -46,10 +46,10 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- Phase 3 تمام شده است: گالری محصول و همگام‌سازی، روابط، repeaterها، Quick Edit، متاباکس پروژه و ترم، Hreflang، شمارنده بازدید و گیت یکپارچگی پیاده‌سازی/تست شدند.
-- نتیجه گیت Phase 3: `node tools/harness/run-phase.mjs temp/phase-03-cpt-and-legacy-meta/tests` → 18 فایل، 66 PASS / 0 FAIL / 0 PENDING.
-- Phase 2 regression suite نیز 104 PASS / 0 FAIL / 0 PENDING است. Phase 1 رگرسیون در این نشست به‌دلیل نبود WordPress harness `/home/user/.cache/harness/wpn` و snapshotهای رندر قابل تأیید نبود؛ PHP lint همه فایل‌های theme در تست ساختاری Phase 1 پاس شد.
-- گام بعدی: توقف تا تأیید جداگانه Phase 4.
+- Phase 3 تکمیل است: Gate 3 با 18 فایل تست و 66 PASS / 0 FAIL / 0 PENDING.
+- Phase 4 با اجازهٔ ادامهٔ کاربر شروع شد؛ Task 4.1 در `inc/Frontend/Head.php` و `inc/SEO/JsonLd.php` کامل شد (4 PASS).
+- گام بعدی: Task 4.2 — استخراج هدر مشترک دقیق از استاتیک، حذف لینک‌های `.html` و اتصال به تنظیمات/منوهای وردپرس.
+- Phase 2 regression suite قبلاً 104 PASS / 0 FAIL / 0 PENDING؛ Phase 1 runtime/render suite در این نشست به‌دلیل نبود harness/snapshots قابل تأیید نبود.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
 ## ۶. وضعیت هارنس تست

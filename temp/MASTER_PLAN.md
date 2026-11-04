@@ -115,7 +115,7 @@
 
 | # | تسک | اندازه | وابستگی | وضعیت | فایل‌های کلیدی |
 |---|---|---|---|---|---|
-| 4.1 | `head` سفارشی: `wp_head`، متا، Hreflang و JSON-LD پایه | `M` | `1.9`، `2.7` | `[PENDING]` | `inc/Frontend/Head.php` +1 |
+| 4.1 | `head` سفارشی: `wp_head`، متا، Hreflang و JSON-LD پایه | `M` | `1.9`، `2.7` | `[PASSED]` | `inc/Frontend/Head.php` +1 |
 | 4.2 | `header.php`: نوار اعلان + لوگو + نوار ناوبری | `L` | `4.1`، `2.7` | `[PENDING]` | `header.php` +3 |
 | 4.3 | `footer.php` + بازگشت به بالا + اطلاعات تماس | `M` | `4.2` | `[PENDING]` | `footer.php` +3 |
 | 4.4 | Walker مگامنو محصولات (تب‌ها + ستون‌ها) | `L` | `4.2`، `1.11` | `[PENDING]` | `inc/Nav/MegaMenuWalker.php` +1 |

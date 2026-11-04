@@ -370,3 +370,15 @@
 | Regression Phase 2 | **104 PASS / 0 FAIL / 0 PENDING** |
 | محدودیت harness | Phase 1 suite در این نشست به‌دلیل نبود `/home/user/.cache/harness/wpn` و snapshotهای render، گزارش سبز/قابل بازتولید نداد؛ lint ساختاری PHP پاس شد |
 | وضعیت | Gate 3 کامل؛ Phase 4 شروع نمی‌شود تا تأیید جداگانه کاربر |
+
+## Phase 4 — Task 4.1 (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| OG/Twitter بدون SEOPress | **PASS**؛ fallback metadata escaped و شامل OG/Twitter است |
+| عدم duplicate با SEOPress | **PASS**؛ `social_tags_enabled()` خاموش می‌شود و hook فقط fallback را می‌زند |
+| hreflang | **PASS**؛ fa/en/ar هرکدام یک‌بار، meta override و URL پیش‌فرض امن |
+| JSON-LD | **PASS**؛ JSON معتبر برای Organization, BreadcrumbList, WebSite؛ کدگذاری JSON و فیلتر `<script>` |
+| نتیجه | `node tools/harness/run-tests.mjs temp/phase-04-header-footer-navigation/tests/test-task-01.php` → **4 PASS / 0 FAIL / 0 PENDING** |
+| محدودیت | تست‌های mock؛ رفتار افزونه SEOPress روی سایت زنده و خروجی واقعی مرورگر هنوز smoke-test نشده |
+| وضعیت | Task 4.1 `[PASSED]`; ادامه از Task 4.2 |
