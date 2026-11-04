@@ -90,3 +90,4 @@
 - Phase 7 Task 7.15 PASSED: FAQ page renders three SectionManager-managed accordions using existing `data-faq-*` hooks and emits FAQPage JSON-LD only for populated Q&A entries.
 - Phase 7 Task 7.16 PASSED: warranty page uses `_es_sections` for terms, after-sales process and contact; renders configured lists and 24-month warranty statement plus support link.
 - Phase 7 Task 7.17 PASSED: recruitment page renders SectionManager-driven R&D/projects/finance/IT tabs and a safe resume-contact slot; tab JS updates selected/hidden accessibility state. Resume upload processing remains out of Phase 7 scope.
+- Phase 7 Task 7.18 PASSED: parent services page lists published direct child service pages as cards, with a collaboration process and contact section. Missing children produce an honest empty state.

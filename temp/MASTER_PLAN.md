@@ -156,7 +156,7 @@
 - `[PASSED]` **Task 7.15 (`task-15.md` / `test-task-15.php`):** قالب سوالات متداول
 - `[PASSED]` **Task 7.16 (`task-16.md` / `test-task-16.php`):** قالب شرایط گارانتی و بازگشت
 - `[PASSED]` **Task 7.17 (`task-17.md` / `test-task-17.php`):** قالب استخدام (۴ واحد)
-- `[PENDING]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
+- `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PENDING]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
 - `[PENDING]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
 - `[PENDING]` **Phase 7 Suite (`run-phase-07-tests.sh`):** اجرای همه 20 تست این فاز + گزارش و توقف برای تایید کارفرما (فاز به فاز).

@@ -126,3 +126,4 @@
 - Task 7.15 verifies category accordions, question/answer output, FAQPage schema and warning-free rendering; Tasks 7.1–7.15 regression set passes.
 - Task 7.16 verifies terms/process/contact sections and configured repeater values without theme warnings; Tasks 7.1–7.16 pass.
 - Task 7.17 verifies all four recruitment tabs/panels, configured content and application slot; `node --check` and PHP lint are clean; Tasks 7.1–7.17 pass.
+- Task 7.18 verifies five child page cards, process/contact sections, no warnings and PHP lint; Tasks 7.1–7.18 regressions pass.
