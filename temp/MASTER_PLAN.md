@@ -208,5 +208,5 @@
 - Environment caveat: `temp/run-all-phases-e2e.sh` itself is still blocked at Phase 1 by absent native PHP CLI (`php: command not found`, exit 127). Its direct all-phase execution is **not** claimed as passing. Native Chromium visual review remains unavailable and is distinct from the jsdom checks.
 
 ### تکمیل ادغام فونت پنل مدیریت — 2026-11-04
-- داشبورد اختصاصی قالب از فونت محلی Vazirmatn برای متن، فرم‌ها، کنترل‌ها و پنجره رسانه استفاده می‌کند؛ سه زیرمجموعه عربی/فارسی، لاتین و لاتینِ توسعه‌یافته با `font-display: swap` و `unicode-range` در CSS مدیریت ثبت شده‌اند. بارگذاری CSS همچنان مشروط به صفحه داشبورد قالب است و به فونت آیکن‌های WordPress دست نمی‌زند.
-- تست Task 2.4 گسترش یافت و کل سوئیت Phase 2 پس از تغییر دوباره اجرا شد: **15/15 پاس**. CSS با Prettier parse شد و فایل CSS و هر سه فونت از HTTP با پاسخ 200 دریافت شدند.
+- پنل تنظیمات قالب، متاباکس‌های اختصاصی قالب، فرم‌های taxonomy مرتبط و جدول محصولات/پروژه‌ها از فونت محلی Vazirmatn استفاده می‌کنند؛ پنجره رسانه نیز در همین صفحات پوشش داده شده است. سه زیرمجموعه عربی/فارسی، لاتین و لاتینِ توسعه‌یافته با `font-display: swap` و `unicode-range` تعریف شده‌اند. CSS فقط در صفحات مدیریتی مرتبط enqueue می‌شود و فونت آیکن‌های WordPress محفوظ است.
+- تست Task 2.4 گسترش یافت و کل سوئیت Phase 2 پس از تکمیل دامنه تغییرات دوباره اجرا شد: **15/15 پاس**. CSS با Prettier parse شد و فایل CSS و هر سه فونت از HTTP با پاسخ 200 دریافت شدند.

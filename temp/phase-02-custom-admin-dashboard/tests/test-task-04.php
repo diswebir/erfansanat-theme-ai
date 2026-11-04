@@ -15,6 +15,14 @@ foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin.woff2', 'vazirmatn-latin-ex
 }
 $assert(str_contains($adminCss, 'body.toplevel_page_erfansanat-theme') && str_contains($adminCss, "font-family: 'Vazirmatn'"), 'Vazirmatn is applied to the theme dashboard and controls');
 $assert(str_contains($adminCss, '.media-modal') && str_contains($adminCss, 'font-family: inherit'), 'Media library dialog inherits Vazirmatn without replacing icon fonts');
+$assert(str_contains($adminCss, ".postbox[id^='erfansanat-']"), 'Theme metaboxes inherit the admin font');
+$assert(str_contains($adminCss, 'body.taxonomy-product_cat') && str_contains($adminCss, 'body.taxonomy-city'), 'Theme taxonomy screens inherit the admin font');
+$assert(str_contains($adminCss, 'body.post-type-product .wp-list-table'), 'Product/project list screens inherit the admin font');
+$assert(AdminAssets::shouldEnqueueStyle('post.php', 'product'), 'Font stylesheet is enabled on theme product editor');
+$assert(AdminAssets::shouldEnqueueStyle('post-new.php', 'page'), 'Font stylesheet is enabled on page editor and section manager');
+$assert(AdminAssets::shouldEnqueueStyle('edit-tags.php', null, 'product_cat'), 'Font stylesheet is enabled on theme taxonomy screens');
+$assert(AdminAssets::shouldEnqueueStyle('edit.php', 'projects'), 'Font stylesheet is enabled on project list screen');
+$assert(!AdminAssets::shouldEnqueueStyle('post.php', 'unrelated_cpt'), 'Font stylesheet remains scoped away from unrelated post types');
 $a=new AdminAssets(); $a->enqueue('plugins.php');
 $assert(!wp_style_is('erfansanat-admin','enqueued'),'Not enqueued on unrelated admin page');
 $a->enqueue('toplevel_page_'.ThemeOptions::PAGE_SLUG);

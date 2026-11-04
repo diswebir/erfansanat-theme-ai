@@ -139,5 +139,5 @@
 
 ### ادغام Vazirmatn در داشبورد قالب — 2026-11-04
 - `assets/admin/css/admin-dashboard.css` اکنون سه زیرمجموعه محلی `vazirmatn-arabic`, `vazirmatn-latin`, `vazirmatn-latin-ext` را با `@font-face`, وزن متغیر 100–900، `font-display: swap` و Unicode ranges معتبر بار می‌کند. فونت روی کل محتوای صفحه داشبورد قالب، فیلدها/دکمه‌ها و مدیال کتابخانه رسانه اعمال می‌شود و کلاس‌های Dashicons/media icon از override فونت محفوظ می‌مانند.
-- `AdminAssets` از قبل استایل را فقط روی `toplevel_page_erfansanat-theme` enqueue می‌کرد؛ همین محدودیت حفظ شد. فایل‌ها تغییر URL ثابت ندارند؛ نسخه‌گذاری `filemtime` موجود CSS نیز cache busting را انجام می‌دهد.
+- `AdminAssets` استایل را فقط روی صفحات مدیریتی مرتبط enqueue می‌کند: داشبورد قالب، ویرایش post/page/product/projects دارای متاباکس قالب، taxonomyهای مرتبط و فهرست محصول/پروژه. اسکریپت داشبورد و کتابخانه رسانه همچنان فقط روی صفحه تنظیمات قالب فعال می‌شوند؛ مدیال رسانه در صفحات مربوطه فونت می‌گیرد. URLها محلی‌اند و نسخه‌گذاری `filemtime` برای cache busting حفظ شده است.
 - تست Task 2.4 توسعه یافت و Phase 2 پس از تغییر 15/15 پاس شد (Tasks 2.1–2.2 از کپی موقت برای حذف فقط shell `php -l` استفاده کردند). Prettier CSS را parse کرد؛ stylesheet و هر سه WOFF2 از endpoint زنده با HTTP 200 و بایت‌های غیرخالی دریافت شدند. Native Chromium هنوز در محیط موجود نیست، پس بررسی بصری واقعی مرورگر ادعا نمی‌شود.
