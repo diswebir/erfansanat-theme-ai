@@ -217,6 +217,13 @@ final class ThemeOptions {
 
 				<form id="erfansanat-options-form" class="erfansanat-admin__form" novalidate>
 					<?php foreach ( $schema as $tab => $fields ) : ?>
+						<?php
+						if ( 'sections' === $tab ) {
+							// The layout field is rendered by the section manager so it
+							// can offer an ordered list instead of a bare text input.
+							continue;
+						}
+						?>
 						<section id="erfansanat-panel-<?php echo esc_attr( $tab ); ?>"
 							class="erfansanat-admin__panel<?php echo $tab === $active ? ' is-active' : ''; ?>"
 							data-panel="<?php echo esc_attr( $tab ); ?>"
@@ -227,6 +234,8 @@ final class ThemeOptions {
 							<?php endforeach; ?>
 						</section>
 					<?php endforeach; ?>
+
+					<?php SectionManager::render_panel(); ?>
 
 					<p class="erfansanat-admin__actions">
 						<button type="submit" class="button button-primary button-large">

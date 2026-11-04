@@ -233,12 +233,99 @@ def task_2_2(jar: Path) -> None:
     check("2.2", "mobile view exposes the same settings", "tel:03191091011" in mobile)
 
 
+def section_keys(html: str) -> list:
+    """Section keys in rendered order."""
+    return re.findall(r'data-section="([a-z0-9-]+)"', html)
+
+
+def task_2_3(jar: Path) -> None:
+    """Saved section order, enabled flags and repeater rows reach the home page."""
+    subprocess.run(
+        ["tools/wp", "--path=.local/wordpress", "option", "delete", "erfansanat_theme_options"],
+        cwd=ROOT, capture_output=True, check=False,
+    )
+    _, _, panel = curl("/wp-admin/admin.php?page=erfansanat-options", jar=jar)
+    nonce = nonce_from(panel)
+
+    _, _, home = curl("/")
+    keys = section_keys(home)
+    expected = [
+        "hero", "project-types", "projects", "about", "knowledge", "history",
+        "products", "catalog", "services", "quality", "support", "clients",
+        "blog", "contact-cta", "location",
+    ]
+    check("2.3", "home renders all fifteen reference sections", keys == expected, str(keys))
+    anchors = re.findall(r'<section id="([a-z-]+)"', home)
+    check(
+        "2.3",
+        "the seven reference anchors are reproduced",
+        anchors == ["home", "projects", "about", "products", "services", "blog-preview", "contact"],
+        str(anchors),
+    )
+    check("2.3", "manager lists fifteen draggable rows",
+          panel.count('class="erfansanat-sections__item"') == 15 and panel.count("draggable=\"true\"") == 15)
+    check("2.3", "manager offers keyboard move buttons",
+          panel.count('data-move="up"') == 15 and panel.count('data-move="down"') == 15)
+    check("2.3", "manager exposes media, icon and repeater field types",
+          "data-media-select" in panel and 'data-type="icon"' in panel and "data-section-repeater" in panel)
+
+    # Move "location" to the front, disable "history", and edit two repeater rows.
+    def layout(order, disabled=(), chips=None):
+        rows = []
+        for key in order:
+            fields = {}
+            if key == "hero" and chips is not None:
+                fields["chips"] = [{"title": t, "icon": i} for t, i in chips]
+            rows.append({"key": key, "enabled": 0 if key in disabled else 1, "fields": fields})
+        return json.dumps(rows)
+
+    reordered = ["location"] + [k for k in expected if k != "location"]
+    status, saved = ajax(
+        jar,
+        "erfansanat_save_options",
+        {"home_sections": layout(reordered, disabled=("history",), chips=[("آزمایشی یک", "city"), ("آزمایشی دو", "star")])},
+        nonce,
+    )
+    check("2.3", "section layout saves through the panel endpoint", bool(saved.get("success")), str(saved)[:150])
+
+    _, _, home = curl("/")
+    check("2.3", "rendered order equals the saved order", section_keys(home) == [k for k in reordered if k != "history"], str(section_keys(home)))
+    check("2.3", "disabled section is not rendered", 'data-section="history"' not in home)
+    check("2.3", "repeater rows survive the save", "آزمایشی یک" in home and "آزمایشی دو" in home)
+    check("2.3", "unknown section ids never reach the page", 'data-section="does-not-exist"' not in home)
+
+    hostile_status, hostile = ajax(
+        jar,
+        "erfansanat_save_options",
+        {
+            "home_sections": json.dumps(
+                [
+                    {"key": "nope", "enabled": 1, "fields": {}},
+                    {"key": "hero", "enabled": 1, "fields": {"title": "<script>alert(1)</script>", "media_id": "424242"}},
+                ]
+            )
+        },
+        nonce,
+    )
+    _, _, home = curl("/")
+    check("2.3", "hostile layout is accepted but sanitised", bool(hostile.get("success")) and "<script>alert(1)</script>" not in home, str(hostile_status))
+    check("2.3", "unknown section key is discarded", 'data-section="nope"' not in home)
+    check("2.3", "missing sections are re-appended after a partial save", len(section_keys(home)) == 15, str(len(section_keys(home))))
+
+    subprocess.run(
+        ["tools/wp", "--path=.local/wordpress", "option", "delete", "erfansanat_theme_options"],
+        cwd=ROOT, capture_output=True, check=False,
+    )
+    _, _, home = curl("/")
+    check("2.3", "deleting the row restores the default order", section_keys(home) == expected)
+
+
 def main() -> int:
     """Run the requested tasks."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--task", action="append", choices=["2.1", "2.2"])
+    parser.add_argument("--task", action="append", choices=["2.1", "2.2", "2.3"])
     args = parser.parse_args()
-    tasks = args.task or ["2.1", "2.2"]
+    tasks = args.task or ["2.1", "2.2", "2.3"]
 
     if not CREDENTIALS.exists():
         print("Local credentials are missing; run tools/setup-wordpress.sh first.", file=sys.stderr)

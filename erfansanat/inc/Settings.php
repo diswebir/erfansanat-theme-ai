@@ -44,6 +44,7 @@ final class Settings {
 			'contact'  => __( 'اطلاعات تماس', 'erfansanat' ),
 			'footer'   => __( 'فوتر', 'erfansanat' ),
 			'archive'  => __( 'آرشیوها و فهرست‌ها', 'erfansanat' ),
+			'sections' => __( 'بخش‌های صفحه اصلی', 'erfansanat' ),
 			'advanced' => __( 'اسکریپت و پیشرفته', 'erfansanat' ),
 		);
 	}
@@ -258,6 +259,14 @@ final class Settings {
 					'default' => false,
 				),
 			),
+			'sections' => array(
+				'home_sections' => array(
+					'type'        => 'layout',
+					'label'       => __( 'ترتیب و وضعیت بخش‌های صفحه اصلی', 'erfansanat' ),
+					'default'     => Sections::default_home(),
+					'description' => __( 'با کشیدن یا کلیدهای جابه‌جایی، ترتیب را تغییر دهید. بخش خاموش رندر نمی‌شود.', 'erfansanat' ),
+				),
+			),
 			'advanced' => array(
 				'header_scripts' => array(
 					'type'        => 'code',
@@ -351,6 +360,8 @@ final class Settings {
 				return is_numeric( $value );
 			case 'media':
 				return is_numeric( $value ) && (int) $value >= 0;
+			case 'layout':
+				return Sections::is_valid_layout( $value );
 			case 'links':
 				if ( ! is_array( $value ) ) {
 					return false;
@@ -496,6 +507,13 @@ final class Settings {
 
 			case 'terms':
 				return self::sanitize_terms( $raw, $definition );
+
+			case 'layout':
+				$decoded = $raw;
+				if ( is_string( $raw ) ) {
+					$decoded = json_decode( $raw, true );
+				}
+				return Sections::sanitize_layout( $decoded );
 
 			case 'text':
 			default:

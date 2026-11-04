@@ -152,6 +152,208 @@
 		}
 	}
 
+
+	/* ── Section manager ──────────────────────────────────── */
+	var sectionsBox = root.querySelector('[data-sections]');
+	if (sectionsBox) {
+		var sectionList = sectionsBox.querySelector('[data-sections-list]');
+		var sectionInput = sectionsBox.querySelector('[data-sections-input]');
+		var dragged = null;
+
+		function sectionRows() {
+			return Array.prototype.slice.call(sectionList.querySelectorAll('.erfansanat-sections__item'));
+		}
+
+		function moveRow(row, direction) {
+			if (direction === 'up' && row.previousElementSibling) {
+				sectionList.insertBefore(row, row.previousElementSibling);
+			} else if (direction === 'down' && row.nextElementSibling) {
+				sectionList.insertBefore(row.nextElementSibling, row);
+			} else {
+				return;
+			}
+			syncSections();
+			var button = row.querySelector('[data-move="' + direction + '"]');
+			if (button) {
+				button.focus();
+			}
+		}
+
+		function readFieldValue(el) {
+			if (el.type === 'checkbox') {
+				return el.checked ? 1 : 0;
+			}
+			return el.value;
+		}
+
+		function setFieldValue(obj, path, value) {
+			var parts = path.split('.');
+			var cursor = obj;
+			for (var i = 0; i < parts.length - 1; i++) {
+				var part = parts[i];
+				if (/^\d+$/.test(part)) {
+					part = Number(part);
+				}
+				if (typeof cursor[part] === 'undefined' || cursor[part] === null) {
+					cursor[part] = /^\d+$/.test(parts[i + 1]) ? [] : {};
+				}
+				cursor = cursor[part];
+			}
+			var last = parts[parts.length - 1];
+			cursor[/^\d+$/.test(last) ? Number(last) : last] = value;
+		}
+
+		function collectSections() {
+			var layout = [];
+			var rows = sectionRows();
+			for (var i = 0; i < rows.length; i++) {
+				var row = rows[i];
+				var entry = { key: row.getAttribute('data-key'), enabled: 0, fields: {} };
+				var toggle = row.querySelector('[data-section-enabled]');
+				entry.enabled = toggle && toggle.checked ? 1 : 0;
+				var fields = row.querySelectorAll('[data-field]');
+				for (var f = 0; f < fields.length; f++) {
+					var path = fields[f].getAttribute('data-field');
+					// Repeater rows are re-indexed by DOM position so a removed row
+					// never leaves a hole that would drop a later item.
+					var repeater = fields[f].closest('[data-section-repeater]');
+					if (repeater) {
+						var repeaterPath = repeater.getAttribute('data-section-repeater');
+						var rowEl = fields[f].closest('[data-row-index]');
+						var rowIndex = Array.prototype.indexOf.call(
+							repeater.querySelectorAll('[data-repeater-rows] > [data-row-index]'),
+							rowEl
+						);
+						path = path.replace(repeaterPath + '.', repeaterPath + '.' + rowIndex + '.');
+					}
+					setFieldValue(entry.fields, path, readFieldValue(fields[f]));
+				}
+				layout.push(entry);
+			}
+			return layout;
+		}
+
+		function syncSections() {
+			if (sectionInput) {
+				sectionInput.value = JSON.stringify(collectSections());
+			}
+		}
+
+		sectionList.addEventListener('click', function (event) {
+			var move = event.target.closest('[data-move]');
+			if (move) {
+				event.preventDefault();
+				moveRow(move.closest('.erfansanat-sections__item'), move.getAttribute('data-move'));
+				return;
+			}
+			var edit = event.target.closest('[data-section-edit]');
+			if (edit) {
+				event.preventDefault();
+				var item = edit.closest('.erfansanat-sections__item');
+				var box = item.querySelector('[data-section-fields]');
+				var open = box.hidden;
+				box.hidden = !open;
+				edit.setAttribute('aria-expanded', open ? 'true' : 'false');
+			}
+		});
+
+		// Keyboard: the whole row can be moved when focus is not inside a field.
+		sectionList.addEventListener('keydown', function (event) {
+			if (event.altKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+				var row = event.target.closest('.erfansanat-sections__item');
+				if (!row) {
+					return;
+				}
+				event.preventDefault();
+				moveRow(row, event.key === 'ArrowUp' ? 'up' : 'down');
+			}
+		});
+
+		sectionList.addEventListener('change', function (event) {
+			if (event.target.matches('[data-section-enabled], [data-field]')) {
+				syncSections();
+			}
+		});
+		sectionList.addEventListener('input', function (event) {
+			if (event.target.matches('[data-field]')) {
+				syncSections();
+			}
+		});
+
+		// Native drag and drop.
+		sectionList.addEventListener('dragstart', function (event) {
+			var row = event.target.closest('.erfansanat-sections__item');
+			if (!row) {
+				return;
+			}
+			dragged = row;
+			row.classList.add('is-dragging');
+			if (event.dataTransfer) {
+				event.dataTransfer.effectAllowed = 'move';
+				event.dataTransfer.setData('text/plain', row.getAttribute('data-key'));
+			}
+		});
+		sectionList.addEventListener('dragend', function () {
+			if (dragged) {
+				dragged.classList.remove('is-dragging');
+			}
+			dragged = null;
+			syncSections();
+		});
+		sectionList.addEventListener('dragover', function (event) {
+			event.preventDefault();
+			var over = event.target.closest('.erfansanat-sections__item');
+			if (!dragged || !over || over === dragged) {
+				return;
+			}
+			var box = over.getBoundingClientRect();
+			var after = event.clientY - box.top > box.height / 2;
+			sectionList.insertBefore(dragged, after ? over.nextElementSibling : over);
+		});
+		sectionList.addEventListener('drop', function (event) {
+			event.preventDefault();
+			syncSections();
+		});
+
+		// Repeaters inside sections reuse the global add/remove behaviour.
+		sectionList.addEventListener('click', function (event) {
+			var remove = event.target.closest('[data-repeater-remove]');
+			if (remove) {
+				var row = remove.closest('[data-row-index]');
+				if (row) {
+					row.parentNode.removeChild(row);
+					syncSections();
+				}
+				return;
+			}
+			var add = event.target.closest('[data-repeater-add]');
+			if (add) {
+				var holder = add.closest('[data-section-repeater]');
+				var list = holder.querySelector('[data-repeater-rows]');
+				var tpl = holder.querySelector('[data-repeater-template]');
+				var html = tpl.innerHTML.replace(/__INDEX__/g, String(list.children.length));
+				var wrapper = document.createElement('div');
+				wrapper.innerHTML = html.trim();
+				list.appendChild(wrapper.firstChild);
+				syncSections();
+			}
+		});
+
+		// Media pickers inside sections.
+		var sectionMedia = sectionList.querySelectorAll('.erfansanat-media');
+		for (var sm = 0; sm < sectionMedia.length; sm++) {
+			initMedia(sectionMedia[sm]);
+			(function (box) {
+				var input = box.querySelector('[data-media-input]');
+				if (input) {
+					input.addEventListener('change', syncSections);
+				}
+			})(sectionMedia[sm]);
+		}
+
+		syncSections();
+	}
+
 	/* ── Collect form values ──────────────────────────────── */
 	function collect() {
 		var data = {};
@@ -177,6 +379,11 @@
 		for (var i = 0; i < fields.length; i++) {
 			var field = fields[i];
 			if (field.disabled) {
+				continue;
+			}
+			// The layout input holds JSON rebuilt from the section list; its inner
+			// field inputs are collected separately by collectSections().
+			if (field.hasAttribute('data-sections-input') || field.hasAttribute('data-field')) {
 				continue;
 			}
 			if (field.type === 'checkbox') {
@@ -210,7 +417,12 @@
 		form.addEventListener('submit', function (event) {
 			event.preventDefault();
 			var button = form.querySelector('.button-primary');
-			var payload = { action: config.action, nonce: config.nonce, options: collect() };
+			var options = collect();
+			if (sectionsBox && sectionInput) {
+				syncSections();
+				options.home_sections = sectionInput.value;
+			}
+			var payload = { action: config.action, nonce: config.nonce, options: options };
 
 			if (button) {
 				button.disabled = true;

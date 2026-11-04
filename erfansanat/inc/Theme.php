@@ -48,6 +48,7 @@ final class Theme {
 
 		if ( is_admin() ) {
 			\ErfanSanat\Theme\Admin\ThemeOptions::register();
+			\ErfanSanat\Theme\Admin\SectionManager::register();
 			add_action( 'admin_init', array( \ErfanSanat\Theme\Admin\ThemeOptions::class, 'register_ajax' ) );
 		}
 	}
