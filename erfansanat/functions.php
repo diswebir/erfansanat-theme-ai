@@ -48,3 +48,17 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Options\Tabs\ArchiveTab::boot();
 \ErfanSanat\Theme\Admin\SectionMetabox::boot();
 \ErfanSanat\Theme\Sections\Renderer::boot();
+
+/*
+ * Phase 6 — single-product template parts. Each part is hooked into the
+ * standard WooCommerce summary hooks so the content-single-product shell
+ * (P06-T002) renders it in place of its minimal fallback. Wired here as a
+ * registered dependency; later Phase-6 tasks append their own hooks.
+ */
+add_action(
+	'woocommerce_before_single_product_summary',
+	static function () {
+		get_template_part( 'template-parts/product/gallery' ); // P06-T003.
+	},
+	5
+);
