@@ -184,7 +184,7 @@
 - `[PASSED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد native؛ تست WordPress و ارسال واقعی AJAX به route/CPT با شناسه ذخیره‌سازی پاس شد؛ کاربر پیش‌نمایش زنده را تأیید کرد.
 - `[PASSED]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
 - `[PASSED]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** همه پیش‌نیازهای 8.1 تا 8.16 به‌صراحت `[PASSED]` هستند؛ تست گیت نهایی و اسکن وضعیت pass شدند.
-- `[PASSED]` **Phase 8 Suite:** Tasks 8.1–8.16 روی WordPress 7.2/PHP 8.5 و WooCommerce 11.2.1 پاس؛ 33 assertion تعاملی DOM و HTTP/AJAX واقعی برای بازخورد و آپلود PDF پاس؛ `WP_DEBUG=true` بدون warning؛ تست Task 8.17 و اسکن وضعیت نهایی پاس. پیش‌نمایش توسط کاربر تأیید شد. یادداشت محیطی: Chromium native نصب‌پذیر نبود و `run-all-phases-e2e.sh` به PHP CLI بومی وابسته است؛ suites مرتبط جداگانه با Playground اجرا شدند.
+- `[PASSED]` **Phase 8 Suite:** Tasks 8.1–8.16 روی WordPress 7.2/PHP 8.5 و WooCommerce 11.2.1 پاس؛ 33 assertion تعاملی DOM و HTTP/AJAX واقعی برای بازخورد و آپلود PDF پاس؛ `WP_DEBUG=true` بدون warning؛ تست Task 8.17 و اسکن وضعیت نهایی پاس. پیش‌نمایش توسط کاربر تأیید شد. یادداشت محیطی: Chromium native نصب‌پذیر نبود؛ اجرای `run-all-phases-e2e.sh` با exit 127 و `php: command not found` در شروع Phase 1 متوقف شد. Suites مرتبط جداگانه با Playground اجرا شدند.
 
 ---
 

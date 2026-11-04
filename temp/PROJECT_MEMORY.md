@@ -127,6 +127,6 @@
 
 ### Phase 8 closure update — user-approved preview
 - The user responded “اوکیه باز هم ادامه بده” after being shown the live preview routes; record this as approval of the visual acceptance/review gate for Tasks 8.11, 8.14, and 8.15.
-- All Phase 8 task statuses 8.1–8.16 are now PASSED. Task 8.17 has been updated to assert every prerequisite status and is being rerun as the final gate. The native full all-phases shell runner remains unavailable because this environment has no host PHP CLI; Phase 8 8.1–8.16 and the WooCommerce Phase 6 suite were run separately under Playground PHP, with Phase 6 20/20. Do not claim the full shell runner itself ran.
+- All Phase 8 task statuses 8.1–8.16 are now PASSED. Task 8.17 has been updated to assert every prerequisite status and is being rerun as the final gate. The native full all-phases shell runner was attempted and exited 127 immediately (`php: command not found` in Phase 1) because this environment has no host PHP CLI; Phase 8 8.1–8.16 and the WooCommerce Phase 6 suite were run separately under Playground PHP, with Phase 6 20/20. Do not claim the full shell runner passed.
 
 - Final Phase 8 gate result: reran `test-task-17.php` after updating task statuses; it reported all prerequisites PASSED and the Phase 8 final readiness gate PASSED. The host shell readiness scan also found no unpassed Phase 8 tasks. The actual full all-phases script was not run because native PHP CLI is absent.
