@@ -1,7 +1,7 @@
 # Task 6.2 — single-product.php — هیرو محصول و گالری لایت‌باکس میرور
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 21/21]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-02.php`
 
 ## 🎯 هدف
@@ -31,15 +31,15 @@
 - lightbox با JS موجود میرور کار کند
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] گالری از galerry_produ با fixture رندر شود
-- [ ] fallback زنجیره‌ای تصویر صحیح
-- [ ] هیرو شامل zireonvan/english_titl باشد
-- [ ] hookهای lightbox حفظ شده باشند
+- [x] گالری از galerry_produ با fixture رندر شود (بایت‌دقیق میرور)
+- [x] fallback زنجیره‌ای تصویر صحیح (thumb→gallery→placeholder)
+- [x] هیرو شامل zireonvan/english_titl باشد (انگلیسی شرطی)
+- [x] hookهای lightbox حفظ شده باشند
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-02.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-02.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

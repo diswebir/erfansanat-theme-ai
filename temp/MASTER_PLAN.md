@@ -297,7 +297,7 @@
 - 📤 خروجی: `woocommerce.php`؛ `inc/Woo/Setup.php` · **وابستگی:** Task 4.2, Task 4.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.2 — single-product.php — هیرو محصول و گالری لایت‌باکس میرور `[PENDING]`
+### Task 6.2 — single-product.php — هیرو محصول و گالری لایت‌باکس میرور `[DONE — 21/21]`
 - 🎯 هیرو (breadcrumb/H1/زیرعنوان/badges) و گالری دقیق میرور متصل به منابع گالری چندگانه
 - 📤 خروجی: `single-product.php`؛ `template-parts/single-product/hero.php`؛ `template-parts/single-product/gallery.php` · **وابستگی:** Task 6.1, Task 3.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -745,7 +745,7 @@
 - 📤 خروجی: `woocommerce.php`؛ `inc/Woo/Setup.php` · **وابستگی:** Task 4.2, Task 4.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.2 — single-product.php — هیرو محصول و گالری لایت‌باکس میرور `[PENDING]`
+### Task 6.2 — single-product.php — هیرو محصول و گالری لایت‌باکس میرور `[DONE — 21/21]`
 - 🎯 هیرو (breadcrumb/H1/زیرعنوان/badges) و گالری دقیق میرور متصل به منابع گالری چندگانه
 - 📤 خروجی: `single-product.php`؛ `template-parts/single-product/hero.php`؛ `template-parts/single-product/gallery.php` · **وابستگی:** Task 6.1, Task 3.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا

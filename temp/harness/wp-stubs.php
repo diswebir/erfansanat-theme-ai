@@ -1160,6 +1160,12 @@ if (!function_exists('checked')) {
     }
 }
 
+if (!function_exists('get_the_ID')) {
+    function get_the_ID(): int
+    {
+        return (int) ($GLOBALS['__es_stub_current_id'] ?? 0);
+    }
+}
 if (!function_exists('get_the_terms')) {
     function get_the_terms(int|object $post, string $taxonomy): array|false
     {
@@ -1215,6 +1221,9 @@ if (!function_exists('get_the_title')) {
     function get_the_title(int|object|null $post = null): string {
         if (is_object($post)) {
             return (string) ($post->post_title ?? '');
+        }
+        if (is_int($post) && isset($GLOBALS['__es_stub_titles'][$post])) {
+            return (string) $GLOBALS['__es_stub_titles'][$post];
         }
         $cur = $GLOBALS['__es_stub_current_post'] ?? null;
         return is_object($cur) ? (string) ($cur->post_title ?? '') : '';
