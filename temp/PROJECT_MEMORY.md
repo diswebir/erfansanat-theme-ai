@@ -2,7 +2,7 @@
 
 ## وضعیت فعلی (Current Stage & Status)
 - **مرحله فعلی:** `PHASE 7 COMPLETED & PASSED (20/20) -> WAITING FOR USER APPROVAL TO START PHASE 8`
-- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20 tasks and phase suite passed; approval gate reached. Phase 1–5 regression suites passed in the restored harness; Phase 6 could not be rerun because WooCommerce was not installed/active.`
+- **آخرین مرحله پاس‌شده:** `Phase 7 — 20/20 tasks and phase suite passed; approval gate reached. Phase 1–7 regression suites passed in the restored harness; WooCommerce 11.2.1 is active in the testbed and Phase 6 is 20/20.`
 - **آخرین فاز پاس‌شده:** Phase 2 — داشبورد ادمین (آپشن واحد `erfansanat_theme_options` + `es_option()`)، تب‌های هدر/فوتر/ظاهر/فیلترها (۲۵ toggle شامل ۱۸ `pa_*`) و SectionManager کامل (`_es_sections` + Drag&Drop + `es_render_sections()`); سوئیت فاز ۲: ۱۵/۱۵ پاس و رگرسیون فاز ۱ سبز.
 - **آخرین فاز پاس‌شده:** Phase 3 — CPT `projects`، تکسونومی‌های `project_type`/`city`/`product_brand`، گارد Rewrite ووکامرس، ریدایرکت ۳۰۱ `/project/`، موتور `LegacyMeta` (فرمت `item-0` جت‌انجین)، متاباکس‌های کامل محصول/پروژه/ترم با کلیدهای دقیق دیتابیس زنده، Hreflang و `ViewCounter`؛ سوئیت فاز ۳: ۱۷/۱۷ پاس، رگرسیون فازهای ۱ و ۲ سبز.
 - **آخرین فاز پاس‌شده:** Phase 5 — front-page با ۱۵ سکشن پیش‌فرض SectionManager (هیرو ۵ صحنه‌ای با ویدیو و data-home1-*، پروژه‌ها، شمارنده‌ها، تایم‌لاین، محصولات، خدمات تب‌دار data-service-*، مقالات و CTA) + ۳ کارت استاندارد؛ سوئیت فاز ۵: ۲۰/۲۰ پاس، رگرسیون فازهای ۱ تا ۴ سبز. نکته: static-mirror در ریست سندباکس حذف شد و فاز ۴ بازسازی شد (11/11).
@@ -68,7 +68,7 @@
 
 
 ### Phase 6 Gate — PASSED (20/20)
-- Tests: `temp/phase-06-woocommerce-and-products/tests/run-phase-06-tests.sh` — ۲۰/۲۰. Regression: Phase 1–5 runners all green. PHP lint: ۲۶ target files clean; `node --check assets/js/main.js` clean.
+- Tests: `temp/phase-06-woocommerce-and-products/tests/run-phase-06-tests.sh` — ۲۰/۲۰. Regression: Phase 1–7 runners all green (including live WooCommerce 11.2.1 integration). PHP lint: ۲۶ target files clean; `node --check assets/js/main.js` clean.
 - Files: Woo wrapper/setup; single-product header/gallery/purchase/inquiry/variation/notices/intro/specs/features/projects/FAQ/related; shop/category/tag/brand archives and filter controls; WC cart, fragments + nonce-protected AJAX quantity updates, checkout order/payment hooks, my-account and auth integrations.
 - Reliability note: the sandbox reset again during Phase 6. State restored in snapshot commit `3fe9ed6`; earlier individual task commit chain was truncated by reset. The current development branch remains active.
 - Validation limitation: `static-mirror/` is absent (not present in upstream GitHub tree); source-faithful full DOM comparison could not be run. Tests verify surviving `STATIC_TEMPLATE_MAP.md`, JS `data-*` contracts, CSS classes and data blueprints. WooCommerce GitHub source checkout lacked built `vendor/autoload_packages.php`; it exposes `WC()` but not `wc_get_product()`/product registration, so tests use controlled cart/product doubles and contract checks. Production templates use standard Woo APIs; perform live-cart, gateway, WPC Quantity and Variation Swatches smoke tests on a built WordPress/WooCommerce install before release.
@@ -93,4 +93,5 @@
 - Phase 7 Task 7.18 PASSED: parent services page lists published direct child service pages as cards, with a collaboration process and contact section. Missing children produce an honest empty state.
 - Phase 7 Task 7.19 PASSED: child-service page template uses `_es_sections` for hero/details/contact and renders selected related project/product IDs with standard cards.
 - Phase 7 Task 7.20 PASSED: Arya landing reads exact `_es_sections`, uses the `landing` menu location with section-anchor fallback, and falls back to the real page title/content when section metadata is absent.
-- Phase 7 gate reached: `run-phase-07-tests.sh` passed 20/20. Regression Phase 1–5 runners passed. Current fresh WordPress harness lacks an active/built WooCommerce plugin; Phase 6 runner stops at Task 6.1 prerequisite, so Phase 6 could not be rerun in this environment. Static mirror is absent, so exact parity remains unverified. Phase 8 remains unapproved and unstarted.
+- Phase 7 gate reached: `run-phase-07-tests.sh` passed 20/20. Regression Phase 1–5 runners passed. WooCommerce 11.2.1 was installed from the user-provided built ZIP; Phase 6 suite now passes 20/20. Fixes found during the live integration run are recorded in QA_REFLECTION_LOG.md. Static mirror is absent, so exact parity remains unverified. Phase 8 remains unapproved and unstarted.
+- WooCommerce 11.2.1 integration environment: installed from user-provided `/tmp/arena-coding-uploads/woocommerce.11.2.1.zip.png` (ZIP signature verified); plugin active in `/opt/wp-testbed`. Full suites Phase 1–7 currently pass.

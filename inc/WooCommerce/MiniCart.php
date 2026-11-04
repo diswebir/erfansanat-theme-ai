@@ -43,7 +43,7 @@ final class MiniCart implements ServiceInterface
         $items = method_exists($cart, 'get_cart') ? (array) $cart->get_cart() : [];
         $count = method_exists($cart, 'get_cart_contents_count') ? (int) $cart->get_cart_contents_count() : 0;
         $total = method_exists($cart, 'get_total') ? (float) $cart->get_total('edit') : 0.0;
-        $fragments['div[data-cart-modal-items-list="true"]'] = self::renderItems($items);
+        $fragments['div[data-cart-modal-items-list="true"]'] = '<div data-cart-modal-items-list="true" class="space-y-3">' . self::renderItems($items) . '</div>';
         $fragments['span[data-cart-modal-total="true"]'] = '<span data-cart-modal-total="true">' . self::price($total) . '</span>';
         $fragments['span[data-cart-modal-count="true"]'] = '<span data-cart-modal-count="true">(' . esc_html(number_format_i18n($count)) . ')</span>';
         $emptyClass = $count > 0 ? 'hidden' : 'block';

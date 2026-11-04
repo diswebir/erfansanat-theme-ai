@@ -159,7 +159,7 @@
 - `[PASSED]` **Task 7.18 (`task-18.md` / `test-task-18.php`):** قالب خدمات مادر (smartelement)
 - `[PASSED]` **Task 7.19 (`task-19.md` / `test-task-19.php`):** قالب خدمت تکی (برگه‌های فرزند)
 - `[PASSED]` **Task 7.20 (`task-20.md` / `test-task-20.php`):** لندینگ درب بازکن هوشمند آریا
-- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–5 passed; Phase 6 could not complete in this restored testbed because WooCommerce is not installed/active (Task 6.1 prerequisite failure). Stop here for Phase 7 approval; do not start Phase 8.
+- `[PASSED]` **Phase 7 Suite (`run-phase-07-tests.sh`):** 20/20 tests passed. Regression suites Phase 1–7 all passed after installing WooCommerce 11.2.1 from the user-provided built ZIP. Stop here for Phase 7 approval; do not start Phase 8.
 
 ---
 
