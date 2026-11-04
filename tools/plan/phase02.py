@@ -225,7 +225,7 @@ dict(id='2.12', size='L', deps=['2.11','2.6'],
 dict(id='2.13', size='M', deps=['2.11'],
   title='Renderer سکشن‌ها در فرانت + fallback',
   desc='`Renderer` که ترتیب و فعال‌بودن را از Store می‌خواند و `get_template_part` می‌زند؛ در صورت نبود فایل قالب یا خطا، fallback امن (بدون رندر خالی/خطا).',
-  files=['inc/Sections/Renderer.php'],
+  files=['inc/Sections/Renderer.php','inc/Sections/Registry.php'],
   steps=[
    'پیمایش لیست نهایی: `if (!$enabled) continue;`',
    '`locate_template` قبل از `get_template_part` برای جلوگیری از Warning.',

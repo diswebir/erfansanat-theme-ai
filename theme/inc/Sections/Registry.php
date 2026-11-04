@@ -68,7 +68,7 @@ final class Registry {
 				continue;
 			}
 			$section_key = $section['key'] ?? $key;
-			if ( $section_key !== $key || ! isset( $section['label'], $section['template'] ) || ! is_scalar( $section['label'] ) || ! is_string( $section['template'] ) || '' === trim( $section['template'] ) ) {
+			if ( $section_key !== $key || ! isset( $section['label'], $section['template'] ) || ! is_scalar( $section['label'] ) || ! is_string( $section['template'] ) || ! preg_match( '~^template-parts/[A-Za-z0-9_/-]+\\.php$~', $section['template'] ) || str_contains( $section['template'], '..' ) ) {
 				continue;
 			}
 			$fields = is_array( $section['fields'] ?? null ) ? $section['fields'] : array();

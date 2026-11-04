@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.12 پاس شده‌اند؛ ادامه Phase 2 از Task 2.13.
+**آخرین به‌روزرسانی:** 2026-11-03 — Gate 1 تأیید شده؛ Tasks 2.1–2.13 پاس شده‌اند؛ ادامه Phase 2 از Task 2.14.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 2 — داشبورد اختصاصی / ۱۵ تسک اتمیک |
-| آخرین تسک پاس‌شده | 2.12 — Section Builder admin UI (4 PASS / 0 FAIL؛ مجموع Phase 2: 92 PASS، 0 FAIL، 9 PENDING در 15 فایل) |
+| آخرین تسک پاس‌شده | 2.13 — Section Renderer (4 PASS / 0 FAIL؛ مجموع Phase 2: 96 PASS، 0 FAIL، 6 PENDING در 15 فایل) |
 | دروازه تأیید | Gate 1: ✅ کاربر تأیید کرد؛ Gate 2 پس از اتمام Phase 2 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,7 +46,7 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 2 از Task 2.13: فرانت‌اند Renderer برای ترتیب/وضعیت سکشن‌ها و fallback قالب.
+- ادامه Phase 2 از Task 2.14: ابزار Export/Import و Reset محدود تنظیمات.
 - `Store` داده هر صفحه را در `_es_sections` روی post meta نگه می‌دارد؛ برای صفحه اصلی از شناسه برگه front page و برای صفحات ثابت از شناسه برگه متناظر استفاده شود.
 - پس از هر تسک: تست اختصاصی، ثبت نتیجه در QA، به‌روزرسانی این حافظه و کامیت روی شاخه فعال.
 
@@ -240,3 +240,10 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - تست PHP اختصاصی: **4 PASS / 0 FAIL / 0 PENDING**؛ Node DOM mock عملیات افزودن/حذف/ترتیب کیبورد/toggle/editor/serialize را PASS کرد؛ `node --check` موفق.
 - کل suite Phase 2: **92 PASS / 0 FAIL / 9 PENDING** (فقط Tasks 2.13–2.15 pending هستند).
 - ادامه: Task 2.13 — Renderer سکشن‌ها در فرانت‌اند؛ Gate 2 و Phase 3 فقط پس از Task 2.15 و تأیید صریح کاربر.
+
+### Task 2.13 — PASS
+- `Sections\Renderer` reads `Store` order/visibility/data, skips disabled or removed-registry keys, and looks up each template before rendering to avoid missing-file warnings.
+- Template paths are constrained by `Registry` to relative `template-parts/*.php` paths without traversal; `get_template_part` receives `{section,page,post_id,data}` args (WP 5.5+) and before/after hooks.
+- Each rendered section is isolated in an output buffer; a thrown template error discards partial markup and allows later sections to continue.
+- Test: **4 PASS / 0 FAIL / 0 PENDING** (disabled output, missing/throwing template, continuation, order and args). Full Phase 2 suite: **96 PASS / 0 FAIL / 6 PENDING** (only Tasks 2.14–2.15 pending).
+- Next: Task 2.14 — Import/Export and limited Reset; Gate 2 remains after Task 2.15.

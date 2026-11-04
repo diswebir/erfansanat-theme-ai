@@ -269,3 +269,14 @@
 | Suite Phase 2 | **92 PASS / 0 FAIL / 9 PENDING**؛ pendingها فقط Tasks 2.13–2.15 هستند |
 | اصلاح مدل UI | برای حفظ تمایز «حذف از چیدمان» و toggle خاموش، `Store` حالا کلید محدود `available` را هم normalize می‌کند؛ `order` همچنان ترتیب همه Registry sections را برای Renderer نگه می‌دارد |
 | وضعیت | Task 2.12 `[PASSED]`; بعدی: Task 2.13 |
+
+## Phase 2 — Task 2.13 (2026-11-03)
+
+| اقدام | نتیجه |
+|---|---|
+| تست پیش از پیاده‌سازی | چهار check در نبود Renderer: **0 PASS / 4 FAIL / 0 PENDING** |
+| پیاده‌سازی | `Sections\\Renderer` با ترتیب Store، skip حالت خاموش، `locate_template` پیش از `get_template_part`، args سازگار WP 5.5+ و hookهای before/after |
+| Fallback | مسیر template در Registry محدود شد؛ template گمشده بدون warning رد می‌شود؛ exception هر template خروجی جزئی را دور می‌اندازد و رندر سکشن‌های بعدی را متوقف نمی‌کند |
+| تست اختصاصی | **4 PASS / 0 FAIL / 0 PENDING**: صفر خروجی خاموش، fallback فایل/exception، ادامه رندر، ترتیب ذخیره و داده args |
+| Suite Phase 2 | **96 PASS / 0 FAIL / 6 PENDING**؛ pendingها فقط Tasks 2.14–2.15 |
+| وضعیت | Task 2.13 `[PASSED]`; بعدی: Task 2.14 |
