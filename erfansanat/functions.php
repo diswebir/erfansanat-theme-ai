@@ -17,6 +17,7 @@ require_once ES_INC_DIR . 'Helpers.php';
 
 // Navigation walkers (multiple classes in one file) — P04-T005+.
 require_once ES_INC_DIR . 'Core/NavWalkers.php';
+\ErfanSanat\Theme\Core\NavWalkers\LandingWalker::boot();
 
 \ErfanSanat\Theme\Core\Theme::boot();
 \ErfanSanat\Theme\Core\Menus::boot();

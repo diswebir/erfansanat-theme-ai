@@ -438,3 +438,119 @@ class TolidatWalker extends \Walker_Nav_Menu {
 		$output .= '</li>';
 	}
 }
+
+/**
+ * Landing section-scroll menu walker (P04-T019), for pages like `arya`.
+ *
+ * Items become anchor links to section ids (`#hero`, `#products`, …) carrying
+ * `data-landing-link`; navigation.js runs the IntersectionObserver scroll-spy
+ * that toggles `is-active` + aria-current (AC-02). styles.css already ships
+ * `scroll-behavior:smooth`, so a click scrolls to the section natively (SC-01).
+ * No assigned menu / empty menu renders nothing and never fatals (AC-03/SC-02).
+ */
+class LandingWalker extends \Walker_Nav_Menu {
+
+	private static bool $booted = false;
+
+	/** @var array<int,bool> Items skipped for having no usable href. */
+	private array $skipped = array();
+
+	public static function boot(): void {
+		if ( self::$booted ) {
+			return;
+		}
+		self::$booted = true;
+
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'inline_style' ), 20 );
+	}
+
+	/**
+	 * Minimal active-state styling for the scroll-spy class (the compiled
+	 * mirror stylesheet has no .is-active rule). Attached to the theme handle.
+	 */
+	public static function inline_style(): void {
+		if ( ! wp_style_is( \ErfanSanat\Theme\Core\AssetManager::STYLE_HANDLE, 'enqueued' ) ) {
+			return;
+		}
+		wp_add_inline_style(
+			\ErfanSanat\Theme\Core\AssetManager::STYLE_HANDLE,
+			'.es-landing-link.is-active{background-color:#ecfdf5;color:#065f46}'
+		);
+	}
+
+	/**
+	 * Render the landing location. Returns '' when no menu is assigned or the
+	 * assigned menu has no items (SC-02) — the section nav is opt-in per page.
+	 *
+	 * @param array<string,mixed> $args Extra wp_nav_menu args.
+	 */
+	public static function render( array $args = array() ): string {
+		$locations = get_nav_menu_locations();
+		if ( empty( $locations['landing'] ) ) {
+			return '';
+		}
+		$items = wp_get_nav_menu_items( (int) $locations['landing'] );
+		if ( empty( $items ) ) {
+			return '';
+		}
+
+		$defaults = array(
+			'walker'      => new self(),
+			'menu_class'  => 'es-landing-menu flex flex-wrap items-center gap-1',
+			'items_wrap'  => '<ul id="%1$s" class="%2$s" data-landing-menu="true">%3$s</ul>',
+			'container'   => false,
+			'fallback_cb' => false,
+			'echo'        => false,
+		);
+
+		$out = \ErfanSanat\Theme\Core\Menus::render( 'landing', array_merge( $defaults, $args ) );
+
+		return is_string( $out ) ? $out : '';
+	}
+
+	/**
+	 * Normalize a menu URL to a section anchor: '#id' stays, full URLs keep
+	 * only their fragment, fragment-less URLs stay real links (AC-01).
+	 */
+	public static function section_href( string $url ): string {
+		$url = trim( $url );
+		if ( '' === $url ) {
+			return '';
+		}
+		if ( '#' === $url[0] ) {
+			return $url;
+		}
+		$fragment = wp_parse_url( $url, PHP_URL_FRAGMENT );
+		if ( is_string( $fragment ) && '' !== $fragment ) {
+			return '#' . $fragment;
+		}
+		return $url;
+	}
+
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		// Flat anchor list — no nested levels.
+	}
+
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+	}
+
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$title = trim( wp_strip_all_tags( (string) $item->title ) );
+		$href  = self::section_href( (string) $item->url );
+
+		if ( '' === $href || '' === $title ) {
+			$this->skipped[ (int) $item->ID ] = true;
+			return;
+		}
+
+		$output .= '<li><a href="' . esc_url( $href ) . '" data-landing-link="true" class="es-landing-link inline-flex items-center whitespace-nowrap rounded-xl px-3 py-2 text-[13px] font-extrabold text-slate-700 transition-colors hover:bg-slate-50 hover:text-emerald-700">' . esc_html( $title ) . '</a>';
+	}
+
+	public function end_el( &$output, $item, $depth = 0, $args = null ) {
+		if ( isset( $this->skipped[ (int) $item->ID ] ) ) {
+			unset( $this->skipped[ (int) $item->ID ] );
+			return;
+		}
+		$output .= '</li>';
+	}
+}
