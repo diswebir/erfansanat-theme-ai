@@ -39,6 +39,7 @@ $wcPrefixes = ['wc_', 'woocommerce_'];
 
 // theme's own global helpers
 $ownFuncs = ['es_option', 'es_sections', 'es_hreflang_tags', 'es_static_url', 'es_page_url'];
+$jsNames = ['stringify','parse','log','fetch','then','catch','getelementbyid','addeventlistener','json'];
 
 // 2. Scan theme PHP files for called functions
 $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($THEME, FilesystemIterator::SKIP_DOTS));
@@ -62,7 +63,7 @@ foreach ($rii as $f) {
         $checked++;
         if (isset($wpFuncs[$l])) { continue; }                       // real WP function
         if (function_exists($fn)) { continue; }                        // PHP builtin
-        if (in_array($l, $ownFuncs, true)) { continue; }               // theme helper
+        if (in_array($l, $ownFuncs, true) || (isset($jsNames) && in_array($l, $jsNames, true))) { continue; }               // theme helper
         $isWc = false;
         foreach ($wcPrefixes as $pre) { if (strpos($l, $pre) === 0) { $isWc = true; break; } }
         if ($isWc) { continue; }                                       // WooCommerce plugin API

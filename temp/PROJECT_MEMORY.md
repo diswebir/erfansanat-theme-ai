@@ -99,3 +99,6 @@
 
 ## SEO OUTPUT — 2026-11-03
 - test-seo-output: روی WP واقعی title/robots/OG/hreflang(fa,en,ar,x-default)/canonical/og:url/viewport/charset + overrideهای hrefmeta_en/ar روی single + theme supports — همه PASS. <title> صریح به header اضافه شد (WP 7.2). E2E 0 FAIL.
+
+## MIGRATOR — 2026-11-03
+- inc/Migrator.php: import یک Mercéd `_elementor_data` → `_erfansanat_sections` (idempotent) + backfill تمام meta keyهای legacy روی product/projects/post + صفحه ابزار ادمین (Tools → import) با nonce. تست روی WP واقعی: ALL PASS. E2E 0 FAIL.

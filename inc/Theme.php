@@ -35,6 +35,7 @@ final class Theme
             Admin\SectionManager::hooks();
             Admin\ProductMetaboxes::hooks();
             Admin\LegacyMetaBoxes::hooks();
+            Admin\Migrator::hooks();
             add_action('admin_enqueue_scripts', [$this, 'admin_font']);
             add_action('admin_head', [$this, 'admin_font_css'], 1);
         }

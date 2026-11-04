@@ -87,3 +87,6 @@
 
 ## SEO OUTPUT — 2026-11-03
 - 15 SEO checks on real WP renders: title, robots, OG, hreflang incl. hrefmeta_* legacy overrides on singular, canonical, viewport, theme supports. Added explicit <title> + canonical + og:url + meta description to header. ALL PASS, in E2E.
+
+## MIGRATOR — 2026-11-03
+- Legacy import tool: Elementor _elementor_data -> theme section meta, legacy meta key backfill (products/projects/posts), admin Tools page + nonce-guarded AJAX. Real-WP test 10/10 ALL PASS, E2E 0 FAILs.
