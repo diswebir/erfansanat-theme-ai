@@ -21,6 +21,12 @@ final class ProductMetaboxes {
 	/** Industrial/legal identifiers (P03-T013) — text, leading zeros preserved. */
 	public const IDS_KEYS = array( 'gs1_id', 'national_code', 'hs_id', 'isic_id', 'cpc_id', 'product_id' );
 
+	/** Feature repeaters (P03-T017): meta key => historical subkeys. */
+	public const FEATURE_KEYS = array(
+		'product-feature'       => array( 'add-new-feature' ),
+		'product-feature2_copy' => array( 'add-new-feature', 'vaule_of_variable' ),
+	);
+
 	private static bool $booted = false;
 
 	public static function boot(): void {
@@ -45,6 +51,7 @@ final class ProductMetaboxes {
 		add_meta_box( 'es-product-titles', __( 'عناوین و وضعیت فروش', 'erfansanat' ), array( __CLASS__, 'render_titles' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-files', __( 'کاتالوگ و گالری', 'erfansanat' ), array( __CLASS__, 'render_files' ), 'product', 'normal', 'default' );
 		add_meta_box( 'es-product-relations', __( 'پروژه‌ها و کاربردهای مرتبط', 'erfansanat' ), array( __CLASS__, 'render_relations' ), 'product', 'normal', 'default' );
+		add_meta_box( 'es-product-features', __( 'مشخصات فنی (ویژگی‌ها)', 'erfansanat' ), array( __CLASS__, 'render_features' ), 'product', 'normal', 'default' );
 	}
 
 	/**
@@ -68,6 +75,7 @@ final class ProductMetaboxes {
 		self::save_titles( $post_id );
 		self::save_files( $post_id );
 		self::save_relations( $post_id );
+		self::save_features( $post_id );
 	}
 
 	/**
@@ -385,5 +393,91 @@ final class ProductMetaboxes {
 			}
 			LegacyMeta::set( $post_id, 'usage_countr', $valid );
 		}
+	}
+
+	/**
+	 * Render the feature repeaters (P03-T017). Rows use the exact historical
+	 * subkeys; a trailing empty row allows adding an item without JS.
+	 *
+	 * @param \WP_Post $post Post.
+	 */
+	public static function render_features( $post ): void {
+		wp_nonce_field( 'es_product_features', 'es_product_features_nonce' );
+
+		$labels = array(
+			'product-feature'       => __( 'ویژگی‌های محصول', 'erfansanat' ),
+			'product-feature2_copy' => __( 'جدول مشخصات (نام ویژگی / مقدار)', 'erfansanat' ),
+		);
+
+		foreach ( self::FEATURE_KEYS as $meta_key => $subkeys ) {
+			echo '<div class="es-repeater"><h4>' . esc_html( $labels[ $meta_key ] ) . '</h4>';
+			$items   = LegacyMeta::get( $post->ID, $meta_key );
+			$items[] = array_fill_keys( $subkeys, '' ); // New empty row.
+
+			foreach ( $items as $i => $item ) {
+				echo '<p class="es-repeater-row">';
+				foreach ( $subkeys as $subkey ) {
+					printf(
+						'<input type="text" name="es_features[%1$s][%2$d][%3$s]" value="%4$s" class="regular-text" placeholder="%3$s" /> ',
+						esc_attr( $meta_key ),
+						(int) $i,
+						esc_attr( $subkey ),
+						esc_attr( (string) ( is_array( $item ) ? ( $item[ $subkey ] ?? '' ) : '' ) )
+					);
+				}
+				echo '</p>';
+			}
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Save the feature repeaters, preserving the item-0 storage format.
+	 *
+	 * @param int $post_id Post id.
+	 */
+	public static function save_features( $post_id ): void {
+		if ( ! isset( $_POST['es_product_features_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['es_product_features_nonce'] ) ), 'es_product_features' ) ) {
+			return;
+		}
+		if ( ! isset( $_POST['es_features'] ) || ! is_array( $_POST['es_features'] ) ) {
+			return;
+		}
+
+		$raw = wp_unslash( $_POST['es_features'] );
+		foreach ( self::FEATURE_KEYS as $meta_key => $subkeys ) {
+			if ( ! array_key_exists( $meta_key, $raw ) ) {
+				continue;
+			}
+			LegacyMeta::set( $post_id, $meta_key, self::sanitize_repeater_rows( $raw[ $meta_key ], $subkeys ) );
+		}
+	}
+
+	/**
+	 * Sanitize repeater rows against the declared subkeys; fully empty rows
+	 * are dropped, order is preserved.
+	 *
+	 * @param mixed           $value   Rows (array or JSON string).
+	 * @param array<int,string> $subkeys Allowed subkeys.
+	 * @return array<int,array<string,string>>
+	 */
+	private static function sanitize_repeater_rows( $value, array $subkeys ): array {
+		$items = LegacyMeta::decode( $value );
+		$clean = array();
+
+		foreach ( $items as $item ) {
+			if ( ! is_array( $item ) ) {
+				continue;
+			}
+			$row = array();
+			foreach ( $subkeys as $subkey ) {
+				$row[ $subkey ] = sanitize_text_field( (string) ( $item[ $subkey ] ?? '' ) );
+			}
+			if ( '' !== trim( implode( '', $row ) ) ) {
+				$clean[] = $row;
+			}
+		}
+
+		return $clean;
 	}
 }
