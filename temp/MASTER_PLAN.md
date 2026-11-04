@@ -1,6 +1,6 @@
 # نقشه راه ارشد پروژه
 
-> وضعیت فعلی: Phases 1–5 تکمیل و regression شده‌اند؛ Tasks 5.1 و 5.2 پاس شده‌اند؛ پیش از Task 6.1 تأیید جداگانهٔ کاربر لازم است.
+> وضعیت فعلی: Phases 1–5 تکمیل و regression شده‌اند؛ Task 6.1 نیز با تأیید صریح کاربر پاس شد؛ پیش از Task 6.2 تأیید جداگانه لازم است.
 
 ## گیت‌های ورودی و تصمیمات
 
@@ -13,7 +13,7 @@
 - [PASSED] کاربر پس از تکمیل Phase 2 دستور «ادامه بده» داد؛ Phase 3 مجاز شد.
 - [PASSED] کاربر پس از تکمیل Phase 3 مجدداً «ادامه بده» گفت؛ Phase 4 مجاز شد؛ Task 4.1 اجرا شد.
 - [PASSED] کاربر پس از Task 4.1 برای Task 4.2 نیز «اوکیه ادامه بده» گفت؛ پیاده‌سازی مگامنو/منوهای موبایل مجاز شد.
-- [PASSED] کاربر Phase 5 را مجاز کرد و پس از Task 5.1 با «ادامه بده» اجرای Task 5.2 را تأیید کرد؛ هر دو تسک انجام و تست شدند؛ پیش از Task 6.1 تأیید جداگانه لازم است.
+- [PASSED] کاربر Phase 5 را مجاز کرد و پس از Task 5.1 اجرای Task 5.2 را تأیید کرد؛ هر دو تسک پاس شدند. سپس کاربر Task 6.1 را صریحاً مجاز کرد؛ Task 6.1 پاس شد و پیش از Task 6.2 منتظر تأیید هستیم.
 
 ## فازها و تسک‌ها
 
@@ -52,7 +52,7 @@
 
 ### Phase 6 — قالب‌های WooCommerce و محصول (`phase-06-woocommerce-and-products`)
 
-- [PENDING] **6.1 صفحه تک‌محصول** — شروط پذیرش در `phase-06-woocommerce-and-products/tasks/task-01.md`; تست در `phase-06-woocommerce-and-products/tests/test-task-01.php`.
+- [PASSED] **6.1 صفحه تک‌محصول** — خرید/استعلام بر پایهٔ `true_sale`، گالری legacy/Woo، ۱۸ ویژگی `pa_*`، relations، FAQ، reviews و related products؛ integration test پاس شد.
 - [PENDING] **6.2 آرشیو فروشگاه و دسته محصول** — شروط پذیرش در `phase-06-woocommerce-and-products/tasks/task-02.md`; تست در `phase-06-woocommerce-and-products/tests/test-task-02.php`.
 - [PENDING] **6.3 Cart، checkout و my-account** — شروط پذیرش در `phase-06-woocommerce-and-products/tasks/task-03.md`; تست در `phase-06-woocommerce-and-products/tests/test-task-03.php`.
 - تست یکپارچه: `phase-06-woocommerce-and-products/tests/run-phase-tests.sh`

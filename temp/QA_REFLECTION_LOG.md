@@ -118,3 +118,11 @@
 - محتوای نمونهٔ مشتریان/آمار در schema به‌صورت defaults قابل‌ویرایش نگه داشته شده؛ مقادیر آماری وابسته به پروژه/محصول شمارش واقعی دارند و مشتریان می‌توانند از repeater شمارش شوند یا عدد دستی داشته باشند. CTA سفارش اختصاصی نیز به فیلدهای Section Builder منتقل شد.
 - در front-page tests دادهٔ خالی برای queryها بدون fatal/placeholder مدیریت شد. چون harness وردپرس WooCommerce نصب ندارد، مسیر `wc_get_products` با test stub پوشش داده شد و WP_Query fallback واقعی نیز اجرا شد.
 - Final regression Phases 1–4 + Phase 5 Tasks 5.1–5.2 پاس؛ همهٔ PHPها lint شدند؛ `node --check assets/js/main.js` و `sh -n` runner پاس؛ WP_DEBUG log خالی.
+
+
+## Phase 6 / Task 6.1 — Single-product WooCommerce
+- کاربر پس از ایجاد PR، شروع Task 6.1 را صریحاً تأیید کرد؛ فقط همین Task اجرا شد و گیت تأیید Task 6.2 حفظ شد.
+- Test scaffold به integration test وردپرس تبدیل شد و پیش از implementation fail شد چون `single-product.php` وجود نداشت. آزمون fixtures برای حالت خرید/استعلام، title/meta escaping، gallery/fallbackها، شناسه‌ها، ویژگی‌های `pa_*`، project relations، repeaters/FAQ، reviews و related products دارد.
+- `single-product.php` از APIهای استاندارد خرید، قیمت و review WooCommerce استفاده می‌کند؛ `true_sale=false` به لینک‌های contact/settings می‌رود. گالری legacy و استاندارد، ۱۸ attribute exact، شناسه‌ها/ویژگی‌های فنی، FAQ، پروژه‌ها/کاربردها، products related و WordPress/Woo reviews data-driven رندر می‌شوند. selectorهای gallery/lightbox/tabs/FAQ با `main.js` حفظ شده‌اند.
+- چون test harness افزونهٔ WooCommerce نصب نمی‌کند، hookهای واقعی WooCommerce با test doubles پوشش داده شدند؛ مسیر WordPress comments fallback نیز قابل استفاده باقی ماند.
+- نتایج: Task 6.1 integration PASS؛ regression Phases 1–4 و Task 5.1 PASS؛ syntax PHPهای تغییرکرده PASS؛ WP_DEBUG خالی. Phase 6 runner از `PHASE_TASKS=01` برای اجرای تسک تأییدشده پشتیبانی می‌کند.

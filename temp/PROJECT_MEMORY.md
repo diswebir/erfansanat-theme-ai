@@ -1,14 +1,14 @@
 # حافظه زنده پروژه
 
-- وضعیت: `Phases 1–5 PASSED (Tasks 5.1–5.2); request approval before Task 6.1.`
+- وضعیت: `Phases 1–5 PASSED; Tasks 5.1, 5.2, 6.1 PASSED; request approval before Task 6.2.`
 - شاخه فعال: `arena/8fc7b5b7-erfansanat-theme-ai`.
 - میرور پیوست در `static-mirror/`؛ 128 فایل HTML و assets محلی.
 - محیط: Node و curl موجود؛ PHP native/WP-CLI/PHPUnit/PHPCS/xmllint موجود نیستند؛ PHP WASM 8.5.12 به‌صورت محلی در `node_modules/` فراهم شد و برای lint و smoke tests قابل استفاده است. WordPress production/native دائمی نیست؛ برای آزمون، WordPress 7.2-beta3 (build 65225) و SQLite با PHP WASM در `node_modules/.cache/ese-wp-test/` نصب/فعال است؛ این مسیر در Git نادیده گرفته می‌شود.
 - اسناد مرجع: `PROJECT_GOAL.md`, `DATA_BLUEPRINT.md`, `STATIC_TEMPLATE_MAP.md`, `MASTER_PLAN.md`, `QA_REFLECTION_LOG.md`.
 - تصمیم‌های کاربر: صفحات هم‌نام دو مسیر محصول مقایسه/ادغام شوند؛ خدمات یک CPT مستقل؛ تمام سکشن‌های منتخب قابل ویرایش؛ فیلترها AJAX.
 - Stage 1: درخت 8 فاز و 22 تسک ساخته شد؛ task briefها، 22 contract tests، 8 phase runners و 1 all-phases runner تولید شدند.
-- آخرین تسک‌های پاس‌شده: 5.1 و 5.2؛ Phases 1–5 تکمیل‌اند. Theme Options، Section Builder، CPTs/taxonomies، legacy metaboxes، header/footer، navigation، homepage parts و dynamic homepage data موجودند.
-- گام بعدی: دریافت تأیید صریح پیش از Task 6.1. Harness: `temp/setup-wordpress-test.sh`; Phase 5 tests: `sh temp/phase-05-homepage-and-sections/tests/run-phase-tests.sh` (PHP WASM و WP_TEST_ROOT خودکار تشخیص داده می‌شوند); Phase 2/3/4 runners در مسیرهای متناظر.
+- آخرین تسک‌های پاس‌شده: 5.1، 5.2 و 6.1؛ Phases 1–5 تکمیل‌اند و Phase 6 در حال اجراست. Theme Options، Section Builder، CPTs/taxonomies، legacy metaboxes، header/footer، navigation، homepage parts، dynamic homepage data و صفحهٔ محصول تکی موجودند.
+- گام بعدی: دریافت تأیید صریح پیش از Task 6.2. Task 6.1 را با `PHASE_TASKS=01 sh temp/phase-06-woocommerce-and-products/tests/run-phase-tests.sh` می‌توان مجدداً اجرا کرد. Harness: `temp/setup-wordpress-test.sh`; Phaseهای 2–5 runnerهای یکپارچهٔ متناظر دارند.
 - توجه: اسلاگ نهایی خدمات باید با URLهای زنده تطبیق داده شود؛ برای محصولات URL canonical مطابق بلوپرینت حفظ می‌شود.
 
 - Task 1.1 QA: PHP WASM 8.5.12 روی 26 فایل PHP lint پاس؛ contract test پاس؛ WordPress integration test واقعی (WordPress 7.2-beta3 + SQLite) و render fallback پاس؛ WP_DEBUG log خالی است.
@@ -61,4 +61,13 @@
 - Hero/video settings و slide projectها، دسته‌های زنده و تصاویر term؛ محصولات منتخب؛ پروژه‌های شاخص و آرشیو دسته‌بندی‌شده؛ مقالات اخیر؛ آمار پروژه/محصول و مقدارهای تنظیم‌شده؛ و کارت‌های مشتریان از repeater قابل‌ویرایش به قالب وصل شدند. Hero/product/category media به مدیای WP/legacy متا متصل است.
 - سه کارت اشتراکی `template-parts/cards/card-{product,project,post}.php` از داده‌های WP/WooCommerce استفاده می‌شوند. تکرارهای بدون داده خروجی خالی و بدون fatal/placeholder دارند؛ کارت سفارش سفارشی محصول و داده‌های مشتریان به Section Builder وصل‌اند.
 - Test integration تعداد/محدودیت queryها، taxonomy/ترم، invalidation بعد از انتشار پروژه، مقادیر مشتری/آمار editable، مسیر Woo API (stub در صورت نبود Woo در harness) و خروجی واقعی homepage را آزمایش می‌کند. Task 5.1 و 5.2، regression Phases 1–4، PHP lint، JavaScript/shell syntax و WP_DEBUG خالی پاس شدند.
-- Phase 5 کامل شد؛ گام بعدی پس از تأیید کاربر Task 6.1 است.
+- Phase 5 کامل شد؛ پس از تأیید کاربر Task 6.1 اجرا و پاس شد؛ یادداشت نتایج آن در بخش Phase 6 این فایل آمده است.
+
+## Phase 6 / Task 6.1 result — Single-product page
+- User explicitly approved Task 6.1 after the open PR; work stayed limited to this task. Task 6.1 is `[PASSED]`; approval is still required before Task 6.2.
+- `single-product.php` renders WooCommerce product details, identifier metas, subtitle/English title, pre-sale notice, catalog link, product features/usages, 18 exact `pa_*` attributes, project/type relations, FAQs, reviews, and a bounded set of related products.
+- `true_sale=true` uses WooCommerce's standard price/add-to-cart templates, preserving simple and variable-product behavior. `true_sale=false` hides checkout purchase UI and shows configured phone/email inquiry links.
+- Gallery order begins with the featured image and uses `ProductMetaboxes::get_product_gallery_ids()` for exact `galerry_produ`, WooCommerce gallery and legacy `gallery-filed` / `image-2`…`image-6`; gallery, lightbox, tabs and FAQ selectors match `assets/js/main.js`.
+- Empty content sections are omitted (gallery has a clear missing-image state); output is escaped, with post description passed through the normal WordPress content filters. Product reviews use `wc_get_template('single-product-reviews.php')` when WooCommerce is active, with a WordPress comments fallback.
+- Task 6.1 WordPress integration test covers online/inquiry branches, gallery priority/fallbacks, attributes, identifiers, relations, FAQ visibility, escaped content, WooCommerce review template integration and related products. The disposable WordPress harness does not install WooCommerce, so Woo APIs are exercised with test doubles.
+- Task 6.1 test, regression Phases 1–4, Task 5.1, PHP syntax checks, and WP_DEBUG log all passed. Phase 6 runner supports `PHASE_TASKS=01` to run only the authorized task.
