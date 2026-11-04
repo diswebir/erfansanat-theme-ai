@@ -94,6 +94,8 @@ final class Theme {
 	public function boot_modules(): void {
 		DeBloat::register();
 		AssetManager::register();
+		ContentTypes::register();
+		Rewrites::register();
 	}
 
 	/**

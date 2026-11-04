@@ -2,7 +2,7 @@
 
 ## وضعیت جاری
 
-`STAGE 1 - PHASE 2 COMPLETE - AWAITING APPROVAL`
+`STAGE 1 - PHASE 3 IN PROGRESS - TASK 3.1 PASSED`
 
 - تاریخ شروع: 2026-11-03.
 - شاخه کار: `arena/de593948-erfansanat-theme-ai`.
@@ -82,6 +82,7 @@
 - **Task 2.2 PASSED** (`2026-11-03`): `inc/Frontend/SiteParts.php` + بازنویسی `header.php`/`footer.php`؛ همهٔ فیلدهای سراسری (برند، اعلان، تماس، شبکه‌ها، لینک‌ها، نشان‌ها، دسته‌های فوتر، اسکریپت مجاز، ۴ جایگاه منو) با پیش‌فرض‌های مرجع در فرانت‌اند چاپ می‌شوند. PHPUnit ۱۳/۷۵، HTTP ۲۱/۲۱ (کل فاز ۳۵/۳۵)، فاز ۱ بدون رگرسیون.
 - پیش‌فرض‌ها عیناً از مرجع استاتیک گرفته شده‌اند (نام برند، شعار، تلفن‌ها، ایمیل، نشانی، ساعات کاری، متن فوتر، ۸ لینک دسترسی سریع، ۸ دستهٔ فوتر).
 - **Task 2.3 PASSED** (`2026-11-03`): `inc/Sections.php` (رجیستری ۱۵ سکشن + sanitize + رندر)، `inc/Admin/SectionManager.php` (drag و کلید)، `front-page.php` و ۱۵ قالب سکشن. PHPUnit ۱۳/۷۵، HTTP ۱۴/۱۴ (کل فاز ۴۹/۴۹).
-- **Phase 2 کامل شد** و منتظر تأیید کاربر برای شروع Phase 3 است.
+- **Phase 2 کامل شد** (PR #2 باز است).
+- **Task 3.1 PASSED** (`2026-11-04`): `inc/ContentTypes.php` + `inc/Rewrites.php`؛ ثبت بومی `projects`/`services`/`project_type`/`city` با اسلاگ‌های بلوپرینت، قرارداد سئوی ووکامرس، ستون‌ها و فیلترهای ادمین، ۱۶ کلید متای تاریخی. mu-plugin آزمایشی غیرفعال شد. PHPUnit ۱۲/۱۳۵، HTTP ۱۵/۱۵.
 - دو لایهٔ پذیرش فاز ۲: PHPUnit (`tests/test-task-0N.php`) و `tests/check-http.py` (پنل/ذخیرهٔ واقعی/مجوز/nonce).
 - در جریان: Task 2.2 رندر عمومی مقادیر در هدر/فوتر/نوار اعلان و Task 2.3 رجیستری سکشن‌ها.
