@@ -1,0 +1,9 @@
+# Static reference mirror (kept in workspace for DOM fidelity tests, not shipped inside theme git tree)
+/static-mirror/
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log

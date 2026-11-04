@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+if (!defined('ABSPATH')) exit;
+$postId = (int) ($GLOBALS['es_product_id'] ?? get_the_ID());
+if ($postId < 1) return;
+$faqRows = \ErfanSanat\Theme\Helpers\LegacyMeta::getRows($postId, 'faq');
+$faqs = [];
+foreach ($faqRows as $row) { $question = trim((string) ($row['name_question'] ?? '')); $answer = trim((string) ($row['answer_question'] ?? '')); if ($question !== '' && $answer !== '') $faqs[] = [$question, $answer]; }
+$reviews = get_comments(['post_id' => $postId, 'status' => 'approve', 'type' => 'review', 'number' => 50, 'orderby' => 'comment_date_gmt', 'order' => 'DESC']);
+if ($reviews === []) $reviews = get_comments(['post_id' => $postId, 'status' => 'approve', 'type' => 'comment', 'number' => 50, 'orderby' => 'comment_date_gmt', 'order' => 'DESC']);
+?>
+<?php if ($faqs !== []) : ?><section class="mt-10 rounded-3xl bg-white p-5 md:p-8" data-faq-list="true"><h2 class="mb-5 text-xl font-black text-slate-900">سوالات متداول درباره محصول</h2><div class="space-y-3"><?php foreach ($faqs as $index => [$question, $answer]) : ?><article class="overflow-hidden rounded-2xl border border-slate-200"><button type="button" data-faq-toggle="<?php echo esc_attr((string) $index); ?>" class="flex w-full items-center justify-between gap-4 p-4 text-right text-sm font-bold text-slate-800"><span><?php echo esc_html($question); ?></span><span data-faq-icon="<?php echo esc_attr((string) $index); ?>" class="grid h-7 w-7 place-items-center rounded-full bg-emerald-100 text-emerald-800">+</span></button><div data-faq-body="<?php echo esc_attr((string) $index); ?>" class="hidden px-4 pb-4 text-sm leading-7 text-slate-600"><?php echo wp_kses_post(wpautop($answer)); ?></div></article><?php endforeach; ?></div></section><?php endif; ?>
+<section class="mt-10 rounded-3xl bg-white p-5 md:p-8" data-product-reviews>
+    <h2 class="mb-5 text-xl font-black text-slate-900">دیدگاه و امتیاز کاربران</h2>
+    <div data-reviews-list="true" class="mb-7 space-y-3"><?php if ($reviews === []) : ?><p class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">هنوز دیدگاهی برای این محصول ثبت نشده است.</p><?php else : foreach ($reviews as $review) : $rating = (int) get_comment_meta($review->comment_ID, 'rating', true); ?><article class="rounded-2xl border border-slate-200 p-4"><div class="mb-2 flex items-center justify-between"><strong class="text-sm font-bold"><?php echo esc_html($review->comment_author); ?></strong><span class="text-amber-500" aria-label="امتیاز <?php echo esc_attr((string) $rating); ?> از ۵"><?php echo esc_html(str_repeat('★', max(0, min(5, $rating)))); ?></span></div><p class="text-sm leading-7 text-slate-700"><?php echo esc_html($review->comment_content); ?></p></article><?php endforeach; endif; ?></div>
+    <?php if (comments_open($postId)) : ?><form data-review-form="true" class="space-y-4" method="post" action="<?php echo esc_url(site_url('/wp-comments-post.php')); ?>">
+        <h3 class="text-base font-black">ثبت دیدگاه شما</h3><div class="flex items-center gap-1" role="radiogroup" aria-label="امتیاز محصول"><?php for ($star = 1; $star <= 5; $star++) : ?><button type="button" data-review-star="<?php echo esc_attr((string) $star); ?>" class="text-2xl text-amber-400" aria-label="امتیاز <?php echo esc_attr((string) $star); ?> از ۵"><span data-review-star-svg="true">★</span></button><?php endfor; ?><span data-review-rating-label="true" class="mr-2 text-xs text-slate-500">۵ از ۵</span></div>
+        <input type="hidden" name="rating" value="5" data-review-rating-input="true"><input type="hidden" name="comment_post_ID" value="<?php echo esc_attr((string) $postId); ?>"><input type="hidden" name="comment_parent" value="0"><input type="hidden" name="comment_type" value="review">
+        <div class="grid gap-3 sm:grid-cols-2"><label class="text-xs font-bold">نام شما<input required name="author" data-review-name="true" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" autocomplete="name"></label><label class="text-xs font-bold">نام سازمان (اختیاری)<input name="organization" data-review-org="true" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm"></label></div>
+        <label class="block text-xs font-bold">دیدگاه شما<textarea required name="comment" data-review-comment="true" rows="4" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm"></textarea></label>
+        <?php wp_nonce_field('woocommerce-comment_rating', 'woocommerce-comment-rating-nonce'); ?><input type="hidden" name="email" value="">
+        <div data-review-success="true" class="hidden rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-800">دیدگاه شما با موفقیت ثبت شد.</div><button type="submit" class="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-extrabold text-white">ارسال دیدگاه</button>
+    </form><?php else : ?><p class="text-sm text-slate-500">ثبت دیدگاه برای این محصول بسته است.</p><?php endif; ?>
+</section>

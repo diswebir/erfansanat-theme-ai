@@ -1,0 +1,30 @@
+<?php
+/** Automated QA Test Script — Task 8.12: Form manager and message storage. */
+declare(strict_types=1);
+$root=dirname(__DIR__,3);$failures=[];
+$assert=static function(bool $condition,string $label)use(&$failures):void{echo $condition?"  [PASS] {$label}\n":"  [FAIL] {$label}\n";if(!$condition)$failures[]=$label;};
+require_once '/opt/wp-testbed/wp-load.php';$GLOBALS['wp']->main();
+echo "=== [TEST] Task 8.12: Form manager and message storage ===\n";
+$manager='ErfanSanat\\Theme\\Forms\\FormManager';$storage='ErfanSanat\\Theme\\Forms\\FormSubmissions';
+$assert(is_file($root.'/inc/Forms/FormManager.php')&&is_file($root.'/inc/Forms/FormSubmissions.php'),'form manager and storage files exist');
+$assert(class_exists($manager)&&class_exists($storage),'form manager and storage classes autoload');
+$managerService=new $manager();
+$storageService=\ErfanSanat\Theme\Core\Plugin::instance()->getService($storage);
+$assert($storageService instanceof \ErfanSanat\Theme\Forms\FormSubmissions && has_filter('init',[$storageService,'registerPostType'])!==false,'private message CPT is registered on init');
+$storageService=new $storage();$storageService->registerPostType();$postType=get_post_type_object('es_form_message');
+$assert($postType instanceof WP_Post_Type&&!$postType->public&&$postType->show_ui,'messages are private and available in the admin menu');
+$_SERVER['REMOTE_ADDR']='192.0.2.'.random_int(10,200);$nonce=wp_create_nonce('erfan_sanat_form');
+$valid=['form_nonce'=>$nonce,'website'=>'','name'=>'QA <script>x</script>','message'=>"A safe\nmessage <b>text</b>",'email'=>'qa@example.test'];
+$assert($managerService->checkSubmission($valid)===true,'valid nonce and empty honeypot pass');
+$badNonce=$valid;$badNonce['form_nonce']='invalid';$assert(is_wp_error($managerService->checkSubmission($badNonce)),'invalid nonce is rejected');
+$spam=$valid;$spam['website']='spam';$assert(is_wp_error($managerService->checkSubmission($spam)),'filled honeypot is rejected');
+$saved=$managerService->saveSubmission('contact',$valid,$valid);
+$assert(is_int($saved)&&get_post_type($saved)==='es_form_message','valid form message is stored as a private CPT');
+$assert(get_post_meta($saved,'es_message_read',true)==='0'&&get_post_meta($saved,'es_message_type',true)==='contact','new message is unread and categorized');
+$assert($storageService->setReadStatus($saved,true)&&get_post_meta($saved,'es_message_read',true)==='1','admin storage service can mark a message as read');
+$storageService->setReadStatus($saved,false);
+$assert(get_post_meta($saved,'name',true)==='QA'&&get_post_meta($saved,'message',true)==="A safe\nmessage text",'submitted fields are sanitized before storage');
+$managerService->checkSubmission($valid);$limited=$managerService->checkSubmission($valid);
+$assert(is_wp_error($limited),'per-IP rate limit blocks requests above the configured threshold');
+wp_delete_post($saved,true);
+if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Task 8.12 checks completed successfully.\n";

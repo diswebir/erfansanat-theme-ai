@@ -1,0 +1,33 @@
+<?php
+/** Automated QA Test Script — Task 8.13: Contact and product inquiry forms. */
+declare(strict_types=1);
+$root=dirname(__DIR__,3);$failures=[];
+$assert=static function(bool $condition,string $label)use(&$failures):void{echo $condition?"  [PASS] {$label}\n":"  [FAIL] {$label}\n";if(!$condition)$failures[]=$label;};
+require_once '/opt/wp-testbed/wp-load.php';$GLOBALS['wp']->main();
+echo "=== [TEST] Task 8.13: Contact and product inquiry forms ===\n";
+$contact='ErfanSanat\\Theme\\Forms\\ContactForm';$inquiry='ErfanSanat\\Theme\\Forms\\ProductInquiryForm';
+$assert(is_file($root.'/inc/Forms/ContactForm.php')&&is_file($root.'/inc/Forms/ProductInquiryForm.php'),'contact and inquiry form files exist');
+$assert(class_exists($contact)&&class_exists($inquiry),'contact and inquiry form classes autoload');
+$routes=apply_filters('erfan_sanat_ajax_routes',[]);
+$assert(isset($routes['contact_submission'])&&isset($routes['product_inquiry']),'both public form routes are registered');
+$script=(string)file_get_contents($root.'/assets/js/main.js');
+$assert(str_contains($script,'data-contact-form-slot')&&str_contains($script,'contact_submission')&&str_contains($script,'product_inquiry'),'existing contact form is wired for contact and product inquiries');
+$assert(str_contains($script,'formNonce')&&str_contains($script,'form_nonce'),'form client submits its dedicated server nonce');
+$formManager=new \ErfanSanat\Theme\Forms\FormManager();wp_register_script('erfansanat-main','/assets/main.js');$formManager->addFormNonce();$inline=wp_scripts()->get_data('erfansanat-main','before');$inlineText=is_array($inline)?implode(' ',$inline):(string)$inline;
+$assert(preg_match('/formNonce=\"([^\"]+)/',$inlineText,$nonceMatch)===1&&wp_verify_nonce($nonceMatch[1],'erfan_sanat_form')!==false,'frontend receives a valid dedicated form nonce');
+$_SERVER['REMOTE_ADDR']='192.0.2.'.random_int(10,200);$nonce=wp_create_nonce('erfan_sanat_form');
+$mailCount=0;add_filter('pre_wp_mail',static function($return)use(&$mailCount){$mailCount++;return true;});
+$contactResult=(new $contact())->submit(['form_nonce'=>$nonce,'website'=>'','name'=>'Contact QA','phone'=>'+1 234 567 890','message'=>'Contact form request']);
+$assert(is_array($contactResult)&&is_int($contactResult['submission_id']??null),'valid contact form submission is stored');
+$assert($mailCount===1,'contact form sends an admin notification');
+$invalid=(new $contact())->submit(['form_nonce'=>$nonce,'website'=>'','name'=>'Bad QA','phone'=>'bad','message'=>'Invalid phone']);
+$assert(is_wp_error($invalid),'invalid phone number is rejected');
+$productId=wp_insert_post(['post_type'=>'product','post_status'=>'publish','post_title'=>'Inquiry Product QA']);update_post_meta($productId,'true_sale','false');
+$inquiryResult=(new $inquiry())->submit(['form_nonce'=>$nonce,'website'=>'','product_id'=>$productId,'name'=>'Inquiry QA','phone'=>'09123456789','message'=>'Price request']);
+$assert(is_array($inquiryResult)&&is_int($inquiryResult['submission_id']??null),'inquiry for a published quote-only product is stored');
+$assert($mailCount===2,'product inquiry sends an admin notification');
+update_post_meta($productId,'true_sale','true');
+$rejected=(new $inquiry())->submit(['form_nonce'=>$nonce,'website'=>'','product_id'=>$productId,'name'=>'Inquiry QA','phone'=>'09123456789','message'=>'Price request']);
+$assert(is_wp_error($rejected),'product inquiry rejects products not in quote-only mode');
+wp_delete_post($contactResult['submission_id']??0,true);wp_delete_post($inquiryResult['submission_id']??0,true);wp_delete_post($productId,true);
+if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Task 8.13 checks completed successfully.\n";

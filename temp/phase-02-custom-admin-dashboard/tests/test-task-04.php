@@ -1,0 +1,76 @@
+<?php
+declare(strict_types=1);
+$themeRoot=dirname(__DIR__,3); $wpRoot='/opt/wp-testbed';
+$failures=[];$assert=static function(bool $c,string $l)use(&$failures):void{echo $c?"  [PASS] $l\n":"  [FAIL] $l\n"; if(!$c)$failures[]=$l;};
+require_once $wpRoot.'/wp-load.php';
+echo "=== [TEST] Task 2.4 Admin Assets ===\n";
+use ErfanSanat\Theme\Admin\{AdminAssets,ThemeOptions};
+$adminCssPath = "$themeRoot/assets/admin/css/admin-dashboard.css";
+$assert(is_file($adminCssPath),'admin css exists');
+$assert(is_file("$themeRoot/assets/admin/js/admin-dashboard.js"),'admin js exists');
+$adminCss = is_file($adminCssPath) ? (string) file_get_contents($adminCssPath) : '';
+$assert(substr_count($adminCss, '@font-face') === 3, 'Admin CSS declares all three local Vazirmatn subsets');
+foreach (['vazirmatn-arabic.woff2', 'vazirmatn-latin.woff2', 'vazirmatn-latin-ext.woff2'] as $fontFile) {
+    $fontPath = "$themeRoot/assets/fonts/$fontFile";
+    $assert(str_contains($adminCss, "../../fonts/$fontFile"), "Admin CSS loads local font subset: $fontFile");
+    $assert(is_file($fontPath), "Local font file exists: $fontFile");
+    $signature = is_file($fontPath) ? file_get_contents($fontPath, false, null, 0, 4) : false;
+    $assert($signature === 'wOF2', "Local font has a valid WOFF2 signature: $fontFile");
+}
+$assert(str_contains($adminCss, 'font-display: swap') && str_contains($adminCss, 'unicode-range: U+0600-06FF'), 'Arabic font face uses swap and Persian/Arabic glyph range');
+$assert(str_contains($adminCss, 'body.toplevel_page_erfansanat-theme') && str_contains($adminCss, "font-family: 'Vazirmatn'"), 'Vazirmatn is applied to the theme dashboard and controls');
+$assert(str_contains($adminCss, 'body#tinymce') && str_contains($adminCss, 'body.mce-content-body'), 'Classic Editor canvas uses Vazirmatn');
+$assert(str_contains($adminCss, 'body.post-type-page #title') && str_contains($adminCss, 'body.post-type-product #content'), 'Classic Editor title and text-mode fields use Vazirmatn');
+$editorStyles = isset($GLOBALS['editor_styles']) && is_array($GLOBALS['editor_styles']) ? $GLOBALS['editor_styles'] : [];
+$assert(in_array('assets/admin/css/admin-dashboard.css', $editorStyles, true), 'Classic Editor registers the local Vazirmatn stylesheet');
+$editorStyleUrls = function_exists('get_editor_stylesheets') ? get_editor_stylesheets() : [];
+$expectedEditorStyleUrl = ERFANSANAT_THEME_URI . '/assets/admin/css/admin-dashboard.css';
+$assert(in_array($expectedEditorStyleUrl, $editorStyleUrls, true), 'Classic Editor resolves the stylesheet to the local theme URL');
+$assert(str_contains($adminCss, '.media-modal') && str_contains($adminCss, 'font-family: inherit'), 'Media library dialog inherits Vazirmatn without replacing icon fonts');
+$assert(str_contains($adminCss, ".postbox[id^='erfansanat-']"), 'Theme metaboxes inherit the admin font');
+$assert(str_contains($adminCss, 'body.taxonomy-product_cat') && str_contains($adminCss, 'body.taxonomy-city'), 'Theme taxonomy screens inherit the admin font');
+$assert(str_contains($adminCss, 'body.post-type-product .wp-list-table'), 'Product/project list screens inherit the admin font');
+$assert(AdminAssets::shouldEnqueueStyle('post.php', 'product'), 'Font stylesheet is enabled on theme product editor');
+$assert(AdminAssets::shouldEnqueueStyle('post-new.php', 'page'), 'Font stylesheet is enabled on page editor and section manager');
+$assert(AdminAssets::shouldEnqueueStyle('edit-tags.php', null, 'product_cat'), 'Font stylesheet is enabled on theme taxonomy screens');
+$assert(AdminAssets::shouldEnqueueStyle('edit.php', 'projects'), 'Font stylesheet is enabled on project list screen');
+$assert(!AdminAssets::shouldEnqueueStyle('post.php', 'unrelated_cpt'), 'Font stylesheet remains scoped away from unrelated post types');
+$a=new AdminAssets(); $a->enqueue('plugins.php');
+$assert(!wp_style_is('erfansanat-admin','enqueued'),'Not enqueued on unrelated admin page');
+if (!class_exists('WP_Screen')) {
+    require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
+}
+if (!function_exists('get_current_screen')) {
+    require_once ABSPATH . 'wp-admin/includes/screen.php';
+}
+$screenFactory = new ReflectionClass(WP_Screen::class);
+$productScreen = $screenFactory->newInstanceWithoutConstructor();
+$productScreen->post_type = 'product';
+$GLOBALS['current_screen'] = $productScreen;
+$a->enqueue('post.php');
+$assert(wp_style_is('erfansanat-admin','enqueued'),'Font CSS enqueued for a theme product metabox screen');
+wp_dequeue_style('erfansanat-admin');
+$unrelatedScreen = $screenFactory->newInstanceWithoutConstructor();
+$unrelatedScreen->post_type = 'unrelated_cpt';
+$GLOBALS['current_screen'] = $unrelatedScreen;
+$a->enqueue('post.php');
+$assert(!wp_style_is('erfansanat-admin','enqueued'),'Font CSS stays off unrelated custom post screens');
+wp_dequeue_style('erfansanat-admin');
+$taxonomyScreen = $screenFactory->newInstanceWithoutConstructor();
+$taxonomyScreen->taxonomy = 'product_cat';
+$GLOBALS['current_screen'] = $taxonomyScreen;
+$a->enqueue('edit-tags.php');
+$assert(wp_style_is('erfansanat-admin','enqueued'),'Font CSS enqueued for a theme taxonomy screen');
+wp_dequeue_style('erfansanat-admin');
+$listScreen = $screenFactory->newInstanceWithoutConstructor();
+$listScreen->post_type = 'projects';
+$GLOBALS['current_screen'] = $listScreen;
+$a->enqueue('edit.php');
+$assert(wp_style_is('erfansanat-admin','enqueued'),'Font CSS enqueued for the project list screen');
+wp_dequeue_style('erfansanat-admin');
+$GLOBALS['current_screen'] = null;
+$a->enqueue('toplevel_page_'.ThemeOptions::PAGE_SLUG);
+$assert(wp_style_is('erfansanat-admin','enqueued'),'CSS enqueued on dashboard page');
+$assert(wp_script_is('erfansanat-admin','enqueued'),'JS enqueued on dashboard page');
+$data=wp_scripts()->get_data('erfansanat-admin','data'); $assert(is_string($data)&&str_contains($data,'esAdminData'),'esAdminData localized with ajax/nonce');
+if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED]\n";

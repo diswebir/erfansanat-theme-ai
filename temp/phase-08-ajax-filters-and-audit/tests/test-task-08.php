@@ -1,0 +1,32 @@
+<?php
+/** Automated QA Test Script — Task 8.8: Product archive AJAX wiring. */
+declare(strict_types=1);
+$root=dirname(__DIR__,3);$failures=[];
+$assert=static function(bool $condition,string $label)use(&$failures):void{echo $condition?"  [PASS] {$label}\n":"  [FAIL] {$label}\n";if(!$condition)$failures[]=$label;};
+require_once '/opt/wp-testbed/wp-load.php';$GLOBALS['wp']->main();
+$optionsClass = 'ErfanSanat\\Theme\\Admin\\OptionsStore';
+$originalOptions = get_option($optionsClass::OPTION_NAME, []);
+$enabledMap = \ErfanSanat\Theme\Filters\FilterRegistry::defaultEnabled();
+update_option($optionsClass::OPTION_NAME, array_merge(is_array($originalOptions) ? $originalOptions : [], ['enabled_filters' => $enabledMap]));
+$optionsClass::flushCache();
+echo "=== [TEST] Task 8.8: Product archive AJAX wiring ===\n";
+$script=(string)file_get_contents($root.'/assets/js/main.js');
+$start=strpos($script,'function initProductsArchive()');$end=strpos($script,'/* ───────────────────────────────────────────────', $start+20);$section=$start!==false&&$end!==false?substr($script,$start,$end-$start):'';
+$assert($section!=='','initProductsArchive source section exists');
+$assert(str_contains($section,'product_filter')&&str_contains($section,'erfan_sanat_ajax'),'archive sends request to shared AJAX endpoint');
+$assert(str_contains($section,'ajaxNonce')&&str_contains($section,'preventDefault'),'archive validates requests and intercepts pagination links');
+$assert(str_contains($section,'data-product-attribute-filter')&&str_contains($section,'product_cat'),'archive serializes category and attribute filter state');
+$assert(!str_contains($section,'pushState')&&!str_contains($section,'replaceState')&&!str_contains($section,'window.location.search'),'archive filters never mutate or read filter URL state');
+$assert(str_contains($section,'data-product-count')&&str_contains($section,'data-product-empty'),'archive updates the existing count and empty-state elements');
+$assert(count(\ErfanSanat\Theme\Filters\FilterRegistry::attributes())===18,'dashboard filter registry exposes all 18 known pa_* filters');
+$optionsClass='ErfanSanat\\Theme\\Admin\\OptionsStore';
+$old=get_option($optionsClass::OPTION_NAME,[]);$map=is_array($old['enabled_filters']??null)?$old['enabled_filters']:[];
+foreach(['search','product_cat','price','sort','true_sale'] as $key)$map[$key]=false;
+update_option($optionsClass::OPTION_NAME,array_merge(is_array($old)?$old:[],['enabled_filters'=>$map]));$optionsClass::flushCache();
+$disabledArgs=\ErfanSanat\Theme\Filters\ProductFilterQuery::buildArgs(['search'=>'secret','product_cat'=>'lights','max_price'=>'100','sort'=>'price-desc']);
+$disabledSale=\ErfanSanat\Theme\Filters\ProductSaleFilter::apply(['post_type'=>'product'], 'call');
+$assert(!isset($disabledArgs['s'])&&!isset($disabledArgs['tax_query'])&&!isset($disabledArgs['meta_query'])&&($disabledArgs['orderby']??'')==='menu_order title','dashboard-disabled search/category/price/sort controls are ignored server-side');
+$assert(!isset($disabledSale['meta_query']),'dashboard-disabled purchase filter is ignored server-side');
+update_option($optionsClass::OPTION_NAME,$old);$optionsClass::flushCache();
+update_option($optionsClass::OPTION_NAME, $originalOptions); $optionsClass::flushCache();
+if($failures){fwrite(STDERR,"[FAILED] ".implode('; ',$failures)."\n");exit(1);}echo "[PASSED] Task 8.8 checks completed successfully.\n";

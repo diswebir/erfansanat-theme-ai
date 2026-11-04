@@ -1,0 +1,147 @@
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-arabic.woff2') format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../fonts/vazirmatn-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Loaded only on theme-owned admin screens. Keep WordPress icon fonts intact. */
+body.toplevel_page_erfansanat-theme #wpbody-content,
+body.toplevel_page_erfansanat-theme #wpbody-content :not(.dashicons),
+body.wp-admin .postbox[id^='erfansanat-'],
+body.wp-admin .postbox[id^='erfansanat-'] :not(.dashicons),
+body.taxonomy-category #wpbody-content,
+body.taxonomy-category #wpbody-content :not(.dashicons),
+body.taxonomy-product_cat #wpbody-content,
+body.taxonomy-product_cat #wpbody-content :not(.dashicons),
+body.taxonomy-product_tag #wpbody-content,
+body.taxonomy-product_tag #wpbody-content :not(.dashicons),
+body.taxonomy-product_brand #wpbody-content,
+body.taxonomy-product_brand #wpbody-content :not(.dashicons),
+body.taxonomy-project_type #wpbody-content,
+body.taxonomy-project_type #wpbody-content :not(.dashicons),
+body.taxonomy-city #wpbody-content,
+body.taxonomy-city #wpbody-content :not(.dashicons),
+body.post-type-product .wp-list-table,
+body.post-type-product .wp-list-table :not(.dashicons),
+body.post-type-projects .wp-list-table,
+body.post-type-projects .wp-list-table :not(.dashicons),
+body.wp-admin .media-modal,
+body.wp-admin .media-modal :not(.dashicons):not(.media-modal-icon) {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+body.wp-admin .media-modal button,
+body.wp-admin .media-modal input,
+body.wp-admin .media-modal select,
+body.wp-admin .media-modal textarea {
+    font-family: inherit;
+}
+
+/* The theme disables Gutenberg and uses the Classic Editor canvas. */
+body#tinymce,
+body.mce-content-body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+body.post-type-post #title,
+body.post-type-post #content,
+body.post-type-post #excerpt,
+body.post-type-page #title,
+body.post-type-page #content,
+body.post-type-page #excerpt,
+body.post-type-product #title,
+body.post-type-product #content,
+body.post-type-product #excerpt,
+body.post-type-projects #title,
+body.post-type-projects #content,
+body.post-type-projects #excerpt {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+.es-admin-wrap {
+    direction: rtl;
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+}
+
+.es-admin-wrap .es-admin-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+}
+
+.es-admin-wrap .es-admin-tab {
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1e293b;
+}
+
+.es-admin-wrap .es-admin-tab.is-active {
+    background: #0e7a5f;
+    color: #fff;
+    border-color: #0e7a5f;
+}
+
+.es-admin-wrap .es-admin-panel {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.es-admin-wrap .es-field {
+    margin-bottom: 16px;
+}
+
+.es-admin-wrap .es-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.es-admin-wrap .es-field input[type='text'],
+.es-admin-wrap .es-field input[type='url'],
+.es-admin-wrap .es-field input[type='email'],
+.es-admin-wrap .es-field textarea,
+.es-admin-wrap .es-field select {
+    width: 100%;
+    max-width: 560px;
+    font-family: inherit;
+}
+
+.es-admin-wrap .es-repeater-item,
+.es-admin-wrap .es-section-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.es-admin-wrap .es-section-item {
+    background: #f8fafc;
+    cursor: move;
+}
