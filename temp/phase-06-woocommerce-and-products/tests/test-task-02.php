@@ -129,8 +129,10 @@ if (!function_exists('woocommerce_content')) {
 }
 $GLOBALS['__es_theme_dir'] = $root . '/temp/phase-06-woocommerce-and-products/tests/fixtures/wrapper-shell';
 $GLOBALS['__es_locate_override'] = [
-    'template-parts/single-product/hero.php'    => $root . '/template-parts/single-product/hero.php',
-    'template-parts/single-product/gallery.php' => $root . '/template-parts/single-product/gallery.php',
+    'template-parts/single-product/hero.php'     => $root . '/template-parts/single-product/hero.php',
+    'template-parts/single-product/gallery.php'  => $root . '/template-parts/single-product/gallery.php',
+    // ۶.۵: wrapper col-span-5 sticky حالا داخل رگیون purchase.php است
+    'template-parts/single-product/purchase.php' => $root . '/template-parts/single-product/purchase.php',
 ];
 ob_start();
 include $root . '/single-product.php';

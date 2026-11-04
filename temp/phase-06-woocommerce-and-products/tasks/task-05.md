@@ -1,7 +1,7 @@
 # Task 6.5 — single-product — ناحیه خرید: true_sale، تعداد (min/step)، سوئچ‌ها و toast
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 15/15]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-05.php`
 
 ## 🎯 هدف

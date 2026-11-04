@@ -17,9 +17,8 @@ echo '<div class="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">';
 echo '<div class="space-y-4 lg:col-span-7">';
 es_get_template('template-parts/single-product/gallery.php', ['pid' => $es_pid]);
 echo '</div>';
-echo '<div class="lg:col-span-5 lg:sticky lg:top-28">';
-// ناحیه خرید (تسک ۶.۵) و ادامه محتوا (۶.۳/۶.۴/۶.۶) اینجا تزریق می‌شود
-echo '</div>';
+// ناحیه خرید — رگیون purchase.php خودش wrapper col-span-5 sticky را دارد
+es_get_template('template-parts/single-product/purchase.php', ['pid' => $es_pid]);
 echo '</div>';
 echo '</section>';
 echo '</main>';

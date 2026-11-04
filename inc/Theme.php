@@ -53,6 +53,10 @@ final class Theme {
             Woo\Setup::init();
         }
 
+        if (class_exists(Woo\PurchaseFlow::class)) {
+            Woo\PurchaseFlow::init();
+        }
+
         if (class_exists(Admin\ProductMetaboxes::class)) {
             Admin\ProductMetaboxes::init();
         }

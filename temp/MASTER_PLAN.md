@@ -312,7 +312,7 @@
 - 📤 خروجی: `template-parts/single-product/features.php`؛ `template-parts/single-product/usages.php`؛ `template-parts/single-product/faq.php`؛ `template-parts/single-product/notice.php` · **وابستگی:** Task 6.2, Task 3.8
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 6.5 — single-product — ناحیه خرید: true_sale، تعداد (min/step)، سوئچ‌ها و toast `[PENDING]`
+### Task 6.5 — single-product — ناحیه خرید: true_sale، تعداد (min/step)، سوئچ‌ها و toast `[DONE — 15/15]`
 - 🎯 منطق دوگانه خرید آنلاین/استعلامی + سازگاری WPC Quantity و Variation Swatches با مارک‌آپ pdp-* میرور
 - 📤 خروجی: `template-parts/single-product/purchase.php`؛ `inc/Woo/PurchaseFlow.php` · **وابستگی:** Task 6.2, Task 3.6
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
