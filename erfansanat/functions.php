@@ -242,3 +242,11 @@ add_action(
 	10,
 	1
 );
+add_action(
+	'es_project_related',
+	static function ( $project_id ) {
+		get_template_part( 'template-parts/project/related-projects', null, array( 'project_id' => (int) $project_id ) );
+	},
+	10,
+	1
+);
