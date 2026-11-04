@@ -102,3 +102,6 @@
 
 ## MIGRATOR — 2026-11-03
 - inc/Migrator.php: import یک Mercéd `_elementor_data` → `_erfansanat_sections` (idempotent) + backfill تمام meta keyهای legacy روی product/projects/post + صفحه ابزار ادمین (Tools → import) با nonce. تست روی WP واقعی: ALL PASS. E2E 0 FAIL.
+
+## I18N + RSS/SITEMAP — 2026-11-03
+- test-i18n-rss: locale=fa_IR، بدون هیچ dir=ltr هاردکد (بجز mailto/tel)، textdomain erfansanat، RSS feed با item/link/title، WP_Sitemaps index با submap.posts — 11/11 ALL PASS. E2E 0 FAIL.

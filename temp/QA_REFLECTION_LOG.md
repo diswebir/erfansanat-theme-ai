@@ -90,3 +90,6 @@
 
 ## MIGRATOR — 2026-11-03
 - Legacy import tool: Elementor _elementor_data -> theme section meta, legacy meta key backfill (products/projects/posts), admin Tools page + nonce-guarded AJAX. Real-WP test 10/10 ALL PASS, E2E 0 FAILs.
+
+## I18N + RSS/SITEMAP — 2026-11-03
+- Real-WP test: fa_IR locale, no hardcoded LTR (only mailto/tel), text domain consistent (88 calls), RSS2 feed renders items, core XML sitemap index renders with posts submap. 11/11 ALL PASS, E2E 0 FAILs.
