@@ -87,11 +87,41 @@ final class HomeSections {
             'schema' => self::history_schema(),
         ];
         $items['categories'] = [
-            'label'  => __('دسته‌بندی محصولات', 'erfansanat'),
+            'label'  => __('دسته‌بندی تولیدات', 'erfansanat'),
             'schema' => [
-                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'دسته‌بندی تولیدات'],
-                ['key' => 'count', 'type' => 'number', 'label' => __('تعداد دسته', 'erfansanat'), 'default' => 12],
-                ['key' => 'terms', 'type' => 'text', 'label' => __('اسلاگ دسته‌های انتخابی (با کاما — خالی = همه)', 'erfansanat'), 'default' => ''],
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'تولیدات تخصصی کارخانه'],
+                ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'عرفان صنعت اصفهان'],
+                ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'تولید صنعتی تجهیزات نورپردازی شهری با عایق‌بندی تزریق مستقیم، بدنه پلی‌کربنات نشکن و کنترلرهای مرکزی بی‌سیم.'],
+                ['key' => 'feature_title', 'type' => 'text', 'label' => __('چیپ ویژگی — عنوان', 'erfansanat'), 'default' => 'کنترل هوشمند یکپارچه'],
+                ['key' => 'feature_sub', 'type' => 'text', 'label' => __('چیپ ویژگی — زیرعنوان', 'erfansanat'), 'default' => 'پشتیبانی از پروتکل بی‌سیم NRF و WiFi'],
+                [
+                    'key' => 'cards', 'type' => 'repeater', 'label' => __('کارت‌های تولیدات (حداکثر ۶)', 'erfansanat'), 'add_label' => __('افزودن کارت', 'erfansanat'),
+                    'fields' => [
+                        ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat')],
+                        ['key' => 'sub', 'type' => 'text', 'label' => __('زیرعنوان سبز', 'erfansanat')],
+                        ['key' => 'desc', 'type' => 'text', 'label' => __('توضیح نوار پایین', 'erfansanat')],
+                        ['key' => 'chip', 'type' => 'text', 'label' => __('چیپ فنی (IP68…)', 'erfansanat')],
+                        ['key' => 'flag', 'type' => 'text', 'label' => __('پرچم (اختیاری)', 'erfansanat')],
+                        ['key' => 'price', 'type' => 'text', 'label' => __('قیمت/وضعیت (اختیاری)', 'erfansanat')],
+                        ['key' => 'image', 'type' => 'media', 'label' => __('تصویر', 'erfansanat')],
+                        ['key' => 'alt', 'type' => 'text', 'label' => __('alt تصویر', 'erfansanat')],
+                        ['key' => 'url', 'type' => 'url', 'label' => __('لینک', 'erfansanat')],
+                    ],
+                    'default' => [
+                        ['title' => 'درختان نوری هوشمند', 'sub' => 'مدل‌های دلسا · آرتام · آتریسا · ایلومینا', 'desc' => '۱۶ میلیون رنگ · کنترل بی‌سیم با اپلیکیشن · پیکسل RGB', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/light-tree.jpg', 'alt' => 'درختان نوری هوشمند', 'url' => '/product/artam-light-tree/'],
+                        ['title' => 'المان نوری خورشیدنما', 'sub' => '۳۲ پره و ۴۸ پره فول‌کالر', 'desc' => 'قطر تا ۳.۳ متر · پروتکل NRF · +۲۳۰۰ پیکسل', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/sun-light.jpg', 'alt' => 'المان نوری خورشیدنما', 'url' => '/product/sun-light-48/'],
+                        ['title' => 'لوستر نوری فضای باز', 'sub' => 'مدل‌های فروغ و شمسه', 'desc' => 'ارتفاع تا ۷ متر · ریسه سوزنی متراکم', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/chandelier.jpg', 'alt' => 'لوستر نوری فضای باز', 'url' => '/product/foroogh-chandelier/'],
+                        ['title' => 'ریسه‌های LED ضدآب', 'sub' => 'سوزنی · فندقی · بلوطی · انگشتی', 'desc' => 'تزریق مستقیم پلیمری · پلی‌کربنات نشکن', 'chip' => 'IP68', 'flag' => 'خرید آنلاین', 'price' => 'از ۶۵,۰۰۰ تومان', 'image' => 'assets/images/string-lights.jpg', 'alt' => 'ریسه‌های LED ضدآب', 'url' => '/product/needle-string-lights/'],
+                        ['title' => 'پوینت لایت پیکسل', 'sub' => 'قطر ۴ و ۶ سانتی‌متر پلی‌کربنات', 'desc' => 'فول‌کالر هوشمند · قاب نگهدارنده PLT', 'chip' => 'IP68', 'flag' => '', 'price' => '', 'image' => 'assets/images/light-sphere.jpg', 'alt' => 'پوینت لایت پیکسل', 'url' => '/product/point-light-pixel/'],
+                        ['title' => 'والواشر و لینیرلایت', 'sub' => 'نورپردازی خطی نما و پل', 'desc' => 'پوشش یکنواخت نور · بدنه آلومینیوم اکسترود', 'chip' => 'IP67', 'flag' => 'خرید آنلاین', 'price' => 'استعلام و خرید آنلاین', 'image' => 'assets/images/light-tunnel.jpg', 'alt' => 'والواشر و لینیرلایت', 'url' => '/product/wall-washer/'],
+                    ],
+                ],
+                ['key' => 'cta_badge', 'type' => 'text', 'label' => __('کارت CTA — نشان', 'erfansanat'), 'default' => 'ساخت سفارشی'],
+                ['key' => 'cta_title', 'type' => 'text', 'label' => __('کارت CTA — عنوان', 'erfansanat'), 'default' => 'طراحی و ساخت المان'],
+                ['key' => 'cta_title2', 'type' => 'text', 'label' => __('کارت CTA — عنوان سبز', 'erfansanat'), 'default' => 'مطابق طرح اختصاصی شما'],
+                ['key' => 'cta_desc', 'type' => 'textarea', 'label' => __('کارت CTA — توضیح', 'erfansanat'), 'default' => 'واحد مهندسی و قالب‌سازی کارخانه آماده طراحی سه‌بعدی و ساخت سازه‌های نوری سفارشی برای میادین و بوستان‌هاست.'],
+                ['key' => 'cta_button', 'type' => 'text', 'label' => __('کارت CTA — متن دکمه', 'erfansanat'), 'default' => 'ثبت سفارش اختصاصی'],
+                ['key' => 'cta_url', 'type' => 'url', 'label' => __('کارت CTA — لینک', 'erfansanat'), 'default' => '/contact/'],
             ],
         ];
         $items['catalog'] = [

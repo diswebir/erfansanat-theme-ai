@@ -255,4 +255,25 @@ if (!function_exists('es_link_url')) {
     }
 }
 
+if (!function_exists('es_get_category_thumb')) {
+    /** تصویر دسته محصول — متای ترم با کلید دقیق thumbnail (سازگار با JetEngine) */
+    function es_get_category_thumb(int $term_id): string {
+        $raw = get_term_meta($term_id, 'thumbnail', true);
+        if (is_numeric($raw) && (int) $raw > 0) {
+            $url = wp_get_attachment_url((int) $raw);
+            if (is_string($url) && $url !== '') {
+                return $url;
+            }
+        }
+        return es_media_url($raw);
+    }
+}
+
+if (!function_exists('es_get_category_faq')) {
+    /** FAQ دسته محصول — متای ترم با کلید دقیق faq (ردیف‌های name_question/answer_question) */
+    function es_get_category_faq(int $term_id): array {
+        return \ErfanSanat\Theme\Data\RepeaterEngine::read_term($term_id, 'faq')['rows'];
+    }
+}
+
 }
