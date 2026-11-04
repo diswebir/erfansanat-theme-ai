@@ -22,6 +22,21 @@ if ( ! function_exists( '__' ) ) { function __( $value, $domain = 'default' ) { 
 if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $id, $key = '', $single = false ) { if ( '' === $key ) { return $GLOBALS['es_phase3_product_meta'][ $id ] ?? array(); } return $GLOBALS['es_phase3_product_meta'][ $id ][ $key ] ?? ''; } }
 if ( ! function_exists( 'update_post_meta' ) ) { function update_post_meta( $id, $key, $value ) { $GLOBALS['es_phase3_meta_updates'][] = array( $id, $key, $value ); $GLOBALS['es_phase3_product_meta'][ $id ][ $key ] = $value; return true; } }
 
+if ( ! function_exists( 'esc_attr__' ) ) { function esc_attr__( $value, $domain = null ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); } }
+if ( ! function_exists( 'esc_html__' ) ) { function esc_html__( $value, $domain = null ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); } }
+if ( ! function_exists( 'esc_url' ) ) { function esc_url( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); } }
+if ( ! function_exists( 'esc_url_raw' ) ) { function esc_url_raw( $value ) { return filter_var( (string) $value, FILTER_VALIDATE_URL ) ? (string) $value : ''; } }
+if ( ! function_exists( 'esc_textarea' ) ) { function esc_textarea( $value ) { return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' ); } }
+if ( ! function_exists( 'wp_basename' ) ) { function wp_basename( $value ) { return basename( (string) $value ); } }
+if ( ! function_exists( 'wp_create_nonce' ) ) { function wp_create_nonce( $action ) { return 'valid'; } }
+if ( ! function_exists( 'get_terms' ) ) { function get_terms( $args = array() ) { return array(); } }
+require_once ES_REPO_ROOT . '/theme/inc/Meta/RepeaterCodec.php';
+require_once ES_REPO_ROOT . '/theme/inc/Meta/MetaRepository.php';
+require_once ES_REPO_ROOT . '/theme/inc/Meta/functions.php';
+require_once ES_REPO_ROOT . '/theme/inc/Admin/Metaboxes/Tabs/ProductMediaTab.php';
+require_once ES_REPO_ROOT . '/theme/inc/Admin/Metaboxes/Tabs/ProductRelationsTab.php';
+require_once ES_REPO_ROOT . '/theme/inc/Admin/Metaboxes/Tabs/ProductRepeatersTab.php';
+require_once ES_REPO_ROOT . '/theme/inc/Woo/ProductGallery.php';
 $meta_file = ES_REPO_ROOT . '/theme/inc/Admin/Metaboxes/ProductMeta.php';
 $tab_file = ES_REPO_ROOT . '/theme/inc/Admin/Metaboxes/Tabs/ProductIdentityTab.php';
 $available = is_file( $meta_file ) && is_file( $tab_file );

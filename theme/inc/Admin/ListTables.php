@@ -93,6 +93,7 @@ final class ListTables implements ModuleInterface {
 	public static function sortable_columns_for_post_type( array $columns, string $post_type ): array {
 		if ( 'projects' === $post_type ) { return self::sortable_project_columns( $columns ); }
 		if ( in_array( $post_type, array( 'post', 'product' ), true ) ) { $columns['number2-viewc'] = 'number2-viewc'; }
+		if ( in_array( $post_type, array( 'post', 'page', 'product' ), true ) ) { $columns['same_key_hrefl'] = 'same_key_hrefl'; }
 		return $columns;
 	}
 
@@ -182,8 +183,9 @@ final class ListTables implements ModuleInterface {
 
 	/** Read a GET slug only after unslashing and strict key normalization. */
 	private static function request_slug( string $key ): string {
-		if ( ! isset( $_GET[ $key ] ) || ! is_string( $_GET[ $key ] ) ) { return ''; }
-		$value = wp_unslash( $_GET[ $key ] );
+		$request = isset( $_GET ) && is_array( $_GET ) ? wp_unslash( $_GET ) : array();
+		if ( ! isset( $request[ $key ] ) || ! is_string( $request[ $key ] ) ) { return ''; }
+		$value = $request[ $key ];
 		return sanitize_title( sanitize_text_field( $value ) );
 	}
 }

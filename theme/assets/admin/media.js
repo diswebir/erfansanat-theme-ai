@@ -76,7 +76,7 @@
 		var frame = window.wp.media({
 			title: 'انتخاب رسانه',
 			button: { text: 'استفاده از رسانه' },
-			library: control.getAttribute('data-es-media-kind') === 'image' ? { type: 'image' } : {},
+			library: control.getAttribute('data-es-media-kind') === 'image' ? { type: 'image' } : (control.getAttribute('data-es-media-kind') === 'pdf' ? { type: 'application/pdf' } : {}),
 			multiple: multiple
 		});
 
@@ -87,7 +87,11 @@
 			if (!multiple) {
 				attachments = attachments.slice(0, 1);
 			}
-			input.value = attachments.map(function (item) { return String(Number(item.id)); }).filter(Boolean).join(',');
+			if (control.getAttribute('data-es-media-value') === 'url') {
+				input.value = attachments[0] && attachments[0].url ? String(attachments[0].url) : '';
+			} else {
+				input.value = attachments.map(function (item) { return String(Number(item.id)); }).filter(Boolean).join(',');
+			}
 			preview.replaceChildren();
 			attachments.forEach(function (item) {
 				preview.appendChild(makePreview(item));

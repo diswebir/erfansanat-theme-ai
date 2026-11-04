@@ -91,15 +91,17 @@
 | 3.7 | ستون‌های ادمین نوشته‌ها/محصولات/دسته‌ها | `M` | `3.4` | `[PASSED]` | `inc/Admin/ListTables.php` |
 | 3.8 | `MetaRepository` + `RepeaterCodec` (سازگاری دوطرفه JetEngine) | `L` | `1.3` | `[PASSED]` | `inc/Meta/MetaRepository.php` +2 |
 | 3.9 | متاباکس «اطلاعات محصولات» — تب شناسه‌ها و عناوین | `L` | `2.3`، `3.8` | `[PASSED]` | `inc/Admin/Metaboxes/ProductMeta.php` +2 |
-| 3.10 | تب فایل و گالری محصول + همگام‌سازی | `L` | `3.9`، `2.5` | `[PENDING]` | `inc/Admin/Metaboxes/Tabs/ProductMediaTab.php` +1 |
-| 3.11 | تب روابط محصول (`project-ids`, `usage_countr`) | `L` | `3.8` | `[PENDING]` | `inc/Admin/Metaboxes/Tabs/ProductRelationsTab.php` +1 |
-| 3.12 | Repeaterهای محصول: `product-feature`, `product-feature2_copy`, `usage_product`, `faq` | `L` | `3.8`، `2.6` | `[PENDING]` | `inc/Admin/Metaboxes/Tabs/ProductRepeatersTab.php` |
-| 3.13 | Quick Edit برای شناسه‌ها و وضعیت فروش | `M` | `3.9` | `[PENDING]` | `inc/Admin/QuickEdit.php` |
-| 3.14 | متاباکس پروژه (`second-image` تا `six-image`, تاریخ، محصولات مرتبط) | `L` | `3.1`، `3.8` | `[PENDING]` | `inc/Admin/Metaboxes/ProjectMeta.php` |
-| 3.15 | ترم‌متای `product_cat`: تصویر و FAQ | `M` | `3.4` | `[PENDING]` | `inc/Admin/Metaboxes/TermMeta.php` |
-| 3.16 | Hreflang (`hrefmeta_fa/en/ar`, `same_key_hrefl`) | `M` | `3.8` | `[PENDING]` | `inc/Admin/Metaboxes/Hreflang.php` |
-| 3.17 | شمارنده بازدید `number2-viewc` (با fallback `number-viewc`) | `M` | `3.8` | `[PENDING]` | `inc/Meta/Views.php` |
-| 3.18 | گیت فاز ۳: تست یکپارچگی داده | `S` | `3.1`، `3.2`، `3.3`، `3.4`، `3.5`، `3.6`، `3.7`، `3.8`، `3.9`، `3.10`، `3.11`، `3.12`، `3.13`، `3.14`، `3.15`، `3.16`، `3.17` | `[PENDING]` | `temp/phase-03-cpt-and-legacy-meta/tests/run-phase-03-tests.sh` +1 |
+| 3.10 | تب فایل و گالری محصول + همگام‌سازی | `L` | `3.9`، `2.5` | `[PASSED]` | `inc/Admin/Metaboxes/Tabs/ProductMediaTab.php` +1 |
+| 3.11 | تب روابط محصول (`project-ids`, `usage_countr`) | `L` | `3.8` | `[PASSED]` | `inc/Admin/Metaboxes/Tabs/ProductRelationsTab.php` +1 |
+| 3.12 | Repeaterهای محصول: `product-feature`, `product-feature2_copy`, `usage_product`, `faq` | `L` | `3.8`، `2.6` | `[PASSED]` | `inc/Admin/Metaboxes/Tabs/ProductRepeatersTab.php` |
+| 3.13 | Quick Edit برای شناسه‌ها و وضعیت فروش | `M` | `3.9` | `[PASSED]` | `inc/Admin/QuickEdit.php` |
+| 3.14 | متاباکس پروژه (`second-image` تا `six-image`, تاریخ، محصولات مرتبط) | `L` | `3.1`، `3.8` | `[PASSED]` | `inc/Admin/Metaboxes/ProjectMeta.php` |
+| 3.15 | ترم‌متای `product_cat`: تصویر و FAQ | `M` | `3.4` | `[PASSED]` | `inc/Admin/Metaboxes/TermMeta.php` |
+| 3.16 | Hreflang (`hrefmeta_fa/en/ar`, `same_key_hrefl`) | `M` | `3.8` | `[PASSED]` | `inc/Admin/Metaboxes/Hreflang.php` |
+| 3.17 | شمارنده بازدید `number2-viewc` (با fallback `number-viewc`) | `M` | `3.8` | `[PASSED]` | `inc/Meta/Views.php` |
+| 3.18 | گیت فاز ۳: تست یکپارچگی داده | `S` | `3.1`، `3.2`، `3.3`، `3.4`، `3.5`، `3.6`، `3.7`، `3.8`، `3.9`، `3.10`، `3.11`، `3.12`، `3.13`، `3.14`، `3.15`، `3.16`، `3.17` | `[PASSED]` | `temp/phase-03-cpt-and-legacy-meta/tests/run-phase-03-tests.sh` +1 |
+
+**نتیجه گیت فاز ۳ (2026-11-04):** 18 فایل تست، **66 PASS / 0 FAIL / 0 PENDING**.
 
 **گیت فاز:** `tests/run-phase-03-tests.sh`
 
@@ -269,7 +271,9 @@
 |---|---|---|
 | Gate 0 | تأیید اسکن و پاسخ سؤالات ابهام | ✅ PASSED |
 | Gate 1 | پایان فاز ۱ — 170/170 assertion سبز، بودجه عملکرد OK | ✅ PASSED |
-| Gate 2..8 | پایان هر فاز: گزارش تست + تأیید | — |
+| Gate 2 | پایان Phase 2: 104 PASS / 0 FAIL / 0 PENDING | ✅ PASSED |
+| Gate 3 | پایان Phase 3: 66 PASS / 0 FAIL / 0 PENDING | ✅ PASSED |
+| Gate 4..8 | پایان هر فاز: گزارش تست + تأیید صریح کاربر | — |
 
 ## وابستگی‌های بحرانی (زنجیره مسیر)
 

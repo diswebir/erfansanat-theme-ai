@@ -350,3 +350,23 @@
 | true_sale | **PASS**؛ فقط `true`/`false` پذیرفته می‌شود |
 | nonce/capability | **PASS**؛ نبود nonce هرگونه write را متوقف می‌کند |
 | مجموع Phase 3 متمرکز | Tasks 3.1–3.9: **35 PASS / 0 FAIL** |
+
+
+## Phase 3 — Tasks 3.10–3.18 / Gate 3 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 3.10 — فایل کاتالوگ و گالری | **4 PASS**؛ گالری `galerry_produ` ↔ `_product_image_gallery`، fallback قدیمی، URL PDF پیوست معتبر، خروجی خالی |
+| 3.11 — روابط محصول | **4 PASS**؛ `project-ids` و `usage_countr`، رد پست/ترم نامعتبر، جست‌وجوی محدود به `projects`، حفظ JSON/serialized |
+| 3.12 — چهار Repeater | **4 PASS**؛ CRUD، حفظ `vaule_of_variable` و `item-0`، حذف ردیف خالی |
+| 3.13 — Quick Edit | **3 PASS**؛ nonce/capability، پیش‌پرکردن داده، فقط فیلدهای whitelist |
+| 3.14 — متاباکس پروژه | **3 PASS**؛ پنج کلید تصویری شامل `foure-image`، اعتبار تاریخ جلالی، لینک محصولات معتبر |
+| 3.15 — ترم‌متای دسته محصول | **3 PASS**؛ `thumbnail`, placeholder خالی، FAQ با فیلدهای دقیق و پاکسازی HTML |
+| 3.16 — Hreflang | **3 PASS**؛ URL فقط HTTP(S)، کلید قابل مرتب‌سازی، ذخیره term meta و alternate links |
+| 3.17 — شمارنده بازدید | **4 PASS**؛ یک شمارش به‌ازای session-cookie، شناسایی bot، نوشتن `number2-viewc` و خواندن fallback |
+| 3.18 — Gate 3 | **3 PASS**؛ تمام تست‌های قبل سبز، round-trip JSON/serialized، نبود parent orphan در داده fixture |
+| تجمعی Phase 3 | **18 test files · 66 PASS / 0 FAIL / 0 PENDING** |
+| قیدهای استاتیک | `theme/assets/js/main.js` و `theme/assets/css/styles.css` تغییر نکردند؛ فایل‌های مرجع استاتیک/markup دست‌نخورده |
+| Regression Phase 2 | **104 PASS / 0 FAIL / 0 PENDING** |
+| محدودیت harness | Phase 1 suite در این نشست به‌دلیل نبود `/home/user/.cache/harness/wpn` و snapshotهای render، گزارش سبز/قابل بازتولید نداد؛ lint ساختاری PHP پاس شد |
+| وضعیت | Gate 3 کامل؛ Phase 4 شروع نمی‌شود تا تأیید جداگانه کاربر |

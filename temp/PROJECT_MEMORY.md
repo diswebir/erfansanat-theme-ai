@@ -1,13 +1,13 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.9 پاس شده‌اند؛ ادامه از Task 3.10.
+**آخرین به‌روزرسانی:** 2026-11-04 — Phase 3 (Tasks 3.1–3.18) تکمیل شد؛ Gate 3 سبز: 66 PASS / 0 FAIL / 0 PENDING.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
-| آخرین تسک پاس‌شده | 3.9 — Product identity metabox (4 PASS / 0 FAIL؛ Tasks 3.1–3.9: 35 PASS / 0 FAIL) |
-| دروازه تأیید | Gate 1 و Gate 2: ✅؛ کاربر Phase 3 را در 2026-11-04 صریحاً تأیید کرد؛ Gate 3 پس از Task 3.18 |
+| آخرین تسک پاس‌شده | 3.18 — Phase 3 integration gate (18 files, 66 PASS / 0 FAIL / 0 PENDING) |
+| دروازه تأیید | Gate 1, Gate 2, Gate 3: ✅؛ Phase 4 در انتظار تأیید جداگانه کاربر است |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
 
@@ -19,7 +19,7 @@
 | D3 | هدر و فوتر **یک** نسخه دارند (۱۲۸ فایل مشترک) → یک `header.php` / `footer.php` با پارامتر `activeMenu` | اسکن: هش هدر/فوتر یکسان است (تفاوت فقط `../`) |
 | D4 | ۳۶ گروه فایل استاتیک کاملاً تکراری‌اند (مثل `product/x.html` = `products/x.html` و `shop.html` = `products.html`) → یک منبع واحد | `temp/_scan/dedupe.json` |
 | D5 | `data-*`ها و کلاس‌ها «قرارداد» بین PHP و `main.js` هستند؛ هیچ‌کدام تغییر نمی‌کند | R1؛ `main.js` با `querySelector` روی همین هوک‌ها کار می‌کند |
-| D6 | هارنس تست: PHP 8.3 (wasm) + WordPress 6.7.1 + SQLite drop-in (`/home/user/.cache/harness/wpn`)؛ هاست‌های apt/Docker مسدود هستند | تنها مسیر اجرای واقعی PHP در این سندباکس |
+| D6 | PHP 8.3 via wasm حاضر است؛ WordPress/SQLite harness در `/home/user/.cache/harness/wpn` در این نشست mount نشده، بنابراین Phase 2/3 با mock/fake-data suites اجرا می‌شوند و رندر واقعی/DB integration قابل تأیید نیست | محدودیت محیط اجرا |
 | D7 | ذخیره داده: تمام متاها در `postmeta` با همان کلیدها؛ داشبورد اختصاصی در آپشن واحد `erfansanat_theme_options` + کش استاتیک | Task 2.1 / R3 |
 | D8 | سکشن‌های صفحه اصلی: هر سکشن یک فایل `template-parts/home/section-*.php` با متادیتای ترتیب/فعال‌بودن در `_es_sections` | Task 2.3 و 5.1 |
 
@@ -46,14 +46,17 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 3 از Task 3.10: product catalog media and gallery synchronization, retaining the exact legacy keys and WooCommerce gallery format.
-- اجرای مستقل تست هر Task و تکمیل/همگام‌سازی سند و suite متناظر پیش از ادامه.
+- Phase 3 تمام شده است: گالری محصول و همگام‌سازی، روابط، repeaterها، Quick Edit، متاباکس پروژه و ترم، Hreflang، شمارنده بازدید و گیت یکپارچگی پیاده‌سازی/تست شدند.
+- نتیجه گیت Phase 3: `node tools/harness/run-phase.mjs temp/phase-03-cpt-and-legacy-meta/tests` → 18 فایل، 66 PASS / 0 FAIL / 0 PENDING.
+- Phase 2 regression suite نیز 104 PASS / 0 FAIL / 0 PENDING است. Phase 1 رگرسیون در این نشست به‌دلیل نبود WordPress harness `/home/user/.cache/harness/wpn` و snapshotهای رندر قابل تأیید نبود؛ PHP lint همه فایل‌های theme در تست ساختاری Phase 1 پاس شد.
+- گام بعدی: توقف تا تأیید جداگانه Phase 4.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
 ## ۶. وضعیت هارنس تست
-- PHP 8.3 (wasm) ✅ · WordPress 6.7.1 + SQLite ✅ (`/home/user/.cache/harness/wpn`)
-- اجرای تست: `node tools/harness/run-tests.mjs <test.php>` (نیازمند `npm install` یک‌باره — `package.json` در ریشه)
-- WooCommerce برای هارنس هنوز نصب نیست ⚠️ (فاز ۶ به آن نیاز دارد)
+- PHP 8.3 (wasm) ✅؛ مسیر WordPress/SQLite `/home/user/.cache/harness/wpn` در این snapshot موجود نیست ⚠️
+- اجرای تست‌های mock/static: `node tools/harness/run-tests.mjs <test.php>` یا phase runner
+- Phase 2: 104/104 PASS؛ Phase 3: 66/66 PASS. Gate 3 fixtures deterministic in-memory هستند؛ این‌ها جایگزین اجرای migration/DB integration روی سایت زنده نیستند.
+- WooCommerce نیز برای harness نصب نشده؛ runtime route/media behavior روی نصب واقعی را بعداً باید smoke-test کرد.
 
 ## ۷. بازطراحی تسک‌ها به اتمیک (درخواست کاربر — 2026-11-03)
 > «تسک‌ها کم هستن برای هر فاز… به تسک‌های اتمیک و ریزتر و با جزئیات تر و جامع تر تبدیل کنی»
@@ -290,3 +293,13 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Registered a native product meta box with capability and per-product nonce checks, autosave/revision guards, and a `save_post_product` handler.
 - Identity fields preserve all ten exact keys from the blueprint, especially `english_titl`; `true_sale` is persisted only for strict string values `true`/`false`.
 - All text inputs are unslashed, scalar-checked and sanitized; missing/invalid nonce blocks writes. **4 PASS**. Next: Task 3.10.
+
+
+### Phase 3 completion — Tasks 3.10–3.18 / Gate 3
+- 3.10: product PDF catalog picker validates a real PDF attachment URL; gallery IDs persist as legacy CSV and WooCommerce `_product_image_gallery`, with loop-safe two-way metadata hooks and `es_product_gallery()` fallback across current and historical image keys.
+- 3.11–3.12: validated project/taxonomy relations, scoped AJAX search, and four schema-driven repeaters preserve the exact JetEngine keys/encoding and drop blank rows.
+- 3.13–3.16: product Quick Edit, five exact project image keys/Jalali date/related products, product category thumbnail+FAQ, and post/term hreflang metadata/output.
+- 3.17: once-per-session first-party cookie, bot filtering, LiteSpeed no-cache compatibility, shutdown writes to `number2-viewc`, and legacy read fallback.
+- 3.18: deterministic fixture round-trip and orphan-parent checks; complete focused suite: **18 files, 66 PASS / 0 FAIL / 0 PENDING**.
+- Admin input scan: **0 unsafe direct POST/GET reads**; PHP lint for all theme PHP files passes; admin JS syntax passes. `theme/assets/js/main.js` and `theme/assets/css/styles.css` unchanged.
+- Phase 4 not started; wait for explicit approval before proceeding.
