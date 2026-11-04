@@ -145,3 +145,11 @@
 
 ## 2026-11-04 — P02-T019 وزیرمتن پنل پیشخوان (27)
 - درخواست کاربر: ادغام کامل فونت وزیرمتن در پنل پیشخوان قالب. `Admin\Typography` (enqueue اولویت ۵ + admin_body_class) فقط صفحات قالب: داشبورد، ویرایشگر product/projects/page/post/services، ترم‌های product_cat/product_tag/product_brand/project_type/city. `admin/font.css`: سه subset self-hosted با unicode-range صحیح (U+0600-06FF به‌جای U+6?? خراب مرجع)، وزن 100–900، font-display:swap. آیکون‌فونت‌ها dashicons/media حفظ؛ فیلد کد monospace. options.css @font-face تکراری حذف و به handle فونت وابسته شد. **باگ تست:** کامنت options.css.literal '@font-face' داشت → چک strpos مثبت می‌شد؛ کامنت اصلاح شد. رگرسیون کامل فاز ۲ (۱۹ تست) ALL PASS. تجمعی: **۱۵۹۸**.
+
+## ADMIN-PRO — ارتقای حرفه‌ای داشبورد ادمین (درخواست کاربر، 2026-11-04)
+- Commit 97d24cc. کاربر از فاز ۷ به داشبورد ادمین تغییر مسیر داد.
+- **باگ رفع‌شده:** فیلد `link` هنگام ذخیره فقط URL را ذخیره می‌کرد و label/target از دست می‌رفت (فرانت‌اند topbar این دو را از آرایه می‌خواند). اصلاح: FieldRenderer گروه `data-es-link-key` + options.js `collectLinkGroups` → ذخیره به‌صورت {url,label,target}. تست JSDOM payload واقعی AJAX را تأیید می‌کند.
+- **کامل‌تر:** تب «پیشخوان» (DashboardOverview) به‌عنوان تب اول: کارت‌های آمار محتوا (ارقام فارسی)، دسترسی سریع، جدول وضعیت سیستم. Schema::tabs() prepend شد تا T004 سازگار بماند.
+- **فونت فارسی کامل:** رفع هم‌پوشانی unicode-range (ZWNJ U+200C-200E فقط subset عربی)، font-smoothing/optimizeLegibility، پوشش پیشخوان/جدول وضعیت/chrome ادمین، اعداد tabular.
+- **UX:** هشدار تغییرات ذخیره‌نشده (beforeunload + dirty).
+- تست: test-admin-dashboard-pro.php (25) + test-admin-dashboard-pro-dom.mjs (7). کل فاز ۲: 287 سبز / 0 شکست. پیش‌نمایش خودکفا: preview/admin-dashboard.html (temp/build-admin-preview.php).
