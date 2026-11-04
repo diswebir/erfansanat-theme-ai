@@ -329,3 +329,14 @@
 | 3.7 — سایر لیست‌ها | **4 PASS / 0 FAIL**؛ post/page/product/projects columns, IDs, term thumbnail, empty values, legacy view fallback |
 | Integration | `ListTables` از Theme kernel ثبت می‌شود؛ escape برای مقادیر متنی و core-generated attachment HTML |
 | نتیجه تجمعی | Tasks 3.1–3.7: **27 PASS / 0 FAIL**؛ ادامه Task 3.8 |
+
+## Phase 3 — Task 3.8 (2026-11-04)
+
+| شرط | نتیجه |
+|---|---|
+| Round-trip JSON + serialized | **PASS**; format preserved after update |
+| Single JetEngine `item-0` row | **PASS**; exact key/shape retained |
+| Gallery CSV | **PASS**; unique positive integer IDs and stable CSV encoding |
+| Cache + term/post helpers | **PASS**; 10 reads = 1 lookup, `es_meta`/`es_term_meta` work |
+| Integration | MetaRepository registered in Theme; bootstrap loads global helper functions |
+| تجمعی | Tasks 3.1–3.8: **31 PASS / 0 FAIL** |

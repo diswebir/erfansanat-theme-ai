@@ -89,7 +89,7 @@
 | 3.5 | Flush نسخه‌دار + مانیتور ۴۰۴ پس از فعال‌سازی | `M` | `3.4` | `[PASSED]` | `inc/Content/Rewrites.php` +3 |
 | 3.6 | ستون‌های ادمین + فیلترهای دراپ‌داون پروژه‌ها | `M` | `3.1`، `3.2`، `3.3` | `[PASSED]` | `inc/Admin/ListTables.php` |
 | 3.7 | ستون‌های ادمین نوشته‌ها/محصولات/دسته‌ها | `M` | `3.4` | `[PASSED]` | `inc/Admin/ListTables.php` |
-| 3.8 | `MetaRepository` + `RepeaterCodec` (سازگاری دوطرفه JetEngine) | `L` | `1.3` | `[PENDING]` | `inc/Meta/MetaRepository.php` +1 |
+| 3.8 | `MetaRepository` + `RepeaterCodec` (سازگاری دوطرفه JetEngine) | `L` | `1.3` | `[PASSED]` | `inc/Meta/MetaRepository.php` +2 |
 | 3.9 | متاباکس «اطلاعات محصولات» — تب شناسه‌ها و عناوین | `L` | `2.3`، `3.8` | `[PENDING]` | `inc/Admin/Metaboxes/ProductMeta.php` +1 |
 | 3.10 | تب فایل و گالری محصول + همگام‌سازی | `L` | `3.9`، `2.5` | `[PENDING]` | `inc/Admin/Metaboxes/Tabs/ProductMediaTab.php` +1 |
 | 3.11 | تب روابط محصول (`project-ids`, `usage_countr`) | `L` | `3.8` | `[PENDING]` | `inc/Admin/Metaboxes/Tabs/ProductRelationsTab.php` +1 |

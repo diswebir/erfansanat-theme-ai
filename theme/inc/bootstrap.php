@@ -15,6 +15,7 @@ require_once __DIR__ . '/Autoloader.php';
 
 /** 3. Global option helpers (functions cannot be autoloaded). */
 require_once __DIR__ . '/Helpers/Options.php';
+require_once __DIR__ . '/Meta/functions.php';
 \ErfanSanat\Theme\Helpers\Options::register();
 
 /** 4. Kernel. */

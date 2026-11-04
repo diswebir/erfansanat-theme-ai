@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.7 پاس شده‌اند؛ ادامه از Task 3.8.
+**آخرین به‌روزرسانی:** 2026-11-04 — کاربر Phase 3 را صریحاً تأیید کرد؛ Tasks 3.1–3.8 پاس شده‌اند؛ ادامه از Task 3.9.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 3 — CPTها، taxonomyها و سازگاری متای زنده / ۱۸ تسک اتمیک |
-| آخرین تسک پاس‌شده | 3.7 — admin columns برای پروژه‌ها/محصولات/محتوا (4 PASS / 0 FAIL؛ Tasks 3.1–3.7: 27 PASS / 0 FAIL) |
+| آخرین تسک پاس‌شده | 3.8 — MetaRepository + JetEngine codec (4 PASS / 0 FAIL؛ Tasks 3.1–3.8: 31 PASS / 0 FAIL) |
 | دروازه تأیید | Gate 1 و Gate 2: ✅؛ کاربر Phase 3 را در 2026-11-04 صریحاً تأیید کرد؛ Gate 3 پس از Task 3.18 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -46,7 +46,7 @@
 | G6 | تحویل | Stage 1 سپس توقف در Gate 1 |
 
 ## ۵. گام بعدی
-- ادامه Phase 3 از Task 3.8: `MetaRepository` + `RepeaterCodec` برای حفظ سازگاری دوطرفه با داده‌های JetEngine.
+- ادامه Phase 3 از Task 3.9: محصول identity metabox با کلیدهای دقیق موجود در DATA_BLUEPRINT (از جمله `english_titl`).
 - اجرای مستقل تست هر Task و تکمیل/همگام‌سازی سند و suite متناظر پیش از ادامه.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
@@ -279,3 +279,9 @@ node tools/harness/phase-gate.mjs 01 "/"                               # گیت 
 - Task 3.6: پروژه‌ها admin columns، city/type dropdowns، query tax filters و meta sorting برای completion/views؛ filter query مقدار paged/posts_per_page را دست‌نخورده نگه می‌دارد. **4 PASS**.
 - Task 3.7: hreflang/views columns برای post/page/product/projects؛ product legal IDs؛ product_cat thumbnail؛ خروجی خالی em dash و view fallback `number-viewc`. **4 PASS**.
 - `ListTables` به Theme kernel افزوده شد. Phase 3 focused suite تا Task 3.7: **27 PASS / 0 FAIL**. Next: Task 3.8.
+
+### Phase 3 progress — Task 3.8
+- `MetaRepository` provides cached post/term get/set/delete, exact-key preservation, JSON/serialized structured decoding, gallery CSV IDs, and invalidation hooks for core meta mutations.
+- `ErfanSanat\\Theme\\Meta\\RepeaterCodec` preserves array/JSON/PHP-serialized/CSV formats; global `es_meta()` and `es_term_meta()` helpers are loaded by bootstrap.
+- Cache test: 10 reads of one key trigger 1 lookup. Round-trip tests preserve `item-0` exactly and retain source encoding. **4 PASS**.
+- Theme kernel registers the repository; focused Phase 3 suite through 3.8: **31 PASS / 0 FAIL**. Next: Task 3.9.

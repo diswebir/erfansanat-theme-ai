@@ -27,6 +27,7 @@ use ErfanSanat\Theme\Content\Taxonomies;
 use ErfanSanat\Theme\Frontend\ArchiveConfig;
 use ErfanSanat\Theme\Frontend\CustomCode;
 use ErfanSanat\Theme\Frontend\InlineCss;
+use ErfanSanat\Theme\Meta\MetaRepository;
 use ErfanSanat\Theme\Performance\DeBloat;
 use ErfanSanat\Theme\Setup\Menus;
 use ErfanSanat\Theme\Setup\ThemeSupport;
@@ -86,6 +87,7 @@ final class Theme {
 		$this->register_module( 'taxonomies', new Taxonomies() );
 		$this->register_module( 'rewrites', new Rewrites() );
 		$this->register_module( 'url-audit', new UrlAudit() );
+		$this->register_module( 'meta-repository', new MetaRepository() );
 		$this->register_module( 'admin-menu', new AdminMenu() );
 		$this->register_module( 'list-tables', new ListTables() );
 		$this->register_module( 'archive-tab', new ArchiveTab() );

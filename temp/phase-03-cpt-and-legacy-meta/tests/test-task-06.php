@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) { define( 'ABSPATH', '/wp/' ); }
 $GLOBALS['es_phase3_actions'] = $GLOBALS['es_phase3_actions'] ?? array();
 $GLOBALS['es_phase3_filters'] = $GLOBALS['es_phase3_filters'] ?? array();
 $GLOBALS['es_phase3_admin'] = true;
+$GLOBALS['es_phase3_meta_calls'] = 0;
 $GLOBALS['es_phase3_mock_terms'] = array(
 	'city' => array( (object) array( 'slug' => 'esfahan', 'name' => 'اصفهان' ) ),
 	'project_type' => array( (object) array( 'slug' => 'bridge-lighting', 'name' => 'نورپردازی پل' ) ),
@@ -18,7 +19,7 @@ if ( ! function_exists( 'is_admin' ) ) { function is_admin() { return ! empty( $
 if ( ! function_exists( 'get_terms' ) ) { function get_terms( $args = array() ) { return $GLOBALS['es_phase3_mock_terms'][ $args['taxonomy'] ?? '' ] ?? array(); } }
 if ( ! function_exists( 'is_wp_error' ) ) { function is_wp_error( $value ) { return $value instanceof WP_Error; } }
 if ( ! function_exists( 'get_the_terms' ) ) { function get_the_terms( $post_id, $taxonomy ) { return $GLOBALS['es_phase3_mock_terms'][ $taxonomy ] ?? array(); } }
-if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $post_id, $key, $single = false ) { return $GLOBALS['es_phase3_postmeta'][ $post_id ][ $key ] ?? ''; } }
+if ( ! function_exists( 'get_post_meta' ) ) { function get_post_meta( $post_id, $key = '', $single = false ) { $GLOBALS['es_phase3_meta_calls']++; if ( '' === $key ) { return $GLOBALS['es_phase3_postmeta'][ $post_id ] ?? array(); } return $GLOBALS['es_phase3_postmeta'][ $post_id ][ $key ] ?? ''; } }
 if ( ! function_exists( 'sanitize_text_field' ) ) { function sanitize_text_field( $value ) { return is_scalar( $value ) ? trim( strip_tags( (string) $value ) ) : ''; } }
 if ( ! function_exists( 'sanitize_title' ) ) { function sanitize_title( $value ) { return strtolower( preg_replace( '/[^a-z0-9_-]/i', '', (string) $value ) ); } }
 if ( ! function_exists( 'wp_unslash' ) ) { function wp_unslash( $value ) { return is_array( $value ) ? array_map( 'wp_unslash', $value ) : stripslashes( (string) $value ); } }
