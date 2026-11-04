@@ -1,0 +1,92 @@
+# PROJECT MEMORY — حافظه زنده و وضعیت جاری پروژه
+
+## وضعیت فعلی (Current Stage & Status)
+- **مرحله فعلی:** `PHASE 6 COMPLETED & PASSED (20/20) -> WAITING FOR USER APPROVAL TO START PHASE 7`
+- **آخرین مرحله پاس‌شده:** `Phase 1 Complete (Tasks 1.1, 1.2, 1.3 + run-phase-01-tests.sh: 91/91 Checks PASSED)`
+- **آخرین فاز پاس‌شده:** Phase 2 — داشبورد ادمین (آپشن واحد `erfansanat_theme_options` + `es_option()`)، تب‌های هدر/فوتر/ظاهر/فیلترها (۲۵ toggle شامل ۱۸ `pa_*`) و SectionManager کامل (`_es_sections` + Drag&Drop + `es_render_sections()`); سوئیت فاز ۲: ۱۵/۱۵ پاس و رگرسیون فاز ۱ سبز.
+- **آخرین فاز پاس‌شده:** Phase 3 — CPT `projects`، تکسونومی‌های `project_type`/`city`/`product_brand`، گارد Rewrite ووکامرس، ریدایرکت ۳۰۱ `/project/`، موتور `LegacyMeta` (فرمت `item-0` جت‌انجین)، متاباکس‌های کامل محصول/پروژه/ترم با کلیدهای دقیق دیتابیس زنده، Hreflang و `ViewCounter`؛ سوئیت فاز ۳: ۱۷/۱۷ پاس، رگرسیون فازهای ۱ و ۲ سبز.
+- **آخرین فاز پاس‌شده:** Phase 5 — front-page با ۱۵ سکشن پیش‌فرض SectionManager (هیرو ۵ صحنه‌ای با ویدیو و data-home1-*، پروژه‌ها، شمارنده‌ها، تایم‌لاین، محصولات، خدمات تب‌دار data-service-*، مقالات و CTA) + ۳ کارت استاندارد؛ سوئیت فاز ۵: ۲۰/۲۰ پاس، رگرسیون فازهای ۱ تا ۴ سبز. نکته: static-mirror در ریست سندباکس حذف شد و فاز ۴ بازسازی شد (11/11).
+- **آخرین فاز پاس‌شده:** Phase 6 — ادغام پوسته ووکامرس، تک‌محصول (فروش/استعلام/گالری/تغییرات/مشخصات/دیدگاه/مرتبط)، آرشیو فروشگاه/دسته/برند/تگ، سبد متصل به WC، مینی‌کارت fragment + AJAX، checkout hooks و حساب/ورود؛ ۲۰/۲۰ تست پاس و رگرسیون فازهای ۱ تا ۵ سبز.
+- **فاز بعدی در نوبت اجرا:** `Phase 7 (۲۰ تسک اتمیک): پروژه‌ها، وبلاگ و صفحات استاتیک/خدمات/لندینگ`
+- **برنامه اتمیک v2 (تصمیم کارفرما):** هر تسک = یک کامپوننت/قابلیت مستقل + تست جدا + کامیت جدا؛ فازهای ۲ تا ۸ از ۱۹ تسک فشرده به **۱۲۰ تسک اتمیک** شکسته شدند (جمع کل با فاز ۱: **۱۲۳ تسک**). جزئیات کامل هر تسک در `MASTER_PLAN.md` و فایل `tasks/task-XX.md` هر فاز.
+- **شاخه گیت فعال:** `arena/23abd651-erfansanat-theme-ai`
+- **سیاست توقف و گزارش‌دهی (Gate Policy):** **فاز به فاز (`Phase-by-Phase`)** — اجرای اتمیک تسک‌به‌تسک درون هر فاز با چرخه ۶ گامی TDD + کامیت گیت مستقل برای هر تسک، و توقف در پایان هر فاز پس از اجرای `run-phase-XX-tests.sh` برای تایید کارفرما.
+
+---
+
+## تصمیمات نهایی کارفرما (دریافت‌شده در پایان Stage 0 — الزامی در تمام فازها)
+
+1. **صفحات فاقد فایل `.html` مستقیم در میرور:**
+   - **لندینگ آریا (`arya` - ID `16947`):** ساخت `page-templates/template-landing-arya.php` با منوی اسکرول `landing` و `SectionManager` با استفاده ۱۰۰٪ از کلاس‌ها و کامپوننت‌های موجود در `styles.css`.
+   - **صفحات `404.php`، `search.php`، `taxonomy-product_tag.php`، `taxonomy-product_brand.php` و فرم `client-feedback`:** پیاده‌سازی با ۱۰۰٪ کلاس‌های موجود در `styles.css`.
+   - **صفحات `my-account` و `auth`:** قرار دادن خروجی/شورت‌کد افزونه‌های فعال `fl-panel` و `voorodak` درون پوسته استاندارد هم‌خانواده با `cart.html`.
+2. **مدل داده‌ای خدمات (`services` و اسلاگ `smartelement` - ID `11984`):**
+   - برگه مادر خدمات (`smartelement`) با `page-templates/template-services.php` و ۵ صفحه جزئیات خدمات (`services/*.html`) به عنوان **برگه‌های فرزند (Child Pages)** با قالب `page-templates/template-service-single.php` مجهز به `SectionManager` مدیریت می‌شوند (بدون ثبت CPT اضافه).
+3. **اتصال سبد خرید و تسویه‌حساب به ووکامرس:**
+   - حفظ ۱۰۰٪ DOM و کلاس‌های `[data-cart-modal]`، `cart.html` و `checkout.html` و اتصال کامل به هسته واقعی `WC()->cart`، ایجکس ووکامرس، درگاه‌های پرداخت فعال ووکامرس، `WPC Product Quantity` (حداقل سفارش و گام افزایشی) و `Variation Swatches`.
+4. **نمایش مشروط متاهای دیتابیس زنده:**
+   - متاهای `english_titl`، `before-sale-c` و `product-catalog-file` در `single-product.php` و شمارنده بازدید `number2-viewc` + دیدگاه‌ها در `single.php` **فقط در صورت پر بودن در ادمین** با کامپوننت‌های موجود در `styles.css` رندر می‌شوند.
+5. **ریدایرکت سئوی برگه `project` (ID `8366`):**
+   - برگه با اسلاگ `project` (یا آیدی `8366`) با ریدایرکت `301` دائم به آرشیو اصلی `/projects/` هدایت می‌شود.
+6. **قانون طلایی سئوی فیلترهای ایجکس (حیاتی برای Phase 2 و Phase 8):**
+   - **ممنوعیت مطلق تغییر URL هنگام فیلتر کردن:** اعمال فیلترهای ایجکس نباید هیچ تغییری در URL مرورگر ایجاد کند (`NO history.pushState / replaceState / query params`) تا صفحات فیلترشده در گوگل ایندکس نشوند و ربات‌ها با خزش و کش کردن صفحات تکراری حجم سرور را پر نکنند.
+   - **پیاده‌سازی کامل + قابلیت انتخاب در داشبورد ادمین:** تمام فیلترها (جستجو، دسته‌بندی `product_cat`، بازه قیمت `_price`، وضعیت خرید آنلاین `true_sale`، و **هر ۱۸ ویژگی فنی `pa_*`** در محصولات + `project_type` و `city` در پروژه‌ها) پیاده‌سازی شوند و در داشبورد ادمین (`ThemeOptions`) امکان **فعال یا غیرفعال کردن تک‌تک فیلترها** وجود داشته باشد.
+7. **نحوه اجرا:** فاز به فاز (گزارش جامع تست‌ها در پایان هر فاز و دریافت تاییدیه).
+
+---
+
+## نکات فنی مهم محیط هارنس
+- وردپرس زنده تست در مسیر `/opt/wp-testbed` با PHP `8.4.21` و SQLite فعال است (`WP_DEBUG = true`).
+- مسیر قالب فعال در محیط تست: لینک نمادین `/opt/wp-testbed/wp-content/themes/erfansanat-theme-ai` -> `/home/user/erfansanat-theme-ai`.
+- فایل `styles.css` در `assets/css/styles.css` از مسیر نسبی `../fonts/vazirmatn-*.woff2` استفاده می‌کند؛ بنابراین فونت‌ها باید دقیقاً در `assets/fonts/` و تصاویر/ویدیوهای قالب استاتیک در `assets/images/` قرار گیرند.
+
+
+- **Phase 6 آغاز شد:** هارنس پس از reset مجدداً نصب شد (WP 7.2-beta3-65222، PHP 8.4.21)، workspace recovery snapshot به `3fe9ed6` ثبت شد؛ WooCommerce از GitHub (`woocommerce/woocommerce`, dev 11.4.0) فعال شد. Task 6.1 `WooSetup` و `woocommerce.php` wrapper پاس شد؛ تست 8/8. static-mirror همچنان مفقود است و تکه‌بندی بر اساس قراردادهای STATIC_TEMPLATE_MAP/main.js/CSS انجام می‌شود. فازهای 1–5 بعد از بازیابی دوباره پاس شدند.
+
+- Task 6.2 PASSED: single-product template shell and product header render breadcrumb, category, title, `zireonvan`, and conditional exact-key `english_titl`.
+- Task 6.3 PASSED: product image gallery uses `LegacyMeta::productGalleryIds()` chain (`galerry_produ` → Woo gallery → legacy fallbacks), thumbnail, gallery navigation/lightbox `data-gallery-*`, and four trust badges.
+- Task 6.4 PASSED: online-only purchase panel with Woo add-to-cart/quantity hooks and stock/price logic; inquiry products receive no buy form.
+- Task 6.5 PASSED: quote-only panel for exact `true_sale=false`, telephone and pre-invoice CTA; it suppresses itself for online products.
+- Task 6.6 PASSED: variable-product attributes render Woo variation form/data JSON, native selects plus `data-opt-*` choice buttons; `main.js` syncs choices to Woo select change events.
+- Task 6.7 PASSED: conditionally renders exact `before-sale-c` notice and safe `product-catalog-file` link only when populated.
+- Task 6.8 PASSED: product intro renders content, `product-feature`, `usage_product`, and `usage_countr` project type terms using LegacyMeta parsing.
+- Task 6.9 PASSED: specification table lists only populated pa_* terms/values and exact GS1/national/HS/ISIC/CPC identifiers.
+- Task 6.10 PASSED: two-column summary renders JetEngine `product-feature2_copy` rows using exact `vaule_of_variable` typo.
+- Task 6.11 PASSED: conditionally renders validated `project-ids` references with the standard project card.
+- Task 6.12 PASSED: conditionally renders FAQ accordion from exact repeater fields, published review list and data-review-form stars.
+- Task 6.13 PASSED: renders Woo related products or same-category fallback using the standard product card.
+- Task 6.14 PASSED: shop archive preserves main.js filter hooks without query-string changes; card-product emits search, purchase, price, rating, views, IP and voltage data attributes.
+- Task 6.15 PASSED: category archive adds the exact term `thumbnail` and `faq` repeater data, heading/description, then reuses the shared product archive grid.
+- Task 6.16 PASSED: both product_tag and product_brand taxonomy archives use term title/description and shared product archive layout.
+- Task 6.17 PASSED: cart page consumes `WC()->cart` data, renders quantity/remove/update/checkout controls and live subtotals/tax/totals with static JS hooks.
+- Task 6.18 PASSED: MiniCart registers Woo add-to-cart fragments for modal rows/count/total/empty state/header badge; modal hooks now use exact JS attributes and header safely tolerates absent/broken WC bootstrap.
+- Task 6.19 PASSED: checkout uses standard billing/shipping/order-review hooks, gateway rendering and nonce; legacy receipt JS no longer blocks real Woo submission.
+- Task 6.20 PASSED: Woo account navigation/content and the auth page wrap optional fl-panel/voorodak shortcodes and named integration hooks.
+- Phase 6 follow-up refinement: variation controls call Woo's `wc_dropdown_variation_attribute_options()` when available (preserving Variation Swatches filters), while retaining native select fallback.
+- Phase 6 follow-up refinement: archive controls now render configured product_cat and all available pa_* term filters only when the exact `enabled_filters` key is on; product cards serialize attribute slugs for the Phase 8 AJAX filter layer; no controls submit GET parameters.
+- Phase 6 follow-up refinement: live mini-cart qty/remove controls post a nonce-protected AJAX action to mutate `WC()->cart`, then reload after success; Woo fragment selectors rehydrate current server values. Taxonomy archives suppress duplicate archive headers.
+
+
+### Phase 6 Gate — PASSED (20/20)
+- Tests: `temp/phase-06-woocommerce-and-products/tests/run-phase-06-tests.sh` — ۲۰/۲۰. Regression: Phase 1–5 runners all green. PHP lint: ۲۶ target files clean; `node --check assets/js/main.js` clean.
+- Files: Woo wrapper/setup; single-product header/gallery/purchase/inquiry/variation/notices/intro/specs/features/projects/FAQ/related; shop/category/tag/brand archives and filter controls; WC cart, fragments + nonce-protected AJAX quantity updates, checkout order/payment hooks, my-account and auth integrations.
+- Reliability note: the sandbox reset again during Phase 6. State restored in snapshot commit `3fe9ed6`; earlier individual task commit chain was truncated by reset. The current development branch remains active.
+- Validation limitation: `static-mirror/` is absent (not present in upstream GitHub tree); source-faithful full DOM comparison could not be run. Tests verify surviving `STATIC_TEMPLATE_MAP.md`, JS `data-*` contracts, CSS classes and data blueprints. WooCommerce GitHub source checkout lacked built `vendor/autoload_packages.php`; it exposes `WC()` but not `wc_get_product()`/product registration, so tests use controlled cart/product doubles and contract checks. Production templates use standard Woo APIs; perform live-cart, gateway, WPC Quantity and Variation Swatches smoke tests on a built WordPress/WooCommerce install before release.
+
+- Phase 7 Task 7.1 PASSED: single project shell and header render title, excerpt/summary, breadcrumb, project_type and city badges.
+- Phase 7 Task 7.2 PASSED: project gallery reads featured image and exact `second-image`, `three-image`, `foure-image`, `five-image`, `six-image` meta keys, plus finish/city/type identity and contact CTA.
+- Phase 7 Task 7.3 PASSED: project page renders filtered `the_content`, exact `mortabet_mahsole_2` product references, and related projects via standard cards.
+- Phase 7 Task 7.4 PASSED: `archive-projects.php` uses the shared project grid, filter/sort/pagination contracts and standard project cards enriched with JS-facing type/city/search/views/date attributes.
+- Phase 7 Task 7.5 PASSED: project_type and city taxonomy templates reuse project archive layout with term title/description and scoped initial filter state.
+- Phase 7 Task 7.6 PASSED: home/category/archive templates render shared blog archive cards with category/search metadata, category header, empty state and pagination hooks. Static source files remain unavailable; exact DOM parity is unverified.
+- Phase 7 Task 7.7 PASSED: single post template renders post title, category/home breadcrumb, WP date output, author and `ViewCounter` reading exact `number2-viewc` (including legacy fallback handled by helper).
+- Phase 7 Task 7.8 PASSED: `template-parts/post/toc.php` builds unique Persian/English heading anchors, preserves existing IDs, writes those IDs into `the_content`, and omits TOC when no headings exist. `single.php` includes it before content.
+- Phase 7 Task 7.9 PASSED: single-post footer includes clipboard share hook, related posts from shared categories and native comments only when comments are open or exist.
+- Phase 7 Task 7.10 PASSED: `search.php` groups combined WP search results into standard product/project/post cards and renders an explicit no-results state. Static mirror unavailable, so exact historical markup parity is not asserted.
+- Phase 7 Task 7.11 PASSED: `404.php` returns a 404/no-cache response, provides site search and links to home, projects, shop and contact.
+- Phase 7 Task 7.12 PASSED: about page reads exact `_es_sections` via SectionManager, renders editable hero/story/ISO/values/contact sections, honors enabled/order, and provides five substantive defaults when section metadata is empty.
+- Phase 7 Task 7.13 PASSED: contact page reads configured `contact_phone`, `contact_mobile`, `contact_email`, `contact_address`, and `contact_working_hours`, plus section titles from `_es_sections`; includes map link and an accessible mailto fallback form slot pending Phase 8 AJAX integration.
+- Phase 7 Task 7.14 PASSED: licenses page consumes `_es_sections` for hero, certificates, and honors; each image group uses the existing gallery/lightbox data contract and handles empty image lists without fabricated records.
+- Phase 7 Task 7.15 PASSED: FAQ page renders three SectionManager-managed accordions using existing `data-faq-*` hooks and emits FAQPage JSON-LD only for populated Q&A entries.
+- Phase 7 Task 7.16 PASSED: warranty page uses `_es_sections` for terms, after-sales process and contact; renders configured lists and 24-month warranty statement plus support link.
+- Phase 7 Task 7.17 PASSED: recruitment page renders SectionManager-driven R&D/projects/finance/IT tabs and a safe resume-contact slot; tab JS updates selected/hidden accessibility state. Resume upload processing remains out of Phase 7 scope.

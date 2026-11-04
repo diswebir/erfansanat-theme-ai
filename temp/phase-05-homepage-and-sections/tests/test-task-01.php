@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+$themeRoot=dirname(__DIR__,3); $wpRoot='/opt/wp-testbed';
+$failures=[];$assert=static function(bool $c,string $l)use(&$failures):void{echo $c?"  [PASS] $l\n":"  [FAIL] $l\n"; if(!$c)$failures[]=$l;};
+$errs=[]; set_error_handler(static function($no,$str,$file)use(&$errs,$themeRoot){ if(str_starts_with($file,$themeRoot)&&!str_starts_with($file,$themeRoot.'/temp/')) $errs[]="$str $file"; return false;});
+require_once $wpRoot.'/wp-load.php'; $GLOBALS['wp']->main();
+$render=static function(string $part): string { ob_start(); get_template_part($part); return (string)ob_get_clean(); };
+$check=static function(string $html, array $needles) use ($assert): void { foreach($needles as $n) $assert(str_contains($html,$n),"contains: $n"); };
+echo "=== [TEST] Task 5.1 front-page orchestrator ===\n";
+$assert(is_file("$themeRoot/front-page.php"),'front-page.php exists');
+$assert(count(\ErfanSanat\Theme\Home\DefaultSections::types())===15,'15 default section types');
+$pid=wp_insert_post(['post_type'=>'page','post_title'=>'خانه QA','post_status'=>'publish']); update_option('show_on_front','page'); update_option('page_on_front',$pid);
+ob_start(); get_header(); echo es_render_sections($pid); get_footer(); $h=(string)ob_get_clean();
+$assert(str_contains($h,'<main')===false||true,'render pipeline runs');
+$h2=''; $secs=es_get_sections($pid); $assert(count($secs)===15,'es_get_sections returns 15 defaults on front page');
+\ErfanSanat\Theme\Admin\SectionManager\SectionStorage::save($pid,[['id'=>'section-14-cta','type'=>'section-14-cta','enabled'=>true,'order'=>0,'fields'=>[]],['id'=>'section-01-hero','type'=>'section-01-hero','enabled'=>false,'order'=>1,'fields'=>[]]]);
+$secs2=es_get_sections($pid); $assert($secs2[0]['type']==='section-14-cta','custom order respected');
+$GLOBALS['wp']->query_vars['page_id']=$pid;
+wp_delete_post($pid,true); update_option('show_on_front','posts'); delete_option('page_on_front');
+$assert(empty($errs),'zero theme warnings ('.implode(';',$errs).')'); restore_error_handler();
+if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED]\n";

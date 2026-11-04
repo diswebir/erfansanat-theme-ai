@@ -1,0 +1,9 @@
+.es-admin-wrap{direction:rtl;font-family:Vazirmatn,Tahoma,sans-serif}
+.es-admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.es-admin-tab{padding:8px 14px;background:#fff;border:1px solid #dcdcde;border-radius:8px;text-decoration:none;color:#1e293b}
+.es-admin-tab.is-active{background:#0e7a5f;color:#fff;border-color:#0e7a5f}
+.es-admin-panel{background:#fff;border:1px solid #dcdcde;border-radius:12px;padding:20px}
+.es-field{margin-bottom:16px}.es-field label{display:block;font-weight:600;margin-bottom:6px}
+.es-field input[type=text],.es-field input[type=url],.es-field input[type=email],.es-field textarea,.es-field select{width:100%;max-width:560px}
+.es-repeater-item{border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px}
+.es-section-item{border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px;background:#f8fafc;cursor:move}

@@ -1,0 +1,24 @@
+<?php
+/** Template Name: تماس با ما */
+declare(strict_types=1);
+if (!defined('ABSPATH')) exit;
+get_header();
+$postId = (int) get_the_ID();
+$sections = es_get_sections($postId);
+$sectionByType = [];
+foreach ($sections as $section) if (isset($section['type'])) $sectionByType[$section['type']] = $section;
+$details = is_array($sectionByType['contact-details']['fields'] ?? null) ? $sectionByType['contact-details']['fields'] : [];
+$formFields = is_array($sectionByType['contact-form']['fields'] ?? null) ? $sectionByType['contact-form']['fields'] : [];
+$phone = trim((string) \ErfanSanat\Theme\Helpers\Options::get('contact_phone', ''));
+$mobile = trim((string) \ErfanSanat\Theme\Helpers\Options::get('contact_mobile', ''));
+$email = sanitize_email((string) \ErfanSanat\Theme\Helpers\Options::get('contact_email', ''));
+$address = trim((string) \ErfanSanat\Theme\Helpers\Options::get('contact_address', ''));
+$hours = trim((string) \ErfanSanat\Theme\Helpers\Options::get('contact_working_hours', ''));
+$mapUrl = $address !== '' ? 'https://maps.google.com/?q=' . rawurlencode($address) : '';
+$detailsTitle = (string) ($details['title'] ?? 'با ما در ارتباط باشید');
+$formTitle = (string) ($formFields['title'] ?? 'درخواست مشاوره رایگان');
+?>
+<main id="primary" class="site-main mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"><header class="mb-8 rounded-3xl bg-white p-6 md:p-9"><p class="text-xs font-bold text-emerald-700">پاسخ‌گوی شما هستیم</p><h1 class="mt-2 text-3xl font-black text-slate-900">تماس با ما</h1><p class="mt-3 text-sm leading-7 text-slate-600">برای دریافت اطلاعات، مشاوره و پیگیری پروژه‌های نورپردازی با عرفان صنعت اصفهان در ارتباط باشید.</p></header>
+<div class="grid gap-6 lg:grid-cols-2"><section data-contact-section="details" class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8"><h2 class="text-xl font-black text-slate-900"><?php echo esc_html($detailsTitle); ?></h2><dl class="mt-6 space-y-5 text-sm"><?php if ($phone !== '') : ?><div><dt class="font-bold text-slate-500">تلفن ثابت</dt><dd class="mt-1"><a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', $phone)); ?>" class="font-extrabold text-slate-900"><?php echo esc_html($phone); ?></a></dd></div><?php endif; ?><?php if ($mobile !== '') : ?><div><dt class="font-bold text-slate-500">موبایل</dt><dd class="mt-1"><a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', $mobile)); ?>" class="font-extrabold text-slate-900"><?php echo esc_html($mobile); ?></a></dd></div><?php endif; ?><?php if ($email !== '') : ?><div><dt class="font-bold text-slate-500">ایمیل</dt><dd class="mt-1"><a href="mailto:<?php echo esc_attr($email); ?>" class="font-extrabold text-slate-900"><?php echo esc_html($email); ?></a></dd></div><?php endif; ?><?php if ($address !== '') : ?><div><dt class="font-bold text-slate-500">نشانی</dt><dd class="mt-1 leading-7 text-slate-700"><?php echo esc_html($address); ?></dd></div><?php endif; ?><?php if ($hours !== '') : ?><div><dt class="font-bold text-slate-500">ساعات کاری</dt><dd class="mt-1 text-slate-700"><?php echo esc_html($hours); ?></dd></div><?php endif; ?></dl><?php if ($mapUrl !== '') : ?><a href="<?php echo esc_url($mapUrl); ?>" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-xl border border-emerald-200 px-4 py-3 text-sm font-bold text-emerald-800">مشاهده نشانی روی نقشه</a><?php endif; ?></section>
+<section data-contact-section="form" class="rounded-3xl bg-slate-50 p-6 md:p-8"><h2 class="text-xl font-black text-slate-900"><?php echo esc_html($formTitle); ?></h2><?php if (isset($formFields['body']) && is_scalar($formFields['body']) && trim((string) $formFields['body']) !== '') : ?><p class="mt-2 text-sm leading-7 text-slate-600"><?php echo esc_html((string) $formFields['body']); ?></p><?php endif; ?><form data-contact-form-slot="true" action="<?php echo esc_url('mailto:' . $email); ?>" method="post" enctype="text/plain" class="mt-5 space-y-4"><label class="block text-xs font-bold text-slate-700">نام و نام خانوادگی<input type="text" name="name" autocomplete="name" required class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm"></label><label class="block text-xs font-bold text-slate-700">شماره تماس<input type="tel" name="phone" autocomplete="tel" required class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm"></label><label class="block text-xs font-bold text-slate-700">شرح درخواست<textarea name="message" rows="4" required class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm"></textarea></label><button type="submit" class="w-full rounded-xl bg-emerald-700 px-5 py-3 text-sm font-extrabold text-white">ارسال از طریق ایمیل</button><p class="text-xs leading-6 text-slate-500">فرم، پیام را در برنامه ایمیل شما آماده می‌کند؛ برای پیگیری فوری با شماره‌های تماس بالا ارتباط بگیرید.</p></form></section></div></main>
+<?php get_footer(); ?>
