@@ -1,14 +1,5 @@
 <?php
-/**
- * Document shell (opening part).
- *
- * Phase 1 ships the minimal valid shell so the theme renders a well-formed
- * document and no core deprecation notices fire. Phase 4 replaces the body of
- * these templates with the pixel-accurate static markup (top bar, branding,
- * primary navigation, mega menu, mobile menu).
- *
- * @package ErfanSanat\Theme
- */
+/** Shared document head and site-wide static-compatible navigation. */
 
 defined( 'ABSPATH' ) || exit;
 ?>
@@ -22,3 +13,11 @@ defined( 'ABSPATH' ) || exit;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div id="es-page" class="es-site">
+<?php
+ob_start();
+require __DIR__ . '/template-parts/header/announcement.php';
+require __DIR__ . '/template-parts/header/static-header.html';
+require __DIR__ . '/template-parts/header/mobile-menu.html';
+$es_header_markup = (string) ob_get_clean();
+echo \ErfanSanat\Theme\Nav\HeaderMarkup::render( $es_header_markup ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup is trusted; announcement text and href values are escaped.
+?>

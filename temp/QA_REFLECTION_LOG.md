@@ -382,3 +382,13 @@
 | نتیجه | `node tools/harness/run-tests.mjs temp/phase-04-header-footer-navigation/tests/test-task-01.php` → **4 PASS / 0 FAIL / 0 PENDING** |
 | محدودیت | تست‌های mock؛ رفتار افزونه SEOPress روی سایت زنده و خروجی واقعی مرورگر هنوز smoke-test نشده |
 | وضعیت | Task 4.1 `[PASSED]`; ادامه از Task 4.2 |
+
+## Phase 4 — Tasks 4.2–4.3 (2026-11-04)
+
+| تسک | نتیجه |
+|---|---|
+| 4.2 — هدر مشترک | **6 PASS**؛ structural tag/attribute match with static mirror (100% fixture), no `.html`/`custom=`/`data-initial-qty`, announcement toggle and data options, accessible primary-nav label |
+| 4.3 — فوتر و تماس | **4 PASS**؛ structural tag/attribute match with static mirror, legacy URLs resolve to WordPress routes, `wp_footer()` preserved, empty contact section omitted |
+| پیاده‌سازی | HTML reference copied without redesign into shared template parts; route resolver escapes URLs; dashboard contact values are escaped and empty rows fail closed |
+| محدودیت | Static fallback remains until Tasks 4.4–4.6 connect Appearance → Menus and custom walkers; no live WordPress visual rendering available |
+| وضعیت | Tasks 4.1–4.3 `[PASSED]`; next: Task 4.4 |

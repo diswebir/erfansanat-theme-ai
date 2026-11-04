@@ -1,12 +1,12 @@
 # PROJECT_MEMORY — حافظه زنده (Active State)
 
-**آخرین به‌روزرسانی:** 2026-11-04 — با اجازه ادامهٔ کاربر Phase 4 شروع شد؛ Task 4.1 پاس: 4 PASS / 0 FAIL / 0 PENDING.
+**آخرین به‌روزرسانی:** 2026-11-04 — Phase 4 با اجازهٔ کاربر شروع شد؛ Tasks 4.1–4.3 پاس شده‌اند؛ آخرین نتیجه 4.3: 4 PASS / 0 FAIL / 0 PENDING.
 
 ## ۱. وضعیت لحظه‌ای
 | مورد | مقدار |
 |---|---|
 | فاز جاری | Phase 4 — هدر، مگامنو، منوی موبایل و فوتر / ۱۲ تسک اتمیک |
-| آخرین تسک پاس‌شده | 4.1 — custom head metadata/Hreflang/JSON-LD (4 PASS / 0 FAIL / 0 PENDING) |
+| آخرین تسک پاس‌شده | 4.3 — shared footer/contact settings (4 PASS / 0 FAIL / 0 PENDING; structural match 100%) |
 | دروازه تأیید | Gate 1, Gate 2, Gate 3: ✅؛ کاربر ادامهٔ کار به Phase 4 را در 2026-11-04 مجاز کرد؛ Gate 4 پس از Task 4.12 |
 | شاخه گیت | `arena/3730add5-erfansanat-theme-ai` (پایه: `8eddaff`) |
 | فایل مرجع ورودی | `reference/static-mirror/` (۱۲۸ فایل HTML، ۳۹MB شامل ۶.۸MB ویدیو) |
@@ -47,8 +47,9 @@
 
 ## ۵. گام بعدی
 - Phase 3 تکمیل است: Gate 3 با 18 فایل تست و 66 PASS / 0 FAIL / 0 PENDING.
-- Phase 4 با اجازهٔ ادامهٔ کاربر شروع شد؛ Task 4.1 در `inc/Frontend/Head.php` و `inc/SEO/JsonLd.php` کامل شد (4 PASS).
-- گام بعدی: Task 4.2 — استخراج هدر مشترک دقیق از استاتیک، حذف لینک‌های `.html` و اتصال به تنظیمات/منوهای وردپرس.
+- Phase 4 با اجازهٔ کاربر آغاز شد؛ Tasks 4.1–4.3 پیاده‌سازی و تست شدند: head/OG/Twitter/Hreflang/JSON-LD، هدر مشترک با DOM استاتیک، بازنویسی لینک‌های legacy، فوتر و تنظیمات اطلاعات تماس.
+- گیت‌های محلی: Task 4.1 **4 PASS**؛ Task 4.2 **6 PASS** و DOM تگ/اتریبیوت ≥99% (تطابق کامل در fixture)؛ Task 4.3 **4 PASS** و ساختار فوتر برابر مرجع.
+- گام بعدی: Task 4.4 — Walker مگامنوی محصولات؛ پس از آن Walker پروژه‌ها و فیلدهای منو در Appearance → Menus.
 - Phase 2 regression suite قبلاً 104 PASS / 0 FAIL / 0 PENDING؛ Phase 1 runtime/render suite در این نشست به‌دلیل نبود harness/snapshots قابل تأیید نبود.
 - محدودیت‌های دائمی: `assets/js/main.js` و `assets/css/styles.css` تغییر نکنند؛ داده/URL/کلیدهای متای واقعی و املاهای تاریخی حفظ شوند؛ markup استاتیک بازطراحی نشود.
 
