@@ -1,0 +1,75 @@
+<?php
+/**
+ * سکشن خدمات تب‌دار (services) — برش بایت‌دقیق میرور + رپیتر ردیف‌ها
+ * فرگمنت‌ها با temp/gen_cat_services5.py از refs/services.html برش خورده‌اند.
+ *
+ * @package ErfanSanat
+ */
+declare(strict_types=1);
+
+use ErfanSanat\Theme\Frontend\Icons;
+
+/** @var array {section_id: string, fields: array<string, mixed>, post_id: int} $args */
+
+$es_f = $args['fields'] ?? [];
+$es_rows = is_array($es_f['rows'] ?? null) ? array_values($es_f['rows']) : [];
+if ($es_rows === []) {
+    return; // بدون خدمت → رندر نمی‌شود
+}
+$es_total = count($es_rows);
+
+/** فیلتر es_services_args — توسعه‌پذیری سکشن خدمات */
+$es_args = apply_filters('es_services_args', ['fields' => $es_f, 'rows' => $es_rows, 'section_id' => (string) ($args['section_id'] ?? 'services')]);
+if (is_array($es_args)) {
+    $es_f = is_array($es_args['fields'] ?? null) ? $es_args['fields'] : $es_f;
+    $es_rows = is_array($es_args['rows'] ?? null) ? array_values($es_args['rows']) : $es_rows;
+    $es_total = count($es_rows);
+}
+
+/**
+ * فرگمنت‌های ثابت — برش بایت‌دقیق از refs/services.html
+ */
+{frags}
+
+// ═══ رندر ═══
+echo strtr($F_HEAD, [
+    '{ES_KICKER}'  => (string) ($es_f['kicker'] ?? ''),
+    '{ES_HL}'      => (string) ($es_f['title_highlight'] ?? ''),
+    '{ES_EXCERPT}' => (string) ($es_f['excerpt'] ?? ''),
+]);
+
+// ردیف‌های خدمت
+foreach ($es_rows as $es_i => $es_row) {
+    if (!is_array($es_row)) {
+        continue;
+    }
+    // کلاس آیکون: آیکون‌های پسوند عددی (building2) در میرور نام دوبل دارند
+    $es_icn = (string) ($es_row['icon'] ?? 'landmark');
+    $es_icn_cls = 'lucide lucide-' . $es_icn . (preg_match('/\d$/', $es_icn) === 1 ? ' lucide-' . preg_replace('/(\d)$/', '-$1', $es_icn) : '');
+    echo strtr($ROW_TPL, [
+        '{ES_I}'        => (string) $es_i,
+        '{ES_TITLE}'    => (string) ($es_row['title'] ?? ''),
+        '{ES_DESC}'     => (string) ($es_row['desc'] ?? ''),
+        '{ES_IMG}'      => es_media_url((string) ($es_row['image'] ?? '')),
+        '{ES_COUNTER}'  => es_fa_num((string) ($es_i + 1)) . ' / ' . es_fa_num((string) $es_total),
+        '{ES_NUM}'      => es_fa_num(str_pad((string) ($es_i + 1), 2, '0', STR_PAD_LEFT)),
+        '{ES_ROW_CLS}'  => $es_i === 0 ? '%CLS_ROW_ACTIVE%' : '%CLS_ROW_IDLE%',
+        '{ES_IND_CLS}'  => $es_i === 0 ? '%CLS_IND_ACTIVE%' : '%CLS_IND_IDLE%',
+        '{ES_NUM_CLS}'  => $es_i === 0 ? '%CLS_NUM_ACTIVE%' : '%CLS_NUM_IDLE%',
+        '{ES_HEAD_CLS}' => $es_i === 0 ? '%CLS_HEAD_ACTIVE%' : '%CLS_HEAD_IDLE%',
+        '{ES_MOB_CLS}'  => $es_i === 0 ? '%CLS_MOB_ACTIVE%' : '%CLS_MOB_IDLE%',
+        '{ES_ICON}'     => Icons::svg($es_icn, $es_icn_cls . ($es_i === 0 ? ' h-5 w-5 shrink-0 transition-colors text-emerald-600' : ' h-5 w-5 shrink-0 transition-colors text-slate-400 group-hover:text-emerald-600'), '1.7', ' data-service-row-icon="' . (string) $es_i . '"'),
+    ]);
+}
+echo '</div>';
+
+// پنل پیش‌نمایش (ردیف فعال = ردیف اول)
+$es_row0 = is_array($es_rows[0] ?? null) ? $es_rows[0] : [];
+echo strtr($PREVIEW_TPL, [
+    '{ES_IMG}'     => es_media_url((string) ($es_row0['image'] ?? '')),
+    '{ES_TITLE}'   => (string) ($es_row0['title'] ?? ''),
+    '{ES_DESC}'    => (string) ($es_row0['desc'] ?? ''),
+    '{ES_COUNTER}' => es_fa_num('1') . ' / ' . es_fa_num((string) $es_total),
+{ICON_TOKENS}
+]);
+echo $F_CLOSE;

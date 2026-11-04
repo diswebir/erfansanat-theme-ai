@@ -61,11 +61,26 @@ ESIX,
         'wifi' => <<<'ESIX'
 <path d="M12 20h.01"></path><path d="M2 8.82a15 15 0 0 1 20 0"></path><path d="M5 12.859a10 10 0 0 1 14 0"></path><path d="M8.5 16.429a5 5 0 0 1 7 0"></path>
 ESIX,
+        'download' => <<<'ESIX'
+<path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path>
+ESIX,
+        'landmark' => <<<'ESIX'
+<path d="M10 18v-7"></path><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M3 22h18"></path><path d="M6 18v-7"></path>
+ESIX,
+        'milestone' => <<<'ESIX'
+<path d="M12 13v8"></path><path d="M12 3v3"></path><path d="M4 6a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h13a2 2 0 0 0 1.152-.365l3.424-2.317a1 1 0 0 0 0-1.635l-3.424-2.318A2 2 0 0 0 17 6z"></path>
+ESIX,
+        'waypoints' => <<<'ESIX'
+<circle cx="12" cy="4.5" r="2.5"></circle><path d="m10.2 6.3-3.9 3.9"></path><circle cx="4.5" cy="12" r="2.5"></circle><path d="M7 12h10"></path><circle cx="19.5" cy="12" r="2.5"></circle><path d="m13.8 17.7 3.9-3.9"></path><circle cx="12" cy="19.5" r="2.5"></circle>
+ESIX,
+        'building2' => <<<'ESIX'
+<path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path>
+ESIX,
     ];
 
-    /** ساخت تگ svg کامل — رشته کلاس عیناً پاس می‌شود (بایت‌دقیق میرور) */
-    public static function svg(string $name, string $classes): string {
+    /** ساخت تگ svg کامل — رشته کلاس عیناً پاس می‌شود (بایت‌دقیق میرور)؛ ضخامت قلم پیش‌فرض ۲، سکشن خدمات ۱٫۷ */
+    public static function svg(string $name, string $classes, string $stroke = '2', string $attrs = ''): string {
         $inner = self::INNER[$name] ?? self::INNER['cpu'];
-        return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="' . $classes . '" aria-hidden="true">' . $inner . '</svg>';
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' . $stroke . '" stroke-linecap="round" stroke-linejoin="round" class="' . $classes . '" aria-hidden="true"' . $attrs . '>' . $inner . '</svg>';
     }
 }

@@ -127,10 +127,20 @@ final class HomeSections {
         $items['catalog'] = [
             'label'  => __('دانلود کاتالوگ جامع', 'erfansanat'),
             'schema' => [
-                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => ''],
-                ['key' => 'body', 'type' => 'textarea', 'label' => __('متن دعوت', 'erfansanat'), 'default' => ''],
-                ['key' => 'file', 'type' => 'media', 'label' => __('فایل PDF کاتالوگ', 'erfansanat'), 'default' => ''],
-                ['key' => 'button_text', 'type' => 'text', 'label' => __('متن دکمه', 'erfansanat'), 'default' => ''],
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مرجع مشخصات فنی · کدهای سامانه ستاد · کد ملی کالا GS1'],
+                ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => 'کاتالوگ جامع محصولات عرفان صنعت اصفهان (ویرایش ۱۴۰۴)'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن', 'erfansanat'), 'default' => 'مشخصات فنی کامل، ابعاد سازه، توان مصرفی، درجه حفاظت IP68 و راهنمای نصب بیش از ۱۲۵ محصول تخصصی نورپردازی شهری در کاتالوگ رسمی کارخانه گردآوری شده است.'],
+                ['key' => 'file', 'type' => 'media', 'label' => __('فایل PDF کاتالوگ (خالی = لینک فروشگاه)', 'erfansanat'), 'default' => ''],
+                ['key' => 'button_url', 'type' => 'url', 'label' => __('لینک دکمه (بدون فایل)', 'erfansanat'), 'default' => '/shop/'],
+                ['key' => 'button_text', 'type' => 'text', 'label' => __('متن دکمه', 'erfansanat'), 'default' => 'مشاهده و دریافت کاتالوگ محصولات'],
+                ['key' => 'note', 'type' => 'text', 'label' => __('یادداشت کنار دکمه', 'erfansanat'), 'default' => 'شامل +۱۲۵ محصول تخصصی · آماده ارائه به شهرداری‌ها'],
+                ['key' => 'bg_image', 'type' => 'media', 'label' => __('تصویر پس‌زمینه', 'erfansanat'), 'default' => 'assets/images/light-tunnel.jpg'],
+                ['key' => 'bg_alt', 'type' => 'text', 'label' => __('alt پس‌زمینه', 'erfansanat'), 'default' => 'کاتالوگ جامع محصولات عرفان صنعت'],
+                ['key' => 'cover', 'type' => 'media', 'label' => __('تصویر جلد', 'erfansanat'), 'default' => 'assets/images/light-tree.jpg'],
+                ['key' => 'cover_alt', 'type' => 'text', 'label' => __('alt جلد', 'erfansanat'), 'default' => 'جلد کاتالوگ محصولات ESE'],
+                ['key' => 'version', 'type' => 'text', 'label' => __('برچسب نسخه', 'erfansanat'), 'default' => 'نسخه ۱۴۰۴'],
+                ['key' => 'cover_kicker', 'type' => 'text', 'label' => __('زیرعنوان جلد', 'erfansanat'), 'default' => 'کاتالوگ فنی و اجرایی'],
+                ['key' => 'cover_title', 'type' => 'text', 'label' => __('عنوان جلد', 'erfansanat'), 'default' => 'محصولات نورپردازی شهری'],
             ],
         ];
         $items['services'] = [
@@ -356,17 +366,24 @@ final class HomeSections {
     /** اسکیم خدمات: رپیتر ردیف‌های تب‌دار */
     private static function services_schema(): array {
         return [
-            ['key' => 'title', 'type' => 'text', 'label' => __('عنوان', 'erfansanat'), 'default' => ''],
+            ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'خدمات مهندسی و اجرایی'],
+            ['key' => 'title_highlight', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'نورپردازی شهری'],
+            ['key' => 'excerpt', 'type' => 'textarea', 'label' => __('متن معرفی', 'erfansanat'), 'default' => 'از طراحی سه‌بعدی تا تولید صنعتی و اجرای کامل در محل؛ راهکارهای جامع برای شهرداری‌ها و سازمان‌های عمرانی'],
             [
                 'key' => 'rows', 'type' => 'repeater', 'label' => __('خدمات', 'erfansanat'), 'add_label' => __('افزودن خدمت', 'erfansanat'),
                 'fields' => [
-                    ['key' => 'num', 'type' => 'text', 'label' => __('شماره (۰۱…)', 'erfansanat')],
                     ['key' => 'title', 'type' => 'text', 'label' => __('عنوان خدمت', 'erfansanat')],
-                    ['key' => 'body', 'type' => 'textarea', 'label' => __('توضیح', 'erfansanat')],
+                    ['key' => 'desc', 'type' => 'textarea', 'label' => __('توضیح', 'erfansanat')],
+                    ['key' => 'icon', 'type' => 'text', 'label' => __('آیکون lucide', 'erfansanat')],
                     ['key' => 'image', 'type' => 'media', 'label' => __('تصویر پیش‌نمایش', 'erfansanat')],
-                    ['key' => 'url', 'type' => 'url', 'label' => __('لینک', 'erfansanat')],
                 ],
-                'default' => [],
+                'default' => [
+                    ['title' => 'نورپردازی میادین شهری', 'desc' => 'خلق نقطه کانونی بصری در قلب شهر با المان‌های حجمی و سازه‌های نوری شاخص', 'icon' => 'landmark', 'image' => 'assets/images/light-sphere.jpg'],
+                    ['title' => 'نورپردازی خیابان و بلوار', 'desc' => 'آذین‌بندی و روشنایی یکنواخت مسیرهای شهری با لوسترهای ستون و ریسه‌های IP68', 'icon' => 'milestone', 'image' => 'assets/images/hero.jpg'],
+                    ['title' => 'نورپردازی پل و تقاطع‌ها', 'desc' => 'نمای نورانی پل‌های سواره و پیاده با پوینت‌لایت‌های پیکسلی و والواشرهای خطی', 'icon' => 'waypoints', 'image' => 'assets/images/string-lights.jpg'],
+                    ['title' => 'طراحی و ساخت المان‌های شهری', 'desc' => 'ساخت تونل‌های نوری و درختان هوشمند با هویت بصری اختصاصی برای هر شهر', 'icon' => 'sparkles', 'image' => 'assets/images/light-element.jpg'],
+                    ['title' => 'نورپردازی نمای ابنیه و ساختمان', 'desc' => 'روشنایی معماری نمای ساختمان‌های اداری، تاریخی و مراکز عمومی شهر', 'icon' => 'building2', 'image' => 'assets/images/chandelier.jpg'],
+                ],
             ],
         ];
     }

@@ -3,7 +3,13 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 4 COMPLETED (8/8 TASKS, 212/212 CONDITIONS, TESTS 01-08)**
+**PHASE 5 IN PROGRESS (7/12 TASKS DONE: 5.1–5.7 · 94/94 CONDITIONS · TESTS 01-07 GREEN)**
+
+- D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
+- D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
+- D-037: Icons::svg(name, classes, stroke='2', attrs='') — ضخامت قلم پارامتر (سکشن خدمات ۱٫۷)؛ attrs برای data-service-row-icon؛ آیکون‌های ۲۱گانه شامل download/landmark/milestone/waypoints/building2 (inner building2 از سرویس خدمات: دو path M10+M14).
+- D-038: refs بایت‌دقیق ۱۵ سکشن در temp/phase-05-homepage-and-sections/refs/ (همگی به «</section» ختم می‌شوند بدون «>» نهایی).
+- شکاف فاز ۳: inc/Admin/CategoryTermMeta.php هرگز کامیت نشد (تست test-task-13.php در واقع HreflangMeta را تست می‌کند) — UI ادمین termmetaهای thumbnail/faq وجود ندارد؛ فقط هلپرهای es_get_category_thumb/faq (فاز ۵) هستنند. در گزارش فاز ۵ به کارفرما پیگیری شود.
 
 - D-027: refهای برش در `temp/phase-04-header-footer-navigation/refs/` — header-ref (69,345B)، footer-ref (7,475B)، mobile-sidebar-ref (29,459B) همگی byte-exact از میرور؛ HEADER_MAP فهرست ۳۲ data-hook + جدول جایگزینی. میرور flat در `uploads/static-mirror/` (زیپ یک لایه تو در تو دارد — استخراج باید flatten شود).
 - D-028: هدر = `header.php` (shell: language_attributes/body_class/wp_body_open/wp_head) + `template-parts/header/header-top.php` (نوار بالا + لوگو + nav مگا + اکشن‌ها + مودال جستجو، برش عین میرور) + `template-parts/header/mobile-sidebar.php`.
@@ -78,6 +84,17 @@
 - قیمت‌ها «تومان» (IRT)؛ RTL؛ JSON-LDها داینامیک شوند.
 - `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
+
+## رویدادهای فاز ۵ (2026-11-04)
+- 5.1 قرارداد Registry/SectionManager/فرونت‌پیج + ۱۵ wrapper — 24/24.
+- 5.2 hero: gen_hero5.py + Icons + es_media_url/es_link_url — 12/12.
+- 5.3 projects: get_posts projects؛ دستی → post__in+orderby=post__in؛ تأخیر rtrim — 10/10.
+- 5.4 about: ۱۱ فیلد + circle-check/award — 10/10.
+- 5.5 history: ۶ پنل ۱۴اسلاتی + data-history-total (لاتین) + {ES_TOTAL_FA} فارسی — 13/13.
+- 5.6 categories: ۶ کارت ۹فیلدی + CTA + هلپرهای termmeta (thumbnail/faq) + آیکون wifi — 12/12.
+- 5.7 catalog+services: catalog (۱۳ فیلد؛ file=PDF opt-in وگرنه shop) — services (رپیتر ۵ ردیفی [title,desc,icon,image]؛ کلاس‌های active فقط ردیف ۰؛ شمارنده «N / TOTAL» فارسی؛ preview ردیف ۰؛ building2 کلاس دوبل lucide-building-2) — 13/13. F_CLOSE فقط «>» (ref به </section ختم می‌شود و PREVIEW خودش بستن‌ها را دارد).
+- نکته 5.7: svgهای لوسیسک میرور در سکشن خدمات stroke-width=1.7 (نه ۲)؛ js میرور data-service-* را می‌راند → بدون JS سفارشی.
+- رگرسیون پس از 5.7: فاز ۱ (۸/۸: 154 شرط) فاز ۲ (۹/۹: ۱۶۰ شرط) فاز ۴ (۲۱۲/۲۱۲) فاز ۵ (۹۴/۹۴) — همه سبز.
 
 ## رویدادهای فاز ۲ (2026-11-03)
 - Task 2.2 (FieldRenderer+Sanitizer) به ابتدای فاز جابه‌جا شد (وابستگی 2.1) — D-014.

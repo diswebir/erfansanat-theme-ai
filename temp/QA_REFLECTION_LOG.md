@@ -144,3 +144,12 @@
 4. **شیم PHP نسخه ۵:** @php-wasm 3.1.62: loadNodeRuntime فقط runtimeId می‌دهد → `new PHP(runtimeId)` از universal (BasePHP دیگر export نمی‌شود)؛ بدون processId کرش init (VITEST guard)؛ پاسخ = {bytes,errors,exitCode} و خطا = e.response (PHPResponse). php.mjs و node_modules خارج از اسنپ‌شات‌اند — بعد از هر ریست: npm i @php-wasm/node@3.1.62.
 5. **میرور تو در تو:** زیپ پوشه داخلی static-mirror دارد؛ استخراج باید flatten شود وگرنه تست‌های فاز ۱ مسیرها را پیدا نمی‌کنند.
 6. **footer-ref نکته:** contact_args به‌طور پیش‌فرض address خالی دارد → فوتر fallback متنی میرور را رندر می‌کند (D-031).
+
+## تسک ۵.۷ — کاتالوگ + خدمات تب‌دار (2026-11-04)
+**نتیجه:** 13/13 شرط · رگرسیون کامل (فاز ۱/۲/۴/۵) سبز
+1. **عنوان پس‌زمینه کاتالوگ alt داش:** برش اول فقط cover را توکن کرده بود؛ img پس‌زمینه (light-tunnel) static می‌ماند → فیلدهای bg_image/bg_alt اضافه شدند.
+2. **stroke-width لوسیسک:** میرور سکشن خدمات ۱٫۷ است نه ۲ → پارامتر سوم Icons::svg؛ + پارامتر چهارم attrs برای data-service-row-icon (attr بعد از aria-hidden در میرور).
+3. **building2 کلاس دوبل:** میرور «lucide-building2 lucide-building-2» (نام کلاس با عدد) → تولید خودکار نام دوبل برای آیکون‌های پسوند عددی + اصلاح inner building2 در Icons (از MegaMenu کپی شده بود، با inner متفاوت).
+4. **کلاس mobile-img:** div تصویر موبایل در ردیف فعال block و در بقیه hidden است → توکن {ES_MOB_CLS}.
+5. **F_CLOSE:** PREVIEW تا انتهای ref بریده می‌شود و خودش بستن‌ها را دارد → F_CLOSE فقط «>» برای تکمیل «</section» ناقص.
+6. **repeater اختلافی با میرور:** ردیف‌های خدمات دکمه‌اند (بدون لینک) — اسکیم عمداً url ندارد (قرارداد با DOM میرور).
