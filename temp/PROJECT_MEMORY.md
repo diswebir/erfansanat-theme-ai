@@ -2,10 +2,15 @@
 
 > آخرین به‌روزرسانی: 2026-11-04 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 5 PASSED** — همه ۲۱ تسک فاز ۵ پاس شدند.
+## وضعیت فعلی: **PHASE 6 IN PROGRESS** — T001..T007 پاس (۱۷۹ چک فاز ۶).
 ```
-PHASE 5 PASSED — P05-T001..T021 PASSED (410 checks) — WAITING FOR USER APPROVAL FOR PHASE 6
+PHASE 6 IN PROGRESS — P06-T001..T007 PASSED (32+27+18+17+19+23+43 = 179 checks)
+NEXT: P06-T008 (اطلاعیه/کاتالوگ) + درخواست کاربر: ادغام کامل فونت وزیرمتن در پنل پیشخوان قالب
 ```
+- **درخواست جدید کاربر (2026-11-04):** «ادامه بده و موارد باقی‌مانده را کامل کن» + «کد پنل پیشخوان قالب را با فونت وزیر متن به‌صورت کامل ادغام کن». → پس از T007، یک تسک الحاقی **P02-T019** برای یکپارچه‌سازی وزیرمتن در داشبورد/متاباکس‌های ادمین (بدون نشت به فرانت‌اند، حفظ dashicons) اجرا می‌شود؛ سپس ادامه فاز ۶.
+- **فاز ۶ تاکنون:** T001 shim سازگاری QA (۳۲)؛ T002 shell تک‌محصول (۲۷)؛ T003 گالری+لایت‌باکس (۱۸)؛ T004 بلوک عنوان summary.php (۱۷)؛ T005 شناسه‌های قانونی legal-ids.php (۱۹)؛ T006 کارت خرید purchase.php با منطق true_sale (۲۳)؛ T007 سواچ/تعداد (۴۳ = ۳۱ PHP + ۱۲ JSDOM روی main.js واقعی). **مجموع تجمعی: ۱۳۹۲ + ۱۷۹ = ۱۵۷۱ چک سبز.**
+- **معماری تک‌محصول:** `content-single-product.php` هوک‌های استاندارد Woo را با الگوی hook-or-fallback اجرا می‌کند. گالری → `woocommerce_before_single_product_summary` (T003)؛ بلوک عنوان → `get_template_part('template-parts/product/summary')` در hero (T004)؛ کارت خرید → `woocommerce_single_product_summary` (T006) با هوک‌های داخلی `es_product_summary_mid` (مشخصات/سواچ) و `es_product_summary_after` (اطلاعیه/کاتالوگ)؛ شناسه‌های قانونی → `es_product_specs_panel` (T005). محصول متغیر واقعی Woo: `purchase.php` فرم `woocommerce/single-product/variable.php` را جایگزین stepper/swatch ایستا می‌کند (وقتی `WC_VERSION` تعریف شده). fallback بدون Woo: سواچ `data-opt-*` + stepper `data-pdp-qty-*` + guard حداکثر `product-quantity.js` (فقط وقتی Woo نیست). `Core\ProductQuantity::rules/validate` قواعد min/max/step را نرمال و اعتبارسنجی می‌کند (متاهای `_min_qty/_max_qty/_step_qty`).
+- **وابستگی‌های ثبت‌شده فاز ۶:** functions.php (وایرینگ هوک‌ها + enqueue guard تعداد)؛ shim (متدهای متغیر P06-T007)؛ AssetManager دست‌نخورده (enqueue از functions.php). `main.js` هرگز ویرایش نشد؛ تست DOM با JSDOM وابستگی QA شد (`temp/tools` jsdom + setup-harness).
 - **فاز ۵ کامل شد (صفحه اصلی و سکشن‌های ماژولار):** controller `front-page.php` (رندر ۱۳ سکشن از `Sections\Renderer` داخل `<main>`، CTA/فوتر فقط از `get_footer()`)؛ ۳ کارت استاندارد پروژه/محصول/مقاله (بازاستفاده در سکشن‌ها و آرشیوها)؛ ۱۳ سکشن صفحه اصلی با DOM عین مرجع و هوک‌های کامل main.js (هیرو، انواع پروژه، پروژه‌های منتخب تب‌دار، درباره+آمار شمارنده، بومی‌سازی، تاریخچه اسکرولی، محصولات منتخب، CTA کاتالوگ، خدمات تب‌دار با ۱۷ هوک، استانداردها، پشتیبانی+نقشه ایران، مشتریان، پیش‌نمایش وبلاگ)؛ همه option/repeater-driven با پیش‌فرض فیلترپذیر و حالت خالی امن؛ کوئری‌های publish-only با بودجه ≤۶۰ (واقعی ۱۱ خالی/۱۸ با داده)؛ رگرسیون جامع ترتیب/خاموش‌سازی/حالت خالی.
 - نتیجه runner فاز ۵: `PHASE RESULT: ALL PASS` (۲۱ تست، **۴۱۰ چک پاس، ۰ fail/pending**). رگرسیون P02-T018 Renderer بعد از هر part=۱۰/۱۰؛ رگرسیون کامل فازهای ۱–۴ پاس (۱۱۱+۲۶۰+۳۰۱+۳۱۰). **مجموع تجمعی: ۱۳۹۲ چک.**
 - شمارش چک هر تسک فاز ۵: T001=14، T002=24، T003=31، T004=18، T005=20، T006=16، T007=23، T008=17، T009=15، T010=20، T011=14، T012=15، T013=18، T014=15، T015=23، T016=24، T017=20، T018=21، T019=19، T020=22، T021=21.
@@ -44,8 +49,8 @@ PHASE 5 PASSED — P05-T001..T021 PASSED (410 checks) — WAITING FOR USER APPRO
 - **ووکامرس:** دانلود zip بیلدشده از release گیت‌هاب ممکن نشد (asset به هاست مسدود `objects.githubusercontent.com` ریدایرکت می‌شود؛ TLS EOF). → فاز ۶ با **shim سازگاری** (ثبت `product`/`product_cat`/`product_tag` + stub توابع WC موردنیاز قالب) تست می‌شود؛ نهایی‌سازی روی استیجینگ واقعی.
 - تست‌ها: plain-PHP با `temp/tests/bootstrap.php` (توابع `es_check/es_file/es_contains/es_load_wp/es_activate_theme/es_summary`). اجرا: `php temp/phase-XX/tests/test-task-YY.php`.
 
-## گام بعدی (پس از تایید کاربر)
-**PHASE 6** — طبق `temp/MASTER_PLAN.md` (ووکامرس و محصولات). فاز ۵ کامل پاس شد (**۴۱۰ چک**؛ تجمعی ۱۳۹۲)؛ در انتظار تایید کاربر برای شروع فاز ۶.
+## گام بعدی
+**PHASE 6 ادامه دارد** — کاربر «ادامه بده و موارد باقی‌مانده را کامل کن» داد. T008..T028 به‌ترتیب اجرا می‌شوند؛ به‌علاوه تسک الحاقی P02-T019 (وزیرمتن در پنل پیشخوان). فاز ۵ کامل پاس شد (**۴۱۰ چک**).
 - **معماری فاز ۵ برای فازهای بعد:** ۱۳ سکشن صفحه اصلی از `Sections\Renderer::render($id,'home')` در `front-page.php` (داخل `<main>` ساده). هر سکشن `template-parts/sections/home/section-{type}.php`؛ blog-preview → `section-blog.php`. ترتیب/فعال‌سازی از متای `_es_sections_v1` (`SectionManager`) با fallback `Schema::defaults('home')`؛ ذخیره `erfansanat_sections_updated` → `Renderer::invalidate`. CTA `id=contact` + فوتر فقط از `get_footer()` (هرگز در front-page تکرار نمی‌شود).
 - **کارت‌های استاندارد (بازاستفاده در آرشیوها):** `card-project` (data-project-item + فیلترهای rating/client)، `card-product` (data-product-item + SKU/_min_qty/_wc_average_rating + نشان online/inquiry؛ **data-product-category نام دسته است نه slug**)، `card-post` (sticky ★، زمان مطالعه /200wpm، تاریخ فارسی، wp_trim_words 35). فراخوانی: `get_template_part('template-parts/cards/card-X', null, ['post_id'=>get_the_ID()])`.
 - **الگوی repeater خالی:** پیش‌فرض‌های فیلترپذیر در template (عمدی — سکشن ناپدید نمی‌شود). آیتم خالی (بدون عنوان/توضیح) رندر نمی‌شود. کلیدهای اضافهٔ فقط-پیش‌فرض (badge استانداردها، url مشتریان، description مشتریان) چون در Schema نیستند، روی آیتم ذخیره‌شده حذف می‌شوند.

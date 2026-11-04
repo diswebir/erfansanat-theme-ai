@@ -76,3 +76,22 @@ add_action(
 	},
 	10
 );
+
+// P06-T007: additive max-quantity guard for the no-Woo fallback stepper only.
+add_action(
+	'wp_enqueue_scripts',
+	static function () {
+		if ( ! is_singular( 'product' ) || defined( 'WC_VERSION' ) ) {
+			return;
+		}
+		$js = ES_ASSETS_DIR . 'js/product-quantity.js';
+		wp_enqueue_script(
+			'es-product-quantity',
+			ES_ASSETS_URI . 'js/product-quantity.js',
+			array( 'es-main' ),
+			is_file( $js ) ? (string) filemtime( $js ) : ES_VERSION,
+			true
+		);
+	},
+	20
+);

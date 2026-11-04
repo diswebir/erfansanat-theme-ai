@@ -151,6 +151,40 @@ class ES_Shim_Product {
 	public function get_cross_sell_ids(): array { return array_map( 'intval', (array) $this->meta( '_crosssell_ids', array() ) ); }
 	public function get_meta( string $key, bool $single = true ) { return get_post_meta( $this->id, $key, $single ); }
 
+	// ── P06-T007: minimal variable-product surface for QA only ─────────────.
+	public function is_type( $type ): bool {
+		$types = (array) $type;
+		return in_array( $this->get_type(), $types, true );
+	}
+	public function get_availability(): array {
+		return $this->is_in_stock()
+			? array( 'availability' => 'موجود', 'class' => 'in-stock' )
+			: array( 'availability' => 'ناموجود', 'class' => 'out-of-stock' );
+	}
+	public function get_variation_attributes(): array {
+		$raw = $this->meta( '_es_variation_attributes', array() );
+		if ( is_string( $raw ) ) {
+			$raw = json_decode( $raw, true );
+		}
+		return is_array( $raw ) ? $raw : array();
+	}
+	public function get_available_variations(): array {
+		$raw = $this->meta( '_product_variations', array() );
+		if ( is_string( $raw ) ) {
+			$raw = json_decode( $raw, true );
+		}
+		return is_array( $raw ) ? $raw : array();
+	}
+	public function get_children(): array {
+		$ids = array();
+		foreach ( $this->get_available_variations() as $variation ) {
+			if ( isset( $variation['variation_id'] ) ) {
+				$ids[] = (int) $variation['variation_id'];
+			}
+		}
+		return $ids;
+	}
+
 	protected function term_ids( string $tax ): array {
 		$terms = get_the_terms( $this->id, $tax );
 		return ( $terms && ! is_wp_error( $terms ) ) ? wp_list_pluck( $terms, 'term_id' ) : array();

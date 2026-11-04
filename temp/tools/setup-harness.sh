@@ -13,9 +13,9 @@ ROOT_DIR="$(cd "$TOOLS_DIR/../.." && pwd)"
 cd "$TOOLS_DIR"
 
 echo "==> [1/4] PHP 8.4 WASM runtime (@php-wasm/node)"
-if [ ! -d node_modules/@php-wasm/node ]; then
+if [ ! -d node_modules/@php-wasm/node ] || [ ! -d node_modules/jsdom ]; then
   [ -f package.json ] || npm init -y >/dev/null
-  npm install @php-wasm/node@3.1.62 --no-audit --no-fund
+  npm install --no-audit --no-fund
 fi
 
 echo "==> [2/4] WP-CLI phar (via GitHub blob API)"
