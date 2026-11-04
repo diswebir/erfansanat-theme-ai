@@ -7,7 +7,7 @@ Status: **complete — automated regression and browser checks passed on 2026-11
 - Disposable WordPress 7.2-beta4 / build 65250 + SQLite via PHP WASM. The generated test configuration sets `WP_DEBUG=true` and writes to the ignored test workspace.
 - `temp/run-all-phases-e2e.sh` is the repeatable gate for all eight phase runners, the jsdom UI E2E, bundled headless Chromium E2E, PHP/JavaScript/shell syntax checks, whitespace checks, and an empty `WP_DEBUG` log.
 - The Chromium binary and its Linux runtime libraries are supplied by the locked `@sparticuz/chromium` dev dependency and unpacked under `/tmp` by the E2E script; no system-installed browser is required.
-- The latest integrated full runner (including the axe-core browser audit and the admin-dashboard follow-up) passed in approximately 142 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
+- The latest integrated full runner (including the axe-core browser audit and the admin-dashboard follow-up) passed in approximately 149 seconds. All phase suites passed, including Task 8.2 integration checks. No PHP warning, notice, or fatal was logged with `WP_DEBUG=true`.
 - The real Chromium E2E exercised 390px and 1280px viewports, public-form layout/labels/AJAX states, and the new RTL admin dashboard widget's responsive stats/action grids, keyboard focus, and WCAG checks. The public form API is mocked in the browser test; this is not a live WordPress HTTP/browser test or pixel/screenshot review.
 - Phase 8.1 fixture endpoint timing: maximum **3.00 ms** in the latest complete regression run (an earlier full run measured 2.00 ms) and **4.00 ms** in a focused post-run repeat, excluding browser/network round-trip. This is a regression fixture measurement, not a production-server benchmark.
 
@@ -25,9 +25,9 @@ These findings are a scoped review result, not an exhaustive proof that the them
 
 ## Admin dashboard and typography follow-up — 2026-11-04
 
-- Added a native WordPress Dashboard overview widget with localized greeting, published product/project/page counts, administrator-only submission count, and capability-gated shortcuts. Its responsive stylesheet is enqueued only on the Dashboard screen.
+- Added a native WordPress Dashboard overview widget with localized greeting, published product/project/page counts, administrator-only submission count, recent editable content, new private form submissions for administrators, and capability-gated shortcuts. Its responsive stylesheet is enqueued only on the Dashboard screen.
 - Extended the local Vazirmatn family to consistently cover admin chrome, controls, editor content, and common icon-font exceptions. Asset cache versions now hash the CSS and all three WOFF2 files, so replacing a font file cannot leave a stale version just because its timestamp is lower than another asset's.
-- WordPress integration tests cover widget output, administrator shortcuts, page-scoped asset enqueueing, and font contracts; the link builder itself applies capability checks. Chromium tests check the widget at mobile/desktop widths and axe-core finds no WCAG 2.0/2.1 A/AA violations in the dashboard fixture. This remains a synthetic dashboard fixture, not a production screenshot or live-admin deployment review.
+- WordPress integration tests cover widget output, administrator shortcuts, page-scoped asset enqueueing, and font contracts; the link builder itself applies capability checks. Chromium tests check the stats, recent-content/inbox panels, and action grid at mobile/desktop widths; they caught and helped correct one low-contrast dashboard label. axe-core now finds no WCAG 2.0/2.1 A/AA violations in the dashboard fixture. This remains a synthetic dashboard fixture, not a production screenshot or live-admin deployment review.
 
 ## Compatibility and SEO review
 

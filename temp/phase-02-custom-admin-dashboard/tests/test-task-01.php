@@ -102,6 +102,12 @@ require_once $wpRoot . '/wp-admin/includes/template.php';
 set_current_screen('dashboard');
 require_once $wpRoot . '/wp-admin/includes/dashboard.php';
 $dashboardClass = 'ErfanSanat\\Theme\\Admin\\Dashboard';
+\ErfanSanat\Theme\Forms\Submission::register_post_type();
+$dashboardPostId = wp_insert_post(['post_type' => 'post', 'post_status' => 'publish', 'post_title' => 'Dashboard QA Recent Published Entry']);
+$dashboardSubmissionId = wp_insert_post(['post_type' => 'ese_submission', 'post_status' => 'private', 'post_title' => 'Dashboard QA New Contact Request']);
+if ($dashboardSubmissionId && !is_wp_error($dashboardSubmissionId)) {
+    update_post_meta((int) $dashboardSubmissionId, '_ese_form_status', 'new');
+}
 if (!class_exists($dashboardClass) || !has_action('wp_dashboard_setup', [$dashboardClass, 'register_widget'])) {
     fwrite(STDERR, "FAIL branded admin dashboard widget was not registered\n");
     $failed++;
@@ -110,7 +116,7 @@ if (!class_exists($dashboardClass) || !has_action('wp_dashboard_setup', [$dashbo
     ob_start();
     $dashboardClass::render_widget();
     $dashboardHtml = (string) ob_get_clean();
-    foreach (['ese-dashboard-overview', 'دسترسی سریع', 'تنظیمات قالب', 'صندوق درخواست‌ها'] as $needle) {
+    foreach (['ese-dashboard-overview', 'دسترسی سریع', 'تنظیمات قالب', 'صندوق درخواست‌ها', 'Dashboard QA Recent Published Entry', 'Dashboard QA New Contact Request'] as $needle) {
         if (false === strpos($dashboardHtml, $needle)) {
             fwrite(STDERR, "FAIL admin dashboard overview missing `{$needle}`\n");
             $failed++;
@@ -130,6 +136,11 @@ if (!class_exists($dashboardClass) || !has_action('wp_dashboard_setup', [$dashbo
     if (!is_file($root . '/assets/css/admin-dashboard.css')) {
         fwrite(STDERR, "FAIL dashboard stylesheet asset is missing\n");
         $failed++;
+    }
+}
+foreach ([$dashboardPostId, $dashboardSubmissionId] as $dashboardFixtureId) {
+    if ($dashboardFixtureId && !is_wp_error($dashboardFixtureId)) {
+        wp_delete_post((int) $dashboardFixtureId, true);
     }
 }
 if ($failed !== 0) {

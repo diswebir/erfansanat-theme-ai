@@ -104,6 +104,8 @@ final class Dashboard
         }
 
         $actions = self::available_actions();
+        $recentContent = self::recent_content();
+        $newSubmissions = current_user_can('manage_options') ? self::recent_submissions() : [];
         ?>
         <section class="ese-dashboard-overview" dir="rtl" lang="fa">
             <header class="ese-dashboard-hero">
@@ -129,6 +131,54 @@ final class Dashboard
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+
+            <div class="ese-dashboard-workspace">
+                <section class="ese-dashboard-panel" aria-labelledby="ese-dashboard-content-title">
+                    <div class="ese-dashboard-section-title">
+                        <h3 id="ese-dashboard-content-title"><?php echo esc_html__('محتوای تازه', 'erfansanat-theme'); ?></h3>
+                        <p><?php echo esc_html__('آخرین موارد قابل ویرایش', 'erfansanat-theme'); ?></p>
+                    </div>
+                    <?php if ($recentContent) : ?>
+                        <ul class="ese-dashboard-recent-list">
+                            <?php foreach ($recentContent as $item) : ?>
+                                <li>
+                                    <span class="dashicons <?php echo esc_attr($item['icon']); ?>" aria-hidden="true"></span>
+                                    <span class="ese-dashboard-recent-copy">
+                                        <?php if ($item['url']) : ?><a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['title']); ?></a><?php else : ?><strong><?php echo esc_html($item['title']); ?></strong><?php endif; ?>
+                                        <small><?php echo esc_html($item['type']); ?> · <?php echo esc_html($item['date']); ?></small>
+                                    </span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else : ?>
+                        <p class="ese-dashboard-empty"><?php echo esc_html__('هنوز محتوای قابل ویرایشی برای نمایش نیست.', 'erfansanat-theme'); ?></p>
+                    <?php endif; ?>
+                </section>
+
+                <?php if (current_user_can('manage_options')) : ?>
+                    <section class="ese-dashboard-panel" aria-labelledby="ese-dashboard-inbox-title">
+                        <div class="ese-dashboard-section-title">
+                            <h3 id="ese-dashboard-inbox-title"><?php echo esc_html__('درخواست‌های جدید', 'erfansanat-theme'); ?></h3>
+                            <a class="ese-dashboard-panel-link" href="<?php echo esc_url(admin_url('admin.php?page=ese-form-inbox&form_status=new')); ?>"><?php echo esc_html__('مشاهده صندوق', 'erfansanat-theme'); ?></a>
+                        </div>
+                        <?php if ($newSubmissions) : ?>
+                            <ul class="ese-dashboard-inbox-list">
+                                <?php foreach ($newSubmissions as $submission) : ?>
+                                    <li>
+                                        <a href="<?php echo esc_url(add_query_arg(['page' => 'ese-form-inbox', 'submission' => (int) $submission->ID], admin_url('admin.php'))); ?>">
+                                            <strong><?php echo esc_html(get_the_title($submission)); ?></strong>
+                                            <small><?php echo esc_html(get_the_date('Y/m/d', $submission)); ?></small>
+                                        </a>
+                                        <span class="ese-dashboard-new-badge"><?php echo esc_html__('جدید', 'erfansanat-theme'); ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else : ?>
+                            <p class="ese-dashboard-empty"><?php echo esc_html__('درخواست جدیدی برای پیگیری وجود ندارد.', 'erfansanat-theme'); ?></p>
+                        <?php endif; ?>
+                    </section>
+                <?php endif; ?>
+            </div>
 
             <div class="ese-dashboard-actions">
                 <div class="ese-dashboard-section-title">
@@ -162,6 +212,77 @@ final class Dashboard
         }
         $counts = wp_count_posts($postType);
         return is_object($counts) ? (int) ($counts->publish ?? 0) : 0;
+    }
+
+    /** Return the most recently published items this user can edit. */
+    private static function recent_content(): array
+    {
+        $postTypes = [];
+        foreach ([
+            'post' => 'edit_posts',
+            'page' => 'edit_pages',
+            'projects' => 'edit_posts',
+            'product' => 'edit_products',
+        ] as $postType => $capability) {
+            if (post_type_exists($postType) && current_user_can($capability)) {
+                $postTypes[] = $postType;
+            }
+        }
+        if (!$postTypes) {
+            return [];
+        }
+
+        $posts = get_posts([
+            'post_type' => $postTypes,
+            'post_status' => 'publish',
+            'posts_per_page' => 5,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'no_found_rows' => true,
+            'suppress_filters' => true,
+        ]);
+        $items = [];
+        foreach ($posts as $post) {
+            if (!$post instanceof \WP_Post || !current_user_can('edit_post', $post->ID)) {
+                continue;
+            }
+            $postType = get_post_type_object($post->post_type);
+            $items[] = [
+                'title' => get_the_title($post),
+                'type' => $postType && isset($postType->labels->singular_name) ? $postType->labels->singular_name : __('محتوا', 'erfansanat-theme'),
+                'date' => get_the_date('Y/m/d', $post),
+                'url' => get_edit_post_link($post->ID, 'raw') ?: '',
+                'icon' => [
+                    'product' => 'dashicons-products',
+                    'projects' => 'dashicons-portfolio',
+                    'page' => 'dashicons-admin-page',
+                    'post' => 'dashicons-edit-page',
+                ][$post->post_type] ?? 'dashicons-admin-page',
+            ];
+        }
+        return $items;
+    }
+
+    /** Return a small, private list of unhandled form submissions for administrators. */
+    private static function recent_submissions(): array
+    {
+        if (!post_type_exists('ese_submission')) {
+            return [];
+        }
+        $posts = get_posts([
+            'post_type' => 'ese_submission',
+            'post_status' => 'private',
+            'numberposts' => 4,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'meta_key' => '_ese_form_status',
+            'meta_value' => 'new',
+            'no_found_rows' => true,
+            'suppress_filters' => true,
+        ]);
+        return array_values(array_filter($posts, static function ($post): bool {
+            return $post instanceof \WP_Post;
+        }));
     }
 
     /** Build only shortcuts the current user is authorized to follow. */
