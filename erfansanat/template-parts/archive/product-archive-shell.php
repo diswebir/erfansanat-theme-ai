@@ -262,7 +262,7 @@ $es_filter_controls = static function ( $uid, $active ) use ( $es_fa, $es_top_ca
 			<div data-product-grid="true" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
 				<?php if ( $es_query && $es_query->have_posts() ) : ?>
 					<?php while ( $es_query->have_posts() ) : $es_query->the_post(); ?>
-						<?php get_template_part( 'template-parts/cards/card', 'product', array( 'product_id' => get_the_ID() ) ); ?>
+						<?php get_template_part( 'woocommerce/content', 'product' ); // P06-T017. ?>
 					<?php endwhile; wp_reset_postdata(); ?>
 				<?php endif; ?>
 			</div>
