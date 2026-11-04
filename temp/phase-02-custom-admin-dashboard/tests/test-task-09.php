@@ -38,18 +38,18 @@ use ErfanSanat\Theme\Sections\Registry;
 // ثبت سکشن‌های تست با template واقعی (override locate)
 $fixture_dir = sys_get_temp_dir() . '/es-sec-fixture-' . getmypid();
 @mkdir($fixture_dir . '/template-parts/sections', 0777, true);
-file_put_contents($fixture_dir . '/template-parts/sections/hero.php', "<?php echo 'HERO:' . esc_html(\$fields['title'] ?? '') . ';post=' . \$post_id;");
-file_put_contents($fixture_dir . '/template-parts/sections/gallery.php', "<?php echo 'GALLERY';");
-file_put_contents($fixture_dir . '/template-parts/sections/contact.php', "<?php echo 'CONTACT:' . (isset(\$extra) ? \$extra : '');");
+file_put_contents($fixture_dir . '/template-parts/sections/demo-hero.php', "<?php echo 'HERO:' . esc_html(\$fields['title'] ?? '') . ';post=' . \$post_id;");
+file_put_contents($fixture_dir . '/template-parts/sections/demo-gallery.php', "<?php echo 'GALLERY';");
+file_put_contents($fixture_dir . '/template-parts/sections/demo-contact.php', "<?php echo 'CONTACT:' . (isset(\$extra) ? \$extra : '');");
 $GLOBALS['__es_locate_override'] = [
-    'template-parts/sections/hero.php'    => $fixture_dir . '/template-parts/sections/hero.php',
-    'template-parts/sections/gallery.php' => $fixture_dir . '/template-parts/sections/gallery.php',
-    'template-parts/sections/contact.php' => $fixture_dir . '/template-parts/sections/contact.php',
+    'template-parts/sections/demo-hero.php'    => $fixture_dir . '/template-parts/sections/demo-hero.php',
+    'template-parts/sections/demo-gallery.php' => $fixture_dir . '/template-parts/sections/demo-gallery.php',
+    'template-parts/sections/demo-contact.php' => $fixture_dir . '/template-parts/sections/demo-contact.php',
 ];
 
-SectionManager::register_section('home', 'hero', 'هیرو', [['key' => 'title', 'type' => 'text', 'default' => 'میرور']]);
-SectionManager::register_section('home', 'gallery', 'گالری', []);
-SectionManager::register_section('home', 'contact', 'تماس', []);
+SectionManager::register_section('home', 'demo-hero', 'هیرو', [['key' => 'title', 'type' => 'text', 'default' => 'میرور']]);
+SectionManager::register_section('home', 'demo-gallery', 'گالری', []);
+SectionManager::register_section('home', 'demo-contact', 'تماس', []);
 
 // Registry در بوت با فیلترِ پیش‌ثبت‌شده اجرا شد
 check(isset(SectionManager::registered()['about']['about-intro']), 'Registry سکشن about-intro را ثبت کرد');
@@ -66,14 +66,14 @@ check(strpos($rendered, 'HERO') < strpos($rendered, 'GALLERY') && strpos($render
 
 // toggle: hero خاموش → فقط gallery/contact به ترتیب
 $GLOBALS['__wp_post_meta'][500][SectionManager::META_KEY] = [
-    ['id' => 'hero', 'enabled' => 0, 'order' => 0, 'fields' => []],
-    ['id' => 'contact', 'enabled' => 1, 'order' => 1, 'fields' => []],
-    ['id' => 'gallery', 'enabled' => 1, 'order' => 2, 'fields' => []],
+    ['id' => 'demo-hero', 'enabled' => 0, 'order' => 0, 'fields' => []],
+    ['id' => 'demo-contact', 'enabled' => 1, 'order' => 1, 'fields' => []],
+    ['id' => 'demo-gallery', 'enabled' => 1, 'order' => 2, 'fields' => []],
 ];
 ob_start();
 es_render_sections(500);
 $rendered2 = (string) ob_get_clean();
-check(!str_contains($rendered2, 'HERO'), 'سکشن غیرفعال رندر نشد');
+check(!str_contains($rendered2, 'HERO:'), 'سکشن غیرفعال رندر نشد');
 check(strpos($rendered2, 'CONTACT') < strpos($rendered2, 'GALLERY'), 'ترتیب ذخیره‌شده ادمین اعمال شد');
 
 // فیلتر es_sections_render_args
@@ -94,9 +94,9 @@ ob_start();
 es_render_sections(500);
 check(trim((string) ob_get_clean()) === '', 'قالب ناموجود → خروجی خالی بدون خطا');
 
-@unlink($fixture_dir . '/template-parts/sections/hero.php');
-@unlink($fixture_dir . '/template-parts/sections/gallery.php');
-@unlink($fixture_dir . '/template-parts/sections/contact.php');
+@unlink($fixture_dir . '/template-parts/sections/demo-hero.php');
+@unlink($fixture_dir . '/template-parts/sections/demo-gallery.php');
+@unlink($fixture_dir . '/template-parts/sections/demo-contact.php');
 @rmdir($fixture_dir . '/template-parts/sections');
 @rmdir($fixture_dir . '/template-parts');
 @rmdir($fixture_dir);

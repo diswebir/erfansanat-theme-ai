@@ -26,13 +26,17 @@ require $root . '/functions.php';
 
 use ErfanSanat\Theme\Admin\SectionManager;
 
+// بوت رجیستری واقعی (HomeSections فاز ۵ — ۱۵ سکشن صفحه اصلی)
+do_action('init');
+
 // ثبت سه سکشن نمونه (به ترتیب)
 SectionManager::register_section('home', 'hero', 'هیرو', [['key' => 'title', 'type' => 'text']]);
 SectionManager::register_section('home', 'categories', 'دسته‌بندی‌ها', []);
 SectionManager::register_section('home', 'contact', 'تماس', []);
 
-check(count(SectionManager::registered()) === 1, 'یک گروه (home) ثبت شد');
+check(count(SectionManager::registered()) === 2, 'دو گروه ثبت شد (page واقعی + home نمونه)');
 check(count(SectionManager::sections_of('home')) === 3, 'سه سکشن در گروه home');
+check(count(SectionManager::sections_of('page')) === 15, '۱۵ سکشن واقعی در گروه page (HomeSections)');
 
 // متاباکس روی page ثبت شده؟ (اکشن add_meta_boxes را fire می‌کنیم)
 do_action('add_meta_boxes');
@@ -43,10 +47,11 @@ check(($metaboxes['es-sections']['priority'] ?? '') === 'high', 'اولویت م
 // حالت بدون متا: همه ثبت‌شده‌ها فعال به ترتیب ثبت
 $GLOBALS['__wp_post_meta'][100][SectionManager::META_KEY] = null;
 $sections = SectionManager::get_sections(100);
-check(count($sections) === 3, 'حالت متای خالی → ۳ سکشن پیش‌فرض');
-check(array_column($sections, 'id') === ['hero', 'categories', 'contact'], 'ترتیب پیش‌فرض = ترتیب ثبت');
+check(count($sections) === 18, 'حالت متای خالی → ۱۸ سکشن پیش‌فرض (۱۵ واقعی + ۳ نمونه)');
+$es_ids = array_column($sections, 'id');
+check(array_slice($es_ids, 0, 15) === \ErfanSanat\Theme\Sections\HomeSections::ORDER, 'ترتیب پیش‌فرض = ترتیب ثبت (واقعی‌ها اول)');
 check(min(array_column($sections, 'enabled')) === 1, 'همه پیش‌فرض فعال');
-check(array_column($sections, 'order') === [0, 1, 2], 'order پیوسته ۰..۲');
+check(array_column($sections, 'order') === range(0, 17), 'order پیوسته ۰..۱۷');
 
 // رندر UI متاباکس
 $GLOBALS['__es_stub_post_types'] = [100 => 'page'];
@@ -58,8 +63,8 @@ SectionManager::render_metabox($post);
 $ui = (string) ob_get_clean();
 check(str_contains($ui, 'name="es_sections_nonce"'), 'نانس داخل متاباکس');
 check(str_contains($ui, 'data-es-section-row'), 'ردیف سکشن رندر شد');
-check(substr_count($ui, 'data-es-section-move') === 3, 'سه دستگیره درگ');
-check(str_contains($ui, 'name="opt_sections[0][id]" value="hero"'), 'hidden id ردیف اول = hero');
+check(substr_count($ui, 'data-es-section-move') === 18, '۱۸ دستگیره درگ');
+check(str_contains($ui, 'name="opt_sections[0][id]" value="hero-home1"'), 'hidden id ردیف اول = hero-home1');
 check(str_contains($ui, 'name="opt_sections[0][enabled]" value="0"') && str_contains($ui, 'name="opt_sections[0][enabled]" value="1"'), 'سوییچ enabled با hidden صفر');
 
 // ذخیره: بدون نانس → تغییری نمی‌کند

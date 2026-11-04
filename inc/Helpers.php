@@ -115,6 +115,9 @@ if (!function_exists('es_render_sections')) {
             if ((int) ($section['enabled'] ?? 0) !== 1) {
                 continue; // سکشن غیرفعال رندر نمی‌شود
             }
+            if (isset($extra_args['only']) && (string) $extra_args['only'] !== (string) ($section['id'] ?? '')) {
+                continue; // حالت رندر تک‌سکشن (تست/شورت‌کد)
+            }
 
             $section_id = (string) ($section['id'] ?? '');
             $fields     = is_array($section['fields'] ?? null) ? $section['fields'] : [];
@@ -221,4 +224,35 @@ if (!function_exists('es_cta_url')) {
         $url = es_option('header.cta_url', '');
         return is_string($url) && $url !== '' ? $url : es_page_url('contact');
     }
+if (!function_exists('es_media_url')) {
+    /** آدرس رسانه: آیدی attachment → URL؛ مسیر assets/ → URI قالب؛ رشته خام → عیناً */
+    function es_media_url(mixed $value): string {
+        if (is_int($value) || (is_string($value) && $value !== '' && ctype_digit($value))) {
+            $url = wp_get_attachment_url((int) $value);
+            return is_string($url) ? $url : '';
+        }
+        $value = (string) $value;
+        if ($value === '') {
+            return '';
+        }
+        if (str_starts_with($value, 'assets/')) {
+            return ERFANSANAT_URI . $value;
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('es_link_url')) {
+    /** لینک نسبی ذخیره‌شده در ادمین (/about/) → کامل؛ مطلق → عیناً */
+    function es_link_url(string $url): string {
+        if ($url === '') {
+            return '';
+        }
+        if (str_starts_with($url, '/')) {
+            return home_url($url);
+        }
+        return $url;
+    }
+}
+
 }

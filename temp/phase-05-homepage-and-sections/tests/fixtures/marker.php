@@ -1,0 +1,1 @@
+<?php echo "MARK[" . $section_id . "]";

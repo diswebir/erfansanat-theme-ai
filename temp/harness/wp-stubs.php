@@ -46,6 +46,7 @@ $GLOBALS['__wp_user_logged_in']  = false;
 $GLOBALS['__wp_current_user_can'] = false;
 $GLOBALS['__es_theme_dir']       = dirname(__DIR__, 2); // ریشه قالب (ریپو)
 $GLOBALS['__es_locate_override'] = [];
+$GLOBALS['__es_stub_get_posts_args'] = [];
 $GLOBALS['__wp_hooks']           = [
     'actions' => [], 'filters' => [], 'removed_actions' => [], 'removed_filters' => [],
     'supports' => [], 'menus' => [], 'sizes' => [],
@@ -64,6 +65,7 @@ function es_stubs_reset(): void {
     $GLOBALS['__wp_user_logged_in']  = false;
     $GLOBALS['__wp_current_user_can'] = false;
     $GLOBALS['__es_locate_override'] = [];
+$GLOBALS['__es_stub_get_posts_args'] = [];
     $GLOBALS['__wp_hooks']           = [
     'actions' => [], 'filters' => [], 'removed_actions' => [], 'removed_filters' => [],
     'supports' => [], 'menus' => [], 'sizes' => [],
@@ -483,12 +485,20 @@ function __return_null(): null
 if (!function_exists('get_header')) {
 function get_header($name = null, array $args = []): void
 {
+    $file = ($GLOBALS['__es_theme_dir'] ?? '') . '/header.php';
+    if (is_file($file)) {
+        include $file;
+    }
 }
 }
 
 if (!function_exists('get_footer')) {
 function get_footer($name = null, array $args = []): void
 {
+    $file = ($GLOBALS['__es_theme_dir'] ?? '') . '/footer.php';
+    if (is_file($file)) {
+        include $file;
+    }
 }
 }
 
@@ -839,6 +849,7 @@ if (!function_exists('wp_count_posts')) {
 if (!function_exists('get_posts')) {
     function get_posts(array $args = []): array
     {
+        $GLOBALS['__es_stub_get_posts_args'][] = $args;
         $posts = $GLOBALS['__es_stub_posts'] ?? [];
         $type  = $args['post_type'] ?? 'post';
         $num   = (int) ($args['numberposts'] ?? 5);

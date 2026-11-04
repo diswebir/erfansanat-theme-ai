@@ -29,6 +29,9 @@ final class Theme {
 
         if (class_exists(Admin\SectionManager::class)) {
             Admin\SectionManager::init();
+            if (class_exists(Sections\HomeSections::class)) {
+                Sections\HomeSections::init();
+            }
             if (class_exists(Sections\Registry::class)) {
                 Sections\Registry::init();
             }

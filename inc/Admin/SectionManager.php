@@ -93,8 +93,8 @@ final class SectionManager {
             // پیش‌فرض: همه سکشن‌های ثبت‌شده، فعال، به ترتیب ثبت (ظاهر عین میرور)
             $out = [];
             $all = self::registered_flat();
-            foreach ($all as $id => $info) {
-                $out[] = ['id' => (string) $id, 'enabled' => 1, 'order' => count($out), 'fields' => []];
+            foreach ($all as $key => $info) {
+                $out[] = ['id' => (string) substr((string) $key, (int) strpos((string) $key, '|') + 1), 'enabled' => 1, 'order' => count($out), 'fields' => []];
             }
             return $out;
         }
@@ -118,12 +118,12 @@ final class SectionManager {
         return $out;
     }
 
-    /** فهرست مسطح همه سکشن‌های ثبت‌شده به ترتیب ثبت */
+    /** فهرست مسطح همه سکشن‌های ثبت‌شده به ترتیب ثبت — کلید «گروه|id» برای جلوگیری از تداخل id بین گروه‌ها */
     private static function registered_flat(): array {
         $flat = [];
         foreach (self::$sections as $page_key => $items) {
             foreach ($items as $id => $info) {
-                $flat[$id] = $info;
+                $flat[$page_key . '|' . (string) $id] = $info;
             }
         }
         uasort($flat, static fn(array $a, array $b): int => $a['seq'] <=> $b['seq']);
@@ -137,6 +137,12 @@ final class SectionManager {
         $saved    = self::get_sections((int) $post->ID);
         $registry = self::registered_flat();
 
+        // نگاشت id خالص → تعریف (کلیدهای مسطح «گروه|id» هستند)
+        $by_id = [];
+        foreach ($registry as $key => $info) {
+            $by_id[(string) substr((string) $key, (int) strpos((string) $key, '|') + 1)] = $info;
+        }
+
         echo '<div class="es-sections" data-es-sections>';
 
         if ($registry === []) {
@@ -148,8 +154,8 @@ final class SectionManager {
         // ردیف‌های ذخیره‌شده (به ترتیب ذخیره) — سکشن‌های ثبت‌شده جدید در انتها اضافه می‌شوند
         $rows = $saved;
         $known = array_column($rows, 'id');
-        foreach (array_keys($registry) as $id) {
-            if (!in_array($id, $known, true)) {
+        foreach ($by_id as $id => $info) {
+            if (!in_array((string) $id, $known, true)) {
                 $rows[] = ['id' => (string) $id, 'enabled' => 1, 'order' => count($rows), 'fields' => []];
             }
         }
@@ -160,7 +166,7 @@ final class SectionManager {
         foreach ($rows as $index => $row) {
             $id       = (string) $row['id'];
             $enabled  = (int) (bool) $row['enabled'];
-            $info     = $registry[$id] ?? ['label' => $id, 'schema' => []];
+            $info     = $by_id[$id] ?? ['label' => $id, 'schema' => []];
             $schema   = is_array($info['schema'] ?? null) ? $info['schema'] : [];
             $fields   = is_array($row['fields'] ?? null) ? $row['fields'] : [];
 
@@ -227,16 +233,22 @@ final class SectionManager {
             $previous[$prev_row['id']] = $prev_row;
         }
 
+        // نگاشت id خالص → تعریف (جستجو بین گروه‌ها)
+        $by_id = [];
+        foreach ($registry as $key => $info) {
+            $by_id[(string) substr((string) $key, (int) strpos((string) $key, '|') + 1)] = $info;
+        }
+
         $out = [];
         foreach (array_values($raw) as $index => $row) {
             if (!is_array($row) || !isset($row['id']) || !is_string($row['id'])) {
                 continue;
             }
             $id = $row['id'];
-            if (!isset($registry[$id])) {
+            if (!isset($by_id[$id])) {
                 continue; // سفید‌لیست: فقط سکشن‌های ثبت‌شده
             }
-            $schema    = is_array($registry[$id]['schema'] ?? null) ? $registry[$id]['schema'] : [];
+            $schema    = is_array($by_id[$id]['schema'] ?? null) ? $by_id[$id]['schema'] : [];
             $fields_in = is_array($row['fields'] ?? null) ? $row['fields'] : [];
             $fields    = Sanitizer::sanitize_fields($schema, $fields_in);
 
