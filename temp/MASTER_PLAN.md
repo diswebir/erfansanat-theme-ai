@@ -179,7 +179,7 @@
 - `[PASSED]` **Task 8.12 (`task-12.md` / `test-task-12.php`):** FormManager: هسته و ذخیره پیام‌ها
 - `[PASSED]` **Task 8.13 (`task-13.md` / `test-task-13.php`):** فرم تماس/مشاوره و استعلام محصول
 - `[BLOCKED]` **Task 8.14 (`task-14.md` / `test-task-14.php`):** فرم استخدام و آپلود رزومه — مسیر امن و اعتبارسنجی فایل آماده است، اما template استخدام فاقد فرم/ورودی فایل است و طبق قانون استاتیک، markup جدید طراحی نشده است.
-- `[PENDING]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback)
+- `[BLOCKED]` **Task 8.15 (`task-15.md` / `test-task-15.php`):** فرم بازخورد مشتریان (client-feedback) — handler سمت سرور آماده است، اما هیچ markup/class استاتیک فرم موجود نیست و طبق قانون پروژه UI جدید ساخته نشده است.
 - `[PENDING]` **Task 8.16 (`task-16.md` / `test-task-16.php`):** ممیزی سئو و داده ساخت‌یافته
 - `[PENDING]` **Task 8.17 (`task-17.md` / `test-task-17.php`):** ممیزی امنیت، کارایی و E2E نهایی
 - `[PENDING]` **Phase 8 Suite (`run-phase-08-tests.sh`):** اجرای همه 17 تست این فاز + گزارش و توقف برای تایید کارفرما (فاز به فاز).

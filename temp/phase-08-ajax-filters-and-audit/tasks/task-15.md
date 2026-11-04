@@ -2,7 +2,7 @@
 
 ## فاز مربوطه
 - **Phase 8:** جستجو و فیلتر Native، فرم‌ها، سئو و ممیزی نهایی (`temp/phase-08-ajax-filters-and-audit`)
-- **وضعیت:** `[PENDING]`
+- **وضعیت:** `[BLOCKED — missing static client-feedback form]`
 - **سطح اتمیک:** یک کامپوننت / یک قابلیت مستقل — حداکثر یک خروجی قابل تست مستقل
 
 ## هدف (Goal)
@@ -22,6 +22,7 @@
 
 ## فایل‌های هدف (Target Files)
 - `inc/Forms/ClientFeedbackForm.php`
+- `inc/Core/Plugin.php` (register the route service)
 
 ## منبع استاتیک و داده (Static Source & Data Contract)
 - **منبع استاتیک:** بدون فایل استاتیک — styles.css
@@ -55,3 +56,6 @@
 
 ## پیام کامیت پیشنهادی
 `feat(phase-8): task 8.15 — فرم بازخورد مشتریان (client-feedback)`
+
+## Blocker
+A server-side handler is ready, but repository templates and styles contain no `client-feedback` form markup or selector. The strict static-to-dynamic rule forbids inventing a replacement UI, so frontend completion and browser verification are blocked pending the original static form source.
