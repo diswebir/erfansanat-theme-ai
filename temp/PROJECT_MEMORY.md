@@ -111,3 +111,6 @@
 
 ## FULL 128-PAGE MIRROR COVERAGE — 2026-11-04
 - test-fidelity-all: همه ۱۲۸ صفحه میرر fidelity-tested. Gap پیداشده و fix شد: taxonomy-city/product_cat/project_typecium now full clones of archive templates (99.4-99.6% sigs) + empty-state blocks + legacy term-meta hooks (thumbnail/faq/count). E2E 0 FAIL.
+
+## STRICT RENDER + POT — 2026-11-04
+- test-strict-render: ۲۳ صفحه با E_ALL رندر شد — صفر warning/notice/deprecation از قالب. languages/erfansanat.pot با ۷۸ رشته استخراج شد. E2E 0 FAIL.

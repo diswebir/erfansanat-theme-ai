@@ -99,3 +99,6 @@
 
 ## FULL 128-PAGE MIRROR COVERAGE — 2026-11-04
 - All 128 mirror pages compared by DOM signature. Found & fixed: taxonomy templates were stubs — replaced with full archive clones (city/product_cat/project_type now 99.4-99.6%), added empty-state blocks and legacy term meta hooks. E2E ALL-PASS 0 FAILs.
+
+## STRICT RENDER + POT — 2026-11-04
+- 23 page renders under E_ALL: zero theme warnings/notices/deprecations. Generated languages/erfansanat.pot (78 strings). E2E ALL-PASS 0 FAILs.
