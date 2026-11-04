@@ -155,3 +155,21 @@ add_action(
 	},
 	20
 );
+
+// P06-T016: unify the shop page and the product CPT archive onto the theme's
+// archive-product template (AC-02). Product taxonomy archives get their own
+// templates (P06-T018 / T020).
+add_filter(
+	'template_include',
+	static function ( $template ) {
+		$es_is_shop = is_post_type_archive( 'product' )
+			|| ( function_exists( 'is_shop' ) && is_shop() );
+		if ( $es_is_shop ) {
+			$es_archive = ES_THEME_DIR . 'woocommerce/archive-product.php';
+			if ( is_file( $es_archive ) ) {
+				return $es_archive;
+			}
+		}
+		return $template;
+	}
+);
