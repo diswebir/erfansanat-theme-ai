@@ -139,15 +139,8 @@ if ( ! $es_related->have_posts() && $es_cats ) {
 					?>
 				</div>
 				<?php do_action( 'es_single_post_content_after', $es_pid ); ?>
-				<?php if ( $es_tags && ! $es_protected ) : ?>
-					<div class="mt-12 flex flex-col gap-5 rounded-3xl border border-emerald-100 bg-white p-6 shadow-xs sm:flex-row sm:items-center sm:justify-between">
-						<div class="flex flex-wrap items-center gap-2">
-							<span class="text-[13px] font-bold text-slate-700"><?php esc_html_e( 'برچسب‌ها:', 'erfansanat' ); ?></span>
-							<?php foreach ( $es_tags as $es_tag ) : ?>
-								<a class="rounded-full bg-emerald-50 px-3 py-1.5 text-[12px] font-bold text-emerald-800 transition-colors hover:bg-emerald-100" href="<?php echo esc_url( get_tag_link( $es_tag ) ); ?>"><?php echo esc_html( $es_tag->name ); ?></a>
-							<?php endforeach; ?>
-						</div>
-					</div>
+				<?php if ( ! $es_protected ) : ?>
+					<?php get_template_part( 'template-parts/post/share', null, array( 'post_id' => $es_pid ) ); ?>
 				<?php endif; ?>
 				<?php do_action( 'es_single_post_comments', $es_pid ); ?>
 			</article>

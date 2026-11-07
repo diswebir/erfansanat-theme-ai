@@ -187,3 +187,8 @@
 - وابستگی ثبت‌شده T012: فراخوانی prepare در `single.php`؛ رندر از اکشن `es_single_post_sidebar_top`.
 - تست اختصاصی **13 PHP+6 DOM=19/0**؛ رگرسیون T012=14. DOM کلیک لنگر به‌صورت عدم preventDefault + هدف واقعی بررسی شد (JSDOM ناوبری قطعه را اجرا نمی‌کند).
 - یادداشت محیط: ابتدای این نوبت checkout محلی به پایه اولیه برگشته بود و harness نبود؛ با fetch + mixed reset به `9349150` بازیابی شد (بدون hard/clean) و setup-harness دوباره اجرا شد.
+
+
+## 2026-11-07 — P07-T014 اشتراک‌گذاری تک‌نوشته (20)
+- `template-parts/post/share.php`: ردیف مرجع برچسب/اشتراک + دکمه `data-share-btn` عین مرجع (main.js دست‌نخورده)، چهار لینک شبکه rawurlencode شده با target/rel امن، فیلد readonly `data-share-url` برای کپی دستی، حذف کامل در نوشته رمزدار. single.php ردیف قدیمی را به part سپرد (وابستگی ثبت‌شده).
+- تست **14 PHP + 6 DOM = 20/0**؛ رگرسیون T012=14، T013=13. اصلاح تست: esc_url آمپرساند را `&#038;` می‌کند؛ DOM تلگرام باید permalink واقعی WP را مقایسه کند نه URL پنجره JSDOM.
