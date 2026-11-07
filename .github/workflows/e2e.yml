@@ -1,0 +1,31 @@
+name: E2E QA (real WordPress)
+
+on:
+  push:
+    branches: [ main, 'arena/**' ]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: erfansanat-theme-ai
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install SQLite WP test env
+        run: |
+          mkdir -p /home/runner/wp-test/wp-content/themes
+          cp -r erfansanat-theme-ai /home/runner/wp-test/wp-content/themes/
+          # wp-test harness (wp-load + sqlite) is provisioned in the arena sandbox;
+          # on CI, install WP + sqlite drop-in via wp-cli:
+          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          php wp-cli.phar core download --path=/home/runner/wp-test --allow-root
+
+      - name: Run full E2E suite
+        run: bash erfansanat-theme-ai/temp/phase-08-ajax-filters-and-audit/tests/run-all-phases-e2e.sh

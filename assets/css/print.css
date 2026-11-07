@@ -1,0 +1,9 @@
+/* Print stylesheet — clean product/project/blog pages on paper. */
+@media print {
+  header, footer, nav, aside, .no-print, [data-archive-drawer], button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  main, section { box-shadow: none !important; border: none !important; }
+  a { color: #000 !important; text-decoration: underline; }
+  img { max-width: 100% !important; }
+  section { page-break-inside: avoid; }
+}

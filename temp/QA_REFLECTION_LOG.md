@@ -1,0 +1,119 @@
+# QA REFLECTION LOG — لاگ تفکر، تست و خوداصلاحی
+
+## Stage 0 — 2026-11-03
+- [READ MEMORY] n/a (bootstrap)
+- [SCAN] فایل آپلود `erfansanat-static-mirror.zip.png` در واقع ZIP است (PK magic) → استخراج در `/home/user/static-mirror/static-mirror/` (۱۲۸ HTML).
+- [ENV] php/wpcli/xmllint از apt قابل نصب نیست (deb.debian.org مسدود) → `@php-wasm/cli@3.1.62` نصب شد؛ `php -v` = PHP 8.5.12 (WASM) OK.
+- [DECISION] جواب سوالات Stage 0 توسط کاربر به «هر طور میدونی بهتره» واگذار شد؛ تصمیمات در PROJECT_MEMORY.md ثبت شد.
+- [MEMORY] ۴ فایل حافظه ساخته و commit شد (92747ca).
+
+## Stage 1 — 2026-11-03
+- [PLAN] MASTER_PLAN + ۸ پوشه فاز با tasks/ و tests/ ساخته شد.
+
+## Phase 1 / Task 1.1 — 2026-11-03
+- [THINK] Theme root = repo root. Autoloader PSR-4-ish → inc/. Theme::instance() boot با after_setup_theme.
+- [TEST] test-task-1-1.php: ۱۸ چک — ۲ FAIL اولیه (style.css header بدون پیشوند ` * `) → self-correction: پیشوند استاندارد اضافه شد.
+- [RUN] php -l روی تمام فایل‌های PHP: clean. تست: ALL PASS (18/18).
+
+## Phase 1 / Tasks 1.2, 1.3 — 2026-11-03
+- Task 1.2: DeBloat — dequeue wp-block-library/global-styles, emoji off, head cleanup. تست 13/13 PASS. lint clean.
+- Task 1.3: assets کپی شد (css/js/fonts/images → 13MB, 27 فایل؛ ساختار نسبی حفظ شد تا url(../fonts) کار کند). AssetManager با filemtime. تست 16/16 PASS.
+- run-phase-01-tests.sh: 3/3 suites ALL PASS → **PHASE 1 [PASSED]**
+
+## Phase 2 / Task 2.1 — 2026-11-03
+- ThemeOptions dashboard ساخته شد؛ self-correction: یک پرانتز اضافی در save() → lint fail → اصلاح شد؛ تست 13/13 PASS.
+
+## Phase 2 / Task 2.2 — 2026-11-03
+- defaults() با مقادیر استاتیک (info@erfansanat.com, ese-logo.svg, emerald #059669) + ۴ تب + wp_enqueue_media؛ تست 18/18 PASS.
+
+## Phase 2 / Task 2.3 — 2026-11-03
+- SectionManager: متاباکس سکشن‌ها با nonce/capability، AJAX reorder، meta key `_erfansanat_sections`، helper `es_sections()` (مرتب‌سازی + فیلتر enabled). تست 14/14 PASS. run-phase-02: 3/3 ALL PASS → **PHASE 2 [PASSED]**
+
+## Phase 3 / Task 3.1 — 2026-11-03
+- Registrar ساخته شد؛ self-correction: with_front=true برای product_cat نیاز به فیلتر woocommerce_taxonomy_args_product_cat داشت + هوک ستون‌ها manage_edit-projects_columns؛ تست 23/23 PASS.
+
+## Phase 3 / Task 3.2 — 2026-11-03
+- ProductMetaboxes: کلیدهای legacy با املای دقیق + quick edit + repeater + fallback گالری. تست 32/32 PASS.
+
+## Phase 3 CLOSED — 2026-11-03
+- run-phase-03: 3/3 ALL PASS → **PHASE 3 [PASSED]** (CPT/tax/rewrite + product meta + legacy meta/hreflang/views)
+
+## Phase 4 / Task 4.1 — 2026-11-03
+- header.php/footer.php از استاتیک slice شد ( incl. body-level overlays: mobile menu, search modal, cart modal)؛ self-correction: تست اولیه data-* را با کل صفحه مقایسه می‌کرد → محدود به shell شد. تست 17/17 PASS.
+
+## Phase 4 CLOSED — 2026-11-03
+- Walkerها ساخته شد و nav استاتیک با wp_nav_menu جایگزین شد؛ self-correction: تست 4.1 wirtschaftliche apósě hooked data-* را در walker را در walker run-phase-04: 2/2 ALL PASS → **PHASE 4 [PASSED]**
+
+## Phase 5 CLOSED — 2026-11-03
+- run-phase-05: 2/2 ALL PASS → **PHASE 5 [PASSED]** (homepage sections + dynamic queries + cards)
+
+## Phase 6 CLOSED — 2026-11-03
+- run-phase-06: 3/3 ALL PASS → **PHASE 6 [PASSED]** (single-product + archives + cart/checkout/account)
+
+## Smoke test — 2026-11-03
+- Self-correction caught a REAL front-end fatal: helpers were namespaced → moved to global inc/helpers.php.
+- Stub fixes: get_template_part .php handling, get_post returns WP_Post, Walker_Nav_Menu stub, array_key_exists for supports.
+- RESULT: smoke ALL PASS, E2E ALL-PASS.
+
+## Polish — 2026-11-03
+- Added content.php/content-none.php; fixed WC cart/checkout wrappers to real hooks (wc_get_template); extended smoke coverage (9 templates). Smoke ALL PASS, E2E ALL-PASS.
+
+## DOM fidelity test — 2026-11-03
+- test-dom-fidelity.php: rendered vs static comparison → 15/15 sections, 50/50 data-* hooks, all markers. Found & fixed: SectionManager registry had only 6 of 15 home sections. ALL PASS.
+
+## WP API surface — 2026-11-03
+- Cloned WordPress/WordPress (sparse). Built 4690-function list from wp-includes + wp-admin/includes. Scanned 718 function calls in theme: all resolve to WP core / builtins / own helpers / wc_* prefixes. ALL PASS.
+
+## REAL WP integration — 2026-11-03
+- WordPress 7.2 + SQLite on php-wasm: install OK, theme activates (0 errors), CPT/tax registered, legacy meta roundtrip OK, front-page/single-product/single-projects render through real WP. 19/19 ALL PASS. Real bugs fixed: get_template_part .php suffix in front-page.php; woocommerce call guarded by function_exists.
+
+## FULL DEBUG — 2026-11-03
+- Rendered 12 templates on real WP 7.2/SQLite with error handler: 0 theme-file diagnostics. Fixed: missing comments.php (WP deprecation), null $term in taxonomy templates, number_format(null), unguarded woocommerce_* in archive-product. E2E ALL-PASS.
+
+## SECURITY+ASSETS audit — 2026-11-03
+- 8 security/bloat checks on real WP 7.2: nonce-guarded superglobals, no eval, no external CDNs, all scripts defer/async, no jQuery/emoji on front-end, escaped output. ALL PASS, wired into E2E.
+
+## ADMIN+A11Y+PERF — 2026-11-03
+- Real-WP admin dashboard test (SectionManager save + nonce rejection + legacy meta roundtrip), a11y (skip-link added, aria-label on search input, all 65 imgs have alt, rtl/lang via fa_IR), performance budget (402KB code assets vs 296KB static mirror, 271KB rendered page). ALL PASS, in E2E.
+
+## STATIC LINKS — 2026-11-03
+- Found 87 hardcoded .html hrefs (would 404 under WP permalinks). Added es_static_url()/es_page_url() mapping to archives/pages/terms/permalinks with safe fallbacks; rewrote all; fixed hero-scene JS .html append. Real-WP test: 113 hrefs rendered, zero literal .html, all resolve. E2E ALL-PASS.
+
+## DEEP FIDELITY — 2026-11-03
+- New test-fidelity-deep: per-page unique DOM signature comparison vs mirror on real WP. Found & fixed: missing root/home/z-10 wrappers, missing header overlay (mobile drawer), 12 stub page templates ported from mirror, 15 home sections re-sliced, single templates re-ported with legacy meta hooks, dynamic loops restored in shop/projects/blog archives. Result: 5/6 pages 100%, index 95.7% (dynamic sections). E2E ALL-PASS, 0 FAILs.
+
+## AJAX FUNCTIONAL — 2026-11-03
+- 8 functional checks on real WP: all filter/search endpoints return success JSON with correct content, bad nonce rejected, all 4 form endpoints persist to es_form_entry CPT. ALL PASS, wired into E2E (0 FAILs).
+
+## SEO OUTPUT — 2026-11-03
+- 15 SEO checks on real WP renders: title, robots, OG, hreflang incl. hrefmeta_* legacy overrides on singular, canonical, viewport, theme supports. Added explicit <title> + canonical + og:url + meta description to header. ALL PASS, in E2E.
+
+## MIGRATOR — 2026-11-03
+- Legacy import tool: Elementor _elementor_data -> theme section meta, legacy meta key backfill (products/projects/posts), admin Tools page + nonce-guarded AJAX. Real-WP test 10/10 ALL PASS, E2E 0 FAILs.
+
+## I18N + RSS/SITEMAP — 2026-11-03
+- Real-WP test: fa_IR locale, no hardcoded LTR (only mailto/tel), text domain consistent (88 calls), RSS2 feed renders items, core XML sitemap index renders with posts submap. 11/11 ALL PASS, E2E 0 FAILs.
+
+## REMAINING PAGES + COMMENTS/REST — 2026-11-03
+- All remaining mirror pages fidelity-tested: 7 pages at 100% sigs, blog-single 93.7%, search 99.5%, 404 structural. Comments flow (insert/approve/render) + REST API (posts, types, projects, product; form CPT private) 14/14 ALL PASS. E2E 0 FAILs.
+
+## FULL 128-PAGE MIRROR COVERAGE — 2026-11-04
+- All 128 mirror pages compared by DOM signature. Found & fixed: taxonomy templates were stubs — replaced with full archive clones (city/product_cat/project_type now 99.4-99.6%), added empty-state blocks and legacy term meta hooks. E2E ALL-PASS 0 FAILs.
+
+## STRICT RENDER + POT — 2026-11-04
+- 23 page renders under E_ALL: zero theme warnings/notices/deprecations. Generated languages/erfansanat.pot (78 strings). E2E ALL-PASS 0 FAILs.
+
+## ADMIN FONT FULL + JSON-LD + fa_IR.mo — 2026-11-04
+- Vazirmatn now covers entire admin incl. login screen, admin bar, metaboxes, theme option pages. JSON-LD schema (Organization/Product/BlogPosting) in wp_head. fa_IR.mo generated. Fixed real fatal: Admin\Migrator wrong namespace crashed admin context. 14/14 ALL PASS, E2E 0 FAILs.
+
+## ADMIN PANEL FUNCTIONAL — 2026-11-04
+- Real admin-context test: options save/persist with nonce, section manager metabox save + bad-nonce rejection, migrator run, admin menus. 11/11 ALL PASS, E2E 0 FAILs.
+
+## ASSET BUDGET / PERFORMANCE — 2026-11-04
+- Rendered-page audit: no external assets, all scripts deferred (fixed: real defer attr via strategy+script_loader_tag), no jQuery, 110KB payload, image lazy-loading now matches mirror (fixed card + header imgs). WooCommerce real-plugin test not possible (GitHub source needs composer vendor). E2E 0 FAILs.
+
+## RELEASE READINESS — 2026-11-04
+- Package audit: required files, full style.css header, no debug leftovers, consistent text domain, all PHP lint-clean, full template hierarchy. ALL PASS, E2E 0 FAILs. Theme is release-ready.
+
+## HARDENING + PERF POLISH — 2026-11-04
+- IP rate limiting on AJAX (forms/filters), honeypot kept, font+CSS preload, aria-live on grids, print stylesheet, GitHub Actions CI, expanded fa_IR.mo, README changelog. 9/9 PASS, E2E 0 FAILs.
