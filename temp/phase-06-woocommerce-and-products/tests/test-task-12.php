@@ -1,29 +1,12 @@
 <?php
-/**
- * Test — Task 6.12: آرشیو فروشگاه و دسته‌ها (`archive-product.php`, `taxonomy-product_cat.php`)
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-12.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.12: آرشیو فروشگاه و دسته‌ها (`archive-product.php`, `taxonomy-product_cat.php`) ==\n";
-echo "   phase 6 | size L | files: 4 | pass conditions: 4\n";
-
-// --- Pass Conditions (4 شرط) -----------------------------------
-// رندر دو آرشیو
-check('رندر دو آرشیو', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// صفحه‌بندی
-check('صفحه‌بندی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// FAQ دسته
-check('FAQ دسته', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// حالت خالی
-check('حالت خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$archive = es_p6_source( 'woocommerce/archive-product.php' );
+$grid = es_p6_source( 'template-parts/archive/grid.php' );
+$faq = es_p6_source( 'template-parts/archive/product-cat-faq.php' );
+check( 'فروشگاه و taxonomy مشترک hero/grid پویا را رندر می‌کنند', fn() => es_p6_has_all( $archive . $grid, array( 'template-parts/archive/hero', 'template-parts/archive/grid', 'data-products-archive="true"', 'data-product-grid="true"' ) ) );
+check( 'صفحه‌بندی WooCommerce حفظ شده و کارت‌ها در loop واقعی لود می‌شوند', fn() => es_p6_has_all( $grid . $archive, array( "wc_get_template_part( 'content', 'product' )", 'woocommerce_pagination()', 'woocommerce_before_shop_loop', 'woocommerce_after_shop_loop' ) ) && str_contains( $archive, 'woocommerce_after_shop_loop' ) );
+check( 'FAQ دسته از term meta و data-faq accordion تغذیه می‌شود', fn() => es_p6_has_all( $faq, array( "'faq'", 'data-faq-list', 'data-faq-toggle', 'data-faq-body', 'wp_kses_post( $item[\'answer\'] )' ) ) );
+check( 'حالت بدون محصول دارای empty state و کلاس مخفی قابل کنترل با JS است', fn() => es_p6_has_all( $grid, array( 'data-product-empty="true"', 'محصولی پیدا نشد', 'data-product-count="true"' ) ) );
 summary();

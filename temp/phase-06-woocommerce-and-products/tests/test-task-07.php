@@ -1,27 +1,11 @@
 <?php
-/**
- * Test — Task 6.7: شناسه‌های قانونی (`gs1_id`, `national_code`, `hs_id`, `isic_id`, `cpc_id`, `product_id`)
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-07.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.7: شناسه‌های قانونی (`gs1_id`, `national_code`, `hs_id`, `isic_id`, `cpc_id`, `product_id`) ==\n";
-echo "   phase 6 | size M | files: 1 | pass conditions: 3\n";
-
-// --- Pass Conditions (3 شرط) -----------------------------------
-// شش شناسه
-check('شش شناسه', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// حذف خالی
-check('حذف خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// کپی
-check('کپی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$source = es_p6_source( 'template-parts/product/legal-ids.php' );
+$js = es_p6_source( 'assets/js/product-enhancements.js' );
+$keys = array( "'gs1_id'", "'national_code'", "'hs_id'", "'isic_id'", "'cpc_id'", "'product_id'" );
+check( 'هر شش شناسه رسمی از کلیدهای اصلی متا خوانده می‌شوند', fn() => es_p6_has_all( $source, $keys ) );
+check( 'شناسه خالی سطر و سکشن ایجاد نمی‌کند و مقدار با esc_html/esc_attr امن است', fn() => str_contains( $source, 'if ( ! $values ) { return; }' ) && str_contains( $source, 'esc_html( $item[\'value\'] )' ) && str_contains( $source, 'esc_attr( $item[\'value\'] )' ) );
+check( 'کپی clipboard دارای fallback و پیام دسترس‌پذیر است', fn() => es_p6_has_all( $source . $js, array( 'data-copy-button', 'data-copy-value', 'navigator.clipboard.writeText', 'fallbackCopy(value)', 'data-copy-status', 'aria-live="polite"' ) ) );
 summary();

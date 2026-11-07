@@ -30,6 +30,11 @@ if ( ! defined( 'ES_THEME_ASSETS' ) ) {
 	define( 'ES_THEME_ASSETS', ES_THEME_URI . '/assets' );
 }
 
+if ( ! defined( 'ES_WC_TEMPLATE_VERSION' ) ) {
+	/** WooCommerce template baseline this theme currently supports. */
+	define( 'ES_WC_TEMPLATE_VERSION', '11.2.2' );
+}
+
 if ( ! defined( 'ES_REWRITE_VERSION' ) ) {
 	/**
 	 * Bump this (not the theme version) to trigger a one-off rewrite flush.

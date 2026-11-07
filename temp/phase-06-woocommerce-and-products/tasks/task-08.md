@@ -5,7 +5,7 @@
 | فاز | 6 — قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه |
 | اندازه | `M` — متوسط (~۱ روز) |
 | وابستگی | `Task 3.10` |
-| وضعیت | `[PENDING]` |
+| وضعیت | `[PASSED — 3 PHP-WASM source assertions; live WooCommerce/browser validation unverified]` |
 | تست | `tests/test-task-08.php` |
 
 ## ۱. هدف

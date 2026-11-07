@@ -1,27 +1,12 @@
 <?php
-/**
- * Test — Task 6.10: تب‌های صفحه محصول (`data-prod-tab-*`) و نظرات
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-10.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.10: تب‌های صفحه محصول (`data-prod-tab-*`) و نظرات ==\n";
-echo "   phase 6 | size L | files: 2 | pass conditions: 3\n";
-
-// --- Pass Conditions (3 شرط) -----------------------------------
-// سوییچ تب
-check('سوییچ تب', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// ثبت نظر
-check('ثبت نظر', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// aria
-check('aria', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$tabs = es_p6_source( 'template-parts/product/tabs.php' );
+$reviews = es_p6_source( 'woocommerce/single-product-reviews.php' );
+$part = es_p6_source( 'template-parts/product/reviews.php' );
+$js = es_p6_source( 'assets/js/product-enhancements.js' );
+check( 'تب‌های محصول دارای data hooks و stateهای ARIA هستند', fn() => es_p6_has_all( $tabs, array( 'data-prod-tabs-container', 'data-prod-tab-btn', 'data-prod-tab-panel', 'aria-selected="true"', 'aria-selected="false"' ) ) && str_contains( $js, 'ArrowRight' ) );
+check( 'فرم واقعی از comments_template و comment_form استاندارد استفاده می‌کند', fn() => str_contains( $part, 'comments_template(' ) && str_contains( $reviews, 'comment_form(' ) && str_contains( $reviews, 'woocommerce_product_review_comment_form_args' ) );
+check( 'امتیازدهی پنج‌ستاره و ثبت امتیاز به فیلد rating فرم وصل است', fn() => es_p6_has_all( $reviews . $js, array( 'data-review-stars-group', 'data-review-star=', 'data-review-rating-input', 'name="rating"', 'selectRating(' ) ) );
 summary();

@@ -45,6 +45,7 @@ use ErfanSanat\Theme\Setup\Menus;
 use ErfanSanat\Theme\Setup\ThemeSupport;
 use ErfanSanat\Theme\Woo\ProductGallery;
 use ErfanSanat\Theme\Woo\HeaderCart;
+use ErfanSanat\Theme\Woo\WooSupport;
 use ErfanSanat\Theme\Query\HomeQueries;
 
 defined( 'ABSPATH' ) || exit;
@@ -111,6 +112,7 @@ final class Theme {
 		$this->register_module( 'project-meta', new ProjectMeta() );
 		$this->register_module( 'term-meta', new TermMeta() );
 		$this->register_module( 'hreflang', new Hreflang() );
+		$this->register_module( 'woo-support', new WooSupport() );
 		$this->register_module( 'product-gallery', new ProductGallery() );
 		$this->register_module( 'header-cart', new HeaderCart() );
 		$this->register_module( 'product-relations', new ProductRelationsTab() );

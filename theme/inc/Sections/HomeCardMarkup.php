@@ -55,7 +55,7 @@ final class HomeCardMarkup {
 				: ( 'ALT' === $key ? ( function_exists( 'esc_attr' ) ? esc_attr( $value ) : htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ) ) : ( function_exists( 'esc_html' ) ? esc_html( $value ) : htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ) ) );
 			$html = str_replace( '__CARD_' . $key . '__', $escaped, $html );
 		}
-		if ( 'product' === $type ) {
+		if ( 'product' === $type && empty( $args['_omit_product_data_attributes'] ) ) {
 			$product_data = array(
 				'data-product-item' => 'true',
 				'data-product-id' => (string) $post_id,

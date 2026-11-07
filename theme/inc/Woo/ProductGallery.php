@@ -35,7 +35,7 @@ final class ProductGallery implements ModuleInterface {
 	/** Read the gallery in legacy-aware priority order and return attachment IDs. */
 	public static function get( int $post_id ): array {
 		if ( $post_id < 1 ) { return array(); }
-		foreach ( array( '_product_image_gallery', 'gallery-filed', 'galerry_produ' ) as $key ) {
+		foreach ( array( 'galerry_produ', '_product_image_gallery', 'gallery-filed' ) as $key ) {
 			$value = get_post_meta( $post_id, $key, true );
 			$ids = self::valid_gallery_ids( RepeaterCodec::decode_csv( $value ) );
 			if ( $ids ) { return $ids; }
@@ -47,6 +47,16 @@ final class ProductGallery implements ModuleInterface {
 			if ( $id > 0 && ! in_array( $id, $legacy, true ) ) { $legacy[] = $id; }
 		}
 		return self::valid_gallery_ids( $legacy );
+	}
+
+	/** Include the featured image first, falling back to it for an empty gallery. */
+	public static function images( int $post_id ): array {
+		$ids = self::get( $post_id );
+		$featured = function_exists( 'get_post_thumbnail_id' ) ? absint( get_post_thumbnail_id( $post_id ) ) : 0;
+		if ( $featured > 0 && ! in_array( $featured, $ids, true ) ) {
+			array_unshift( $ids, $featured );
+		}
+		return self::valid_gallery_ids( $ids );
 	}
 
 	/** Keep only existing image attachments and remove duplicates. */

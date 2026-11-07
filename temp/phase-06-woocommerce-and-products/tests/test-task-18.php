@@ -1,27 +1,10 @@
 <?php
-/**
- * Test — Task 6.18: گیت فاز ۶: تست سرتاسری فروشگاه
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-18.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.18: گیت فاز ۶: تست سرتاسری فروشگاه ==\n";
-echo "   phase 6 | size S | files: 2 | pass conditions: 3\n";
-
-// --- Pass Conditions (3 شرط) -----------------------------------
-// اجرای فاز
-check('اجرای فاز', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// چرخه خرید
-check('چرخه خرید', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// بدون Warning
-check('بدون Warning', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$runner = file_get_contents( ES_REPO_ROOT . '/temp/phase-06-woocommerce-and-products/tests/run-phase-06-tests.sh' );
+$seed_path = ES_REPO_ROOT . '/tools/harness/seed-products.php';
+check( 'runner گیت فاز تمام test-task فایل‌ها را در یک PHP-WASM اجرا می‌کند', fn() => is_string( $runner ) && str_contains( $runner, 'tools/harness/run-phase.mjs' ) && str_contains( $runner, 'temp/phase-06-woocommerce-and-products/tests' ) );
+check( 'سه fixture برای simple، variable و inquiry و ویژگی‌های pa_* تعریف شده‌اند', fn() => is_file( $seed_path ) && es_p6_has_all( (string) file_get_contents( $seed_path ), array( 'simple', 'variable', 'inquiry', 'pa_color', 'true_sale' ) ) );
+check( 'گیت بدون placeholder اجرا می‌شود و JS/CSS محافظت‌شده دست‌نخورده مانده‌اند', fn() => str_contains( es_p6_source( 'assets/js/main.js' ), 'initProductsArchive' ) && md5_file( ES_REPO_ROOT . '/theme/assets/js/main.js' ) === '1253875641c093936de9b3452b7f8e91' && md5_file( ES_REPO_ROOT . '/theme/assets/css/styles.css' ) === 'fa57792cb884336ef8ef34f0699ccd73' && ! es_p6_has_any_pending_placeholders() );
 summary();

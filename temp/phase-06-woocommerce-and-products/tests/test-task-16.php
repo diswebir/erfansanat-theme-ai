@@ -1,27 +1,12 @@
 <?php
-/**
- * Test — Task 6.16: حساب کاربری (`woocommerce/myaccount/*`) + ورود پیامکی
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-16.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.16: حساب کاربری (`woocommerce/myaccount/*`) + ورود پیامکی ==\n";
-echo "   phase 6 | size M | files: 4 | pass conditions: 3\n";
-
-// --- Pass Conditions (3 شرط) -----------------------------------
-// ورود/خروج
-check('ورود/خروج', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// سفارش‌ها
-check('سفارش‌ها', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// سازگاری voorodak
-check('سازگاری voorodak', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$nav = es_p6_source( 'woocommerce/myaccount/navigation.php' );
+$login = es_p6_source( 'woocommerce/myaccount/form-login.php' );
+$checkout_login = es_p6_source( 'woocommerce/global/form-login.php' );
+$orders = es_p6_source( 'woocommerce/myaccount/orders.php' );
+check( 'منوی حساب از endpointهای پویای WooCommerce ساخته شده است', fn() => es_p6_has_all( $nav, array( 'wc_get_account_menu_items()', 'wc_get_account_endpoint_url( $endpoint )', 'wc_is_current_account_menu_item' ) ) && str_contains( es_p6_source( 'woocommerce/myaccount/my-account.php' ), 'woocommerce_account_content' ) );
+check( 'فرم ورود/ثبت‌نام nonce و hookهای Voorodak/SMS را حفظ می‌کند', fn() => es_p6_has_all( $login . $checkout_login, array( 'woocommerce_login_form_start', 'woocommerce_login_form', 'woocommerce_login_form_end', 'woocommerce_register_form', 'woocommerce-login-nonce', 'woocommerce-register-nonce' ) ) );
+check( 'سفارش‌ها ستون‌ها، actionها، وضعیت و pagination واقعی را نشان می‌دهند', fn() => es_p6_has_all( $orders, array( 'wc_get_account_orders_columns()', 'wc_get_order( $customer_order )', 'woocommerce_my_account_my_orders_column_', 'wc_get_account_orders_actions( $order )', 'max_num_pages' ) ) );
 summary();

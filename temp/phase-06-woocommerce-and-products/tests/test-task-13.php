@@ -1,25 +1,10 @@
 <?php
-/**
- * Test — Task 6.13: آرشیو برچسب و برند (`taxonomy-product_tag.php`, `taxonomy-product_brand.php`)
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-13.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.13: آرشیو برچسب و برند (`taxonomy-product_tag.php`, `taxonomy-product_brand.php`) ==\n";
-echo "   phase 6 | size M | files: 2 | pass conditions: 2\n";
-
-// --- Pass Conditions (2 شرط) -----------------------------------
-// رندر
-check('رندر', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// حالت خالی
-check('حالت خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$taxonomies = array( 'woocommerce/taxonomy-product_tag.php', 'woocommerce/taxonomy-product_brand.php', 'taxonomy-product_tag.php', 'taxonomy-product_brand.php' );
+$tag = es_p6_source( 'woocommerce/taxonomy-product_tag.php' );
+$brand = es_p6_source( 'woocommerce/taxonomy-product_brand.php' );
+check( 'برچسب و برند هر دو به آرشیو مشترک هدایت می‌شوند', fn() => es_p6_has_files( $taxonomies ) && str_contains( $tag, 'archive-product.php' ) && str_contains( $brand, 'archive-product.php' ) );
+check( 'Hero آرشیو عنوان و توضیح ترم را پویا می‌سازد و گرید حالت خالی دارد', fn() => es_p6_has_all( es_p6_source( 'template-parts/archive/hero.php' ) . es_p6_source( 'template-parts/archive/grid.php' ), array( '$term->name', '$term->description', 'data-product-empty="true"' ) ) );
 summary();

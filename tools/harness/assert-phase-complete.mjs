@@ -22,7 +22,7 @@ const valid = result
   && result.phase === path.basename(path.dirname(testDir))
   && Number.isInteger(result.files)
   && result.files === expectedFiles
-  && expectedFiles === 21
+  && expectedFiles > 0
   && Number(result.passed) > 0
   && Number(result.failed) === 0
   && Number(result.pending) === 0

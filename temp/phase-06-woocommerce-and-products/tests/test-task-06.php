@@ -1,29 +1,13 @@
 <?php
-/**
- * Test — Task 6.6: Repeaterهای محصول در فرانت (مشخصات، ویژگی‌های کلیدی، کاربردها، FAQ)
- * Phase 6: قالب‌های ووکامرس، محصول تکی و آرشیو فروشگاه
- *
- * اجرا:  node tools/harness/run-tests.mjs temp/phase-06-woocommerce-and-products/tests/test-task-06.php
- *
- * قاعده: هیچ assertی حق ندارد بدون پیاده‌سازی واقعی PASS شود.
- * تا زمانی که `check()` با منطق واقعی پر نشود، این فایل با PENDING/NOT OK می‌ماند.
- */
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../tests/bootstrap.php';
-
-echo "== Task 6.6: Repeaterهای محصول در فرانت (مشخصات، ویژگی‌های کلیدی، کاربردها، FAQ) ==\n";
-echo "   phase 6 | size L | files: 3 | pass conditions: 4\n";
-
-// --- Pass Conditions (4 شرط) -----------------------------------
-// رندر چهار Repeater
-check('رندر چهار Repeater', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// آکاردئون
-check('آکاردئون', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// حذف خالی
-check('حذف خالی', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-// kses
-check('kses', function () { return null; /* IMPLEMENT: return true when {a} holds */ });
-
-// --- summary -----------------------------------------------------------------
+require_once __DIR__ . '/support.php';
+$features = es_p6_source( 'template-parts/product/features.php' );
+$usage = es_p6_source( 'template-parts/product/usage.php' );
+$faq = es_p6_source( 'template-parts/product/faq.php' );
+$js = es_p6_source( 'assets/js/main.js' );
+check( 'چهار repeater قدیمی با کلیدهای اصلی و ساختار title/value خوانده می‌شوند', fn() => es_p6_has_all( $features . $usage . $faq, array( "'product-feature'", "'product-feature2_copy'", "'usage_product'", "'faq'", "'add-new-feature'", "'vaule_of_variable'", "'add-new-usage'", "'name_question'", "'answer_question'" ) ) );
+check( 'آکاردئون FAQ از data-faq hooks پشتیبانی می‌کند و JS موجود آن را می‌گرداند', fn() => es_p6_has_all( $faq, array( 'data-faq-list', 'data-faq-toggle', 'data-faq-icon', 'data-faq-body' ) ) && str_contains( $js, 'data-faq-toggle' ) );
+check( 'repeaterهای خالی هیچ سکشن خالی تولید نمی‌کنند', fn() => es_p6_has_all( $features . $usage . $faq, array( 'if ( ! $items ) { return; }', 'if ( ! $uses && ! $terms ) { return; }' ) ) );
+check( 'پاسخ‌ها و HTML مجاز ردیف‌ها با wp_kses_post محدود می‌شوند', fn() => substr_count( $features . $usage . $faq, 'wp_kses_post(' ) >= 3 );
 summary();
