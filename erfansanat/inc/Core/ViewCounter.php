@@ -16,6 +16,8 @@ final class ViewCounter {
 	public const PRIMARY  = 'number2-viewc';
 	public const FALLBACK = 'number-viewc';
 	public const TYPES    = array( 'post', 'projects', 'product' );
+	public const COOKIE   = 'es_recent_views';
+	public const WINDOW   = 1800; // seconds a repeat view is not counted again
 
 	private static bool $booted = false;
 
@@ -75,7 +77,32 @@ final class ViewCounter {
 	}
 
 	/**
-	 * Count a front-end singular view of a supported type.
+	 * Bot / crawler detection (P07-T015 AC-02). Empty UA is treated as a bot.
+	 * The signature list is filterable via `es_view_counter_bots`.
+	 */
+	public static function is_bot( string $ua ): bool {
+		$ua = trim( $ua );
+		if ( '' === $ua ) {
+			return true;
+		}
+		$signatures = (array) apply_filters(
+			'es_view_counter_bots',
+			array( 'bot', 'crawl', 'spider', 'slurp', 'curl', 'wget', 'python-requests', 'httpclient', 'headless', 'phantom', 'preview', 'monitor', 'feedfetcher', 'facebookexternalhit', 'embeddedbrowser' )
+		);
+		$ua = strtolower( $ua );
+		foreach ( $signatures as $signature ) {
+			if ( '' !== $signature && false !== strpos( $ua, strtolower( (string) $signature ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Count a front-end singular view of a supported type (P07-T015).
+	 * Skips admin/AJAX/preview, bots, protected posts, logged-in users who can
+	 * edit the post, and repeat views by the same visitor inside the window.
 	 */
 	public static function maybe_count(): void {
 		if ( is_admin() || wp_doing_ajax() || is_preview() ) {
@@ -86,8 +113,49 @@ final class ViewCounter {
 		}
 
 		$post_id = get_queried_object_id();
-		if ( $post_id > 0 ) {
-			self::increment( $post_id );
+		if ( $post_id <= 0 || ! in_array( get_post_type( $post_id ), self::TYPES, true ) ) {
+			return;
 		}
+		if ( post_password_required( $post_id ) ) {
+			return;
+		}
+		$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+		if ( self::is_bot( $ua ) ) {
+			return;
+		}
+		if ( is_user_logged_in() && current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Repeat-view dedupe: bounded cookie list, refreshed on each count.
+		$seen = array();
+		if ( isset( $_COOKIE[ self::COOKIE ] ) ) {
+			$decoded = json_decode( sanitize_text_field( wp_unslash( $_COOKIE[ self::COOKIE ] ) ), true );
+			if ( is_array( $decoded ) ) {
+				$seen = array_values( array_filter( array_map( 'intval', $decoded ) ) );
+			}
+		}
+		if ( in_array( $post_id, $seen, true ) ) {
+			return;
+		}
+
+		self::increment( $post_id );
+
+		$seen[] = $post_id;
+		$seen   = array_slice( $seen, -50 );
+		if ( ! headers_sent() ) {
+			setcookie(
+				self::COOKIE,
+				(string) wp_json_encode( $seen ),
+				array(
+					'expires'  => time() + self::WINDOW,
+					'path'     => COOKIEPATH ? COOKIEPATH : '/',
+					'secure'   => is_ssl(),
+					'httponly' => true,
+					'samesite' => 'Lax',
+				)
+			);
+		}
+		$_COOKIE[ self::COOKIE ] = (string) wp_json_encode( $seen );
 	}
 }
