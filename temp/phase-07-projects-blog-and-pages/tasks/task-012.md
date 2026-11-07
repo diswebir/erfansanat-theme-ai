@@ -1,6 +1,6 @@
 # P07-T012 — Shell تک‌نوشته
 
-> فاز 7: پروژه‌ها، وبلاگ، برگه‌ها و لندینگ‌ها · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 7: پروژه‌ها، وبلاگ، برگه‌ها و لندینگ‌ها · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `7.2` · وابستگی‌ها: `P04-T002`, `P03-T024`
 
 ## هدف دقیق
@@ -21,20 +21,20 @@ single.php با hero/content/sidebar/related مرجع ساخته شود.
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: ساختار main/aside مرجع حفظ شود.
-- [ ] AC-02: محتوای نوشته بدون حذف shortcode/block ضروری رندر شود.
-- [ ] AC-03: نوشته محافظت‌شده فرم رمز بدهد.
+- [x] AC-01: ساختار main/aside مرجع حفظ شود.
+- [x] AC-02: محتوای نوشته بدون حذف shortcode/block ضروری رندر شود.
+- [x] AC-03: نوشته محافظت‌شده فرم رمز بدهد.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: یک مقاله کامل رندر شود.
-- [ ] SC-02: نوشته رمزدار فرم درست بدهد.
+- [x] SC-01: یک مقاله کامل رندر شود.
+- [x] SC-02: نوشته رمزدار فرم درست بدهد.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-07-projects-blog-and-pages/tests/test-task-012.php`
@@ -44,3 +44,7 @@ single.php با hero/content/sidebar/related مرجع ساخته شود.
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-07)
+- تست اختصاصی: `php temp/phase-07-projects-blog-and-pages/tests/test-task-012.php` → **14 passed, 0 failed, 0 pending**.
