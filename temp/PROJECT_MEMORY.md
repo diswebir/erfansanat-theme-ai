@@ -1,12 +1,20 @@
 # PROJECT_MEMORY — حافظه زنده پروژه (Active State)
 
-> آخرین به‌روزرسانی: 2026-11-04 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
+> آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 6 IN PROGRESS** — T001..T007 پاس (۱۷۹ چک فاز ۶).
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — T001..T009 پاس؛ T010 گام بعدی.
 ```
-PHASE 6 IN PROGRESS — P06-T001..T007 PASSED (32+27+18+17+19+23+43 = 179 checks)
-P02-T019 (وزیرمتن پنل) PASSED (27) — NEXT: P06-T008 (اطلاعیه/کاتالوگ)
+PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
+PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
+ADMIN-PRO: 25 PHP + 7 JSDOM checks; phase-02 regression 287 passed / 0 failed
+P07-T009=23 (16 PHP + 7 JSDOM)
+NEXT: P07-T010 category/general archives; then T011..T028 and phase 8 (24 tasks)
 ```
+- **درخواست جاری کاربر (2026-11-07):** «ادامه بده و پوش و کامیت کن» + گزارش فازهای باقی‌مانده. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
+- **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.
+- **ارتقای ادمین تحویل شد:** `97d24cc` پیشخوان آماری، رفع باگ ذخیره link، فونت فارسی و هشدار تغییرات ذخیره‌نشده؛ `41316d2` لاگ QA.
+- مطالب پایین‌تر تاریخچه فازهای قبلی‌اند؛ وضعیت جاری همین بلوک و MASTER_PLAN است.
+
 - **درخواست جدید کاربر (2026-11-04):** «ادامه بده و موارد باقی‌مانده را کامل کن» + «کد پنل پیشخوان قالب را با فونت وزیر متن به‌صورت کامل ادغام کن». → پس از T007، یک تسک الحاقی **P02-T019** برای یکپارچه‌سازی وزیرمتن در داشبورد/متاباکس‌های ادمین (بدون نشت به فرانت‌اند، حفظ dashicons) اجرا می‌شود؛ سپس ادامه فاز ۶.
 - **فاز ۶ تاکنون:** T001 shim سازگاری QA (۳۲)؛ T002 shell تک‌محصول (۲۷)؛ T003 گالری+لایت‌باکس (۱۸)؛ T004 بلوک عنوان summary.php (۱۷)؛ T005 شناسه‌های قانونی legal-ids.php (۱۹)؛ T006 کارت خرید purchase.php با منطق true_sale (۲۳)؛ T007 سواچ/تعداد (۴۳ = ۳۱ PHP + ۱۲ JSDOM روی main.js واقعی). **مجموع تجمعی: ۱۳۹۲ + ۱۷۹ = ۱۵۷۱ چک سبز.**
 - **معماری تک‌محصول:** `content-single-product.php` هوک‌های استاندارد Woo را با الگوی hook-or-fallback اجرا می‌کند. گالری → `woocommerce_before_single_product_summary` (T003)؛ بلوک عنوان → `get_template_part('template-parts/product/summary')` در hero (T004)؛ کارت خرید → `woocommerce_single_product_summary` (T006) با هوک‌های داخلی `es_product_summary_mid` (مشخصات/سواچ) و `es_product_summary_after` (اطلاعیه/کاتالوگ)؛ شناسه‌های قانونی → `es_product_specs_panel` (T005). محصول متغیر واقعی Woo: `purchase.php` فرم `woocommerce/single-product/variable.php` را جایگزین stepper/swatch ایستا می‌کند (وقتی `WC_VERSION` تعریف شده). fallback بدون Woo: سواچ `data-opt-*` + stepper `data-pdp-qty-*` + guard حداکثر `product-quantity.js` (فقط وقتی Woo نیست). `Core\ProductQuantity::rules/validate` قواعد min/max/step را نرمال و اعتبارسنجی می‌کند (متاهای `_min_qty/_max_qty/_step_qty`).

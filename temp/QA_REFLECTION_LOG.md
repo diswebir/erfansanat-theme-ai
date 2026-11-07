@@ -153,3 +153,10 @@
 - **فونت فارسی کامل:** رفع هم‌پوشانی unicode-range (ZWNJ U+200C-200E فقط subset عربی)، font-smoothing/optimizeLegibility، پوشش پیشخوان/جدول وضعیت/chrome ادمین، اعداد tabular.
 - **UX:** هشدار تغییرات ذخیره‌نشده (beforeunload + dirty).
 - تست: test-admin-dashboard-pro.php (25) + test-admin-dashboard-pro-dom.mjs (7). کل فاز ۲: 287 سبز / 0 شکست. پیش‌نمایش خودکفا: preview/admin-dashboard.html (temp/build-admin-preview.php).
+
+
+## 2026-11-07 — P07-T009 آرشیو اصلی وبلاگ (23)
+- `home.php` + `blog-shell.php` + `blog-hero.php` از مرجع blog.html؛ کوئری فقط post/publish و بدون محدودیت مصنوعی برای فیلتر کلاینتی؛ منتخب سردبیر از sticky واقعی با fallback جدیدترین منتشرشده.
+- تست PHP **16/0**، تست main.js/JSDOM **7/0**: صفحه اول ۴ کارت، صفحه دوم ۳ کارت، قبلی/بعدی، جستجوی عنوان و حالت خالی. مسیر واقعی `/blog/` با تنظیم صفحه نوشته‌ها و بازنشانی rewrite بررسی شد.
+- خوداصلاحی تست: پس از تغییر permalink_structure باید `$wp_rewrite->init()` قبل از flush اجرا شود؛ PATH_INFO/PHP_SELF نیز باید شبیه درخواست وب مقداردهی شوند. مشکل محصول نبود.
+- رگرسیون وابستگی‌ها: P05-T004=18، P02-T014=12، P07-T006=12 PHP+7 DOM، P07-T002 DOM=10؛ همگی سبز. runner فاز اکنون تست‌های `*-dom.mjs` را نیز اجرا می‌کند.
