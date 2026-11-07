@@ -245,3 +245,10 @@
 - `page-templates/warranty.php` با DOM مرجع refund_returns.html (هیرو + ۳ کارت آیکون‌دار + دوستون پوشش/استثنا + باند مراحل ۳گانه + تلفن/آدرس/لینک تماس). کارت‌ها (آیکون/عنوان/متن)، لیست‌های پوشش/استثنا و مراحل از Repeaterهای تب pages (`PagesTab::warranty()` با پیش‌فرض مرجع). آیکون کارت از فیلد icon اعتبارسنجی‌شده (نقشه SVG استاتیک، fallback shield).
 - AC-02: تلفن از FooterTab::contact، لینک ثبت درخواست به /contact/. CTA تماس فقط از فوتر.
 - تست **13/0**؛ رگرسیون P02-T007=18، P02-T018=10، T022=13، T023=13. نکته تست: intro هیرو هم «۲۴ ماه…» دارد؛ SC-01 با ظهور عنوان ویرایش‌شده + شمارش کارت‌ها سنجیده شد (نه حذف سراسری رشته).
+
+
+## 2026-11-07 — P07-T025 برگه استخدام (14 + 8 DOM)
+- `page-templates/recruitment.php`: چهار تب سازمانی (R&D/پروژه/حسابداری/IT) + ۷ کارت شغلی از Repeaterهای `recruit_tabs`/`recruit_jobs` (تب pages؛ مدل تخت چون render_subfield زیرrepeater ندارد؛ jobs با کلید tab گروه‌بندی می‌شوند؛ skills خط‌به‌خط). پیش‌فرض مرجع در PagesTab::recruitment_defaults.
+- یافته مهم: مرجع `data-recruit-tab-panel` دارد ولی main.js `[data-recruit-panel]` می‌جوید → هر پنل هر دو صفت را دارد؛ کلاس‌های وضعیت دکمه مطابق قرارداد toggle main.js (bg-emerald-700/bg-slate-50). فرم #apply-form بدون action/method/name + یادداشت امن تا فاز ۸.
+- تست PHP **14/0**؛ JSDOM **8/0** (سوئیچ واقعی هر ۴ تب + کلاس فعال + محتوای پنل). رگرسیون P02-T007=18، P02-T018=10، T024=13.
+- بازنشانی snapshot دوباره رخ داد؛ fetch+reset --mixed به 50567f4، harness reinstall + theme activate + rewrite flush.

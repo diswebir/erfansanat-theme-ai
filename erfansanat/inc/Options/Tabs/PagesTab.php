@@ -324,4 +324,82 @@ final class PagesTab {
 			),
 		);
 	}
+	/**
+	 * Recruitment tabs + jobs. Saved repeaters replace the reference
+	 * defaults; jobs are grouped by tab key in the template. Skills are
+	 * newline-separated and keep their order.
+	 *
+	 * @return array{tabs:array<int,array<string,string>>,jobs:array<int,array<string,string>>}
+	 */
+	public static function recruitment(): array {
+		$defaults = self::recruitment_defaults();
+		$tabs = array();
+		foreach ( self::repeater_items( 'recruit_tabs' ) as $item ) {
+			$key   = trim( (string) ( $item['key'] ?? '' ) );
+			$label = trim( (string) ( $item['label'] ?? '' ) );
+			if ( '' === $key || '' === $label ) { continue; }
+			$tabs[] = array(
+				'key' => (string) ( $item['key'] ?? '' ),
+				'label' => (string) ( $item['label'] ?? '' ),
+				'badge' => (string) ( $item['badge'] ?? '' ),
+				'title' => (string) ( $item['title'] ?? '' ),
+				'description' => (string) ( $item['description'] ?? '' ),
+			);
+		}
+		if ( array() === $tabs ) { $tabs = $defaults['tabs']; }
+		$jobs = array();
+		foreach ( self::repeater_items( 'recruit_jobs' ) as $item ) {
+			$title = trim( (string) ( $item['title'] ?? '' ) );
+			if ( '' === $title ) { continue; }
+			$jobs[] = array(
+				'tab' => (string) ( $item['tab'] ?? '' ),
+				'title' => (string) ( $item['title'] ?? '' ),
+				'type' => (string) ( $item['type'] ?? '' ),
+				'experience' => (string) ( $item['experience'] ?? '' ),
+				'location' => (string) ( $item['location'] ?? '' ),
+				'skills' => (string) ( $item['skills'] ?? '' ),
+			);
+		}
+		if ( array() === $jobs ) { $jobs = $defaults['jobs']; }
+		return array( 'tabs' => $tabs, 'jobs' => $jobs );
+	}
+
+	/**
+	 * Reference recruitment content (static-mirror/recruitment.html).
+	 *
+	 * @return array{tabs:array<int,array<string,string>>,jobs:array<int,array<string,string>>}
+	 */
+	public static function recruitment_defaults(): array {
+		return array(
+			'tabs' => array(
+				array( 'key' => 'rnd', 'label' => 'تحقیق و توسعه (R&D)', 'badge' => 'مهندسی الکترونیک و ساخت', 'title' => 'واحد تحقیق و توسعه (R&D)', 'description' => 'واحد تحقیق و توسعه عرفان صنعت قلب نوآوری کارخانه در طراحی بردهای پیکسلی، پروتکل‌های مخابراتی بی‌سیم NRF/DMX و طراحی صنعتی المان‌های نوری جدید است.' ),
+				array( 'key' => 'project', 'label' => 'پروژه و خدمات پس از فروش', 'badge' => 'اجرا، نصب و پشتیبانی فنی', 'title' => 'واحد پروژه و خدمات پس از فروش', 'description' => 'تیم پروژه و خدمات پس از فروش مسئولیت نظارت کارگاهی، نصب سازه‌های نوری در سراسر شهرهای کشور، راه‌اندازی تابلوهای فرمان و پشتیبانی فنی کارفرمایان را بر عهده دارد.' ),
+				array( 'key' => 'accounting', 'label' => 'حسابداری و مالی', 'badge' => 'مالی، بهای تمام‌شده و ستاد', 'title' => 'واحد حسابداری و مالی', 'description' => 'واحد مالی و حسابداری وظیفه مدیریت حسابداری صنعتی، محاسبه بهای تمام‌شده تولید، امور مالیاتی و مدیریت قراردادهای پیمانکاری شهرداری‌ها و سامانه ستاد را بر عهده دارد.' ),
+				array( 'key' => 'it', 'label' => 'فناوری اطلاعات (IT) و دیجیتال', 'badge' => 'نرم‌افزار، وب و شبکه', 'title' => 'واحد فناوری اطلاعات (IT) و دیجیتال', 'description' => 'واحد IT مسئول توسعه اپلیکیشن‌های موبایلی کنترل هوشمند المان‌ها، نگهداری زیرساخت شبکه کارخانه و مدیریت پلتفرم فروش آنلاین و محتوای دیجیتال شرکت است.' ),
+			),
+			'jobs' => array(
+				array( 'tab' => 'rnd', 'title' => 'مهندس طراح بردهای الکترونیکی و Embedded Systems', 'type' => 'تمام‌وقت — حضوری', 'experience' => 'حداقل ۳ سال سابقه مرتبط', 'location' => 'اصفهان (شهرک صنعتی برق و الکترونیک خمینی‌شهر)', 'skills' => 'تسلط بر طراحی PCB در نرم‌افزار Altium Designer
+برنامه‌نویسی میکروکنترلرهای ARM / STM32 و ESP32
+آشنایی با پروتکل‌های نورپردازی DMX512، SPI و ماژول‌های رادیویی NRF' ),
+				array( 'tab' => 'rnd', 'title' => 'طراح صنعتی و سازه‌های نوری سه‌بعدی', 'type' => 'تمام‌وقت — حضوری', 'experience' => 'حداقل ۲ سال سابقه طراحی صنعتی', 'location' => 'اصفهان (خمینی‌شهر)', 'skills' => 'تسلط کامل بر SolidWorks یا Rhino جهت طراحی سازه‌های فلزی و قالب‌های پلیمری
+توانایی رندرینگ و شبیه‌سازی نوری شبانه در 3ds Max / Lumion
+آشنایی با فرآیندهای ورق‌کاری، خم‌کاری CNC و تزریق پلاستیک' ),
+				array( 'tab' => 'project', 'title' => 'سرپرست اجرای پروژه‌های نورپردازی شهری', 'type' => 'تمام‌وقت — ماموریت استانی', 'experience' => 'حداقل ۳ سال سابقه اجرایی برق و سازه', 'location' => 'اصفهان و ماموریت به سراسر کشور', 'skills' => 'تسلط بر نقشه‌خوانی الکتریکی، مونتاژ تابلو برق و کابل‌کشی صنعتی
+توانایی مدیریت تیم‌های نصب در پروژه‌های میدانگاهی، پل و تونل نوری
+آشنایی کامل با اصول ایمنی کار در ارتفاع (HSE) و استانداردهای شهرداری' ),
+				array( 'tab' => 'project', 'title' => 'کارشناس فنی خدمات پس از فروش و کنترل کیفیت (QC)', 'type' => 'تمام‌وقت — حضوری', 'experience' => 'حداقل ۲ سال سابقه فنی الکترونیک/برق', 'location' => 'اصفهان (کارخانه مرکزی)', 'skills' => 'عیب‌یابی بردهای درایور LED، پاورهای سوئیچینگ و کنترلرهای پیکسلی
+انجام تست‌های استاندارد IP67 / IP68 و کنترل کیفیت نهایی پیش از ارسال
+پاسخگویی فنی و راهنمایی تلفنی پیمانکاران و کارفرمایان' ),
+				array( 'tab' => 'accounting', 'title' => 'کارشناس ارشد حسابداری صنعتی و پیمانکاری', 'type' => 'تمام‌وقت — حضوری', 'experience' => 'حداقل ۴ سال سابقه حسابداری تولیدی', 'location' => 'اصفهان (شهرک صنعتی برق و الکترونیک)', 'skills' => 'تسلط بر حسابداری بهای تمام‌شده، انبار و اموال در شرکت‌های تولیدی
+آشنایی کامل با سامانه مودیان، قوانین مالیات بر ارزش افزوده و بیمه پیمان‌ها
+تجربه کار با سامانه تدارکات الکترونیکی دولت (ستاد) و صورت‌وضعیت‌نویسی' ),
+				array( 'tab' => 'it', 'title' => 'توسعه‌دهنده اپلیکیشن موبایل و اینترنت اشیاء (IoT)', 'type' => 'تمام‌وقت / پروژه‌ای', 'experience' => 'حداقل ۲ سال سابقه توسعه موبایل', 'location' => 'اصفهان', 'skills' => 'تسلط بر توسعه اپلیکیشن‌های اندروید و iOS (Flutter یا React Native)
+تجربه کار با ارتباطات سوکت، WiFi، بلوتوث (BLE) و سخت‌افزارهای هوشمند
+طراحی رابط کاربری فارسی روان برای کنترل سناریوهای نوری' ),
+				array( 'tab' => 'it', 'title' => 'کارشناس سئو، تولید محتوای فنی و مدیریت وب‌سایت', 'type' => 'تمام‌وقت — حضوری', 'experience' => 'حداقل ۲ سال سابقه تخصصی', 'location' => 'اصفهان', 'skills' => 'تسلط کامل بر وردپرس، ووکامرس، جت‌انجین (JetEngine) و اصول سئوی تکنیکال
+توانایی تدوین مقالات فنی، کاتالوگ محصولات و مستندسازی پروژه‌های شهری
+آشنایی با ابزارهای Google Search Console و آنالیز رفتار کاربران' ),
+			),
+		);
+	}
 }

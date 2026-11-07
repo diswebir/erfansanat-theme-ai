@@ -550,6 +550,49 @@ final class Schema {
 				'min'       => 0,
 				'max'       => 12,
 			),
+			'recruit_heading'         => array(
+				'type'    => 'text',
+				'default' => 'فرصت‌های شغلی و استخدام',
+				'label'   => 'عنوان صفحه استخدام',
+				'tab'     => 'pages',
+			),
+			'recruit_intro'           => array(
+				'type'    => 'textarea',
+				'default' => 'ما در شرکت دانش‌بنیان عرفان صنعت اصفهان همواره پذیرای متخصصان خلاق و پرتلاش در حوزه‌های تحقیق و توسعه، اجرای پروژه‌های شهری، حسابداری صنعتی و فناوری اطلاعات هستیم',
+				'label'   => 'توضیح صفحه استخدام',
+				'tab'     => 'pages',
+			),
+			'recruit_tabs'            => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'تب‌های واحدهای سازمانی (کلید/برچسب/عنوان/شرح)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'key'         => array( 'type' => 'text', 'default' => '' ),
+					'label'       => array( 'type' => 'text', 'default' => '' ),
+					'badge'       => array( 'type' => 'text', 'default' => '' ),
+					'title'       => array( 'type' => 'text', 'default' => '' ),
+					'description' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 12,
+			),
+			'recruit_jobs'            => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'موقعیت‌های شغلی (وابسته به کلید تب)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'tab'        => array( 'type' => 'text', 'default' => '' ),
+					'title'      => array( 'type' => 'text', 'default' => '' ),
+					'type'       => array( 'type' => 'text', 'default' => '' ),
+					'experience' => array( 'type' => 'text', 'default' => '' ),
+					'location'   => array( 'type' => 'text', 'default' => '' ),
+					'skills'     => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 40,
+			),
 		);
 	}
 
