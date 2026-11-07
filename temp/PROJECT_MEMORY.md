@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T003 پاس.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T004 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -13,7 +13,8 @@ PHASE 7 COMPLETE: run-phase-tests.sh → ALL PASS (28 PHP suites + 9 DOM suites)
 P08-T001=20 (Ajax contract: registry/nonce/whitelist/JSON envelope + ES_AJAX config)
 P08-T002=14 (AjaxSearch::search_products — title/meta english_titl,zireonvan,_sku/product_cat؛ سقف ۱۲؛ visibility exclusion؛ normalize ی/ک)
 P08-T003=13 (content_search projects+post؛ type=project/post؛ ترم city/project_type با variants ZWNJ؛ term_variants برای product_cat هم)
-NEXT: P08-T004 search modal JS wiring; then T005 SmartFilters. and phase 8 (24 tasks)
+P08-T004=12 (+10 DOM) (search.js: debounce 250ms/abort/seq/keyboard/empty؛ enqueue es-search dep es-main؛ گارد __esSearchInit)
+NEXT: P08-T005 SmartFilters QueryBuilder; then T006 filter UI. and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

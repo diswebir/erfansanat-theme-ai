@@ -1,6 +1,6 @@
 # P08-T004 — اتصال JS مودال جستجو
 
-> فاز 8: ایجکس، فرم‌ها، ممیزی و استقرار · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 8: ایجکس، فرم‌ها، ممیزی و استقرار · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `8.1` · وابستگی‌ها: `P08-T002`, `P08-T003`, `P04-T012`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: data-global-search-* حفظ شوند.
-- [ ] AC-02: درخواست هم‌زمان نتایج را قاطی نکند.
-- [ ] AC-03: Escape/arrow/enter کار کنند.
+- [x] AC-01: data-global-search-* حفظ شوند.
+- [x] AC-02: درخواست هم‌زمان نتایج را قاطی نکند.
+- [x] AC-03: Escape/arrow/enter کار کنند.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: تایپ سریع فقط آخرین نتیجه را نشان دهد.
-- [ ] SC-02: کیبورد نتیجه را انتخاب کند.
+- [x] SC-01: تایپ سریع فقط آخرین نتیجه را نشان دهد.
+- [x] SC-02: کیبورد نتیجه را انتخاب کند.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-08-ajax-filters-and-audit/tests/test-task-004.php`
@@ -45,3 +45,8 @@
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-07)
+- تست اختصاصی: `php temp/phase-08-ajax-filters-and-audit/tests/test-task-004.php` → **12 passed, 0 failed, 0 pending**.
+- تست رفتاری DOM (test-task-004-dom.mjs): 10 passed, 0 failed — debounce/abort/keyboard/empty.

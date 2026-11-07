@@ -3,8 +3,9 @@
  * Global search modal shell.
  *
  * Pre-renders recent products/projects with data-search-item so the bundled
- * main.js can filter client-side immediately; the AJAX engine arrives in
- * Phase 8. Empty states are real messages, never placeholders (AC-02).
+ * main.js can filter client-side immediately; search.js (P08-T004) upgrades
+ * the input to live AJAX (debounce + abort + keyboard) on top of that DOM.
+ * Empty states are real messages, never placeholders (AC-02).
  * data-search-modal / open / close / input attributes preserved (AC-01).
  *
  * @package ErfanSanat
@@ -13,6 +14,16 @@
 defined( 'ABSPATH' ) || exit;
 
 use ErfanSanat\Theme\Core\Menus;
+
+// Live-search enhancer; depends on es-main so window.ES_AJAX (inline, before
+// es-main) is already defined when it runs.
+wp_enqueue_script(
+	'es-search',
+	ES_ASSETS_URI . 'js/search.js',
+	array( 'es-main' ),
+	(string) ( is_file( ES_ASSETS_DIR . 'js/search.js' ) ? filemtime( ES_ASSETS_DIR . 'js/search.js' ) : ES_VERSION ),
+	true
+);
 
 $es_search_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search pointer-events-none absolute right-4 h-5 w-5 text-emerald-600" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>';
 $es_close_icon  = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4.5 w-4.5" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>';

@@ -288,3 +288,9 @@
 - `AjaxSearch::search_content` + اکشن `es_content_search`: عنوان/متن projects+post، سپس ترم‌های city/project_type؛ ردیف type=project|post با permalink واقعی؛ publish-only؛ پیام امن خالی.
 - باگ واقعی رفع شد: normalize() نیم‌فاصله را به فاصله تبدیل می‌کرد و name__like روی ترم ذخیره‌شده «خرم‌آباد» (با ZWNJ) شکست می‌خورد → `term_variants()` دو شکل (نرمال + حافظ ZWNJ) را برای جستجوی ترم‌ها امتحان می‌کند؛ در product_cat هم اعمال شد.
 - تست **13/0**؛ رگرسیون T002=14، T001=20، P03-T001=15.
+
+
+## 2026-11-07 — P08-T004 اتصال JS مودال جستجو (12 + 10 DOM)
+- `assets/js/search.js` جدید: ارتقای مودال موجود بدون دست‌زدن main.js — debounce 250ms، AbortController + شمارنده seq (پاسخ کهنه دور ریخته می‌شود)، کیبورد ArrowDown/Up/Enter/Escape با aria-current، حالت خالی امن، بازگشت به رندر سرور برای عبارت کوتاه؛ ردیف‌ها با textContent ساخته می‌شوند (بدون innerHTML داده کاربر) و data-search-item حفظ می‌شود. اگر ES_AJAX نباشد fallback فیلتر محلی main.js می‌ماند.
+- `search-modal.php`: enqueue es-search با dependency es-main (ترتیب اجرای inline config). گارد __esSearchInit برای idempotent بودن (باگ واقعی: DOMContentLoaded طبیعی JSDOM + dispatch دستی → دوبار بایند؛ در پروداکشن هم اگر اسکریپت دوبار لود شود ایمن است).
+- تست PHP **12/0** + JSDOM **10/0** (fetch.mock با تأخیر متفاوت: درخواست کند abort و فقط آخرین عبارت رندر؛ SC-02 کیبورد). رگرسیون T001=20، T002=14، T003=13، P04-T012=16.
