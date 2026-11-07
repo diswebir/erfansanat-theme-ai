@@ -22,6 +22,7 @@ final class Forms
         add_action('admin_menu', [self::class, 'register_menu']);
         add_action('admin_post_ese_update_form_status', [self::class, 'handle_status_update']);
         add_action('admin_post_ese_save_form_settings', [self::class, 'handle_settings_save']);
+        add_action('admin_post_ese_retry_form_notification', [self::class, 'handle_notification_retry']);
     }
 
     /** Register a single top-level inbox menu visible only to administrators. */
@@ -58,6 +59,8 @@ final class Forms
             <?php if ('updated' === $notice) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('تغییرات ذخیره شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <?php if ('settings_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('نشانی ایمیل اعلان معتبر نیست؛ تنظیمات قبلی حفظ شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <?php if ('update_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('به‌روزرسانی وضعیت درخواست انجام نشد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
+            <?php if ('notification_sent' === $notice) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('اعلان ایمیلی با موفقیت دوباره ارسال شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
+            <?php if ('notification_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('ارسال دوبارهٔ اعلان انجام نشد؛ نشانی ایمیل و تنظیمات ارسال را بررسی کنید.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <details class="postbox" style="max-width:980px;margin:18px 0;padding:12px 16px">
                 <summary style="cursor:pointer;font-weight:600"><?php echo esc_html__('تنظیم اعلان ایمیلی', 'erfansanat-theme'); ?></summary>
                 <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-top:12px">
@@ -120,6 +123,20 @@ final class Forms
         self::redirect('updated');
     }
 
+    /** Retry a failed form notification using an administrator-only POST and per-record nonce. */
+    public static function handle_notification_retry(): void
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('درخواست نامعتبر است.', 'erfansanat-theme'), '', ['response' => 403]);
+        }
+        if ('POST' !== strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? ''))) {
+            wp_die(esc_html__('روش ارسال درخواست معتبر نیست.', 'erfansanat-theme'), '', ['response' => 405]);
+        }
+        $postId = isset($_POST['submission_id']) ? absint($_POST['submission_id']) : 0;
+        check_admin_referer('ese_retry_form_notification_' . $postId);
+        self::redirect($postId && Submission::retry_notification($postId) ? 'notification_sent' : 'notification_error');
+    }
+
     /** Render one submission's details and status form. */
     public static function render_submission_detail(int $postId): void
     {
@@ -133,11 +150,18 @@ final class Forms
         $type = (string) get_post_meta($postId, '_ese_form_type', true);
         $status = (string) get_post_meta($postId, '_ese_form_status', true);
         $notification = (string) get_post_meta($postId, '_ese_notification_status', true);
+        $notificationLabels = [
+            'sent' => __('ارسال شد', 'erfansanat-theme'),
+            'failed' => __('ارسال ناموفق', 'erfansanat-theme'),
+            'disabled' => __('غیرفعال', 'erfansanat-theme'),
+            'no_recipient' => __('گیرنده تعیین نشده', 'erfansanat-theme'),
+            'not_sent' => __('ارسال نشده', 'erfansanat-theme'),
+        ];
         $labels = self::field_labels();
         ?>
         <p><a href="<?php echo esc_url(admin_url('admin.php?page=' . self::PAGE_SLUG)); ?>">← <?php echo esc_html__('بازگشت به صندوق ورودی', 'erfansanat-theme'); ?></a></p>
         <h2><?php echo esc_html(get_the_title($postId)); ?></h2>
-        <p><?php echo esc_html(sprintf(__('نوع: %1$s | وضعیت اعلان: %2$s', 'erfansanat-theme'), Submission::schemas()[$type]['label'] ?? $type, $notification)); ?></p>
+        <p><?php echo esc_html(sprintf(__('نوع: %1$s | وضعیت اعلان: %2$s', 'erfansanat-theme'), Submission::schemas()[$type]['label'] ?? $type, $notificationLabels[$notification] ?? __('نامشخص', 'erfansanat-theme'))); ?></p>
         <table class="widefat striped" style="max-width:980px"><tbody>
         <?php foreach ($payload as $key => $value) : if (!is_scalar($value)) { continue; } ?>
             <tr><th style="width:200px"><?php echo esc_html($labels[$key] ?? sanitize_text_field((string) $key)); ?></th><td><?php echo nl2br(esc_html((string) $value)); ?></td></tr>
@@ -153,6 +177,14 @@ final class Forms
             </select>
             <?php submit_button(__('به‌روزرسانی وضعیت', 'erfansanat-theme'), 'primary', 'submit', false); ?>
         </form>
+        <?php if (in_array($notification, ['failed', 'no_recipient', 'not_sent'], true)) : ?>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="max-width:980px;margin-top:10px">
+                <input type="hidden" name="action" value="ese_retry_form_notification" />
+                <input type="hidden" name="submission_id" value="<?php echo esc_attr((string) $postId); ?>" />
+                <?php wp_nonce_field('ese_retry_form_notification_' . $postId); ?>
+                <?php submit_button(__('تلاش دوباره برای ارسال اعلان', 'erfansanat-theme'), 'secondary', 'submit', false); ?>
+            </form>
+        <?php endif; ?>
         <?php
     }
 

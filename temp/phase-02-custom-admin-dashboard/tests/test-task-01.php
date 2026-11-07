@@ -122,6 +122,28 @@ if (!class_exists($dashboardClass) || !has_action('wp_dashboard_setup', [$dashbo
             $failed++;
         }
     }
+    $editorId = wp_insert_user([
+        'user_login' => 'ese-dashboard-editor-' . strtolower(wp_generate_password(6, false, false)),
+        'user_pass' => wp_generate_password(20),
+        'user_email' => 'dashboard-editor@example.test',
+        'role' => 'editor',
+    ]);
+    if (!is_wp_error($editorId)) {
+        wp_set_current_user((int) $editorId);
+        ob_start();
+        $dashboardClass::render_widget();
+        $editorDashboard = (string) ob_get_clean();
+        wp_set_current_user(1);
+        if (false !== strpos($editorDashboard, 'Dashboard QA New Contact Request') || false !== strpos($editorDashboard, 'admin.php?page=ese-form-inbox') || false !== strpos($editorDashboard, 'تنظیمات قالب')) {
+            fwrite(STDERR, "FAIL non-administrator dashboard exposed private inbox or theme settings shortcuts\n");
+            $failed++;
+        }
+        require_once $wpRoot . '/wp-admin/includes/user.php';
+        wp_delete_user((int) $editorId);
+    } else {
+        fwrite(STDERR, "FAIL could not create editor capability fixture\n");
+        $failed++;
+    }
     $dashboardClass::enqueue_assets('index.php');
     if (!wp_style_is('erfansanat-admin-dashboard', 'enqueued')) {
         fwrite(STDERR, "FAIL responsive dashboard stylesheet was not enqueued on the Dashboard screen\n");

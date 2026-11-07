@@ -25,6 +25,8 @@ final class Submission
         add_action('init', [self::class, 'register_post_type']);
         add_action('wp_ajax_ese_submit_form', [self::class, 'dispatch']);
         add_action('wp_ajax_nopriv_ese_submit_form', [self::class, 'dispatch']);
+        add_filter('wp_privacy_personal_data_exporters', [self::class, 'register_privacy_exporter']);
+        add_filter('wp_privacy_personal_data_erasers', [self::class, 'register_privacy_eraser']);
     }
 
     /** Register a non-public post type used only as the inbox data store. */
@@ -241,6 +243,154 @@ final class Submission
             return true;
         }
         return false !== update_post_meta($postId, '_ese_form_status', $status);
+    }
+
+    /** Register this inbox with the WordPress personal-data exporter. */
+    public static function register_privacy_exporter(array $exporters): array
+    {
+        $exporters['erfansanat-theme-submissions'] = [
+            'exporter_friendly_name' => __('درخواست‌های ثبت‌شده در سایت', 'erfansanat-theme'),
+            'callback' => [self::class, 'export_personal_data'],
+        ];
+        return $exporters;
+    }
+
+    /** Register this inbox with the WordPress personal-data eraser. */
+    public static function register_privacy_eraser(array $erasers): array
+    {
+        $erasers['erfansanat-theme-submissions'] = [
+            'eraser_friendly_name' => __('درخواست‌های ثبت‌شده در سایت', 'erfansanat-theme'),
+            'callback' => [self::class, 'erase_personal_data'],
+        ];
+        return $erasers;
+    }
+
+    /** Export submissions that match the requested email address. */
+    public static function export_personal_data(string $emailAddress, int $page = 1): array
+    {
+        $email = sanitize_email($emailAddress);
+        if (!is_email($email)) {
+            return ['data' => [], 'done' => true];
+        }
+        $query = self::privacy_query($email, $page);
+        $data = [];
+        foreach ($query->posts as $post) {
+            $payload = get_post_meta((int) $post->ID, '_ese_form_payload', true);
+            if (!is_array($payload) || !isset($payload['email']) || !is_string($payload['email']) || 0 !== strcasecmp($email, $payload['email'])) {
+                continue;
+            }
+            $itemData = [
+                ['name' => __('نوع درخواست', 'erfansanat-theme'), 'value' => (string) get_post_meta((int) $post->ID, '_ese_form_type', true)],
+                ['name' => __('تاریخ ثبت', 'erfansanat-theme'), 'value' => mysql2date('c', $post->post_date, false)],
+            ];
+            foreach ($payload as $key => $value) {
+                if (is_scalar($value)) {
+                    $itemData[] = [
+                        'name' => self::privacy_field_labels()[$key] ?? sanitize_text_field((string) $key),
+                        'value' => (string) $value,
+                    ];
+                }
+            }
+            $data[] = [
+                'group_id' => 'erfansanat-theme-submissions',
+                'group_label' => __('درخواست‌های ثبت‌شده در سایت', 'erfansanat-theme'),
+                'item_id' => 'submission-' . (int) $post->ID,
+                'data' => $itemData,
+            ];
+        }
+        return ['data' => $data, 'done' => $query->max_num_pages <= max(1, $page)];
+    }
+
+    /** Delete submissions that match the requested email address. */
+    public static function erase_personal_data(string $emailAddress, int $page = 1): array
+    {
+        $email = sanitize_email($emailAddress);
+        if (!is_email($email)) {
+            return ['items_removed' => false, 'items_retained' => false, 'messages' => [], 'done' => true];
+        }
+        $query = self::privacy_query($email, $page);
+        $removed = false;
+        $retained = false;
+        foreach ($query->posts as $post) {
+            $payload = get_post_meta((int) $post->ID, '_ese_form_payload', true);
+            if (!is_array($payload) || !isset($payload['email']) || !is_string($payload['email']) || 0 !== strcasecmp($email, $payload['email'])) {
+                continue;
+            }
+            if (wp_delete_post((int) $post->ID, true)) {
+                $removed = true;
+            } else {
+                $retained = true;
+            }
+        }
+        return [
+            'items_removed' => $removed,
+            'items_retained' => $retained,
+            'messages' => [],
+            'done' => $query->max_num_pages <= max(1, $page),
+        ];
+    }
+
+    /** Retry a failed mail notification after checking administrator permission and record integrity. */
+    public static function retry_notification(int $postId): bool
+    {
+        if (!current_user_can('manage_options')) {
+            return false;
+        }
+        $post = get_post($postId);
+        $status = (string) get_post_meta($postId, '_ese_notification_status', true);
+        $type = (string) get_post_meta($postId, '_ese_form_type', true);
+        $payload = get_post_meta($postId, '_ese_form_payload', true);
+        if (
+            !$post instanceof \WP_Post
+            || self::POST_TYPE !== $post->post_type
+            || 'private' !== $post->post_status
+            || !in_array($status, ['failed', 'no_recipient', 'not_sent'], true)
+            || !isset(self::schemas()[$type])
+            || !is_array($payload)
+        ) {
+            return false;
+        }
+        self::send_notification($postId, $type, self::schemas()[$type]['label'], $payload);
+        return 'sent' === (string) get_post_meta($postId, '_ese_notification_status', true);
+    }
+
+    /** Locate candidate records; exact email matching is repeated after the serialized-meta LIKE query. */
+    private static function privacy_query(string $email, int $page): \WP_Query
+    {
+        return new \WP_Query([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'private',
+            'posts_per_page' => 100,
+            'paged' => max(1, $page),
+            'orderby' => 'ID',
+            'order' => 'ASC',
+            'no_found_rows' => false,
+            'meta_query' => [[
+                'key' => '_ese_form_payload',
+                'value' => $email,
+                'compare' => 'LIKE',
+            ]],
+        ]);
+    }
+
+    /** Labels for values returned through WordPress privacy tools. */
+    private static function privacy_field_labels(): array
+    {
+        return [
+            'name' => __('نام', 'erfansanat-theme'),
+            'phone' => __('تلفن', 'erfansanat-theme'),
+            'email' => __('ایمیل', 'erfansanat-theme'),
+            'organization' => __('سازمان', 'erfansanat-theme'),
+            'message' => __('پیام', 'erfansanat-theme'),
+            'city' => __('شهر', 'erfansanat-theme'),
+            'product' => __('محصول', 'erfansanat-theme'),
+            'product_id' => __('شناسه محصول', 'erfansanat-theme'),
+            'position' => __('عنوان شغلی', 'erfansanat-theme'),
+            'department' => __('واحد', 'erfansanat-theme'),
+            'experience' => __('سابقه', 'erfansanat-theme'),
+            'resume_url' => __('پیوند رزومه', 'erfansanat-theme'),
+            'rating' => __('امتیاز', 'erfansanat-theme'),
+        ];
     }
 
     /** Format fields as readable plain text for the editor and notification email. */

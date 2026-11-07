@@ -2,8 +2,8 @@
 /** WordPress integration test for Task 8.2: secure public forms and private inbox. */
 $root = dirname(__DIR__, 3);
 $checks = [
-    'inc/Forms/Submission.php' => ['wp_verify_nonce', 'wp_mail', 'honeypot', 'wp_insert_post', 'wp_send_json_error'],
-    'inc/Admin/Forms.php' => ['manage_options', 'wp_nonce_field', 'ese_update_form_status', 'ese_form_status'],
+    'inc/Forms/Submission.php' => ['wp_verify_nonce', 'wp_mail', 'honeypot', 'wp_insert_post', 'wp_send_json_error', 'wp_privacy_personal_data_exporters', 'wp_privacy_personal_data_erasers'],
+    'inc/Admin/Forms.php' => ['manage_options', 'wp_nonce_field', 'ese_update_form_status', 'ese_form_status', 'ese_retry_form_notification'],
     'inc/Theme.php' => ['Forms\\Submission::register', 'Admin\\Forms::register'],
     'assets/js/main.js' => ['data-ese-submission-form', 'ese_submit_form', 'data-ese-form-success'],
     'template-parts/pages/section-page.php' => ['template-parts/forms/contact', 'template-parts/forms/recruitment'],
@@ -65,7 +65,17 @@ foreach (['wp_ajax_ese_submit_form', 'wp_ajax_nopriv_ese_submit_form'] as $hook)
         $failed++;
     }
 }
-if (false === has_action('admin_menu', [$adminClass, 'register_menu']) || !post_type_exists($submissionClass::POST_TYPE)) {
+$privacyExporters = apply_filters('wp_privacy_personal_data_exporters', []);
+$privacyErasers = apply_filters('wp_privacy_personal_data_erasers', []);
+if (!isset($privacyExporters['erfansanat-theme-submissions']) || !isset($privacyErasers['erfansanat-theme-submissions'])) {
+    fwrite(STDERR, "FAIL form submissions are not registered with WordPress privacy tools\n");
+    $failed++;
+}
+if (
+    false === has_action('admin_menu', [$adminClass, 'register_menu'])
+    || false === has_action('admin_post_ese_retry_form_notification', [$adminClass, 'handle_notification_retry'])
+    || !post_type_exists($submissionClass::POST_TYPE)
+) {
     fwrite(STDERR, "FAIL private submissions inbox was not registered\n");
     $failed++;
 }
@@ -79,6 +89,30 @@ $createdIds = [];
 $initialSubmissionIds = get_posts(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'numberposts' => -1, 'fields' => 'ids', 'orderby' => 'ID', 'order' => 'DESC']);
 if (!is_array($initialSubmissionIds)) {
     $initialSubmissionIds = [];
+}
+$privacyTargetId = wp_insert_post(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'post_title' => 'Privacy target']);
+$privacyNearMatchId = wp_insert_post(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'post_title' => 'Privacy near-match']);
+foreach ([[$privacyTargetId, 'privacy@example.test'], [$privacyNearMatchId, 'notprivacy@example.test']] as [$privacyId, $privacyEmail]) {
+    if ($privacyId && !is_wp_error($privacyId)) {
+        update_post_meta((int) $privacyId, '_ese_form_type', 'contact');
+        update_post_meta((int) $privacyId, '_ese_form_payload', ['name' => 'Privacy QA', 'email' => $privacyEmail, 'phone' => '09123456789']);
+    }
+}
+$privacyExport = $submissionClass::export_personal_data('privacy@example.test');
+$privacyExportData = is_array($privacyExport['data'] ?? null) ? $privacyExport['data'] : [];
+$privacyErasure = $submissionClass::erase_personal_data('privacy@example.test');
+if (
+    count($privacyExportData) !== 1
+    || ($privacyExportData[0]['item_id'] ?? '') !== 'submission-' . (int) $privacyTargetId
+    || empty($privacyErasure['items_removed'])
+    || get_post((int) $privacyTargetId)
+    || !(get_post((int) $privacyNearMatchId) instanceof WP_Post)
+) {
+    fwrite(STDERR, "FAIL WordPress personal-data export/erasure was not exact-email scoped\n");
+    $failed++;
+}
+if ($privacyNearMatchId && !is_wp_error($privacyNearMatchId)) {
+    wp_delete_post((int) $privacyNearMatchId, true);
 }
 
 if (!post_type_exists('product')) {
@@ -194,6 +228,7 @@ if (count(array_filter($rateResults)) !== 5 || true !== $rateResults[4] || true 
     $failed++;
 }
 
+require_once $wpRoot . '/wp-admin/includes/template.php';
 $mailArgs = null;
 add_filter('pre_wp_mail', static function ($shortCircuit, $args) use (&$mailArgs) {
     $mailArgs = $args;
@@ -208,6 +243,25 @@ if (empty($mailRequest['success']) || !is_array($mailArgs) || ($mailArgs['to'] ?
     $failed++;
 } elseif (!in_array($mailPostId, $createdIds, true)) {
     $createdIds[] = $mailPostId;
+}
+if ($mailPostId) {
+    update_post_meta($mailPostId, '_ese_notification_status', 'failed');
+    ob_start();
+    $adminClass::render_submission_detail($mailPostId);
+    $retryDetail = (string) ob_get_clean();
+    wp_set_current_user(0);
+    $unauthorizedRetry = $submissionClass::retry_notification($mailPostId);
+    wp_set_current_user(1);
+    $retrySent = $submissionClass::retry_notification($mailPostId);
+    if (
+        false === strpos($retryDetail, 'ese_retry_form_notification')
+        || $unauthorizedRetry
+        || !$retrySent
+        || 'sent' !== get_post_meta($mailPostId, '_ese_notification_status', true)
+    ) {
+        fwrite(STDERR, "FAIL admin retry notification workflow was missing, unauthorized, or unsuccessful\n");
+        $failed++;
+    }
 }
 
 if (count($createdIds) > 0) {
@@ -290,4 +344,4 @@ if (is_file($wpTestDir . '/wp-debug.log') && filesize($wpTestDir . '/wp-debug.lo
 if ($failed) {
     exit(1);
 }
-fwrite(STDOUT, "PASS contact, quote, recruitment, and client-feedback validation, honeypot, nonce, rate limit, private inbox, status control, email notification, and escaping\n");
+fwrite(STDOUT, "PASS contact/quote/recruitment/feedback validation, privacy export/erasure, rate limit, private inbox, status and email retry controls, escaping, and WP_DEBUG checks\n");
