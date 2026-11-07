@@ -362,6 +362,28 @@ final class Schema {
 					) ),
 				),
 			),
+			'specs'    => array(
+				'title'    => 'مشخصات فنی',
+				'template' => 'arya/section-specs',
+				'fields'   => array(
+					'heading' => self::f( 'text', 'عنوان', 'مشخصات فنی آریا' ),
+					'rows'    => self::repeater( 'ردیف‌های مشخصات', array(
+						'label' => self::f( 'text', 'عنوان مشخصه', '' ),
+						'value' => self::f( 'text', 'مقدار', '' ),
+					) ),
+				),
+			),
+			'faq'      => array(
+				'title'    => 'سوالات متداول',
+				'template' => 'arya/section-faq',
+				'fields'   => array(
+					'heading' => self::f( 'text', 'عنوان', 'سوالات متداول درباره آریا' ),
+					'items'   => self::repeater( 'پرسش و پاسخ‌ها', array(
+						'question' => self::f( 'text', 'پرسش', '' ),
+						'answer'   => self::f( 'textarea', 'پاسخ', '' ),
+					) ),
+				),
+			),
 			'cta'      => array(
 				'title'    => 'درخواست خرید',
 				'template' => 'arya/section-cta',

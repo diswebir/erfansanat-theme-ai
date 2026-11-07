@@ -1,6 +1,6 @@
 # P07-T028 — لندینگ آریا
 
-> فاز 7: پروژه‌ها، وبلاگ، برگه‌ها و لندینگ‌ها · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 7: پروژه‌ها، وبلاگ، برگه‌ها و لندینگ‌ها · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `7.3` · وابستگی‌ها: `P02-T018`, `P04-T019`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@ page-templates/landing-arya.php با کامپوننت‌های موجود و م�
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: هیرو/مزایا/مشخصات/FAQ/CTA قابل ویرایش باشند.
-- [ ] AC-02: منوی اسکرول landing کار کند.
-- [ ] AC-03: طراحی جدید خارج از design system اضافه نشود.
+- [x] AC-01: هیرو/مزایا/مشخصات/FAQ/CTA قابل ویرایش باشند.
+- [x] AC-02: منوی اسکرول landing کار کند.
+- [x] AC-03: طراحی جدید خارج از design system اضافه نشود.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: اسکرول منو به سکشن درست برود.
-- [ ] SC-02: ویرایش متن هیرو دیده شود.
+- [x] SC-01: اسکرول منو به سکشن درست برود.
+- [x] SC-02: ویرایش متن هیرو دیده شود.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-07-projects-blog-and-pages/tests/test-task-028.php`
@@ -45,3 +45,8 @@ page-templates/landing-arya.php با کامپوننت‌های موجود و م�
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-07)
+- تست اختصاصی: `php temp/phase-07-projects-blog-and-pages/tests/test-task-028.php` → **17 passed, 0 failed, 0 pending**.
+- تست رفتاری DOM (test-task-028-dom.mjs): 8 passed, 0 failed — scroll-spy + آکاردئون FAQ.

@@ -31,6 +31,6 @@
 | `P07-T025` | برگه استخدام | `7.3` | P02-T018, P02-T007 | `[PASSED]` |
 | `P07-T026` | برگه خدمات smartelement | `7.3` | P03-T002, P02-T018 | `[PASSED]` |
 | `P07-T027` | تک‌خدمت | `7.3` | P03-T002, P07-T026 | `[PASSED]` |
-| `P07-T028` | لندینگ آریا | `7.3` | P02-T018, P04-T019 | `[PENDING]` |
+| `P07-T028` | لندینگ آریا | `7.3` | P02-T018, P04-T019 | `[PASSED]` |
 
 اجرای همه تست‌ها: `bash temp/phase-07-projects-blog-and-pages/tests/run-phase-tests.sh`

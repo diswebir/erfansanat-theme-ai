@@ -264,3 +264,10 @@
 - `single-services.php` (هیرو: نشان/موقعیت «خدمت N از M»/قبلی-بعدی/تصویر؛ گارد پست نامعتبر → پیام امن بدون fatal) + `template-parts/service/details.php` (id=service-details؛ اقلام شماره‌دار/نکته/محتوا + مسیر اجرا + CTA تلفن + پروژه‌های مرتبط با card-project استاندارد؛ ترم همنام project_type در اولویت).
 - وابستگی ثبت‌شده: `inc/Admin/ServiceMetabox.php` جدید (nonce+capability؛ کلیدهای _es_service_badge/_bullets/_note/_steps؛ steps خطی «عنوان|توضیح» با fallback مسیر مرجع) + boot در functions.php. T026 همان کلیدها را می‌خواند.
 - تست **15/0**؛ رگرسیون T026=15، P03-T002=12، P03-T023=11. یادآوری: شمارش CTA فوتر روی اولین رندر کامل پروسه (require_once).
+
+
+## 2026-11-07 — P07-T028 لندینگ آریا (17 + 8 DOM) — پایان فاز ۷
+- `page-templates/landing-arya.php` (Template Name: لندینگ آریا): رندر سکشن‌های context=arya via Renderer + منوی اسکرول شناور پایین صفحه — منوی اختصاصی landing via LandingWalker در اولویت؛ در نبود آن fallback خودکار از سکشن‌های فعال (id لنگر = id سکشن، data-landing-link/data-landing-menu همان قرارداد P04-T019). scroll-spy همان navigation.js موجود؛ بدون CSS/JS جدید (AC-03).
+- Schema آریا گسترش یافت: specs (rows repeater label/value) + faq (items repeater question/answer) کنار hero/features/cta؛ ۵ پارت جدید `template-parts/sections/arya/section-{hero,features,specs,faq,cta}.php` با واژگان طراحی موجود (rounded-3xl/emerald card). FAQ از همان قرارداد main.js (data-faq-list/toggle/body/icon) استفاده می‌کند؛ CTA خالی‌بودن URL → contact.
+- تست PHP **17/0** (ویرایش هر ۵ سکشن، جایگزینی منوی اختصاصی، حذف سکشن غیرفعال از منو، لنگرهای سالم) + JSDOM **8/0** (spyCallback شبیه‌سازی‌شده: active/aria-current روی لینک درست؛ آکاردئون FAQ با main.js اصلی). رگرسیون P02-T015=14، T017=14، T018=10، P04-T019=18.
+- **سوئیت کامل فاز ۷: ALL PASS** — 28 سوئیت PHP + 9 سوئیت DOM بدون شکست.
