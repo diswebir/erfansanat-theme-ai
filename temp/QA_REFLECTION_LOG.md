@@ -233,3 +233,9 @@
 - لایت‌باکس اختصاصی `assets/js/certificates.js` (قلاب‌های data-cert-*، باز/بسته/قبلی/بعدی/Escape، alt روی تصویر بزرگ) فقط در همین برگه enqueue می‌شود؛ main.js دست‌نخورده. CTA تماس فقط از فوتر.
 - وابستگی ثبت‌شده: Options/Schema.php (فیلدهای licenses + تب pages) و functions.php (boot PagesTab + enqueue شرطی). تست **13/0**؛ رگرسیون P02-T007=18، P02-T018=10، T020=10، T021=10.
 - نکته: بازنشانی snapshot رخ داد؛ با fetch + reset --mixed به a28c48d بازیابی شد و harness (node_modules/temp/wp) دوباره نصب + تم فعال + rewrite flush شد.
+
+
+## 2026-11-07 — P07-T023 برگه سوالات متداول (13 + 9 DOM)
+- `page-templates/faq.php` با DOM مرجع (هیرو + سایدبار دسته‌ها/تماس + آکاردئون). گروه/سوال/جواب از Repeater `faq_items` (تب pages). آکاردئون روی قلاب‌های main.js (data-faq-list/toggle/body/icon؛ آیتم اول باز). جستجوی اختصاصی `assets/js/faq-search.js` (نرمال‌سازی ی/ک و ZWNJ، فیلتر data-faq-item، پیام خالی، شمارنده) فقط در همین برگه enqueue می‌شود.
+- AC-03: `PagesTab::faq()` با `Store::raw()` تشخیص «هرگز تنظیم‌نشده» (پیش‌فرض مرجع) از «خالیِ صریح» ([] → بدون سکشن)؛ گارد `if($es_items)` سکشن نمی‌سازد.
+- تست PHP **13/0**؛ JSDOM **9/0** (باز/بسته‌شدن واقعی + چرخش آیکون + فیلتر جستجو + پیام خالی + شمارنده). رگرسیون P02-T007=18، P02-T018=10، T022=13.

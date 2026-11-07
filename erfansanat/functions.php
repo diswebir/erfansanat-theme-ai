@@ -209,6 +209,25 @@ add_action(
 	20
 );
 
+// P07-T023: FAQ search filter, only on the FAQ page (accordion stays in main.js).
+add_action(
+	'wp_enqueue_scripts',
+	static function () {
+		if ( ! is_page_template( 'page-templates/faq.php' ) ) {
+			return;
+		}
+		$js = ES_ASSETS_DIR . 'js/faq-search.js';
+		wp_enqueue_script(
+			'es-faq-search',
+			ES_ASSETS_URI . 'js/faq-search.js',
+			array( 'es-main' ),
+			is_file( $js ) ? (string) filemtime( $js ) : ES_VERSION,
+			true
+		);
+	},
+	20
+);
+
 // P06-T016: unify the shop page and the product CPT archive onto the theme's
 // archive-product template (AC-02). Product taxonomy archives get their own
 // templates (P06-T018 / T020).

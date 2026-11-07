@@ -13,6 +13,7 @@ namespace ErfanSanat\Theme\Options\Tabs;
 defined( 'ABSPATH' ) || exit;
 
 use ErfanSanat\Theme\Options\Schema;
+use ErfanSanat\Theme\Options\Store;
 
 final class PagesTab {
 
@@ -120,5 +121,81 @@ final class PagesTab {
 			);
 		}
 		return $out;
+	}
+
+	/**
+	 * FAQ items (group/question/answer) in saved order. Empty stored value
+	 * falls back to the reference questions; an explicitly empty FAQ renders
+	 * no section (AC-03) — see the template guard.
+	 *
+	 * @return array<int,array<string,string>>
+	 */
+	public static function faq(): array {
+		// Never configured → reference questions for out-of-the-box parity.
+		// Explicitly saved (even empty) → honor the editor: an empty FAQ
+		// returns [] so the template builds no section (AC-03).
+		if ( ! array_key_exists( 'faq_items', Store::raw() ) ) {
+			return self::faq_defaults();
+		}
+		$items = es_option( 'faq_items' );
+		if ( ! is_array( $items ) ) {
+			return array();
+		}
+		$out = array();
+		foreach ( array_values( $items ) as $item ) {
+			if ( ! is_array( $item ) ) {
+				continue;
+			}
+			$question = trim( (string) ( $item['question'] ?? '' ) );
+			if ( '' === $question ) {
+				continue;
+			}
+			$out[] = array(
+				'group'    => (string) ( $item['group'] ?? '' ),
+				'question' => $question,
+				'answer'   => (string) ( $item['answer'] ?? '' ),
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * Reference FAQ (static-mirror/faq.html), in order.
+	 *
+	 * @return array<int,array<string,string>>
+	 */
+	public static function faq_defaults(): array {
+		return array(
+			array(
+				'group'    => 'خرید، استعلام قیمت و سامانه ستاد',
+				'question' => 'نحوه استعلام قیمت و دریافت پیش‌فاکتور رسمی برای شهرداری‌ها چگونه است؟',
+				'answer'   => 'شهرداری‌ها، دهیاری‌ها، سازمان‌های زیباسازی و پیمانکاران محترم می‌توانند از طریق تماس با شماره ۰۳۱-۹۱۰۹۱۰۱۱ (۱۰ خط ویژه) یا ارسال مشخصات پروژه، در کمتر از ۲ ساعت کاری پیش‌فاکتور رسمی ممهور به همراه کدهای کالا و کاتالوگ فنی دریافت نمایند. همچنین امکان ثبت معامله در سامانه تدارکات الکترونیکی دولت (ستاد) فراهم است.',
+			),
+			array(
+				'group'    => 'خرید، استعلام قیمت و سامانه ستاد',
+				'question' => 'تفاوت محصولات «قابل خرید آنلاین» با محصولات «نیازمند استعلام» در فروشگاه چیست؟',
+				'answer'   => 'تجهیزات تیپ و سری‌تولید کارخانه (مانند ریسه‌های بلوطی، فندقی، سوزنی، پوینت لایت، والواشر، باکس کنترل و لامپ LED) دارای قیمت مصوب بوده و مستقیماً قابل سفارش آنلاین هستند. در مقابل، سازه‌های بزرگ شهری (مانند درختان نوری، خورشیدنماها و لوسترها) به دلیل سفارشی‌سازی ارتفاع، رنگ سازه و تراکم پیکسل، پس از مشاوره فنی قیمت‌گذاری می‌شوند.',
+			),
+			array(
+				'group'    => 'مشخصات فنی و استانداردهای IP67 / IP68',
+				'question' => 'چرا ریسه‌ها و پوینت لایت‌های عرفان صنعت در بارندگی دچار اتصالی نمی‌شوند؟',
+				'answer'   => 'تمامی ریسه‌های بلوطی و فندقی عرفان صنعت با حباب پلی‌کربنات Anti-UV تولید شده و محل اتصال حباب به سرپیچ توسط «جوش التراسونیک» یکپارچه می‌شود؛ سپس داخل سرپیچ با «رزین صنعتی پلی‌اورتان» پر می‌گردد. این فرآیند دوجداره، گواهی واقعی IP67 و IP68 را تضمین می‌کند.',
+			),
+			array(
+				'group'    => 'مشخصات فنی و استانداردهای IP67 / IP68',
+				'question' => 'برای پارک‌ها و فضاهایی که مردم به المان دسترسی دارند چه ولتاژی پیشنهاد می‌شود؟',
+				'answer'   => 'مطابق استانداردهای ایمنی برق شهری، برای تمامی درختان نوری پارکی (مانند مدل دلسا)، ریسه‌بندی تنه درختان و تونل‌های نوری پیاده‌راه، از ولتاژ ایمن ۱۲ یا ۲۴ ولت DC استفاده می‌شود تا خطر برق‌گرفتگی به صفر برسد.',
+			),
+			array(
+				'group'    => 'گارانتی، نصب و خدمات پس از فروش',
+				'question' => 'شرایط گارانتی ۲۴ ماهه و خدمات پس از فروش ۵ ساله عرفان صنعت شامل چه مواردی است؟',
+				'answer'   => 'تمامی محصولات تولیدی شرکت دانش‌بنیان عرفان صنعت اصفهان دارای ۲۴ ماه گارانتی تعویض بی‌قید و شرط در برابر نفوذ آب، سوختن چیپ LED و تغییر رنگ حباب در شرایط نصب استاندارد بوده و تا ۵ سال تأمین قطعات یدکی و پشتیبانی فنی آن‌ها تضمین می‌گردد.',
+			),
+			array(
+				'group'    => 'گارانتی، نصب و خدمات پس از فروش',
+				'question' => 'آیا عرفان صنعت تیم اجرایی برای نصب پروژه‌ها در سایر شهرهای ایران اعزام می‌کند؟',
+				'answer'   => 'بله؛ تیم‌های فنی و اجرایی کارخانه عرفان صنعت در تمامی ۳۱ استان کشور و همچنین پروژه‌های صادراتی (کشور عراق) آماده اجرای صفر تا صد فونداسیون، نصب سازه، سیم‌کشی و راه‌اندازی سناریوهای نوری هستند.',
+			),
+		);
 	}
 }

@@ -466,6 +466,31 @@ final class Schema {
 				'min'       => 0,
 				'max'       => 30,
 			),
+			'faq_heading'             => array(
+				'type'    => 'text',
+				'default' => 'سوالات متداول',
+				'label'   => 'عنوان صفحه سوالات متداول',
+				'tab'     => 'pages',
+			),
+			'faq_intro'               => array(
+				'type'    => 'textarea',
+				'default' => 'پاسخ کارشناسان فنی شرکت دانش‌بنیان عرفان صنعت اصفهان به پرسش‌های پرتکرار درباره استعلام قیمت، خرید از سامانه ستاد، استانداردهای IP67 / IP68 و گارانتی',
+				'label'   => 'توضیح صفحه سوالات متداول',
+				'tab'     => 'pages',
+			),
+			'faq_items'               => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'پرسش و پاسخ‌ها (گروه/سوال/جواب)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'group'    => array( 'type' => 'text', 'default' => '' ),
+					'question' => array( 'type' => 'text', 'default' => '' ),
+					'answer'   => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 60,
+			),
 		);
 	}
 
