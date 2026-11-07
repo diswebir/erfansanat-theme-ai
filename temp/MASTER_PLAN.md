@@ -332,7 +332,7 @@
 - 📤 خروجی: `taxonomy-product_cat.php`؛ `taxonomy-product_tag.php` · **وابستگی:** Task 6.7, Task 3.13
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.9 — سبد خرید ووکامرس با پوسته cart.html `[PENDING]`
+### Task 6.9 — سبد خرید ووکامرس با پوسته cart.html `[DONE — 23/23 · رگرسیون صفر رد]`
 - 🎯 جدول سبد، تغییر تعداد و خلاصه — مارک‌آپ میرور با هوک‌های استاندارد ووکامرس
 - 📤 خروجی: `woocommerce/cart/cart.php (override)`؛ `بسط inc/Woo/Setup.php` · **وابستگی:** Task 6.1
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
@@ -780,7 +780,7 @@
 - 📤 خروجی: `taxonomy-product_cat.php`؛ `taxonomy-product_tag.php` · **وابستگی:** Task 6.7, Task 3.13
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.9 — سبد خرید ووکامرس با پوسته cart.html `[PENDING]`
+### Task 6.9 — سبد خرید ووکامرس با پوسته cart.html `[DONE — 23/23 · رگرسیون صفر رد]`
 - 🎯 جدول سبد، تغییر تعداد و خلاصه — مارک‌آپ میرور با هوک‌های استاندارد ووکامرس
 - 📤 خروجی: `woocommerce/cart/cart.php (override)`؛ `بسط inc/Woo/Setup.php` · **وابستگی:** Task 6.1
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا

@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 6 IN PROGRESS (8/11 TASKS DONE: 6.1–6.8 · PHASE 5 COMPLETE 12/12)**
+**PHASE 6 IN PROGRESS (9/11 TASKS DONE: 6.1–6.9 · PHASE 5 COMPLETE 12/12)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -86,6 +86,14 @@
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## رویدادهای فاز ۶ (2026-11-04)
+
+### ۶.۹ (تسک نهم) — سبد خرید ووکامرس (2026-11-07)
+- خروجی‌ها: `woocommerce/cart/cart.php` (رگیون‌های nowdoc از cart.html: HERO/HEAD/ROW/MID/QA/ASIDE/FOOT/EMPTY با توکن {ES_*}) + بسط `inc/Woo/Setup.php` (main_attrs برای <main> شل: cart/checkout/account با کلاس میرور + هندلر template_redirect ?empty-cart=1) + woocommerce.php (main_attrs تزریق شد).
+- **سه انحراف مستند از میرور** (الزام فرم استاندارد ووکامرس — بدون JS دستی): ۱) span[data-cart-row-qty] → input number با name="cart[key][qty]" + دکمه update_cart مخفی؛ ۲) دکمه‌های حذف/بازنشانی/افزودن سریع → لینک‌های استاندارد (wc_get_cart_remove_url / ?empty-cart=1 / ?add-to-cart=N) با حفظ data-hookها؛ ۳) فرم استاندارد woocommerce-cart-form + nonce (nonce قبل از دکمه update چاپ می‌شود).
+- ژنراتور temp/gen_p69.py: assert بازسازی با اعمال انحراف‌ها روی برش مرجع میرور (m_row_swaps/m_head_swaps/m_qa_swaps) — خروجی == میرور+انحراف‌ها؛ خودِ میرور未经‌دست‌کاری با raw_sum چک می‌شود.
+- quick-add: cross-sells → fallback ۳ محصول (post__not_in سبد)؛ ES_MID توکن {ES_QA_ITEMS} (آیتم سوم، بستن پایانی‌اش داخل run پنج‌تایی `<div` است — مرز برش +۱ بستن).
+- نکته: `array_values` روی get_cart() ممنوع (کلیدهای سبد = نام فیلد input)؛ esc_url روی & می‌گذارد &amp; (مرجع تست هم همان)؛ apply_filters استاب ارگ دوم واقعی می‌دهد → فیلتر step باید مقاوم باشد.
+- تست ۶.۹: ۲۳/۲۳ (رندر کامل بایت‌دقیق با انحراف‌ها، خالی، اعلان error با استایل رز، Setup، wrapper).
 
 ### ۶.۸ (تسک هشتم) — آرشیو دسته/تگ محصول (2026-11-07)
 - خروجی‌ها: `taxonomy-product_cat.php` (شل: archive-open میرور با data-initial-category داینامیک + hero-cat + product-filters ۶.۷ + topbar + گرید card-product + pagination + product-empty + category-faq با رپر mt-16؛ بدون ترم → get_template_part('archive-product'))، `taxonomy-product_tag.php` (گرید ساده + pagination)، `template-parts/archive/{hero-cat,category-faq,topbar,product-empty}.php`.

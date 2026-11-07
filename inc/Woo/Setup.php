@@ -45,6 +45,11 @@ final class Setup {
          * تعداد ستون‌های گرید آرشیو از داشبورد (آرشیوها → ستون‌های گرید محصولات).
          */
         add_filter('loop_shop_columns', [self::class, 'loop_columns'], 20);
+
+        /**
+         * خالی‌کردن سبد با پارامتر استاندارد ?empty-cart (دکمه بازنشانی میرور سبد).
+         */
+        add_action('template_redirect', [self::class, 'handle_empty_cart'], 10);
     }
 
     /**
@@ -81,5 +86,42 @@ final class Setup {
      */
     public static function hide_page_title(bool $show): bool {
         return false;
+    }
+
+    /**
+     * اتریبیوت‌های <main> شل ووکامرس بر اساس صفحه جاری — عین کلاس‌های میرور
+     * (cart.html: bg-slate-50/50 + data-cart-page · checkout.html: data-checkout-page).
+     */
+    public static function main_attrs(): string {
+        if (function_exists('is_cart') && is_cart()) {
+            return ' class="bg-slate-50/50" data-cart-page="true"';
+        }
+        if (function_exists('is_checkout') && is_checkout()) {
+            return ' class="bg-slate-50/50" data-checkout-page="true"';
+        }
+        if (function_exists('is_account_page') && is_account_page()) {
+            return ' class="bg-slate-50/50" data-account-page="true"';
+        }
+        return '';
+    }
+
+    /**
+     * خالی‌کردن سبد با پارامور استاندارد ?empty-cart=1 — دکمه «بازنشانی» میرور cart.html.
+     */
+    public static function handle_empty_cart(): void {
+        if (!function_exists('is_cart') || !is_cart() || !isset($_GET['empty-cart'])) {
+            return;
+        }
+        if (!function_exists('WC') || !(WC()->cart ?? null)) {
+            return;
+        }
+        WC()->cart->empty_cart();
+        if (function_exists('wc_add_notice')) {
+            wc_add_notice(__('سبد خرید خالی شد.', 'erfansanat'), 'notice');
+        }
+        if (function_exists('wc_get_cart_url')) {
+            wp_safe_redirect(wc_get_cart_url());
+            exit;
+        }
     }
 }

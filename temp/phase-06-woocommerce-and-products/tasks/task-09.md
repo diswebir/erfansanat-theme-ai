@@ -1,7 +1,7 @@
 # Task 6.9 — سبد خرید ووکامرس با پوسته cart.html
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 23/23 · رگرسیون صفر رد]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-09.php`
 
 ## 🎯 هدف
@@ -29,14 +29,14 @@
 - بدون جاوااسکریپت سبد دستی
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] رندر سبد خالی/پر مطابق میرور
-- [ ] به‌روزرسانی qty با فرم استاندارد ووکامرس
-- [ ] جمع‌ها صحیح با هوک‌ها
+- [x] رندر سبد خالی/پر مطابق میرور
+- [x] به‌روزرسانی qty با فرم استاندارد ووکامرس
+- [x] جمع‌ها صحیح با هوک‌ها
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-09.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-09.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

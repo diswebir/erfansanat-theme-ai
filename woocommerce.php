@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 get_header();
-echo '<main>';
+echo '<main' . (class_exists(\ErfanSanat\Theme\Woo\Setup::class) ? \ErfanSanat\Theme\Woo\Setup::main_attrs() : '') . '>';
 woocommerce_content();
 echo '</main>';
 get_footer();
