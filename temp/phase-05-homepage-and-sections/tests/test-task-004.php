@@ -27,7 +27,7 @@ if ( es_load_wp() ) {
 	};
 
 	// ── SC-01: a real Persian article ─────────────────────────────────────.
-	$cat = wp_insert_term( 'مجله علمی', 'category' );
+	$cat = es_insert_term( 'مجله علمی', 'category', array( 'slug' => 'p05-card-' . uniqid() ) );
 	$pid = wp_insert_post( array(
 		'post_type'     => 'post',
 		'post_status'   => 'publish',
