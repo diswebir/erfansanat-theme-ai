@@ -254,4 +254,26 @@ final class TaskP07T01Test extends TestCase {
 		$GLOBALS['post'] = get_post( $project_id );
 		setup_postdata( $GLOBALS['post'] );
 	}
+
+	/**
+	 * The archive must hand the filter panel real terms.
+	 *
+	 * `ProjectData::cities()` returns names, not `WP_Term` objects. A caller that
+	 * passes that into the panel renders an empty list and reads `->name` on a
+	 * string, which is a warning on every project archive request.
+	 */
+	public function test_filter_panel_receives_real_terms(): void {
+		$source = (string) file_get_contents(
+			get_template_directory() . '/template-parts/archive/part-projects-filters.php'
+		);
+
+		$this->assertStringContainsString( 'instanceof \\WP_Term', $source, 'The panel must type-check what it is given.' );
+		$this->assertStringContainsString( "'taxonomy'   => 'city'", $source, 'It must be able to read the terms itself.' );
+
+		$archive = (string) file_get_contents(
+			get_template_directory() . '/template-parts/archive/part-projects-archive.php'
+		);
+		$this->assertStringContainsString( '$erfansanat_cities = get_terms(', $archive, 'The archive supplies the city list.' );
+		$this->assertStringContainsString( '$erfansanat_types  = get_terms(', $archive, 'The archive supplies the type list.' );
+	}
 }

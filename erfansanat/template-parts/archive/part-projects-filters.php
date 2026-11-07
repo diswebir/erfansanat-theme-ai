@@ -23,8 +23,41 @@ defined( 'ABSPATH' ) || exit;
 
 use ErfanSanat\Theme\Frontend\SectionParts;
 
-$erfansanat_types        = isset( $erfansanat_types ) && is_array( $erfansanat_types ) ? $erfansanat_types : array();
-$erfansanat_cities       = isset( $erfansanat_cities ) && is_array( $erfansanat_cities ) ? $erfansanat_cities : array();
+// The archive hands these in; every other caller only has the post id, so the
+// term lists are read from the taxonomy itself. Both must be `WP_Term` objects:
+// a caller that passes names (`ProjectData::cities()`) would otherwise print an
+// empty list and read `->name` on a string.
+$erfansanat_types  = isset( $erfansanat_types ) && is_array( $erfansanat_types ) ? $erfansanat_types : array();
+$erfansanat_cities = isset( $erfansanat_cities ) && is_array( $erfansanat_cities ) ? $erfansanat_cities : array();
+
+$erfansanat_is_terms = static function ( array $rows ): bool {
+	foreach ( $rows as $row ) {
+		if ( ! $row instanceof \WP_Term ) {
+			return false;
+		}
+	}
+	return array() !== $rows;
+};
+
+if ( ! $erfansanat_is_terms( $erfansanat_types ) ) {
+	$erfansanat_types = get_terms(
+		array(
+			'taxonomy'   => 'project_type',
+			'hide_empty' => true,
+		)
+	);
+	$erfansanat_types = is_array( $erfansanat_types ) ? $erfansanat_types : array();
+}
+
+if ( ! $erfansanat_is_terms( $erfansanat_cities ) ) {
+	$erfansanat_cities = get_terms(
+		array(
+			'taxonomy'   => 'city',
+			'hide_empty' => true,
+		)
+	);
+	$erfansanat_cities = is_array( $erfansanat_cities ) ? $erfansanat_cities : array();
+}
 $erfansanat_total        = isset( $erfansanat_total ) ? (int) $erfansanat_total : 0;
 $erfansanat_archive_url  = isset( $erfansanat_archive_url ) ? (string) $erfansanat_archive_url : '';
 $erfansanat_current_type = isset( $erfansanat_current_type ) && $erfansanat_current_type instanceof \WP_Term ? $erfansanat_current_type : null;

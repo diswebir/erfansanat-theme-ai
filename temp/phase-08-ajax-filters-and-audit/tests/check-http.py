@@ -227,7 +227,11 @@ def task_8_2() -> None:
     # without weakening the rule the next assertions prove is real.
     wp("eval", "\\ErfanSanat\\Theme\\Forms\\FormHandler::reset_limits();")
 
-    before = wp("post", "list", "--post_type=erfansanat_message", "--post_status=private", "--format=count")
+    ids_before = set(
+        wp("post", "list", "--post_type=erfansanat_message", "--post_status=any",
+           "--format=ids", "--posts_per_page=-1").split()
+    )
+    before = str(len(ids_before))
 
     # --- a valid submission is stored ---
     session = Session()
@@ -250,12 +254,17 @@ def task_8_2() -> None:
     status, location = session.post(action_url, fields, referer)
     check("8.2", "a valid submission is accepted", status == 302 and "es_sent=ok" in location,
           f"status={status} location={location}")
-    after = wp("post", "list", "--post_type=erfansanat_message", "--post_status=private", "--format=count")
+    after = wp("post", "list", "--post_type=erfansanat_message", "--post_status=any",
+               "--format=count")
     check("8.2", "the submission is stored", after != before, f"{before} -> {after}")
 
     # The stored message is private and stripped of markup.
-    stored_id = wp("post", "list", "--post_type=erfansanat_message", "--post_status=private",
-                   "--format=ids", "--posts_per_page=1").split()
+    created = [
+        pid for pid in wp("post", "list", "--post_type=erfansanat_message", "--post_status=any",
+                          "--format=ids", "--posts_per_page=-1").split()
+        if pid not in ids_before
+    ]
+    stored_id = created[:1]
     if stored_id:
         check("8.2", "the stored message is private",
               wp("post", "get", stored_id[0], "--field=post_status") == "private")
@@ -334,6 +343,20 @@ def task_8_2() -> None:
     status, stranger = fetch(f"{BASE}/contact/?es_sent=nonsense")
     check("8.2", "an unknown outcome shows no message",
           "پیام شما ثبت شد" not in stranger and clean(stranger))
+
+    # Leave the fixture as it was found. A check that writes to the database and
+    # never cleans up turns the next run's "stored" assertion into a lie.
+    leftover = [
+        pid for pid in wp("post", "list", "--post_type=erfansanat_message", "--post_status=any",
+                          "--format=ids", "--posts_per_page=-1").split()
+        if pid not in ids_before
+    ]
+    if leftover:
+        wp("eval", "foreach (" + json.dumps([int(x) for x in leftover]) + " as $id) { wp_delete_post($id, true); }")
+    remaining = str(len(set(wp("post", "list", "--post_type=erfansanat_message", "--post_status=any",
+                               "--format=ids", "--posts_per_page=-1").split())))
+    check("8.2", "the run leaves the inbox as it found it", remaining == before,
+          f"{before} -> {remaining}")
 
 
 def task_8_3() -> None:

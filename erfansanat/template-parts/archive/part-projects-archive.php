@@ -30,6 +30,24 @@ $erfansanat_page        = max( 1, (int) get_query_var( 'paged' ), (int) get_quer
 $erfansanat_query = $GLOBALS['wp_query'] ?? null;
 $erfansanat_total = $erfansanat_query instanceof \WP_Query ? (int) $erfansanat_query->found_posts : 0;
 
+// The filter panel lists every term that has a project, so a term with nothing
+// in it never becomes a dead link. Reading it here means the panel and the
+// native form share one source.
+$erfansanat_types  = get_terms(
+	array(
+		'taxonomy'   => 'project_type',
+		'hide_empty' => true,
+	)
+);
+$erfansanat_types  = is_array( $erfansanat_types ) ? $erfansanat_types : array();
+$erfansanat_cities = get_terms(
+	array(
+		'taxonomy'   => 'city',
+		'hide_empty' => true,
+	)
+);
+$erfansanat_cities = is_array( $erfansanat_cities ) ? $erfansanat_cities : array();
+
 $erfansanat_projects = array();
 if ( $erfansanat_query instanceof \WP_Query ) {
 	foreach ( (array) $erfansanat_query->posts as $erfansanat_post ) {

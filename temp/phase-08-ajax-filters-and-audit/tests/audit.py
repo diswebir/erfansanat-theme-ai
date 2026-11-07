@@ -293,6 +293,17 @@ def audit_e2e() -> None:
     # 4. The filters narrow the archives and can be undone.
     _, all_projects, _ = fetch(BASE + "/projects/")
     total = all_projects.count('data-project-item="true"')
+
+    # A filter panel that renders no options looks fine in a status code and is
+    # useless in a browser; assert the terms are actually printed.
+    city_links = len(re.findall(r'data-project-location="[^"]+"', all_projects))
+    type_links = len(re.findall(r'data-project-type="[^"]+"', all_projects))
+    if city_links == 0:
+        record("FAIL", "e2e", "the project filter panel prints no cities")
+    if type_links == 0:
+        record("FAIL", "e2e", "the project filter panel prints no project types")
+    if "Warning:" in all_projects or "Notice:" in all_projects:
+        record("FAIL", "e2e", "the project archive prints a PHP warning")
     _, filtered, _ = fetch(BASE + "/projects/?city=" + urllib.parse.quote("قم"))
     narrowed = filtered.count('data-project-item="true"')
     if total == 0:
@@ -380,6 +391,71 @@ def audit_admin_font() -> None:
         record("FAIL", "font", "the login hook is never registered outside is_admin()")
 
 
+def audit_theme_package() -> None:
+    """The theme must be installable as a theme, not just runnable in place.
+
+    WordPress reads the header in `style.css`, needs a `screenshot.png` of the
+    documented size, and only honours editor settings it can find in
+    `theme.json`. None of these are visible on the front end, which is exactly
+    why they go missing.
+    """
+    theme = ROOT / "erfansanat"
+
+    header = (theme / "style.css").read_text(encoding="utf-8")
+    for field in ("Theme Name:", "Version:", "Requires PHP:", "Text Domain: erfansanat", "Domain Path:"):
+        if field not in header:
+            record("FAIL", "package", f"style.css is missing {field}")
+
+    for name in ("index.php", "functions.php", "readme.txt", "theme.json", "screenshot.png"):
+        if not (theme / name).exists():
+            record("FAIL", "package", f"{name} is missing from the theme")
+
+    shot = theme / "screenshot.png"
+    if shot.exists():
+        data = shot.read_bytes()
+        if not data.startswith(b"\x89PNG"):
+            record("WARN", "package", "screenshot.png is not a PNG")
+        # WordPress recommends 1200x630; the theme documents 1200x900 (4:3).
+        if len(data) < 2000:
+            record("FAIL", "package", "screenshot.png is too small to be an image")
+
+    theme_json = theme / "theme.json"
+    if theme_json.exists():
+        try:
+            parsed = json.loads(theme_json.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            record("FAIL", "package", f"theme.json is not valid JSON: {error}")
+            parsed = {}
+        if parsed:
+            settings = parsed.get("settings", {})
+            if "layout" not in settings:
+                record("WARN", "package", "theme.json declares no layout constraints")
+            families = settings.get("typography", {}).get("fontFamilies", [])
+            if not any("Vazirmatn" in f.get("fontFamily", "") for f in families):
+                record("FAIL", "package", "theme.json does not offer the theme's own font")
+            palette = {p.get("slug") for p in settings.get("color", {}).get("palette", [])}
+            if "brand" not in palette:
+                record("WARN", "package", "theme.json has no brand colour")
+            # The point of the file is to stop core shipping its defaults, so a
+            # theme.json that opts back in would be worse than none.
+            if settings.get("color", {}).get("defaultPalette") is not False:
+                record("WARN", "package", "theme.json still offers WordPress's default palette")
+            if settings.get("typography", {}).get("fluid") is not False:
+                record("WARN", "package", "fluid typography would fight the compiled stylesheet")
+
+    # No theme file may load a font or script from a third-party host.
+    for path in list(theme.rglob("*.php")) + list(theme.rglob("*.css")):
+        if "assets/css/styles.css" in str(path) or "manifest.json" in str(path):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for host in ("fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net", "unpkg.com"):
+            if host in text:
+                record("FAIL", "package", f"{path.relative_to(ROOT)} loads from {host}")
+
+
 def main() -> int:
     """Run every audit area and print a report."""
     status, _, _ = fetch(BASE + "/")
@@ -387,7 +463,8 @@ def main() -> int:
         print(f"No local preview on {BASE}.")
         return 2
 
-    for area in (audit_seo, audit_security, audit_performance, audit_e2e, audit_admin_font):
+    for area in (audit_seo, audit_security, audit_performance, audit_e2e, audit_admin_font,
+                 audit_theme_package):
         try:
             area()
         except Exception as error:  # noqa: BLE001 - one broken area must not hide the rest

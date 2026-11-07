@@ -168,6 +168,83 @@ final class TaskP08T03Test extends TestCase {
 	}
 
 	/**
+	 * The theme is a valid theme package, not only a folder that happens to run.
+	 */
+	public function test_theme_package_is_installable(): void {
+		$theme = get_template_directory();
+		$root  = rtrim( (string) getcwd(), '/' ) . '/erfansanat';
+
+		// The theme is symlinked into WordPress, so use the checkout's copy for
+		// the files a package needs.
+		if ( ! is_file( $root . '/theme.json' ) ) {
+			$root = '/home/user/erfansanat-theme-ai/erfansanat';
+		}
+
+		$this->assertFileExists( $root . '/screenshot.png' );
+		$this->assertFileExists( $root . '/readme.txt' );
+		$this->assertFileExists( $root . '/theme.json' );
+
+		$data = (string) file_get_contents( $root . '/screenshot.png' );
+		$this->assertStringStartsWith( "\x89PNG", $data, 'WordPress requires a PNG preview.' );
+
+		$header = (string) file_get_contents( $root . '/style.css' );
+		$this->assertStringContainsString( 'Text Domain: erfansanat', $header );
+		$this->assertStringContainsString( 'Domain Path:', $header );
+		$this->assertStringContainsString( 'Requires PHP:', $header );
+	}
+
+	/**
+	 * `theme.json` offers the theme's own type and palette, not core's.
+	 */
+	public function test_theme_json_matches_the_design(): void {
+		$root = rtrim( (string) getcwd(), '/' ) . '/erfansanat';
+		if ( ! is_file( $root . '/theme.json' ) ) {
+			$root = '/home/user/erfansanat-theme-ai/erfansanat';
+		}
+
+		$json = json_decode( (string) file_get_contents( $root . '/theme.json' ), true );
+		$this->assertIsArray( $json, 'theme.json must be valid JSON.' );
+
+		$families = $json['settings']['typography']['fontFamilies'] ?? array();
+		$names    = wp_list_pluck( $families, 'fontFamily' );
+		$this->assertNotEmpty( $names );
+		$this->assertStringContainsString( 'Vazirmatn', implode( ' ', $names ) );
+
+		$palette = wp_list_pluck( $json['settings']['color']['palette'] ?? array(), 'slug' );
+		$this->assertContains( 'brand', $palette );
+		$this->assertContains( 'ink', $palette );
+
+		// Offering core's defaults would undo the point of declaring a palette:
+		// an editor could pick a colour the stylesheet has no utility for.
+		$this->assertFalse( $json['settings']['color']['defaultPalette'] );
+		$this->assertFalse( $json['settings']['typography']['fluid'], 'Fluid type would fight the compiled build.' );
+	}
+
+	/**
+	 * No theme file may reach a third-party host for a font or a script.
+	 */
+	public function test_theme_loads_nothing_from_a_third_party(): void {
+		$theme = get_template_directory();
+		$files = array_merge(
+			(array) glob( $theme . '/*.php' ),
+			(array) glob( $theme . '/inc/*.php' ),
+			(array) glob( $theme . '/inc/Forms/*.php' ),
+			(array) glob( $theme . '/assets/admin/*.css' )
+		);
+
+		$hosts = array( 'fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'unpkg.com' );
+		foreach ( $files as $file ) {
+			if ( ! is_string( $file ) || ! is_file( $file ) ) {
+				continue;
+			}
+			$text = (string) file_get_contents( $file );
+			foreach ( $hosts as $host ) {
+				$this->assertStringNotContainsString( $host, $text, basename( $file ) . ' loads from ' . $host );
+			}
+		}
+	}
+
+	/**
 	 * Both archives keep a no-JavaScript path, which the audit exercises live.
 	 */
 	public function test_archives_degrade_without_scripting(): void {
