@@ -222,3 +222,7 @@
 ## 2026-11-07 — P07-T020 برگه درباره ما (10)
 - `page-templates/about.php` کنترلر Renderer با context=about. وابستگی‌های ثبت‌شده: Schema about_sections بازنویسی شد (hero/intro/iso/principles/history با فیلدهای کامل)؛ ۵ پارت sections/about ساخته شد؛ نگاشت قالب→context در functions.php روی فیلتر `erfansanat_sections_context` (برای about/contact/arya).
 - CTA تماس فقط از فوتر گلوبال (بدون تکرار). تست **10/0**؛ رگرسیون P02-T018=10، P05-T001=14. نکته تست: locate_template هسته require_once است؛ در یک پروسه فقط اولین رندر کامل فوتر دارد—تست CTA روی رندر اول اصلاح شد.
+
+
+## 2026-11-07 — P07-T021 برگه تماس (10)
+- کنترلر Renderer context=contact؛ Schema contact به hero/form بازطراحی شد (info داخل form؛ fallback به FooterTab::contact، override هر فیلد، map فقط http(s)، فرم بدون action/method/name + یادداشت امن تا فاز ۸). تست **10/0**؛ رگرسیون T020=10.

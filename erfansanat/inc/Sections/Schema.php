@@ -316,26 +316,23 @@ final class Schema {
 				'title'    => 'هیرو تماس',
 				'template' => 'contact/section-hero',
 				'fields'   => array(
-					'heading' => self::f( 'text', 'عنوان', 'تماس با ما' ),
-					'content' => self::f( 'rich', 'متن', '' ),
+					'heading'   => self::f( 'text', 'عنوان', 'تماس با ما؛ پاسخگوی شما هستیم' ),
+					'highlight' => self::f( 'text', 'بخش برجسته', 'پاسخگوی شما هستیم' ),
+					'content'   => self::f( 'rich', 'متن', '' ),
+					'badge'     => self::f( 'text', 'نشان', 'مشاوره و استعلام قیمت رایگان' ),
 				),
 			),
 			'form' => array(
-				'title'    => 'فرم تماس',
+				'title'    => 'فرم و اطلاعات تماس',
 				'template' => 'contact/section-form',
 				'fields'   => array(
-					'heading'     => self::f( 'text', 'عنوان', 'ارسال پیام' ),
-					'description' => self::f( 'textarea', 'توضیح', '' ),
-				),
-			),
-			'info' => array(
-				'title'    => 'اطلاعات تماس',
-				'template' => 'contact/section-info',
-				'fields'   => array(
-					'heading' => self::f( 'text', 'عنوان', 'اطلاعات تماس' ),
-					'address' => self::f( 'textarea', 'نشانی', '' ),
-					'phone'   => self::f( 'text', 'تلفن', '' ),
-					'email'   => self::f( 'email', 'ایمیل', '' ),
+					'heading'     => self::f( 'text', 'عنوان فرم', 'فرم درخواست مشاوره رایگان' ),
+					'description' => self::f( 'textarea', 'توضیح فرم', '' ),
+					'address'     => self::f( 'textarea', 'نشانی (خالی = تنظیمات تماس)', '' ),
+					'phone'       => self::f( 'text', 'تلفن (خالی = تنظیمات تماس)', '' ),
+					'email'       => self::f( 'email', 'ایمیل (خالی = تنظیمات تماس)', '' ),
+					'map_embed'   => self::f( 'url', 'لینک.embed نقشه (اختیاری)', '' ),
+					'form_note'   => self::f( 'textarea', 'یادداشت وضعیت فرم', 'ثبت آنلاین درخواست به‌زودی فعال می‌شود؛ تا آن زمان لطفاً تلفنی تماس بگیرید.' ),
 				),
 			),
 		);
