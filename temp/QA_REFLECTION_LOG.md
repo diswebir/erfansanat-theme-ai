@@ -294,3 +294,8 @@
 - `assets/js/search.js` جدید: ارتقای مودال موجود بدون دست‌زدن main.js — debounce 250ms، AbortController + شمارنده seq (پاسخ کهنه دور ریخته می‌شود)، کیبورد ArrowDown/Up/Enter/Escape با aria-current، حالت خالی امن، بازگشت به رندر سرور برای عبارت کوتاه؛ ردیف‌ها با textContent ساخته می‌شوند (بدون innerHTML داده کاربر) و data-search-item حفظ می‌شود. اگر ES_AJAX نباشد fallback فیلتر محلی main.js می‌ماند.
 - `search-modal.php`: enqueue es-search با dependency es-main (ترتیب اجرای inline config). گارد __esSearchInit برای idempotent بودن (باگ واقعی: DOMContentLoaded طبیعی JSDOM + dispatch دستی → دوبار بایند؛ در پروداکشن هم اگر اسکریپت دوبار لود شود ایمن است).
 - تست PHP **12/0** + JSDOM **10/0** (fetch.mock با تأخیر متفاوت: درخواست کند abort و فقط آخرین عبارت رندر؛ SC-02 کیبورد). رگرسیون T001=20، T002=14، T003=13، P04-T012=16.
+
+
+## 2026-11-07 — P08-T005 QueryBuilder فیلتر محصول (15)
+- `inc/Core/SmartFilters.php`: فقط WP_Query args (بدون $wpdb/SQL). whitelist تاکسونومی = product_cat + pa_*های موجود از AttributeMap؛ ترم‌ها id یا slug تمیز؛ visibility exclusion؛ قیمت NUMERIC BETWEEN (_price) با جابه‌جایی min/max؛ sale_mode online|inquiry → متای true_sale؛ orderby لیست‌سفید (latest/oldest/price_asc/desc/name/popular)؛ per_page سقف 48، page کف 1. خروجی query_products: ids/total/pages/page/args.
+- تست **15/0** (ترکیبی دسته+قیمت+IP فقط هدف؛ کلید ناشناخته حذف؛ مرتب‌سازی قیمت واقعی). رگرسیون P03-T005=13، P03-T007=13، P06-T010 سبز.
