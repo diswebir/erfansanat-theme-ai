@@ -342,7 +342,7 @@
 - 📤 خروجی: `woocommerce/checkout/*.php overrides (form-checkout.php، thankyou.php)`؛ `inc/Woo/CheckoutFields.php` · **وابستگی:** Task 6.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.11 — حساب کاربری (my-account) و صفحه auth (ورود پیامکی voorodak) `[PENDING]`
+### Task 6.11 — حساب کاربری (my-account) و صفحه auth (ورود پیامکی voorodak) `[DONE — 22/22 · رگرسیون ۱۱۶۴/۰]`
 - 🎯 پوسته یکدست صفحات حساب کاربری ووکامرس و هماهنگی با افزونه ورود پیامکی
 - 📤 خروجی: `woocommerce/myaccount/*.php overrides (سبک)`؛ `assets/css/wc-forms-override.css (یا در styles میرور enqueue شرطی)` · **وابستگی:** Task 6.10
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
@@ -790,7 +790,7 @@
 - 📤 خروجی: `woocommerce/checkout/*.php overrides (form-checkout.php، thankyou.php)`؛ `inc/Woo/CheckoutFields.php` · **وابستگی:** Task 6.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.11 — حساب کاربری (my-account) و صفحه auth (ورود پیامکی voorodak) `[PENDING]`
+### Task 6.11 — حساب کاربری (my-account) و صفحه auth (ورود پیامکی voorodak) `[DONE — 22/22 · رگرسیون ۱۱۶۴/۰]`
 - 🎯 پوسته یکدست صفحات حساب کاربری ووکامرس و هماهنگی با افزونه ورود پیامکی
 - 📤 خروجی: `woocommerce/myaccount/*.php overrides (سبک)`؛ `assets/css/wc-forms-override.css (یا در styles میرور enqueue شرطی)` · **وابستگی:** Task 6.10
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا

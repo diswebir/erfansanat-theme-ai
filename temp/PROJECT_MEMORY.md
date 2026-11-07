@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 6 IN PROGRESS (10/11 TASKS DONE: 6.1–6.10 · PHASE 5 COMPLETE 12/12)**
+**PHASE 6 COMPLETE (11/11 TASKS · 62/62 فاز ۶ · PHASE 5 COMPLETE 12/12) — فاز بعدی: 7 (پروژه‌ها/وبلاگ/برگه‌ها)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -86,6 +86,12 @@
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## رویدادهای فاز ۶ (2026-11-04)
+
+### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
+- خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
+- گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.
+- فیکسچر: wp_enqueue_style استاب هارنس از قبل هست (به __wp_hooks[enqueued_styles] می‌نویسد) — تکراری تعریف نکنید؛ متد checkout/payment_gateways در فیکسچر WC متدند.
+- تست ۶.۱۱: ۲۲/۲۲ · رگرسیون کامل ۱۱۶۴/۰ (۸۲ فایل فعال).
 
 ### ۶.۱۰ (تسک دهم) — checkout + thank-you (2026-11-07)
 - خروجی‌ها: `woocommerce/checkout/form-checkout.php` (شل دوبل: فرم checkout میرور / رسید thank-you) + `inc/Woo/CheckoutFields.php` (buyer_type + es_tax_id → متای سفارش).

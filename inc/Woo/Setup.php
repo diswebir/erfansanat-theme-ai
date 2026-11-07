@@ -50,6 +50,30 @@ final class Setup {
          * خالی‌کردن سبد با پارامتر استاندارد ?empty-cart (دکمه بازنشانی میرور سبد).
          */
         add_action('template_redirect', [self::class, 'handle_empty_cart'], 10);
+
+        /**
+         * پوسته صفحات حساب کاربری (فقط این صفحات — سبک میرور).
+         */
+        add_action('wp_enqueue_scripts', [self::class, 'enqueue_account_styles'], 20);
+    }
+
+    /**
+     * استایل override صفحات my-account ووکامرس — فقط در همین صفحات بارگذاری می‌شود.
+     */
+    public static function enqueue_account_styles(): void {
+        if (!function_exists('is_account_page') || !is_account_page()) {
+            return;
+        }
+        $es_rel = 'assets/css/wc-forms-override.css';
+        $es_abs = function_exists('get_theme_file_path') ? (string) get_theme_file_path($es_rel) : '';
+        if ($es_abs !== '' && is_file($es_abs) && function_exists('wp_enqueue_style')) {
+            wp_enqueue_style(
+                'es-wc-forms-override',
+                ERFANSANAT_URI . $es_rel,
+                [],
+                (string) filemtime($es_abs)
+            );
+        }
     }
 
     /**
