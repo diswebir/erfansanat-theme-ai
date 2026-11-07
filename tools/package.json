@@ -1,0 +1,13 @@
+{
+  "name": "erfansanat-development-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned development-only tools; not part of the WordPress theme.",
+  "engines": { "node": ">=24.18.0", "npm": ">=11.16.0" },
+  "dependencies": {
+    "@php-wasm/cli": "3.1.62",
+    "node": "24.18.0",
+    "npm": "11.16.0",
+    "xmllint-wasm": "5.3.0"
+  }
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/env.sh"
+exec "$ERFANSANAT_NODE" "$ERFANSANAT_PHP_CLI" "$ERFANSANAT_TOOL_CACHE/phpcs/bin/phpcs" "$@"

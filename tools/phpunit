@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/env.sh"
+out="$(mktemp)"
+trap 'rm -f "$out"' EXIT
+set +e
+"$ERFANSANAT_NODE" "$ERFANSANAT_PHP_CLI" -r \
+  'require getenv("ERFANSANAT_TOOL_CACHE") . "/phpunit-vendor/autoload.php"; require getenv("ERFANSANAT_TOOL_CACHE") . "/phpunit-vendor/phpunit/phpunit/phpunit";' -- "$@" 2>&1 | tee "$out"
+status="${PIPESTATUS[0]}"
+set -e
+if [[ "$status" -ne 0 ]]; then exit "$status"; fi
+if grep -Eq '^(FAILURES|ERRORS|WARNINGS)!|^No tests executed!' "$out"; then exit 1; fi

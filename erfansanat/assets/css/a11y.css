@@ -1,0 +1,93 @@
+/*
+ * Accessibility helpers the compiled stylesheet does not provide.
+ *
+ * `styles.css` is a build artefact of the approved reference and is never edited
+ * by hand (Task 1.3), so the two things the reference never needed live here.
+ *
+ * 1. `.screen-reader-text` — header-search.php uses it on the label above the
+ *    search field. The class comes from WordPress, but the theme does not load
+ *    core's own stylesheet on the front end, so without this rule the word
+ *    "جستجو" is printed above the input in every browser.
+ * 2. The skip link — a keyboard user should be able to jump past the top bar,
+ *    the mega menu and the drawer instead of tabbing through them on every page.
+ */
+
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.screen-reader-text:focus {
+	position: static !important;
+	width: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	clip: auto;
+	clip-path: none;
+	white-space: normal;
+}
+
+/*
+ * The skip link is off-screen until it is focused. `position: fixed` keeps it
+ * out of the layout, so nothing shifts when it appears. The colour pair is the
+ * theme's own brand/white, and the ring is visible against both page and header.
+ */
+.erfansanat-skip-link {
+	position: fixed;
+	top: 0.75rem;
+	right: 0.75rem;
+	z-index: 100;
+	transform: translateY(-200%);
+	display: inline-block;
+	padding: 0.625rem 1rem;
+	border-radius: 0.75rem;
+	background: #047857;
+	color: #ffffff;
+	font-size: 0.8125rem;
+	font-weight: 800;
+	text-decoration: none;
+	box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+	transition: transform 150ms ease-out;
+}
+
+.erfansanat-skip-link:focus,
+.erfansanat-skip-link:focus-visible {
+	transform: translateY(0);
+	outline: 3px solid #f59e0b;
+	outline-offset: 2px;
+	color: #ffffff;
+}
+
+/*
+ * A focus ring for the rest of the page. Tailwind's preflight removes the
+ * browser default, and the compiled build only carries `focus:` utilities on
+ * the handful of components that asked for them.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 3px solid #10b981;
+	outline-offset: 2px;
+}
+
+/*
+ * `<main tabindex="-1">` is the skip link's target. It is focusable so the jump
+ * actually moves focus, but it is not interactive, so the ring is suppressed —
+ * the user should see the content, not a box around the whole page body.
+ */
+#primary:focus {
+	outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.erfansanat-skip-link {
+		transition: none;
+	}
+}

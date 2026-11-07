@@ -1,0 +1,94 @@
+/**
+ * Vazirmatn for the whole WordPress admin.
+ *
+ * This file exists so the theme's typeface is not a side effect of loading the
+ * panel stylesheet: the front end already ships Vazirmatn, and an admin that
+ * renders in a different font looks like a different product. The dashboard, the
+ * editor, the media library, the WooCommerce screens and the login form all get
+ * the same three subsets the site uses.
+ *
+ * It is enqueued on every admin screen and on the login form, and it is loaded
+ * *before* anything else so the browser starts fetching the font as early as
+ * possible.
+ *
+ * The three `@font-face` rules are subset-scoped, so a Latin-only screen only
+ * downloads the Latin subset and the Persian glyphs arrive only when a Persian
+ * character actually appears.
+ */
+
+@font-face {
+	font-family: "Vazirmatn";
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url("../fonts/vazirmatn-arabic.woff2") format("woff2");
+	unicode-range: U+600-6FF, U+750-77F, U+870-88E, U+890-891, U+897-8E1, U+8E3-8FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+	font-family: "Vazirmatn";
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url("../fonts/vazirmatn-latin-ext.woff2") format("woff2");
+	unicode-range: U+100-2BA, U+2BD-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: "Vazirmatn";
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url("../fonts/vazirmatn-latin.woff2") format("woff2");
+	unicode-range: U+0-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/**
+ * WordPress hard-codes its own stack on `body`, so the stack is replaced rather
+ * than appended: appending would let the first declaration win and Vazirmatn
+ * would never apply. `body.wp-admin` outranks the core `body` rule, and the
+ * universal descendant selector catches the controls core styles individually
+ * (`input`, `select`, `textarea`, `.button`, `.wp-menu-name`, notices, the admin
+ * bar) without needing a rule per screen.
+ */
+body.wp-admin,
+body.wp-admin *,
+body.login,
+body.login *,
+#wpadminbar,
+#wpadminbar * {
+	font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+}
+
+/**
+ * The block editor is an iframe with its own document, so the admin rule above
+ * cannot reach it. These two add the same stack to the editor canvas so a writer
+ * types in the same face the article will be published in.
+ */
+.editor-styles-wrapper,
+.block-editor-writing-flow,
+.wp-block,
+.editor-post-title__input {
+	font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Monospace stays monospace: code is read differently from prose. */
+body.wp-admin code,
+body.wp-admin pre,
+body.wp-admin kbd,
+body.wp-admin samp,
+body.wp-admin .wp-editor-area,
+body.wp-admin textarea.code,
+.CodeMirror,
+.CodeMirror * {
+	font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Tabular figures keep prices and counters aligned in Persian. */
+body.wp-admin .erfansanat-admin,
+body.wp-admin .erfansanat-product-meta,
+body.wp-admin .erfansanat-project-meta,
+body.wp-admin .wp-list-table td,
+body.wp-admin .wp-list-table th {
+	font-feature-settings: "ss01";
+}
