@@ -63,3 +63,23 @@ function es_enabled( string $key ): bool {
 function es_asset( string $relative ): string {
 	return AssetManager::uri( $relative );
 }
+
+/**
+ * Archive URL for a term, or an empty string when the term has no usable link.
+ *
+ * `get_term_link()` returns a `WP_Error` for a term whose taxonomy is not
+ * registered on this request (or a term that vanished between the query and the
+ * template), and casting that object to a string is a fatal error. Every place
+ * the theme links to a term goes through here so a single bad term degrades to
+ * "no link" instead of a white screen.
+ *
+ * @param \WP_Term|null $term Term to link, if any.
+ * @return string
+ */
+function term_url( $term ): string {
+	if ( ! $term instanceof \WP_Term ) {
+		return '';
+	}
+	$link = get_term_link( $term );
+	return is_string( $link ) ? $link : '';
+}

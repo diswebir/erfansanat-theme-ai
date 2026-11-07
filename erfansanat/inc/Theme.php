@@ -46,6 +46,10 @@ final class Theme {
 
 		$this->boot_modules();
 
+		// The login form is not `is_admin()`, but it must still use the theme's
+		// font: it is the first screen an editor ever sees.
+		add_action( 'login_init', array( \ErfanSanat\Theme\Admin\ThemeOptions::class, 'enqueue_login_font' ) );
+
 		if ( is_admin() ) {
 			\ErfanSanat\Theme\Admin\ThemeOptions::register();
 			\ErfanSanat\Theme\Admin\SectionManager::register();
@@ -53,6 +57,7 @@ final class Theme {
 			\ErfanSanat\Theme\Admin\ProjectMetaboxes::register();
 			\ErfanSanat\Theme\Admin\TermMetaboxes::register();
 			\ErfanSanat\Theme\Admin\ContentMetaboxes::register();
+			\ErfanSanat\Theme\Forms\InboxAdmin::register();
 			add_action( 'admin_init', array( \ErfanSanat\Theme\Admin\ThemeOptions::class, 'register_ajax' ) );
 		}
 	}
@@ -103,6 +108,15 @@ final class Theme {
 
 		// WooCommerce boots its own classes after the theme, so the bridge is
 		// attached to `init` instead of being checked for existence here.
+		Projects::register();
+		LiveSearch::register();
+		ArchiveFilters::register();
+		Seo::register();
+		\ErfanSanat\Theme\Forms\FormHandler::register();
+		\ErfanSanat\Theme\Forms\Inbox::register();
+		add_action( 'init', array( \ErfanSanat\Theme\Forms\Inbox::class, 'schedule' ) );
+		add_action( 'erfansanat_message_purge', array( \ErfanSanat\Theme\Forms\Inbox::class, 'purge' ) );
+		add_filter( 'the_content', array( \ErfanSanat\Theme\Data\PostData::class, 'add_heading_anchors' ), 5 );
 		add_action( 'init', array( WooCommerce::class, 'register' ), 5 );
 		add_action( 'init', array( Commerce::class, 'register' ), 6 );
 

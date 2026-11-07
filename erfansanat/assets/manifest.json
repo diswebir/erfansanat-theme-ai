@@ -2,9 +2,17 @@
   "generated_by": "tools/build-asset-manifest.py",
   "reference": "static-mirror/",
   "files": {
+    "admin/font.css": {
+      "sha256": "168af8ebaf5dadab28a5da555d8956b98678a499d2db8cd00cb31a990e04c5c5",
+      "bytes": 3485,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
     "admin/options.css": {
-      "sha256": "81b0c0346fcda84c2f732a49f32dd53d85dba824ff52dd87bcc18330fb6d601a",
-      "bytes": 4550,
+      "sha256": "ecbd4b3cd1de5998b2b44dbd787b434646d8db5e0ae677e8287ad35d794a5db8",
+      "bytes": 9468,
       "source": null,
       "source_sha256": null,
       "identical_to_source": false,
@@ -13,6 +21,14 @@
     "admin/options.js": {
       "sha256": "0a51d1ce62ee9630e8fcd01619b889f9b623358ace650cd463600c2182593d1e",
       "bytes": 14867,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
+    "css/article.css": {
+      "sha256": "b2537710ded0601c23b850bec4f193b9f4ace2966c42f855614402c14112e0dc",
+      "bytes": 3665,
       "source": null,
       "source_sha256": null,
       "identical_to_source": false,
@@ -194,13 +210,13 @@
       "identical_to_source": true
     },
     "js/main.js": {
-      "sha256": "8d492a48854fb621eb522e36976e59042ec0313284a7e5a1202e348f25bbcced",
-      "bytes": 113304,
+      "sha256": "5af4e6351cb4dcff82e413070d76fb3f53f356e072b7048cae6ff4154d7b616d",
+      "bytes": 121839,
       "source": "assets/js/main.js",
       "source_sha256": "00591a32a85619b2997e625f2a769bb178be443f07f94fcb0763d294e4b15f0d",
       "identical_to_source": false,
       "patched": true,
-      "patch_note": "Phase 6.2: the approved archive markup marks its pager with data-pagination-root / data-page-num and records server-side paging, while the copied script only looked for data-page-btn and the string \"true\". Without the fix the client pager never bound, so paging was dead on every shop archive."
+      "patch_note": "Phase 6.2: the approved archive markup marks its pager with data-pagination-root / data-page-num and records server-side paging, while the copied script only looked for data-page-btn and the string \"true\". Without the fix the client pager never bound, so paging was dead on every shop archive. Phase 7.2: in server-paged mode the same function left every item hidden after a filter change, because the slice loop below it never ran; matching items are now un-hidden before the early return. Phase 8.1 added the live-search panel and the Phase 8.2 change stopped the contact handler from showing success for a submission the server had not accepted."
     },
     "video/hero-video.mp4": {
       "sha256": "b41de43d298c7ceeeaa18ca3bd236315e43d116949943b84f37929484eae2063",

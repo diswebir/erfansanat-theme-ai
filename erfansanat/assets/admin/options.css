@@ -1,7 +1,19 @@
 /**
- * Erfan Sanat admin panel styles — scoped to the theme settings screen.
- * Designed RTL-first with logical properties so it also reads well in LTR.
+ * Erfan Sanat admin panel styles.
+ *
+ * Vazirmatn is no longer declared here. It lives in `font.css`, which is loaded
+ * on every admin screen and on the login form, because a font that only arrives
+ * with this panel would leave the rest of the dashboard in a different typeface.
+ * This file is the panel layout: the settings screen, the section manager and
+ * the theme's meta boxes.
+ *
+ * RTL-first with logical properties so it also reads well in LTR.
  */
+
+/* ---------------------------------------------------------------------------
+ * 2. Theme panel
+ * ------------------------------------------------------------------------- */
+
 .erfansanat-admin {
 	--es-green: #00a83e;
 	--es-green-dark: #007d2d;
@@ -226,6 +238,198 @@
 	color: var(--es-green-dark);
 }
 
+/* ---------------------------------------------------------------------------
+ * 3. Section manager: ordered list, drag handle, per-section field panel
+ * ------------------------------------------------------------------------- */
+
+.erfansanat-sections {
+	max-width: 900px;
+}
+
+.erfansanat-sections__list {
+	display: grid;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.erfansanat-sections__item {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+	gap: 10px;
+	align-items: center;
+	background: var(--es-surface);
+	border: 1px solid var(--es-line);
+	border-radius: 12px;
+	padding: 10px 14px;
+}
+
+.erfansanat-sections__item.is-dragging {
+	opacity: 0.55;
+	border-color: var(--es-green);
+	box-shadow: 0 8px 24px -16px rgba(0, 168, 62, 0.5);
+}
+
+.erfansanat-sections__item.is-disabled .erfansanat-sections__title {
+	color: var(--es-muted);
+	text-decoration: line-through;
+}
+
+.erfansanat-sections__handle {
+	cursor: grab;
+	color: var(--es-muted);
+	letter-spacing: -2px;
+	user-select: none;
+}
+
+.erfansanat-sections__title {
+	font-weight: 700;
+	color: var(--es-ink);
+}
+
+.erfansanat-sections__anchor {
+	color: var(--es-muted);
+	direction: ltr;
+	font-size: 12px;
+}
+
+.erfansanat-sections__move {
+	display: inline-flex;
+	gap: 2px;
+}
+
+.erfansanat-sections__fields {
+	grid-column: 1 / -1;
+	border-top: 1px dashed var(--es-line);
+	margin-top: 8px;
+	padding-top: 12px;
+	display: grid;
+	gap: 14px;
+}
+
+.erfansanat-sections__fields[hidden] {
+	display: none;
+}
+
+.erfansanat-sections__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.erfansanat-sections__edit[aria-expanded="true"] {
+	color: var(--es-green-dark);
+	font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Meta boxes shared by products, projects, terms and content
+ * ------------------------------------------------------------------------- */
+
+.erfansanat-product-meta,
+.erfansanat-project-meta,
+.erfansanat-repeater-meta,
+.erfansanat-term-faq,
+.erfansanat-term-thumbnail {
+	display: grid;
+	gap: 4px;
+}
+
+.erfansanat-product-meta__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	gap: 12px 18px;
+}
+
+.erfansanat-product-meta .form-field,
+.erfansanat-project-meta .form-field,
+.erfansanat-repeater-meta .form-field {
+	margin: 0 0 8px;
+}
+
+.erfansanat-product-meta .form-field label,
+.erfansanat-project-meta .form-field label {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.erfansanat-product-meta .form-field input[type="text"],
+.erfansanat-product-meta .form-field input[type="number"],
+.erfansanat-product-meta .form-field input[type="url"],
+.erfansanat-product-meta .form-field textarea,
+.erfansanat-project-meta .form-field input[type="text"],
+.erfansanat-project-meta .form-field input[type="number"],
+.erfansanat-project-meta .form-field input[type="url"],
+.erfansanat-project-meta .form-field textarea {
+	border-radius: 8px;
+}
+
+.erfansanat-repeater-meta {
+	max-width: 780px;
+}
+
+.erfansanat-repeater-meta .erfansanat-rows,
+.erfansanat-term-faq .erfansanat-rows {
+	display: grid;
+	gap: 6px;
+}
+
+.erfansanat-repeater-meta .erfansanat-repeater__row input {
+	width: 100%;
+}
+
+.erfansanat-icon-preview {
+	display: inline-grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border: 1px solid var(--es-line);
+	border-radius: 9px;
+	background: var(--es-soft);
+	color: var(--es-green-dark);
+}
+
+.erfansanat-icon-preview svg {
+	width: 18px;
+	height: 18px;
+}
+
+.erfansanat-link-field {
+	display: grid;
+	grid-template-columns: 120px minmax(0, 1fr);
+	gap: 6px;
+	max-width: 640px;
+}
+
+.erfansanat-link-field[hidden] {
+	display: none;
+}
+
+.erfansanat-select--multi {
+	min-width: 260px;
+	height: auto;
+}
+
+/* Media rows inside meta boxes reuse the panel preview, but smaller. */
+.erfansanat-product-meta .erfansanat-media,
+.erfansanat-project-meta .erfansanat-media,
+.erfansanat-term-thumbnail .erfansanat-media {
+	gap: 8px;
+}
+
+.erfansanat-product-meta .erfansanat-media__preview,
+.erfansanat-project-meta .erfansanat-media__preview,
+.erfansanat-term-thumbnail .erfansanat-media__preview {
+	width: 56px;
+	height: 56px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Small screens
+ * ------------------------------------------------------------------------- */
+
 @media screen and (max-width: 782px) {
 	.erfansanat-admin__layout {
 		grid-template-columns: minmax(0, 1fr);
@@ -243,5 +447,13 @@
 
 	.erfansanat-repeater__row input[type="url"] {
 		grid-column: 1 / -1;
+	}
+
+	.erfansanat-sections__item {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+
+	.erfansanat-sections__anchor {
+		display: none;
 	}
 }

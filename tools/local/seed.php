@@ -65,7 +65,10 @@ function es_fixture_post(string $type, string $slug, string $title, string $cont
 }
 
 function es_fixture_term(string $tax, string $name, string $slug = '', array $args = []): int {
-    $slug = $slug ?: sanitize_title($name);
+    // sanitize_title() percent-encodes non-ASCII characters, so a Persian term
+    // would get the literal slug "%d8%a7..." and every generated term URL would
+    // 404 after a second round of encoding. Decode it back to real characters.
+    $slug = $slug ?: urldecode(sanitize_title($name));
     $term = term_exists($slug, $tax);
     if (!$term) {
         $term = wp_insert_term($name, $tax, array_merge(['slug' => $slug], $args));

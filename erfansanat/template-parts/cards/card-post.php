@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit;
 
+use ErfanSanat\Theme\Data\PostData;
 use ErfanSanat\Theme\Frontend\SectionParts;
 
 if ( ! isset( $erfansanat_post ) || ! $erfansanat_post instanceof \WP_Post ) {
@@ -21,12 +22,22 @@ $erfansanat_id    = (int) $erfansanat_post->ID;
 $erfansanat_title = get_the_title( $erfansanat_id );
 $erfansanat_url   = (string) get_permalink( $erfansanat_id );
 $erfansanat_image = (string) get_the_post_thumbnail_url( $erfansanat_id, 'erfansanat-card' );
-$erfansanat_cats  = get_the_category( $erfansanat_id );
-$erfansanat_cat   = array() !== $erfansanat_cats ? (string) $erfansanat_cats[0]->name : '';
 
-// Reading time from the real word count, not from a hard-coded value.
-$erfansanat_words = str_word_count( wp_strip_all_tags( (string) $erfansanat_post->post_content ) );
-$erfansanat_mins  = max( 1, (int) ceil( $erfansanat_words / 200 ) );
+// A post with no featured image gets one of the theme's own photographs. The
+// fixture posts are all in that position, and a coloured card without any
+// artwork looks broken next to the product and project cards.
+$erfansanat_fallback = PostData::fallback_thumb( $erfansanat_id );
+if ( '' === $erfansanat_image ) {
+	$erfansanat_image = $erfansanat_fallback;
+}
+
+$erfansanat_categories = PostData::categories( $erfansanat_id );
+$erfansanat_cat        = (string) ( $erfansanat_categories[0] ?? '' );
+
+// Reading time from the real word count. `str_word_count()` returns 0 for
+// Persian text because it only recognises ASCII letters, so the split lives in
+// PostData and is shared with the single post template.
+$erfansanat_mins = PostData::reading_time( $erfansanat_id );
 
 $erfansanat_excerpt = get_the_excerpt( $erfansanat_post );
 ?>

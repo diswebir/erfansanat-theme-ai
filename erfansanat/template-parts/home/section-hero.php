@@ -54,10 +54,17 @@ $erfansanat_hero_scene_count = count( $erfansanat_hero_scenes );
 						}
 						$erfansanat_hidden = 0 === (int) $erfansanat_index ? 'opacity-100' : 'opacity-0';
 						?>
+						<?php
+						// The first scene is the largest thing on the page and the
+						// one the visitor is looking at, so it loads eagerly and at
+						// high priority; every later scene is off-screen until the
+						// rotation reaches it, so it waits.
+						$erfansanat_first = 0 === (int) $erfansanat_index;
+						?>
 						<img src="<?php echo esc_url( $erfansanat_image ); ?>"
 							alt="<?php echo esc_attr( (string) ( $erfansanat_scene['title'] ?? '' ) ); ?>"
 							data-home1-scene-img="<?php echo esc_attr( (string) $erfansanat_index ); ?>"
-							decoding="async"
+							<?php echo $erfansanat_first ? 'fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"'; ?>
 							class="pointer-events-none absolute inset-0 h-full w-full select-none object-cover <?php echo esc_attr( $erfansanat_hidden ); ?>" />
 					<?php endforeach; ?>
 

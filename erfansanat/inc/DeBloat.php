@@ -110,6 +110,33 @@ final class DeBloat {
 		add_filter( 'should_load_block_assets_on_demand', array( self::class, 'filter_block_assets_on_demand' ) );
 		add_filter( 'wp_resource_hints', array( self::class, 'filter_resource_hints' ), 10, 2 );
 		add_filter( 'tiny_mce_plugins', array( self::class, 'filter_tiny_mce_plugins' ) );
+
+		// The PHP version in `X-Powered-By` tells an attacker exactly which
+		// CVE applies before they send a single probing request. The header
+		// still arrives from the SAPI, so it is removed here; `expose_php = Off`
+		// in php.ini is the deployment-side half of the same fix.
+		if ( ! headers_sent() ) {
+			header_remove( 'X-Powered-By' );
+		}
+		add_filter( 'wp_headers', array( self::class, 'filter_headers' ) );
+	}
+
+	/**
+	 * Strip version-disclosing headers from the response.
+	 *
+	 * @param array<string, string> $headers Response headers.
+	 * @return array<string, string>
+	 */
+	public static function filter_headers( array $headers ): array {
+		unset( $headers['X-Powered-By'], $headers['x-powered-by'] );
+
+		// A few baseline headers that cost nothing and close an entire class of
+		// bug: MIME sniffing, referrer leakage and framing.
+		$headers['X-Content-Type-Options'] = 'nosniff';
+		$headers['Referrer-Policy']        = 'strict-origin-when-cross-origin';
+		$headers['X-Frame-Options']        = 'SAMEORIGIN';
+
+		return $headers;
 	}
 
 	/**

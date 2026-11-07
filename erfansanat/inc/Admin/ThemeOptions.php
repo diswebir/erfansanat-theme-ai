@@ -92,7 +92,12 @@ final class ThemeOptions {
 	 */
 	public static function register(): void {
 		add_action( 'admin_menu', array( self::class, 'add_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_admin_font' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_meta_boxes' ), 20 );
+		// `wp-login.php` is not an admin screen, so the class is registered from
+		// `Theme::register()` for it separately; this hook only fires when it is.
+		add_action( 'login_enqueue_scripts', array( self::class, 'enqueue_login_font' ) );
 	}
 
 	/**
@@ -175,6 +180,92 @@ final class ThemeOptions {
 					'useImage'      => __( 'استفاده از این تصویر', 'erfansanat' ),
 				),
 			)
+		);
+	}
+
+	/**
+	 * Load the theme's font on every admin screen.
+	 *
+	 * Unconditional on purpose: the dashboard, the editor, the media library,
+	 * WooCommerce and every taxonomy screen belong to the same product, and a
+	 * screen-by-screen list leaves gaps that only appear as an inconsistent
+	 * typeface somewhere in the admin.
+	 *
+	 * @return void
+	 */
+	public static function enqueue_admin_font(): void {
+		// Unconditional. The dashboard, every post type, every taxonomy, the
+		// media library and the WooCommerce screens all use the theme's font,
+		// so gating this on a screen list would leave holes that only show up
+		// as an inconsistent typeface somewhere in the admin.
+		if ( wp_style_is( 'erfansanat-admin-font', 'enqueued' ) ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'erfansanat-admin-font',
+			\ErfanSanat\Theme\AssetManager::uri( 'admin/font.css' ),
+			array(),
+			\ErfanSanat\Theme\AssetManager::version( 'admin/font.css' )
+		);
+	}
+
+	/**
+	 * The login form is not an admin screen, so it needs its own hook.
+	 *
+	 * A login form in a different typeface from the site is the first thing an
+	 * editor sees, and `admin_enqueue_scripts` never fires for it.
+	 *
+	 * @return void
+	 */
+	public static function enqueue_login_font(): void {
+		wp_enqueue_style(
+			'erfansanat-admin-font',
+			\ErfanSanat\Theme\AssetManager::uri( 'admin/font.css' ),
+			array(),
+			\ErfanSanat\Theme\AssetManager::version( 'admin/font.css' )
+		);
+	}
+
+	/**
+	 * Load the meta-box layout on the editors that need it.
+	 *
+	 * The font is not this method's job any more; it is loaded on every screen
+	 * by `enqueue_admin_font()`.
+	 *
+	 * @param string $hook Current admin page hook, supplied by the action.
+	 * @return void
+	 */
+	public static function enqueue_meta_boxes( string $hook ): void {
+		unset( $hook ); // The screen object carries everything this needs.
+		if ( wp_style_is( 'erfansanat-admin', 'enqueued' ) ) {
+			return;
+		}
+
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen instanceof \WP_Screen ) {
+			return;
+		}
+
+		$post_types = array( 'product', 'projects', 'services', 'post', 'page' );
+		$taxonomies = array( 'product_cat', 'product_tag', 'project_type', 'city' );
+		$supported  = in_array( (string) $screen->base, array( 'post' ), true )
+			&& in_array( (string) $screen->post_type, $post_types, true );
+		$supported  = $supported
+			|| (
+				in_array( (string) $screen->base, array( 'edit-tags', 'term' ), true )
+				&& in_array( (string) $screen->taxonomy, $taxonomies, true )
+			);
+
+		if ( ! $supported ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'erfansanat-admin',
+			\ErfanSanat\Theme\AssetManager::uri( 'admin/options.css' ),
+			array( 'erfansanat-admin-font' ),
+			\ErfanSanat\Theme\AssetManager::version( 'admin/options.css' )
 		);
 	}
 

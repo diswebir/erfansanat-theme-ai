@@ -500,6 +500,15 @@
      * cannot fight the real page number.
      */
     if (paginationRoot && paginationRoot.getAttribute("data-pagination-server") === "true") {
+      /*
+       * The server already rendered this page's slice, so the client must not
+       * page again. It must still reveal the items the filter matched: they were
+       * hidden on the previous render, and nothing else would ever unhide them,
+       * which left a filter that could hide results but never bring them back.
+       */
+      for (var s = 0; s < matchingItems.length; s++) {
+        matchingItems[s].classList.remove("hidden");
+      }
       return Math.min(
         Math.max(1, currentPage),
         Math.max(1, Math.ceil(matchingItems.length / perPage))
@@ -1509,14 +1518,61 @@
     var successBox = document.querySelector('[data-contact-success="true"]');
     var resetBtn = document.querySelector('[data-contact-reset="true"]');
 
+    // The form POSTs to admin-post.php on its own; this only improves the
+    // acknowledgement. It must never show success for a request the server did
+    // not accept, so the success panel is revealed by the server's redirect
+    // (?es_sent=ok) below, not by the submit handler.
+    if (form && form.getAttribute("novalidate") !== null) {
+      var required = form.querySelectorAll("[required]");
+      var baseTime = parseInt(
+        (form.querySelector("input[name='es_started']") || {}).value || "0",
+        10
+      );
+
+      var refreshClock = function () {
+        var clock = form.querySelector("input[name='es_started']");
+        // The server rejects a submission returned in under three seconds, so a
+        // visitor who leaves the tab open overnight must not be rejected. Reset
+        // the clock whenever the form has been idle long enough to be stale.
+        if (clock && baseTime && Math.floor(Date.now() / 1000) - baseTime > 1800) {
+          clock.value = String(Math.floor(Date.now() / 1000));
+          baseTime = parseInt(clock.value, 10);
+        }
+      };
+
+      form.addEventListener("submit", function (event) {
+        // `novalidate` is on the form so the server's messages are the ones a
+        // visitor sees. That means the browser checks nothing, so a missing
+        // field has to be caught here or an obviously empty form goes to the
+        // server just to come back with an error.
+        for (var i = 0; i < required.length; i++) {
+          if (!String(required[i].value || "").trim()) {
+            event.preventDefault();
+            required[i].focus();
+            required[i].setAttribute("aria-invalid", "true");
+            return;
+          }
+          required[i].removeAttribute("aria-invalid");
+        }
+        refreshClock();
+      });
+    }
+
+    // The server reports its verdict in the URL; only then is success shown.
     if (form && successBox) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+      var params = {};
+      var query = (window.location.search || "").replace(/^\?/, "");
+      var pairs = query ? query.split("&") : [];
+      for (var pi = 0; pi < pairs.length; pi++) {
+        var kv = pairs[pi].split("=");
+        params[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1] || "").replace(/\+/g, " "));
+      }
+      if (params["es_sent"] === "ok") {
         form.classList.add("hidden");
         form.classList.remove("flex");
         successBox.classList.remove("hidden");
         successBox.classList.add("flex");
-      });
+      }
     }
     if (resetBtn && form && successBox) {
       resetBtn.addEventListener("click", function () {
@@ -2796,6 +2852,120 @@
     }
   }
 
+  /* ───────────────────────────────────────────────
+     18. Live Search Results (progressive enhancement)
+     ─────────────────────────────────────────────── */
+  function initLiveSearch() {
+    var config = window.erfansanatLiveSearch;
+    var input = document.querySelector("[data-global-search-input='true']");
+    var results = document.querySelector("[data-live-search-results='true']");
+    if (!config || !input || !results || typeof window.fetch !== "function") return;
+
+    var timer = null;
+    var controller = null;
+    var lastQuery = "";
+
+    function esc(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function row(item, type) {
+      var thumb = item.thumbnail
+        ? '<span class="h-11 w-11 shrink-0 overflow-hidden rounded-lg bg-slate-100"><img src="' +
+          esc(item.thumbnail) + '" alt="" loading="lazy" class="h-11 w-11 object-cover" /></span>'
+        : '<span class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>';
+      return (
+        '<a href="' + esc(item.url) + '" data-live-search-row="' + esc(type) + '" ' +
+        'class="flex items-start gap-3 rounded-xl border border-transparent px-2.5 py-2 transition-colors hover:border-emerald-200 hover:bg-emerald-50/60">' +
+        thumb +
+        '<span class="min-w-0 flex-1"><span class="block truncate text-[13px] font-extrabold text-slate-900">' +
+        esc(item.title) + "</span>" +
+        (item.excerpt ? '<span class="mt-0.5 block truncate text-[11.5px] font-medium text-slate-500">' + esc(item.excerpt) + "</span>" : "") +
+        "</span>" +
+        (item.price ? '<span class="shrink-0 text-[11.5px] font-black text-emerald-800">' + esc(item.price) + "</span>" : "") +
+        "</a>"
+      );
+    }
+
+    function render(data) {
+      if (!data || !data.groups || data.groups.length === 0) {
+        results.innerHTML =
+          '<p class="px-2 py-6 text-center text-[12.5px] font-semibold text-slate-500">' +
+          esc((data && data.message) || config.strings.empty) + "</p>";
+        return;
+      }
+      var html = "";
+      for (var g = 0; g < data.groups.length; g++) {
+        var group = data.groups[g];
+        html += '<div class="mb-2" data-live-search-group="' + esc(group.type) + '">';
+        html += '<p class="mb-1 flex items-center justify-between px-2.5 text-[11px] font-black text-slate-400">' +
+          "<span>" + esc(group.label) + "</span><span>" + esc(group.count) + "</span></p>";
+        for (var i = 0; i < group.items.length; i++) html += row(group.items[i], group.type);
+        html += "</div>";
+      }
+      if (data.searchUrl) {
+        html += '<a href="' + esc(data.searchUrl) + '" class="mt-2 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-700 px-3 py-2.5 text-[12.5px] font-extrabold text-white hover:bg-emerald-800">' +
+          esc(config.strings.all) + "</a>";
+      }
+      results.innerHTML = html;
+    }
+
+    function search() {
+      var q = (input.value || "").trim();
+      if (q === lastQuery) return;
+      lastQuery = q;
+
+      if (q.length < (config.minChars || 2)) {
+        results.innerHTML = "";
+        results.classList.add("hidden");
+        return;
+      }
+
+      if (controller) controller.abort();
+      controller = typeof window.AbortController === "function" ? new AbortController() : null;
+
+      results.classList.remove("hidden");
+      results.innerHTML =
+        '<p class="px-2 py-6 text-center text-[12.5px] font-semibold text-slate-500">' +
+        esc(config.strings.searching) + "</p>";
+
+      var url = config.ajaxUrl + "?action=" + encodeURIComponent(config.action) +
+        "&q=" + encodeURIComponent(q) + "&nonce=" + encodeURIComponent(config.nonce);
+
+      window
+        .fetch(url, { credentials: "same-origin", signal: controller ? controller.signal : undefined })
+        .then(function (response) { return response.json(); })
+        .then(function (payload) {
+          if (!payload || !payload.success) throw new Error("bad payload");
+          if (q !== lastQuery) return; // a later keystroke already won
+          render(payload.data);
+        })
+        .catch(function (error) {
+          if (error && error.name === "AbortError") return;
+          results.innerHTML =
+            '<p class="px-2 py-6 text-center text-[12.5px] font-semibold text-slate-500">' +
+            esc(config.strings.error) + "</p>";
+        });
+    }
+
+    input.addEventListener("input", function () {
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(search, 220);
+    });
+
+    // A GET form still works; Enter submits the real search page.
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        results.classList.add("hidden");
+        results.innerHTML = "";
+        lastQuery = "";
+      }
+    });
+  }
+
   function initAll() {
     initNavbar();
     initMegaMenuAndSearch();
@@ -2813,6 +2983,15 @@
     initRecruitmentTabs();
     initShareButtons();
     initContactForm();
+    initLiveSearch();
+
+    // The native filter form is the no-JavaScript floor. With a script running,
+    // the reference's own client-side filters handle narrowing, so the duplicate
+    // control is removed rather than left as a second way to do one thing.
+    var nativeFilters = document.querySelectorAll("[data-native-filters='true']");
+    for (var nf = 0; nf < nativeFilters.length; nf++) {
+      nativeFilters[nf].classList.add("hidden");
+    }
   }
 
   if (document.readyState === "loading") {

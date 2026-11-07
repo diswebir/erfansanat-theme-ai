@@ -190,6 +190,14 @@ require get_template_directory() . '/template-parts/archive/part-shop-hero.php';
 
 		<div class="lg:col-span-8 xl:col-span-9">
 			<?php
+			// The no-JavaScript floor: a real form the server can answer.
+			$erfansanat_filter_kind   = 'shop';
+			$erfansanat_filter_terms  = $erfansanat_terms;
+			$erfansanat_filter_places = array();
+			$erfansanat_filter_action = function_exists( 'wc_get_page_permalink' ) ? (string) wc_get_page_permalink( 'shop' ) : home_url( '/' );
+			require get_template_directory() . '/template-parts/archive/part-native-filters.php';
+			?>
+			<?php
 			$erfansanat_heading  = $erfansanat_heading;
 			$erfansanat_total    = $erfansanat_total;
 			$erfansanat_page     = $erfansanat_page;

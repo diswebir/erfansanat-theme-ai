@@ -33,6 +33,11 @@ final class AssetManager {
 	public const SCRIPT_HANDLE = 'erfansanat-main';
 
 	/**
+	 * Article typography handle.
+	 */
+	public const ARTICLE_STYLE_HANDLE = 'erfansanat-article';
+
+	/**
 	 * WordPress dashicons are not needed on the front end.
 	 */
 	private const UNNEEDED_STYLES = array( 'dashicons' );
@@ -126,6 +131,25 @@ final class AssetManager {
 			self::version( 'js/main.js' ),
 			true
 		);
+
+		// Live search and native filters read this. It is localised rather than
+		// inlined so the nonce and the endpoint live in one place the PHP side owns.
+		wp_localize_script(
+			self::SCRIPT_HANDLE,
+			'erfansanatLiveSearch',
+			\ErfanSanat\Theme\LiveSearch::script_data()
+		);
+
+		// Article typography is only needed where an editor's post content is
+		// printed, so it never costs a page that has no article on it.
+		if ( is_singular( 'post' ) ) {
+			wp_enqueue_style(
+				self::ARTICLE_STYLE_HANDLE,
+				self::uri( 'css/article.css' ),
+				array( self::STYLE_HANDLE ),
+				self::version( 'css/article.css' )
+			);
+		}
 	}
 
 	/**

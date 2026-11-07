@@ -43,7 +43,12 @@ PATCHED = {
         "data-pagination-root / data-page-num and records server-side paging, "
         "while the copied script only looked for data-page-btn and the string "
         "\"true\". Without the fix the client pager never bound, so paging was "
-        "dead on every shop archive."
+        "dead on every shop archive. Phase 7.2: in server-paged mode the same "
+        "function left every item hidden after a filter change, because the "
+        "slice loop below it never ran; matching items are now un-hidden before "
+        "the early return. Phase 8.1 added the live-search panel and the "
+        "Phase 8.2 change stopped the contact handler from showing success for "
+        "a submission the server had not accepted."
     ),
 }
 

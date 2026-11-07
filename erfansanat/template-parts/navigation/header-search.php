@@ -46,5 +46,10 @@ $erfansanat_search_id = wp_unique_id( 'erfansanat-search-' );
 		<p class="mt-2 text-[11px] text-slate-500">
 			<?php esc_html_e( 'جستجو در محصولات، پروژه‌ها، خدمات و مقالات.', 'erfansanat' ); ?>
 		</p>
+		<div data-live-search-results="true"
+			role="listbox"
+			aria-label="<?php esc_attr_e( 'نتایج جستجوی زنده', 'erfansanat' ); ?>"
+			aria-live="polite"
+			class="mt-3 hidden max-h-[24rem] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-lg"></div>
 	</div>
 </div>

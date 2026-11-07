@@ -178,6 +178,29 @@ final class SectionParts {
 	}
 
 	/**
+	 * The site logo, as a URL.
+	 *
+	 * The panel setting wins; a theme-mod logo is the fallback, and an empty
+	 * string means "no logo configured", which structured data must be able to
+	 * tell apart from a logo it simply could not resolve.
+	 *
+	 * @param string $size Image size.
+	 * @return string
+	 */
+	public static function logo_url( string $size = 'full' ): string {
+		$logo_id = (int) Settings::get( 'logo_id', 0 );
+		if ( $logo_id <= 0 ) {
+			$logo_id = (int) get_theme_mod( 'custom_logo', 0 );
+		}
+		if ( $logo_id <= 0 ) {
+			return '';
+		}
+
+		$url = wp_get_attachment_image_url( $logo_id, $size );
+		return is_string( $url ) ? $url : '';
+	}
+
+	/**
 	 * Contact e-mail.
 	 *
 	 * @return string
