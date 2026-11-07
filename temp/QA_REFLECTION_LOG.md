@@ -217,3 +217,8 @@
 
 ## 2026-11-07 — P07-T019 صفحه 404 (12)
 - `404.php`: بدون دستکاری وضعیت/ریدایرکت، جستجوی واقعی GET، لینک‌های خانه/فروشگاه (wc یا Menus)/پروژه‌ها/وبلاگ/تماس همگی از URLهای واقعی، بدون نتیجه ساختگی. تست **12/0**؛ رگرسیون P04-T012=16.
+
+
+## 2026-11-07 — P07-T020 برگه درباره ما (10)
+- `page-templates/about.php` کنترلر Renderer با context=about. وابستگی‌های ثبت‌شده: Schema about_sections بازنویسی شد (hero/intro/iso/principles/history با فیلدهای کامل)؛ ۵ پارت sections/about ساخته شد؛ نگاشت قالب→context در functions.php روی فیلتر `erfansanat_sections_context` (برای about/contact/arya).
+- CTA تماس فقط از فوتر گلوبال (بدون تکرار). تست **10/0**؛ رگرسیون P02-T018=10، P05-T001=14. نکته تست: locate_template هسته require_once است؛ در یک پروسه فقط اولین رندر کامل فوتر دارد—تست CTA روی رندر اول اصلاح شد.

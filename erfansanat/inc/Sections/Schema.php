@@ -242,31 +242,64 @@ final class Schema {
 
 	private static function about_sections(): array {
 		return array(
-			'hero'    => array(
+			'hero'       => array(
 				'title'    => 'هیرو درباره ما',
 				'template' => 'about/section-hero',
 				'fields'   => array(
-					'heading' => self::f( 'text', 'عنوان', 'درباره عرفان صنعت' ),
-					'content' => self::f( 'rich', 'متن', '' ),
-					'image'   => self::f( 'media', 'تصویر', 0 ),
-				),
-			),
-			'stats'   => array(
-				'title'    => 'آمار',
-				'template' => 'about/section-stats',
-				'fields'   => array(
-					'heading' => self::f( 'text', 'عنوان', 'دستاوردها به زبان عدد' ),
-					'items'   => self::repeater( 'آمار', array(
+					'heading'    => self::f( 'text', 'عنوان', 'درباره شرکت' ),
+					'highlight'  => self::f( 'text', 'بخش برجسته عنوان', 'عرفان صنعت اصفهان' ),
+					'content'    => self::f( 'rich', 'متن', '' ),
+					'image'      => self::f( 'media', 'تصویر کارخانه', 0 ),
+					'badge'      => self::f( 'text', 'نشان', 'شرکت دانش‌بنیان — تأسیس ۱۳۷۸' ),
+					'stats'      => self::repeater( 'آمار هیرو', array(
 						'number' => self::f( 'text', 'عدد', '' ),
 						'label'  => self::f( 'text', 'برچسب', '' ),
 					) ),
 				),
 			),
-			'history' => array(
+			'intro'      => array(
+				'title'    => 'معرفی شرکت',
+				'template' => 'about/section-intro',
+				'fields'   => array(
+					'heading'   => self::f( 'text', 'عنوان', 'بیش از دو دهه پیشگامی در صنعت روشنایی ایران' ),
+					'content'   => self::f( 'rich', 'متن معرفی', '' ),
+					'image'     => self::f( 'media', 'تصویر', 0 ),
+					'establish' => self::f( 'text', 'سال تأسیس', 'تأسیس ۱۳۷۸' ),
+					'stats'     => self::repeater( 'آمار', array(
+						'number' => self::f( 'text', 'عدد', '' ),
+						'label'  => self::f( 'text', 'برچسب', '' ),
+					) ),
+				),
+			),
+			'iso'        => array(
+				'title'    => 'گواهینامه ISO',
+				'template' => 'about/section-iso',
+				'fields'   => array(
+					'heading' => self::f( 'text', 'عنوان', 'گواهینامه ISO 9001:2015؛ نشانه تعهد ما به کیفیت' ),
+					'content' => self::f( 'rich', 'متن', '' ),
+					'badge'   => self::f( 'text', 'نشان', 'ISO 9001:2015' ),
+					'items'   => self::repeater( 'موارد', array(
+						'text' => self::f( 'text', 'مورد', '' ),
+					) ),
+				),
+			),
+			'principles' => array(
+				'title'    => 'اصول بنیادین',
+				'template' => 'about/section-principles',
+				'fields'   => array(
+					'heading' => self::f( 'text', 'عنوان', 'اصول بنیادین عرفان صنعت' ),
+					'items'   => self::repeater( 'اصول', array(
+						'title'       => self::f( 'text', 'عنوان', '' ),
+						'description' => self::f( 'textarea', 'توضیح', '' ),
+						'icon'        => self::f( 'icon', 'آیکون', 'check' ),
+					) ),
+				),
+			),
+			'history'    => array(
 				'title'    => 'تاریخچه',
 				'template' => 'about/section-history',
 				'fields'   => array(
-					'heading'  => self::f( 'text', 'عنوان', 'تاریخچه' ),
+					'heading'  => self::f( 'text', 'عنوان', 'تاریخچه و دستاوردها' ),
 					'timeline' => self::repeater( 'تایم‌لاین', array(
 						'year'        => self::f( 'text', 'سال', '' ),
 						'title'       => self::f( 'text', 'عنوان', '' ),

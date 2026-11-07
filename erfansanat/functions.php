@@ -37,6 +37,26 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Admin\TermMetaboxes::boot();
 \ErfanSanat\Theme\Admin\HreflangMetabox::boot();
 
+// Map editable page templates to their section context (P07-T020+) so the
+// section metabox and renderer agree without per-page manual configuration.
+add_filter(
+	'erfansanat_sections_context',
+	static function ( $context, $post_id ) {
+		if ( '' !== $context ) {
+			return $context;
+		}
+		$template = (string) get_post_meta( $post_id, '_wp_page_template', true );
+		$map = array(
+			'page-templates/about.php'        => 'about',
+			'page-templates/contact.php'      => 'contact',
+			'page-templates/landing-arya.php' => 'arya',
+		);
+		return $map[ $template ] ?? $context;
+	},
+	10,
+	2
+);
+
 // Blog comments (P07-T017): wire the T012 single-post hook to the core
 // comments template so all WP comment hooks keep working.
 add_action(
