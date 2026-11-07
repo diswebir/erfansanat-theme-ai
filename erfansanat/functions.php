@@ -25,6 +25,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Core\AssetManager::boot();
 \ErfanSanat\Theme\Core\CartFragments::boot(); // P06-T023: real Woo cart fragments + AJAX.
 \ErfanSanat\Theme\Core\Ajax::boot(); // P08-T001: shared AJAX contract (search/filters/forms).
+\ErfanSanat\Theme\Core\AjaxSearch::boot(); // P08-T002: live product search.
 \ErfanSanat\Theme\Core\PostTypes::boot();
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();

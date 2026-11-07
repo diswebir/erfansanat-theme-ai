@@ -277,3 +277,8 @@
 - `inc/Core/Ajax.php`: رجیستری واحد endpointها — نام یکتای `es_*` (رد تکراری/نام نامعتبر)، nonce اختصاصی `es_ajax_{action}`، سیاست public/capability، whitelist ورودی تایپ‌دار (text/textarea/int/float/bool/enum/key/key_list/int_list/email/url) و پاکت JSON استاندارد. استثنا → 500 بدون افشای پیام/trace؛ WP_Error → status خودش. `config()` + inline `window.ES_AJAX` روی es-main (الگوی CartFragments). boot در functions.php.
 - تست **20/0** با es_capture_ajax (فیلتر status_header + wp_die handler). رگرسیون P02-T008=13، P06-T023=21، P01-T004 سبز.
 - محیط: بعد از ریست snapshot، هارنس بازسازی + theme activate + permalink_structure restored (طبق روال ثبت‌شده).
+
+
+## 2026-11-07 — P08-T002 جستجوی زنده محصولات (14)
+- `inc/Core/AjaxSearch.php`: اکشن عمومی `es_product_search` روی قرارداد Ajax؛ ورودی term/limit (سقف 12). موتور سه‌مرحله‌ای: WP search عنوان/متن → متا LIKE (english_titl/zireonvan/_sku) → نام product_cat؛ فقط publish + NOT IN product_visibility (وقتی تاکسونومی موجود است)؛ ردیف type=product/url=permalink واقعی/true_sale. نرمال‌سازی ي/ك + ZWNJ؛ عبارت تک‌کاراکتری کوئری نمی‌زند.
+- تست **14/0** شامل SC-03 بودجه: 1.3ms (زیر 200ms). رگرسیون T001=20، P03-T005=13، P03-T014=10.
