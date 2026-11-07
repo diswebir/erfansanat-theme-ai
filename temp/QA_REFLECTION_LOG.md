@@ -208,3 +208,8 @@
 ## 2026-11-07 — P07-T017 دیدگاه‌های وبلاگ (14)
 - `comments.php` + `template-parts/post/comments.php`: لیست/فرم کامل هسته (wp_list_comments/comment_form با همه هوک‌ها)، callback طراحی `es_comment_callback` در Helpers (وابستگی ثبت‌شده)، پاسخ تودرتو با walker/script هسته، پیام moderation، حالت بسته و رمزدار. فیلدهای author/email/url فقط کلاس گرفتند (حذف نشدند). وایرینگ `es_single_post_comments`→comments_template در functions.php.
 - تست **14/0**؛ رگرسیون T012=14، T013=13+6 DOM، P01-T004=9. اصلاحات: در style=div هسته کلاس children نمی‌سازد (depth-2+ترتیب+data-belowelement تست شد)؛ کلاس‌های تکراری callback حذف شد؛ تست TOC теперь فقط داخل nav خودش لنگرها را می‌سنجد تا لینک #respond دیدگاه تداخل نکند.
+
+
+## 2026-11-07 — P07-T018 صفحه جستجو (14)
+- `search.php`: کوئری ثانویه publish-only/بدون‌رمز روی post+product+projects (فیلترپذیر)، بج نوع `data-result-type`، کارت فشرده استاندارد برای مقاله و کارت مرجع برای محصول/پروژه، صفحه‌بندی سروری paginate_links با حفظ s، حالت خالی و حالت عبارت‌خالی، escape کامل (تست XSS). گونه compact کارت اکنون data-search-result را هم می‌پذیرد.
+- تست **14/0** (product CPT با shim P06 رجیستر شد—الگوی رسمی هارنس)؛ رگرسیون T016=13، T011=16، P05-T004=18.

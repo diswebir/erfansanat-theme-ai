@@ -75,7 +75,7 @@ $es_search_text = preg_replace( '/\s+/u', ' ', $es_search_raw . ' ' . $es_search
 if ( ! empty( $args['compact'] ) ) {
 	$es_compact_excerpt = wp_trim_words( $es_excerpt, 24, '…' );
 	?>
-	<a href="<?php echo esc_url( $es_link ); ?>" class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]">
+	<a <?php echo $es_search_result ? 'data-search-item="' . esc_attr( $es_search_text ) . '"' : ''; ?> href="<?php echo esc_url( $es_link ); ?>" class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]">
 		<div class="relative h-44 overflow-hidden">
 			<img src="<?php echo esc_url( $es_img ); ?>" alt="<?php echo esc_attr( $es_title ); ?>" loading="lazy" class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-108"/>
 			<?php if ( '' !== $es_cat ) : ?><span class="absolute right-4 top-4 rounded-full bg-emerald-950/75 px-3 py-1 text-[11px] font-bold text-emerald-100 backdrop-blur-md"><?php echo esc_html( $es_cat ); ?></span><?php endif; ?>
