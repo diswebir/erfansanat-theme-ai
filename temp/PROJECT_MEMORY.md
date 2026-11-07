@@ -2,14 +2,14 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — T001..T012 پاس؛ T013 گام بعدی.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — T001..T013 پاس؛ T014 گام بعدی.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
 ADMIN-PRO: 25 PHP + 7 JSDOM checks; phase-02 regression 287 passed / 0 failed
 P07-T009=23 (16 PHP + 7 JSDOM)
-P07-T010=12; P07-T011=26; P07-T012=14
-NEXT: P07-T013 single-post TOC; then T014..T028 and phase 8 (24 tasks)
+P07-T010=12; P07-T011=26; P07-T012=14; P07-T013=19
+NEXT: P07-T014 single-post sharing; then T015..T028 and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «ادامه بده و پوش و کامیت کن» + گزارش فازهای باقی‌مانده. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

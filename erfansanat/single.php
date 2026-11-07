@@ -129,6 +129,7 @@ if ( ! $es_related->have_posts() && $es_cats ) {
 		<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
 			<article class="min-w-0">
 				<div>
+					<?php get_template_part( 'template-parts/post/toc', null, array( 'prepare' => true ) ); ?>
 					<?php
 					if ( $es_protected ) {
 						echo get_the_password_form( $es_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core form is escaped.
