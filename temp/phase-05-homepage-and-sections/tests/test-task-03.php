@@ -106,6 +106,9 @@ es_render_sections(8146, ['only' => 'projects']);
 check(trim((string) ob_get_clean()) === '', 'سکشن خالی → رندر نشد');
 
 // ═══ ۴) ۴ پروژه → کارت چهارم در پشته با شماره ۰۴ ═══
+$GLOBALS['__wp_post_meta'][8146] = [
+    '_es_sections' => [['id' => 'projects', 'enabled' => 1, 'order' => 0, 'fields' => ['count' => 4, 'handpicked' => '']]],
+];
 $GLOBALS['__es_stub_posts'] = [
     (object) ['ID' => 201, 'post_type' => 'projects', 'post_title' => 'تونل نوری شهری', 'post_excerpt' => 'مسیرهای عبوری با جلوه‌ای چشم‌نواز؛ از ورودی بوستان‌ها تا جشنواره‌های شهری با سازه‌های فولادی و پلی‌کربنات ضدضربه'],
     (object) ['ID' => 202, 'post_type' => 'projects', 'post_title' => 'گوی و المان حجمی نورانی', 'post_excerpt' => 'کره‌ها و حجم‌های نوری درخشان در نقطه کانونی میادین و فضاهای باز شهری'],

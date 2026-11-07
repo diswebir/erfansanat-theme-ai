@@ -68,7 +68,10 @@ reb_a = (A.replace('{ES_COUNT}', '۲۰').replace('{ES_SEARCH_VALUE}', '')
 assert reb_a == A_RAW, f'ASIDE rebuild {len(reb_a)} vs {len(A_RAW)}'
 
 # ═══════════ TOPBAR (154673→156981) ═══════════
-T_RAW = s[154673:156981]
+tb0 = s.find('<div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 shadow-2xs sm:px-5">')
+tb1 = s.find('<div data-product-grid="true"', tb0)
+assert tb0 > 0 and tb1 > tb0
+T_RAW = s[tb0:tb1]
 T = T_RAW
 T = tok(T, '<span data-product-count="true">۲۰</span> محصول</span>',
         '<span data-product-count="true">{ES_COUNT}</span> محصول</span>')
@@ -199,6 +202,7 @@ SHELL = (
 " * @package ErfanSanat\n"
 " */\n"
 "declare(strict_types=1);\n\n"
++ REGION +
 "get_header();\n\n"
 "$es_q = $GLOBALS['wp_query'] ?? null;\n"
 "$es_total = (int) ($GLOBALS['__es_archive_total'] ?? ($es_q->found_posts ?? 0));\n"
@@ -236,8 +240,7 @@ SHELL = (
 "    '{ES_H1_B}'     => esc_html('نورپردازی شهری و صنعتی'),\n"
 "    '{ES_HERO_DESC}' => esc_html((string) es_option('archives.shop_desc', 'مجموعه‌ای کامل از تجهیزات نورپردازی پیشرفته؛ از پوینت لایت پیکسل، ریسه‌های بلوطی، فندقی و سوزنی IP68 تا درختان نوری هوشمند، خورشیدنماها و باکس کنترل مرکزی')),\n"
 "]);\n\n"
-"// سکشن آرشیو: aside فیلترها + ستون گرید\n"
-"echo '<section class=\"relative overflow-hidden pb-16 lg:pb-24\"><div class=\"mx-auto max-w-7xl px-5 lg:px-8\"><div class=\"grid items-start gap-8 lg:grid-cols-12\">';\n\n"
+"// سکشن آرشیو: archive-open میرور داخل فرگمنت هیرو است (id=\"archive\")؛ اینجا ستون‌ها\n"
 "ob_start();\n"
 "es_get_template('template-parts/archive/product-filters.php', [\n"
 "    'total'       => $es_total,\n"
@@ -276,7 +279,7 @@ SHELL = (
 "    echo (string) ob_get_clean();\n"
 "}\n\n"
 "echo strtr($ES_EMPTY, ['{ES_EMPTY_CLS}' => $es_is_empty ? 'block' : 'hidden']);\n"
-"echo '</div></div></section>';\n"
+"echo '</section>';\n"
 "echo '</main>';\n"
 "get_footer();\n")
 open(os.path.join(ROOT, 'archive-product.php'), 'w', encoding='utf-8').write(SHELL)

@@ -1,7 +1,7 @@
 # Task 6.8 — taxonomy-product_cat (+FAQ دسته) و taxonomy-product_tag
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 29/29 · رگرسیون ۱۰۹۸/۰]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-08.php`
 
 ## 🎯 هدف

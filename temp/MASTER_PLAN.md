@@ -327,7 +327,7 @@
 - 📤 خروجی: `archive-product.php`؛ `template-parts/archive/product-filters.php`؛ `template-parts/archive/pagination.php` · **وابستگی:** Task 6.1, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 6.8 — taxonomy-product_cat (+FAQ دسته) و taxonomy-product_tag `[PENDING]`
+### Task 6.8 — taxonomy-product_cat (+FAQ دسته) و taxonomy-product_tag `[DONE — 29/29 · رگرسیون ۱۰۹۸/۰]`
 - 🎯 آرشیو دسته با هیرو/توضیح/FAQ و آرشیو برچسب مطابق میرور
 - 📤 خروجی: `taxonomy-product_cat.php`؛ `taxonomy-product_tag.php` · **وابستگی:** Task 6.7, Task 3.13
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -775,7 +775,7 @@
 - 📤 خروجی: `archive-product.php`؛ `template-parts/archive/product-filters.php`؛ `template-parts/archive/pagination.php` · **وابستگی:** Task 6.1, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 6.8 — taxonomy-product_cat (+FAQ دسته) و taxonomy-product_tag `[PENDING]`
+### Task 6.8 — taxonomy-product_cat (+FAQ دسته) و taxonomy-product_tag `[DONE — 29/29 · رگرسیون ۱۰۹۸/۰]`
 - 🎯 آرشیو دسته با هیرو/توضیح/FAQ و آرشیو برچسب مطابق میرور
 - 📤 خروجی: `taxonomy-product_cat.php`؛ `taxonomy-product_tag.php` · **وابستگی:** Task 6.7, Task 3.13
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا

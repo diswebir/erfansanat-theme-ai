@@ -3,7 +3,7 @@
 > ⚠️ قبل از شروع هر تسک این فایل خوانده شود و بلافاصله پس از اتمام تسک آپدیت شود.
 
 ## وضعیت فعلی
-**PHASE 6 IN PROGRESS (7/11 TASKS DONE: 6.1–6.7 · PHASE 5 COMPLETE 12/12)**
+**PHASE 6 IN PROGRESS (8/11 TASKS DONE: 6.1–6.8 · PHASE 5 COMPLETE 12/12)**
 
 - D-035: قرارداد فاز ۵ — HomeSections (inc/Sections/) رجیستری ۱۵ سکشن صفحه اصلی؛ front-page.php با es_render_sections؛ wrapper در template-parts/sections/{id}.php و مارک‌آپ در template-parts/home/section-{id}.php؛ فرگمنت‌های nowdoc با توکن {ES_*} در generatorهای temp/gen_*5.py؛ فیلتر es_{section}_args برای هر سکشن.
 - D-036: سکشن‌های انجام‌شده — hero (5.2)، projects (5.3، فقط دستی post__in)، about (5.4)، history (5.5، رپیتر ۶ مرحله ۱۷فیلد)، categories (5.6، ۶ کارت + CTA)، catalog (5.7، فایل PDF opt-in)، services (5.7، رپیتر ۵ ردیفی تب‌دار با data-service-*؛ JS میرور تب‌ها را می‌راند).
@@ -86,6 +86,15 @@
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
 ## رویدادهای فاز ۶ (2026-11-04)
+
+### ۶.۸ (تسک هشتم) — آرشیو دسته/تگ محصول (2026-11-07)
+- خروجی‌ها: `taxonomy-product_cat.php` (شل: archive-open میرور با data-initial-category داینامیک + hero-cat + product-filters ۶.۷ + topbar + گرید card-product + pagination + product-empty + category-faq با رپر mt-16؛ بدون ترم → get_template_part('archive-product'))، `taxonomy-product_tag.php` (گرید ساده + pagination)، `template-parts/archive/{hero-cat,category-faq,topbar,product-empty}.php`.
+- hero-cat.php: فرگمنت ۶.۵KB میرور (breadcrumb aria-label="مسیر صفحه" با {ES_HOME_URL}/{ES_SHOP_URL} داینامیک + H1 دونیمه سئو + desc + تصویر) — **archive-open (`<section id="archive">`) داخل این فرگمنت نیست**؛ شل چاپش می‌کند (مرز تمیز بین پارتیال و شل). توکن {ES_TERM_NAME} در breadcrumb + fallback تصویر light-element.jpg.
+- category-faq.php: WRAP (data-faq-list + h3 «سوالات متداول درباره {ES_LABEL}») + ROW (data-faq-toggle{N}/icon/body)؛ آیکون باز rotate-45 bg-emerald-800 text-white، بسته bg-emerald-100 text-emerald-800؛ ردیف اول باز؛ rows خالی → return (مخفی).
+- topbar/product-empty: مشترک با shop — **topbar برش از خودش شروع شود** (`<div class="mb-6 flex flex-wrap items-center justify-between...">` تا `data-product-grid`) نه از wrapper col-span (دوبله div)؛ empty فرگمنت **دو بستن ساختاری (col-span + grid-12) را داخل خودش دارد** → دم شل فقط `</section>`.
+- باگ باز ۶.۷ که اینجا فیکس شد: REGION nowdoc‌ها در gen_p67 ساخته می‌شد ولی به SHELL نمی‌چسبید → `$ES_HERO` undefined در رندر واقعی (تست‌های ساختاری نمی‌گرفتند)؛ + شل shop سکشن ساختگی `pb-16 lg:pb-24` چاپ می‌کرد که در میرور وجود ندارد (archive-open داخل فرگمنت هیرو shop است) — هر دو فیکس شد؛ تست ۶.۷ همچنان ۲۱/۲۱.
+- تست ۶.۸: ۲۹/۲۹ (هیرو بایت‌دقیق با ۳ جایگزینی، FAQ متا/خالی، topbar/empty مشترک، شل‌های ساختاری + archive-open تک، breadcrumb داینامیک). فیکس تست ۵.۳: فیکسچر بخش ۴ باید count=4 خودش را ست کند (ارث از بخش ۱ = ۳ کارت).
+- **رگرسیون کامل: ۱۰۹۸/۰** (۸۱ فایل test-task + font) — placeholderهای ۶.۹–۶.۱۱ و فاز ۷/۸ بدون «نتیجه» طبیعی است.
 
 ### ۶.۷ (تسک هفتم) — آرشیو فروشگاه shop (2026-11-04)
 - خروجی‌ها: `archive-product.php` (شل داینامیک: هیرو میرور + گرید + empty) + `template-parts/archive/product-filters.php` (aside برش ۱۳۹۴۵۳→۱۵۴۶۷۳ با ۸ توکن شامل درخت دسته/آپشن‌ها) + `template-parts/archive/pagination.php` (nav برش با ۸ توکن) + `inc/Woo/ShopFilters.php` (pre_get_posts@20: s/purchase/price/ip/voltage/sort + per-page کلومپ ۱..۱۰۰).
