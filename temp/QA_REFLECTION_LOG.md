@@ -271,3 +271,9 @@
 - Schema آریا گسترش یافت: specs (rows repeater label/value) + faq (items repeater question/answer) کنار hero/features/cta؛ ۵ پارت جدید `template-parts/sections/arya/section-{hero,features,specs,faq,cta}.php` با واژگان طراحی موجود (rounded-3xl/emerald card). FAQ از همان قرارداد main.js (data-faq-list/toggle/body/icon) استفاده می‌کند؛ CTA خالی‌بودن URL → contact.
 - تست PHP **17/0** (ویرایش هر ۵ سکشن، جایگزینی منوی اختصاصی، حذف سکشن غیرفعال از منو، لنگرهای سالم) + JSDOM **8/0** (spyCallback شبیه‌سازی‌شده: active/aria-current روی لینک درست؛ آکاردئون FAQ با main.js اصلی). رگرسیون P02-T015=14، T017=14، T018=10، P04-T019=18.
 - **سوئیت کامل فاز ۷: ALL PASS** — 28 سوئیت PHP + 9 سوئیت DOM بدون شکست.
+
+
+## 2026-11-07 — P08-T001 قرارداد و امنیت AJAX (20)
+- `inc/Core/Ajax.php`: رجیستری واحد endpointها — نام یکتای `es_*` (رد تکراری/نام نامعتبر)، nonce اختصاصی `es_ajax_{action}`، سیاست public/capability، whitelist ورودی تایپ‌دار (text/textarea/int/float/bool/enum/key/key_list/int_list/email/url) و پاکت JSON استاندارد. استثنا → 500 بدون افشای پیام/trace؛ WP_Error → status خودش. `config()` + inline `window.ES_AJAX` روی es-main (الگوی CartFragments). boot در functions.php.
+- تست **20/0** با es_capture_ajax (فیلتر status_header + wp_die handler). رگرسیون P02-T008=13، P06-T023=21، P01-T004 سبز.
+- محیط: بعد از ریست snapshot، هارنس بازسازی + theme activate + permalink_structure restored (طبق روال ثبت‌شده).
