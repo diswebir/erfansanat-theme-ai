@@ -491,6 +491,65 @@ final class Schema {
 				'min'       => 0,
 				'max'       => 60,
 			),
+			'warranty_heading'        => array(
+				'type'    => 'text',
+				'default' => 'شرایط گارانتی و خدمات پس از فروش',
+				'label'   => 'عنوان صفحه گارانتی',
+				'tab'     => 'pages',
+			),
+			'warranty_intro'          => array(
+				'type'    => 'textarea',
+				'default' => 'پشتوانه ۲۴ ماه گارانتی تعویض بی‌قید و شرط کارخانه دانش‌بنیان عرفان صنعت اصفهان و ۵ سال تعهد تأمین قطعات در سراسر کشور',
+				'label'   => 'توضیح صفحه گارانتی',
+				'tab'     => 'pages',
+			),
+			'warranty_cards'          => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'کارت‌های اصلی گارانتی (آیکون/عنوان/متن)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'icon'        => array( 'type' => 'icon', 'default' => 'shield' ),
+					'title'       => array( 'type' => 'text', 'default' => '' ),
+					'description' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 12,
+			),
+			'warranty_covered'        => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'موارد تحت پوشش گارانتی',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'text' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 30,
+			),
+			'warranty_excluded'       => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'موارد خارج از شمول گارانتی',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'text' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 30,
+			),
+			'warranty_steps'          => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'مراحل ثبت درخواست گارانتی',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'title'       => array( 'type' => 'text', 'default' => '' ),
+					'description' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 12,
+			),
 		);
 	}
 

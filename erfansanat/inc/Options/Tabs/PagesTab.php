@@ -198,4 +198,130 @@ final class PagesTab {
 			),
 		);
 	}
+
+	/**
+	 * Warranty page data: cards (icon/title/description), covered/excluded
+	 * lists and process steps. Each repeater falls back to the reference when
+	 * empty/unset; saved items replace the defaults in their saved order.
+	 *
+	 * @return array{cards:array<int,array<string,string>>,covered:array<int,string>,excluded:array<int,string>,steps:array<int,array<string,string>>}
+	 */
+	public static function warranty(): array {
+		$defaults = self::warranty_defaults();
+
+		$cards = array();
+		foreach ( self::repeater_items( 'warranty_cards' ) as $item ) {
+			$title = trim( (string) ( $item['title'] ?? '' ) );
+			if ( '' === $title ) {
+				continue;
+			}
+			$cards[] = array(
+				'icon'        => (string) ( $item['icon'] ?? 'shield' ),
+				'title'       => $title,
+				'description' => (string) ( $item['description'] ?? '' ),
+			);
+		}
+		if ( array() === $cards ) {
+			$cards = $defaults['cards'];
+		}
+
+		$covered = self::repeater_texts( 'warranty_covered' );
+		if ( array() === $covered ) {
+			$covered = $defaults['covered'];
+		}
+		$excluded = self::repeater_texts( 'warranty_excluded' );
+		if ( array() === $excluded ) {
+			$excluded = $defaults['excluded'];
+		}
+
+		$steps = array();
+		foreach ( self::repeater_items( 'warranty_steps' ) as $item ) {
+			$title = trim( (string) ( $item['title'] ?? '' ) );
+			if ( '' === $title ) {
+				continue;
+			}
+			$steps[] = array(
+				'title'       => $title,
+				'description' => (string) ( $item['description'] ?? '' ),
+			);
+		}
+		if ( array() === $steps ) {
+			$steps = $defaults['steps'];
+		}
+
+		return array(
+			'cards'    => $cards,
+			'covered'  => $covered,
+			'excluded' => $excluded,
+			'steps'    => $steps,
+		);
+	}
+
+	/**
+	 * Raw repeater items in saved order (empty array when none/invalid).
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function repeater_items( string $key ): array {
+		$items = es_option( $key );
+		if ( ! is_array( $items ) ) {
+			return array();
+		}
+		$out = array();
+		foreach ( array_values( $items ) as $item ) {
+			if ( is_array( $item ) ) {
+				$out[] = $item;
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Non-empty `text` subfield values of a repeater, in saved order.
+	 *
+	 * @return array<int,string>
+	 */
+	private static function repeater_texts( string $key ): array {
+		$out = array();
+		foreach ( self::repeater_items( $key ) as $item ) {
+			$text = trim( (string) ( $item['text'] ?? '' ) );
+			if ( '' !== $text ) {
+				$out[] = $text;
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Reference warranty content (static-mirror/refund_returns.html).
+	 *
+	 * @return array{cards:array<int,array<string,string>>,covered:array<int,string>,excluded:array<int,string>,steps:array<int,array<string,string>>}
+	 */
+	public static function warranty_defaults(): array {
+		return array(
+			'cards'    => array(
+				array( 'icon' => 'shield', 'title' => '۲۴ ماه گارانتی تعویض بی‌قید و شرط', 'description' => 'کلیه ریسه‌های LED، پوینت لایت‌های پیکسلی، والواشرها و بردهای الکترونیکی تولیدی در صورت بروز هرگونه نقص فنی ناشی از فرآیند تولید یا نفوذ رطوبت، بدون دریافت هزینه تعویض می‌گردند.' ),
+				array( 'icon' => 'shield', 'title' => '۵ سال خدمات پس از فروش و تأمین قطعات', 'description' => 'از آنجا که صفر تا صد قالب‌سازی، تولید برد، تزریق رزین و ساخت سازه در کارخانه عرفان صنعت انجام می‌شود، تأمین قطعات یدکی هر پروژه تا ۵ سال تضمین شده است.' ),
+				array( 'icon' => 'shield', 'title' => 'کنترل کیفیت ۴ مرحله‌ای (QC) پیش از ارسال', 'description' => 'تمامی محصولات پیش از خروج از کارخانه، تحت تست غوطه‌وری در آب، تست بار الکتریکی ۲۴ ساعته (Aging Test) و بازرسی نهایی واحد کنترل کیفیت قرار می‌گیرند.' ),
+			),
+			'covered'  => array(
+				'خاموشی یا افت شدید شدت نور LEDهای اپیستار در طول دوره ۲۴ ماهه گارانتی',
+				'نفوذ آب یا رطوبت به داخل حباب ریسه‌ها، پوینت لایت‌ها و والواشرهای دارای گواهی IP67 / IP68',
+				'تغییر رنگ یا کدر شدن حباب‌های پلی‌کربنات Anti-UV در اثر تابش مستقیم نور خورشید',
+				'اختلال در عملکرد باکس کنترل مرکزی، ماژول‌های NRF و بردهای درایور در شرایط ولتاژ استاندارد',
+				'پوسته شدن یا زنگ‌زدگی رنگ الکترواستاتیک کوره‌ای سازه‌های فلزی در شرایط اقلیمی متعارف',
+			),
+			'excluded' => array(
+				'اتصال مستقیم محصولات ۱۲ یا ۲۴ ولت DC (مانند پوینت لایت یا ریسه سوزنی ۲۴ ولت) به برق شهری ۲۲۰ ولت بدون ترانس کاهنده',
+				'آسیب‌های فیزیکی شدید ناشی از تصادف خودرو با سازه، وندالیسم شهری، سرقت کابل یا بریدگی سیم‌ها در حین عملیات عمرانی',
+				'باز کردن پلمپ تابلو فرمان یا تعمیر غیرمجاز بردها توسط افراد متفرقه خارج از شبکه فنی عرفان صنعت',
+				'نوسانات شدید شبکه برق یا صاعقه مستقیم در پروژه‌هایی که کارفرما از نصب سیستم ارت و محافظ سرج خودداری نموده است',
+			),
+			'steps'    => array(
+				array( 'title' => 'ثبت درخواست پشتیبانی', 'description' => 'تماس با واحد خدمات پس از فروش کارخانه (۰۳۱-۹۱۰۹۱۰۱۱) و اعلام شماره فاکتور یا کد پروژه به همراه تصویر یا ویدیوی کوتاه از قطعه.' ),
+				array( 'title' => 'بررسی فنی فوری (کمتر از ۲۴ ساعت)', 'description' => 'کارشناسان فنی در کمتر از ۲۴ ساعت کاری مشکل را بررسی کرده و راهنمایی رفع خطا در محل یا مجوز ارسال قطعه جایگزین را صادر می‌کنند.' ),
+				array( 'title' => 'تعویض قطعه یا اعزام تکنسین', 'description' => 'برای محصولات فروشگاهی، قطعه نو فوراً ارسال می‌گردد و در پروژه‌های پیمانکاری شهری، تیم فنی جهت سرویس به محل پروژه اعزام می‌شود.' ),
+			),
+		);
+	}
 }
