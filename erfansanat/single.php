@@ -58,22 +58,6 @@ $es_mobile    = (string) ( $es_contact['mobile'] ?: '09137976915' );
 $es_tel       = preg_replace( '/\s+/', '', $es_phone );
 $es_mobile_tel = preg_replace( '/\s+/', '', $es_mobile );
 
-$es_related_args = array(
-	'post_type'           => 'post',
-	'post_status'         => 'publish',
-	'posts_per_page'      => 3,
-	'post__not_in'        => array( $es_pid ),
-	'ignore_sticky_posts' => true,
-	'no_found_rows'       => true,
-);
-if ( $es_cats ) {
-	$es_related_args['category__in'] = wp_list_pluck( $es_cats, 'term_id' );
-}
-$es_related = new WP_Query( apply_filters( 'es_single_related_posts_args', $es_related_args, $es_pid ) );
-if ( ! $es_related->have_posts() && $es_cats ) {
-	unset( $es_related_args['category__in'] );
-	$es_related = new WP_Query( apply_filters( 'es_single_related_posts_args', $es_related_args, $es_pid ) );
-}
 ?>
 
 <main class="min-h-screen bg-[#f8faf9]">
@@ -159,43 +143,7 @@ if ( ! $es_related->have_posts() && $es_cats ) {
 		</div>
 	</section>
 
-	<?php if ( $es_related->have_posts() ) : ?>
-		<section class="border-t border-emerald-100 bg-white py-14 lg:py-16">
-			<div class="mx-auto max-w-7xl px-5 lg:px-8">
-				<div>
-					<div class="mb-8 flex items-center justify-between">
-						<h3 class="text-2xl font-extrabold text-slate-900"><?php esc_html_e( 'مقالات مرتبط', 'erfansanat' ); ?></h3>
-						<a class="group flex items-center gap-2 text-sm font-bold text-emerald-700 hover:text-emerald-800" href="<?php echo esc_url( $es_blog_url ); ?>"><?php esc_html_e( 'همه مقالات', 'erfansanat' ); ?><svg aria-hidden="true" class="lucide lucide-arrow-up-left h-4 w-4 transition-transform group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 17V7h10"></path><path d="M17 17 7 7"></path></svg></a>
-					</div>
-				</div>
-				<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-					<?php
-					while ( $es_related->have_posts() ) :
-						$es_related->the_post();
-						$es_rid      = get_the_ID();
-						$es_rcats    = get_the_category( $es_rid );
-						$es_rcat     = $es_rcats ? $es_rcats[0]->name : '';
-						$es_rimg     = get_the_post_thumbnail_url( $es_rid, 'medium_large' ) ?: ES_ASSETS_URI . 'images/hero.jpg';
-						$es_rexcerpt = wp_trim_words( wp_strip_all_tags( get_the_excerpt( $es_rid ) ), 24, '…' );
-						?>
-						<div>
-							<a class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]" href="<?php echo esc_url( get_permalink( $es_rid ) ); ?>">
-								<div class="relative h-44 overflow-hidden">
-									<img alt="<?php echo esc_attr( get_the_title( $es_rid ) ); ?>" class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-108" loading="lazy" src="<?php echo esc_url( $es_rimg ); ?>"/>
-									<?php if ( '' !== $es_rcat ) : ?><span class="absolute right-4 top-4 rounded-full bg-emerald-950/75 px-3 py-1 text-[11px] font-bold text-emerald-100 backdrop-blur-md"><?php echo esc_html( $es_rcat ); ?></span><?php endif; ?>
-								</div>
-								<div class="flex flex-1 flex-col gap-2.5 p-5">
-									<span class="text-[11.5px] font-semibold text-slate-500"><?php echo esc_html( Calendar::post_date( $es_rid ) ); ?></span>
-									<h4 class="text-[15.5px] font-extrabold leading-7 text-slate-900 transition-colors group-hover:text-emerald-700"><?php echo esc_html( get_the_title( $es_rid ) ); ?></h4>
-									<p class="line-clamp-2 text-[12.5px] leading-6 text-slate-500"><?php echo esc_html( $es_rexcerpt ); ?></p>
-								</div>
-							</a>
-						</div>
-					<?php endwhile; ?>
-				</div>
-			</div>
-		</section>
-	<?php endif; ?>
+	<?php get_template_part( 'template-parts/post/related', null, array( 'post_id' => $es_pid ) ); ?>
 </main>
 
 <?php

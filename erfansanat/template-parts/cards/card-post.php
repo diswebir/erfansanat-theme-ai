@@ -70,6 +70,27 @@ $es_search_norm = mb_strtolower( strtr( $es_search_raw, array( 'ي' => 'ی', 'ك
 $es_search_ar = strtr( $es_search_norm, array( 'ی' => 'ي', 'ک' => 'ك' ) );
 $es_digits = array( '0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹' );
 $es_search_text = preg_replace( '/\s+/u', ' ', $es_search_raw . ' ' . $es_search_norm . ' ' . $es_search_ar . ' ' . strtr( $es_search_norm, $es_digits ) . ' ' . strtr( $es_search_ar, $es_digits ) );
+// Compact variant (P07-T016): DOM parity with the related-articles grid in
+// blog/types-of-light-tunnel.html (h-44 image, date/title/excerpt/read-more).
+if ( ! empty( $args['compact'] ) ) {
+	$es_compact_excerpt = wp_trim_words( $es_excerpt, 24, '…' );
+	?>
+	<a href="<?php echo esc_url( $es_link ); ?>" class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]">
+		<div class="relative h-44 overflow-hidden">
+			<img src="<?php echo esc_url( $es_img ); ?>" alt="<?php echo esc_attr( $es_title ); ?>" loading="lazy" class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-108"/>
+			<?php if ( '' !== $es_cat ) : ?><span class="absolute right-4 top-4 rounded-full bg-emerald-950/75 px-3 py-1 text-[11px] font-bold text-emerald-100 backdrop-blur-md"><?php echo esc_html( $es_cat ); ?></span><?php endif; ?>
+		</div>
+		<div class="flex flex-1 flex-col gap-2.5 p-5">
+			<span class="text-[11.5px] font-semibold text-slate-500"><?php echo esc_html( $es_date_fa ); ?></span>
+			<h4 class="text-[15.5px] font-extrabold leading-7 text-slate-900 transition-colors group-hover:text-emerald-700"><?php echo esc_html( $es_title ); ?></h4>
+			<?php if ( '' !== trim( $es_compact_excerpt ) ) : ?><p class="line-clamp-2 text-[12.5px] leading-6 text-slate-500"><?php echo esc_html( $es_compact_excerpt ); ?></p><?php endif; ?>
+			<span class="mt-auto flex items-center gap-1.5 pt-2 text-[12.5px] font-bold text-emerald-700"><?php esc_html_e( 'ادامه مطلب', 'erfansanat' ); ?><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-left h-4 w-4 transition-transform duration-400 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true"><path d="M7 17V7h10"></path><path d="M17 17 7 7"></path></svg></span>
+		</div>
+	</a>
+	<?php
+	return;
+}
+
 if ( $es_archive_item ) : ?>
 <div class="block" data-blog-item="true" data-blog-category="<?php echo esc_attr( $es_cat ); ?>" data-blog-search-text="<?php echo esc_attr( $es_search_text ); ?>"><div>
 <?php endif; ?>
