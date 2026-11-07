@@ -129,3 +129,6 @@
 
 ## HARDENING + PERF POLISH — 2026-11-04
 - RateLimit (transient/IP): forms 5/min, filters 30/min + honeypot. Preload فونت/CSS در head. aria-live=polite روی gridهای archive. print.css. CI workflow (.github/workflows/e2e.yml). fa_IR.mo تا ۲۷ رشته. README changelog. تست ۹/۹ ALL PASS، E2E 0 FAIL.
+
+## WEBP + SCREENSHOT — 2026-11-04
+- ۷ تصویر بزرگ به webp تبدیل شد + helper es_picture() با fallback jpg در cardها (<picture>). screenshot.png واقعی ساخته شد. E2E 0 FAIL.

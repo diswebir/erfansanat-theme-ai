@@ -161,3 +161,18 @@ if (!function_exists('es_hreflang_tags')) {
         \ErfanSanat\Theme\Seo::hreflang();
     }
 }
+
+/**
+ * WebP with JPG fallback <picture> element.
+ */
+function es_picture(string $src, string $alt = '', string $class = ''): void
+{
+    $webp = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $src);
+    $hasWebp = $webp !== $src && is_file(ERFANSANAT_THEME_DIR . substr($webp, strlen(ERFANSANAT_THEME_URI)));
+    if ($hasWebp) {
+        printf('<picture><source srcset="%s" type="image/webp" /><img src="%s" alt="%s" loading="lazy" class="%s" /></picture>',
+            esc_url($webp), esc_url($src), esc_attr($alt), esc_attr($class));
+    } else {
+        printf('<img src="%s" alt="%s" loading="lazy" class="%s" />', esc_url($src), esc_attr($alt), esc_attr($class));
+    }
+}

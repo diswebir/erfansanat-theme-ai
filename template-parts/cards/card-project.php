@@ -20,6 +20,6 @@ $cityName  = ($cities && !is_wp_error($cities)) ? $cities[0]->name : '';
         <h3 class="mt-1 text-base font-black leading-snug text-slate-900 sm:text-lg"><?php echo esc_html($title); ?></h3>
     </div>
     <div class="relative z-10 mt-6 overflow-hidden rounded-2xl">
-        <img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>" class="h-32 w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+        <?php es_picture($thumb, $title, 'h-32 w-full object-cover transition-transform duration-500 group-hover:scale-105'); ?>
     </div>
 </a>
