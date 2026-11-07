@@ -6,5 +6,7 @@ $id = $makeProject(); update_post_meta($id, 'second-image', 201); update_post_me
 $GLOBALS['post'] = get_post($id); setup_postdata($GLOBALS['post']); $GLOBALS['es_project_id'] = $id;
 $html = $renderPart('template-parts/project/gallery-info');
 foreach (['data-gallery-root="true"', 'data-gallery-main-img="true"', 'data-gallery-thumb', 'data-gallery-lightbox="true"', 'data-gallery-lightbox-close="true"', 'data-project-info', '1404/01/01', 'تهران QA', 'مشاوره پروژه مشابه'] as $needle) $assert(str_contains($html, $needle), 'project gallery/info ' . $needle);
+$assert(str_contains($html, 'loading="eager"') && str_contains($html, 'fetchpriority="high"') && str_contains($html, 'decoding="async"'), 'main project gallery image is prioritized for LCP');
+$assert(substr_count($html, 'loading="lazy"') >= 1, 'project gallery thumbnails are lazy-loaded');
 $assert(str_contains($html, 'data-gallery-attachment="204"'), 'historical typo foure-image is read');
 wp_delete_post($id, true); wp_reset_postdata(); unset($GLOBALS['es_project_id']); $finishTest();

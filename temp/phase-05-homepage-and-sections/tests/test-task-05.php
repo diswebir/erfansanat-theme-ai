@@ -8,6 +8,12 @@ $render=static function(string $part): string { ob_start(); get_template_part($p
 $check=static function(string $html, array $needles) use ($assert): void { foreach($needles as $n) $assert(str_contains($html,$n),"contains: $n"); };
 echo "=== [TEST] Task 5.5 section-01-hero ===\n";
 $assert(is_file("$themeRoot/template-parts/home/section-01-hero.php"),'section file exists');
-$h=$render('template-parts/home/section-01-hero'); $check($h,['data-home1-scene-btn="0"','data-home1-scene-btn="4"','data-home1-scene-img','data-home1-inline-video','hero-video.mp4','data-home1-categories-grid','data-home1-play-trigger','data-home1-video-close']);
+$h=$render('template-parts/home/section-01-hero'); $check($h,['data-home1-scene-btn="0"','data-home1-scene-btn="4"','data-home1-scene-img','data-home1-inline-video="true"','hero-video.mp4','data-home1-categories-grid="true"','data-home1-play-trigger="true"','data-home1-video-close="true"','data-home1-video-mute="true"','type="image/webp"']);
+$assert(substr_count($h,'fetchpriority="high"')===1,'only the first carousel scene has high fetch priority');
+$assert(substr_count($h,'loading="lazy"')===4,'non-visible carousel scenes are lazy-loaded');
+$assert(substr_count($h,'aria-pressed="false"')===4&&str_contains($h,'aria-pressed="true"'),'scene buttons expose the selected state');
+$heroJs=(string)file_get_contents($themeRoot.'/assets/js/main.js');
+$assert(str_contains($heroJs,'h1VideoWrap.querySelector("video")'),'hero controller targets the actual video element inside its wrapper');
+$assert(str_contains($heroJs,'classList.toggle("hidden", !isActiveImage)'),'hero controller reveals the selected image scene');
 $assert(empty($errs),'zero theme warnings ('.implode(';',$errs).')'); restore_error_handler();
 if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED]\n";

@@ -19,14 +19,14 @@ if ($slides === []) $slides[] = ['id' => 0, 'src' => es_image_uri('hero.jpg'), '
 ?>
 <div class="space-y-5" data-gallery-root="true">
     <div class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white">
-        <img data-gallery-main-img="true" src="<?php echo esc_url($slides[0]['src']); ?>" alt="<?php echo esc_attr($slides[0]['alt']); ?>" class="aspect-square w-full object-contain p-5" loading="eager">
+        <img data-gallery-main-img="true" src="<?php echo esc_url($slides[0]['src']); ?>" alt="<?php echo esc_attr($slides[0]['alt']); ?>" class="aspect-square w-full object-contain p-5" loading="eager" fetchpriority="high" decoding="async">
         <span data-gallery-counter="true" class="absolute bottom-4 left-4 rounded-full bg-slate-900/75 px-3 py-1 text-xs font-bold text-white">۱ / <?php echo esc_html((string) count($slides)); ?></span>
         <button type="button" data-gallery-prev="true" aria-label="تصویر قبلی" class="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 shadow">‹</button>
         <button type="button" data-gallery-next="true" aria-label="تصویر بعدی" class="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 shadow">›</button>
         <button type="button" data-gallery-expand="true" aria-label="نمایش بزرگ تصویر" class="absolute left-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow">⤢</button>
     </div>
     <div class="flex gap-3 overflow-x-auto pb-1" aria-label="تصاویر محصول">
-        <?php foreach ($slides as $index => $slide) : ?><button type="button" data-gallery-thumb="<?php echo esc_attr((string) $index); ?>" data-gallery-src="<?php echo esc_url($slide['src']); ?>" class="relative shrink-0 overflow-hidden rounded-xl border border-emerald-500 p-1"><img src="<?php echo esc_url($slide['thumb']); ?>" alt="<?php echo esc_attr($slide['alt']); ?>" class="h-16 w-16 rounded-lg object-cover"><span data-gallery-thumb-ring class="pointer-events-none absolute inset-0 rounded-xl ring-2 ring-emerald-500"></span></button><?php endforeach; ?>
+        <?php foreach ($slides as $index => $slide) : ?><button type="button" data-gallery-thumb="<?php echo esc_attr((string) $index); ?>" data-gallery-src="<?php echo esc_url($slide['src']); ?>" class="relative shrink-0 overflow-hidden rounded-xl border border-emerald-500 p-1"><img src="<?php echo esc_url($slide['thumb']); ?>" alt="<?php echo esc_attr($slide['alt']); ?>" class="h-16 w-16 rounded-lg object-cover" loading="lazy" decoding="async"><span data-gallery-thumb-ring class="pointer-events-none absolute inset-0 rounded-xl ring-2 ring-emerald-500"></span></button><?php endforeach; ?>
     </div>
     <div data-gallery-lightbox="true" class="fixed inset-0 z-[110] hidden items-center justify-center bg-slate-950/95 p-4" role="dialog" aria-modal="true" aria-label="نمایش تصاویر محصول">
         <button type="button" data-gallery-lightbox-close="true" aria-label="بستن" class="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-white text-2xl">×</button>

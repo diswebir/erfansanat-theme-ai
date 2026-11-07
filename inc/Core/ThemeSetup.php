@@ -115,7 +115,29 @@ final class ThemeSetup implements ServiceInterface
      */
     public function filterLanguageAttributes(string $output, string $doctype): string
     {
-        if (!str_contains($output, 'dir=')) {
+        if (is_admin()) {
+            if (!str_contains($output, 'dir=')) {
+                $output .= ' dir="rtl"';
+            }
+
+            return trim($output);
+        }
+
+        $language = apply_filters('erfansanat_theme_html_language', 'fa');
+        if (!is_string($language) || !preg_match('/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i', $language)) {
+            $language = 'fa';
+        }
+
+        $languageAttribute = 'lang="' . esc_attr($language) . '"';
+        if (preg_match('~\blang="[^"]*"~', $output)) {
+            $output = preg_replace('~\blang="[^"]*"~', $languageAttribute, $output, 1) ?? $output;
+        } else {
+            $output = $languageAttribute . ' ' . $output;
+        }
+
+        if (preg_match('~\bdir="[^"]*"~', $output)) {
+            $output = preg_replace('~\bdir="[^"]*"~', 'dir="rtl"', $output, 1) ?? $output;
+        } else {
             $output .= ' dir="rtl"';
         }
 

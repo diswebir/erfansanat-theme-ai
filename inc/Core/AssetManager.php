@@ -39,13 +39,12 @@ final class AssetManager implements ServiceInterface
         );
 
         if (is_front_page()) {
-            foreach (['light-tunnel.jpg', 'hero.jpg'] as $heroImg) {
-                if (is_file(AssetHelper::path('images/' . $heroImg))) {
-                    printf(
-                        "<link rel=\"preload\" href=\"%s\" as=\"image\" />\n",
-                        esc_url(AssetHelper::imageUri($heroImg))
-                    );
-                }
+            $heroImage = 'light-tunnel.webp';
+            if (is_file(AssetHelper::path('images/' . $heroImage))) {
+                printf(
+                    "<link rel=\"preload\" href=\"%s\" as=\"image\" type=\"image/webp\" fetchpriority=\"high\" />\n",
+                    esc_url(AssetHelper::imageUri($heroImage))
+                );
             }
         }
     }

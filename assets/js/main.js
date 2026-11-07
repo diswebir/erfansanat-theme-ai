@@ -2369,196 +2369,169 @@
 
   function initHomeHeroVariants() {
     /* Home 1: Backdrop Scene Switcher & Inline Video Player */
-    var h1Btns = document.querySelectorAll("[data-home1-scene-btn]");
-    var h1Imgs = document.querySelectorAll("[data-home1-scene-img]");
-    var h1Video = document.querySelector('[data-home1-inline-video="true"]');
-    var h1PlayBtn = document.querySelector('[data-home1-play-trigger="true"]');
-    var h1CloseBtn = document.querySelector('[data-home1-video-close="true"]');
-    var h1MuteBtn = document.querySelector('[data-home1-video-mute="true"]');
-    var h1Controls = document.querySelector('[data-home1-video-controls="true"]');
-    var h1Atmosphere = document.querySelector('[data-home1-atmosphere="true"]');
-    var h1Overlays = document.querySelectorAll('[data-home1-overlay-item="true"]');
-    var h1BottomTab = document.querySelector('[data-home1-bottom-tab="true"]');
-    var h1BottomFillets = document.querySelectorAll('[data-home1-bottom-fillet="true"]');
-    var h1CategoriesGrid = document.querySelector('[data-home1-categories-grid="true"]');
-    var h1TitleEl = document.querySelector('[data-home1-scene-title="true"]');
-    var h1CtaEl = document.querySelector('[data-home1-scene-cta="true"]');
-    var h1LinkEl = document.querySelector('[data-home1-scene-link="true"]');
+    var h1Root = document.querySelector("[data-home1-hero]");
+    if (h1Root) {
+      var h1Btns = h1Root.querySelectorAll("[data-home1-scene-btn]");
+      var h1Imgs = h1Root.querySelectorAll("[data-home1-scene-img]");
+      var h1VideoWrap = h1Root.querySelector("[data-home1-inline-video]");
+      var h1Video = h1VideoWrap ? h1VideoWrap.querySelector("video") : null;
+      var h1PlayBtn = h1Root.querySelector("[data-home1-play-trigger]");
+      var h1CloseBtn = h1Root.querySelector("[data-home1-video-close]");
+      var h1MuteBtn = h1Root.querySelector("[data-home1-video-mute]");
+      var h1Controls = h1Root.querySelector("[data-home1-video-controls]");
+      var h1Atmosphere = h1Root.querySelector("[data-home1-atmosphere]");
+      var h1Overlays = h1Root.querySelectorAll("[data-home1-overlay-item]");
+      var h1BottomTab = h1Root.querySelector("[data-home1-bottom-tab]");
+      var h1BottomFillets = h1Root.querySelectorAll("[data-home1-bottom-fillet]");
+      var h1CategoriesGrid = h1Root.querySelector("[data-home1-categories-grid]");
+      var h1TitleEl = h1Root.querySelector("[data-home1-scene-title]");
+      var h1CtaEl = h1Root.querySelector("[data-home1-scene-cta]");
+      var h1LinkEl = h1Root.querySelector("[data-home1-scene-link]");
+      var h1ActiveScene = "0";
+      var h1IsFullVideo = false;
 
-    var h1ActiveScene = "0";
-    var h1IsFullVideo = false;
-
-    if (h1Video) {
-      h1Video.playbackRate = 1.0;
-    }
-
-    function syncH1VideoUI() {
-      var showVid = h1ActiveScene === "0" || h1IsFullVideo;
-      if (h1Video) {
-        if (showVid) {
-          h1Video.classList.remove("opacity-0", "z-0", "pointer-events-none");
-          h1Video.classList.add("opacity-100", "z-10");
-        } else {
-          h1Video.classList.add("opacity-0", "z-0", "pointer-events-none");
-          h1Video.classList.remove("opacity-100", "z-10");
-        }
-      }
-      for (var im = 0; im < h1Imgs.length; im++) {
-        var isImgAct =
-          String(h1Imgs[im].getAttribute("data-home1-scene-img")) === String(h1ActiveScene);
-        if (isImgAct) {
-          h1Imgs[im].classList.remove("opacity-0", "z-0", "scale-100");
-          h1Imgs[im].classList.add("opacity-100", "z-10", "scale-105");
-        } else {
-          h1Imgs[im].classList.remove("opacity-100", "z-10", "scale-105");
-          h1Imgs[im].classList.add("opacity-0", "z-0", "scale-100");
-        }
-      }
-      if (h1Controls) {
-        if (h1IsFullVideo) {
-          h1Controls.classList.remove("opacity-0", "-translate-y-3", "pointer-events-none");
-          h1Controls.classList.add("opacity-100", "translate-y-0");
-        } else {
-          h1Controls.classList.add("opacity-0", "-translate-y-3", "pointer-events-none");
-          h1Controls.classList.remove("opacity-100", "translate-y-0");
-        }
-      }
-      if (h1Atmosphere) {
-        if (h1IsFullVideo) {
-          h1Atmosphere.classList.remove("opacity-100");
-          h1Atmosphere.classList.add("opacity-15");
-        } else {
-          h1Atmosphere.classList.remove("opacity-15");
-          h1Atmosphere.classList.add("opacity-100");
-        }
-      }
-      for (var ov = 0; ov < h1Overlays.length; ov++) {
-        if (h1IsFullVideo) {
-          h1Overlays[ov].classList.remove("opacity-100");
-          h1Overlays[ov].classList.add("opacity-0", "pointer-events-none");
-        } else {
-          h1Overlays[ov].classList.remove("opacity-0", "pointer-events-none");
-          h1Overlays[ov].classList.add("opacity-100");
-        }
-      }
-      if (h1BottomTab) {
-        if (h1IsFullVideo) {
-          h1BottomTab.classList.remove("translate-y-0");
-          h1BottomTab.classList.add("translate-y-13", "sm:translate-y-15");
-        } else {
-          h1BottomTab.classList.remove("translate-y-13", "sm:translate-y-15");
-          h1BottomTab.classList.add("translate-y-0");
-        }
-      }
-      for (var bf = 0; bf < h1BottomFillets.length; bf++) {
-        if (h1IsFullVideo) {
-          h1BottomFillets[bf].classList.remove("opacity-100");
-          h1BottomFillets[bf].classList.add("opacity-0");
-        } else {
-          h1BottomFillets[bf].classList.remove("opacity-0");
-          h1BottomFillets[bf].classList.add("opacity-100");
-        }
-      }
-      if (h1CategoriesGrid) {
-        if (h1IsFullVideo) {
-          h1CategoriesGrid.classList.remove("translate-y-0", "pb-0");
-          h1CategoriesGrid.classList.add("translate-y-13", "pb-13", "sm:translate-y-15", "sm:pb-15");
-        } else {
-          h1CategoriesGrid.classList.remove("translate-y-13", "pb-13", "sm:translate-y-15", "sm:pb-15");
-          h1CategoriesGrid.classList.add("translate-y-0", "pb-0");
-        }
-      }
-    }
-
-    if (h1PlayBtn) {
-      h1PlayBtn.addEventListener("click", function () {
-        h1IsFullVideo = true;
-        syncH1VideoUI();
-        if (h1Video) {
-          h1Video.playbackRate = 1.0;
-          h1Video.muted = false;
-          h1Video.currentTime = 0;
-          h1Video.play().catch(function () {
-            h1Video.muted = true;
-            h1Video.play().catch(function () {});
-          });
-        }
-      });
-    }
-
-    if (h1CloseBtn) {
-      h1CloseBtn.addEventListener("click", function () {
-        h1IsFullVideo = false;
-        syncH1VideoUI();
-        if (h1Video) {
-          h1Video.playbackRate = 1.0;
-          h1Video.muted = true;
-          if (h1ActiveScene === "0") {
-            h1Video.play().catch(function () {});
-          } else {
-            h1Video.pause();
+      function syncH1UI() {
+        for (var im = 0; im < h1Imgs.length; im++) {
+          var isActiveImage = String(h1Imgs[im].getAttribute("data-home1-scene-img")) === h1ActiveScene;
+          h1Imgs[im].classList.toggle("hidden", !isActiveImage);
+          h1Imgs[im].classList.toggle("opacity-100", isActiveImage);
+          h1Imgs[im].classList.toggle("opacity-0", !isActiveImage);
+          h1Imgs[im].classList.remove("z-10");
+          h1Imgs[im].classList.add("z-0");
+          h1Imgs[im].classList.toggle("scale-105", isActiveImage);
+          h1Imgs[im].classList.toggle("scale-100", !isActiveImage);
+          h1Imgs[im].setAttribute("aria-hidden", String(!isActiveImage));
+          if (isActiveImage) {
+            h1Imgs[im].loading = "eager";
+            h1Imgs[im].fetchPriority = "high";
           }
         }
-      });
-    }
 
-    if (h1MuteBtn && h1Video) {
-      h1MuteBtn.addEventListener("click", function () {
-        h1Video.muted = !h1Video.muted;
-      });
-    }
-
-    if (h1Btns.length > 0 && h1Imgs.length > 0) {
-      var activateH1 = function (targetIdx, btnEl) {
-        h1ActiveScene = String(targetIdx);
-        h1IsFullVideo = false;
         for (var i = 0; i < h1Btns.length; i++) {
-          var isAct =
-            String(h1Btns[i].getAttribute("data-home1-scene-btn")) === String(targetIdx);
+          var isActiveButton = String(h1Btns[i].getAttribute("data-home1-scene-btn")) === h1ActiveScene;
+          h1Btns[i].setAttribute("aria-pressed", String(isActiveButton));
           var isDesktopBtn = h1Btns[i].parentElement && h1Btns[i].parentElement.getAttribute("role") === "tablist";
           if (isDesktopBtn) {
-            h1Btns[i].className = isAct
+            h1Btns[i].className = isActiveButton
               ? "inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold transition-all cursor-pointer bg-emerald-500 text-slate-950 shadow-xs"
               : "inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold transition-all cursor-pointer text-white/85 hover:bg-white/10 hover:text-white";
           } else {
-            h1Btns[i].className = isAct
-              ? "inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[11px] font-extrabold transition-all cursor-pointer border-emerald-600 bg-emerald-600 text-white"
+            h1Btns[i].className = isActiveButton
+              ? "inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[11px] font-extrabold transition-all cursor-pointer border-emerald-700 bg-emerald-700 text-white"
               : "inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[11px] font-extrabold transition-all cursor-pointer border-slate-200 bg-slate-50 text-slate-700";
           }
         }
-        if (h1ActiveScene === "0") {
-          if (h1Video) {
-            h1Video.muted = true;
-            h1Video.currentTime = 0;
-            h1Video.play().catch(function () {});
-          }
-        } else {
-          if (h1Video) {
-            h1Video.muted = true;
-            h1Video.pause();
-          }
+
+        if (h1VideoWrap) {
+          h1VideoWrap.classList.toggle("hidden", !h1IsFullVideo);
+          h1VideoWrap.classList.toggle("flex", h1IsFullVideo);
+          h1VideoWrap.setAttribute("aria-hidden", String(!h1IsFullVideo));
         }
-        syncH1VideoUI();
-        if (btnEl) {
-          var sTitle = btnEl.getAttribute("data-scene-title");
-          var sCta = btnEl.getAttribute("data-scene-cta");
-          var sHref = btnEl.getAttribute("data-scene-href");
-          if (h1TitleEl && sTitle) h1TitleEl.textContent = sTitle;
-          if (h1CtaEl && sCta) h1CtaEl.textContent = sCta;
-          if (h1LinkEl && sHref) {
-            var cleanHref = sHref.replace(/^\/+/, "");
-            h1LinkEl.setAttribute("href", cleanHref.endsWith(".html") ? cleanHref : cleanHref + ".html");
-          }
+        if (h1Controls) {
+          h1Controls.classList.toggle("opacity-0", !h1IsFullVideo);
+          h1Controls.classList.toggle("-translate-y-3", !h1IsFullVideo);
+          h1Controls.classList.toggle("pointer-events-none", !h1IsFullVideo);
+          h1Controls.classList.toggle("opacity-100", h1IsFullVideo);
+          h1Controls.classList.toggle("translate-y-0", h1IsFullVideo);
         }
-      };
+        if (h1Atmosphere) {
+          h1Atmosphere.classList.toggle("opacity-15", h1IsFullVideo);
+          h1Atmosphere.classList.toggle("opacity-100", !h1IsFullVideo);
+        }
+        h1Overlays.forEach(function (overlay) {
+          overlay.classList.toggle("opacity-0", h1IsFullVideo);
+          overlay.classList.toggle("pointer-events-none", h1IsFullVideo);
+          overlay.classList.toggle("opacity-100", !h1IsFullVideo);
+        });
+        h1BottomFillets.forEach(function (fillet) {
+          fillet.classList.toggle("opacity-0", h1IsFullVideo);
+          fillet.classList.toggle("opacity-100", !h1IsFullVideo);
+        });
+        if (h1BottomTab) {
+          h1BottomTab.classList.toggle("translate-y-13", h1IsFullVideo);
+          h1BottomTab.classList.toggle("sm:translate-y-15", h1IsFullVideo);
+          h1BottomTab.classList.toggle("translate-y-0", !h1IsFullVideo);
+        }
+        if (h1CategoriesGrid) {
+          h1CategoriesGrid.classList.toggle("translate-y-13", h1IsFullVideo);
+          h1CategoriesGrid.classList.toggle("pb-13", h1IsFullVideo);
+          h1CategoriesGrid.classList.toggle("sm:translate-y-15", h1IsFullVideo);
+          h1CategoriesGrid.classList.toggle("sm:pb-15", h1IsFullVideo);
+          h1CategoriesGrid.classList.toggle("translate-y-0", !h1IsFullVideo);
+          h1CategoriesGrid.classList.toggle("pb-0", !h1IsFullVideo);
+        }
+      }
+
+      function closeH1Video(restoreFocus) {
+        h1IsFullVideo = false;
+        if (h1Video) {
+          h1Video.pause();
+          if (h1Video.readyState > 0) h1Video.currentTime = 0;
+        }
+        syncH1UI();
+        if (restoreFocus && h1PlayBtn) h1PlayBtn.focus();
+      }
+
+      if (h1PlayBtn) {
+        h1PlayBtn.addEventListener("click", function () {
+          if (!h1VideoWrap || !h1Video) return;
+          h1IsFullVideo = true;
+          h1Video.muted = false;
+          syncH1UI();
+          if (h1MuteBtn) {
+            h1MuteBtn.textContent = "قطع صدا";
+            h1MuteBtn.setAttribute("aria-pressed", "true");
+          }
+          if (h1CloseBtn) h1CloseBtn.focus();
+          var playPromise = h1Video.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(function () {
+              h1Video.muted = true;
+              if (h1MuteBtn) {
+                h1MuteBtn.textContent = "فعال‌سازی صدا";
+                h1MuteBtn.setAttribute("aria-pressed", "false");
+              }
+              h1Video.play().catch(function () {});
+            });
+          }
+        });
+      }
+
+      if (h1CloseBtn) h1CloseBtn.addEventListener("click", function () { closeH1Video(true); });
+      if (h1MuteBtn && h1Video) {
+        h1MuteBtn.addEventListener("click", function () {
+          h1Video.muted = !h1Video.muted;
+          h1MuteBtn.textContent = h1Video.muted ? "فعال‌سازی صدا" : "قطع صدا";
+          h1MuteBtn.setAttribute("aria-pressed", String(!h1Video.muted));
+        });
+      }
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && h1IsFullVideo) closeH1Video(true);
+      });
 
       for (var s1 = 0; s1 < h1Btns.length; s1++) {
-        (function (btn) {
-          btn.addEventListener("click", function () {
-            activateH1(btn.getAttribute("data-home1-scene-btn"), btn);
+        (function (button) {
+          button.addEventListener("click", function () {
+            h1ActiveScene = String(button.getAttribute("data-home1-scene-btn"));
+            if (h1IsFullVideo) closeH1Video(false);
+            syncH1UI();
+            var sceneTitle = button.getAttribute("data-scene-title");
+            var sceneCta = button.getAttribute("data-scene-cta");
+            var sceneHref = button.getAttribute("data-scene-href");
+            if (h1TitleEl && sceneTitle) h1TitleEl.textContent = sceneTitle;
+            if (h1CtaEl && sceneCta) h1CtaEl.textContent = sceneCta;
+            if (h1LinkEl && sceneHref) {
+              try {
+                var resolvedHref = new URL(sceneHref, window.location.href);
+                if (["http:", "https:", "mailto:", "tel:"].indexOf(resolvedHref.protocol) !== -1) {
+                  h1LinkEl.setAttribute("href", resolvedHref.href);
+                }
+              } catch (error) {}
+            }
           });
         })(h1Btns[s1]);
       }
+      syncH1UI();
     }
 
     /* Home 2: Interactive & Wheel-Step History Timeline (1380 - 1405) */
@@ -2602,7 +2575,7 @@
             spans[1].className = isAct
               ? "inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black tabular-nums bg-white/20 text-white"
               : isPassed
-              ? "inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black tabular-nums bg-emerald-600 text-white"
+              ? "inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black tabular-nums bg-emerald-700 text-white"
               : "inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black tabular-nums bg-slate-200/80 text-slate-600";
           }
           if (spans.length >= 3) {

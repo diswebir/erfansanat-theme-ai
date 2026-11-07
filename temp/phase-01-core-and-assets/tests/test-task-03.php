@@ -33,7 +33,13 @@ $requiredAssets = [
     'assets/images/hero.jpg',
     'assets/images/hero-video.mp4',
     'assets/images/factory.jpg',
+    'assets/images/factory.webp',
     'assets/images/light-tunnel.jpg',
+    'assets/images/light-tunnel.webp',
+    'assets/images/hero.webp',
+    'assets/images/string-lights.webp',
+    'assets/images/light-element.webp',
+    'assets/images/light-tree.webp',
     'assets/images/light-tree.jpg',
     'assets/images/light-sphere.jpg',
     'assets/images/light-element.jpg',
@@ -118,6 +124,9 @@ $assert(wp_script_is('erfansanat-main', 'done'), 'Script handle erfansanat-main 
 $assert(str_contains($fullOutput, 'assets/js/main.js?ver=' . $jsMtime), "Script URL includes exact filemtime version (?ver={$jsMtime})");
 
 $assert(str_contains($headHtml, 'rel="preload"') && str_contains($headHtml, 'vazirmatn-arabic.woff2'), 'Vazirmatn Persian WOFF2 font preloaded in <head>');
+$imagePreloads = [];
+preg_match_all('/<link[^>]+as="image"[^>]*>/', $headHtml, $imagePreloads);
+$assert(count($imagePreloads[0] ?? []) === 1 && str_contains($headHtml, 'light-tunnel.webp') && str_contains($headHtml, 'fetchpriority="high"'), 'Only the visible WebP hero LCP image is preloaded at high priority');
 $assert(str_contains($fullOutput, 'window.esThemeData'), 'window.esThemeData inline config injected');
 $assert(str_contains($fullOutput, '"filterUrlMutation":false'), 'esThemeData enforces filterUrlMutation: false (SEO rule)');
 

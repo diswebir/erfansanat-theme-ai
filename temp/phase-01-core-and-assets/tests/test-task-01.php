@@ -90,6 +90,8 @@ $assert(get_stylesheet() === $themeSlug, "Active stylesheet is '{$themeSlug}'");
 $assert(class_exists(\ErfanSanat\Theme\Autoloader::class), 'Autoloader class loaded');
 $assert(class_exists(\ErfanSanat\Theme\Core\Plugin::class), 'PSR-4 resolved ErfanSanat\\Theme\\Core\\Plugin');
 $assert(class_exists(\ErfanSanat\Theme\Core\ThemeSetup::class), 'PSR-4 resolved ErfanSanat\\Theme\\Core\\ThemeSetup');
+$htmlAttributes = (new \ErfanSanat\Theme\Core\ThemeSetup())->filterLanguageAttributes('lang="en-US" dir="ltr"', 'html');
+$assert(str_contains($htmlAttributes, 'lang="fa"') && str_contains($htmlAttributes, 'dir="rtl"'), 'Persian language and RTL direction are enforced for accessibility');
 
 // 5. Check theme supports
 foreach (['title-tag', 'post-thumbnails', 'woocommerce', 'html5'] as $feature) {

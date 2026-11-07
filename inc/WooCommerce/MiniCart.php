@@ -48,7 +48,7 @@ final class MiniCart implements ServiceInterface
         $fragments['span[data-cart-modal-count="true"]'] = '<span data-cart-modal-count="true">(' . esc_html(number_format_i18n($count)) . ')</span>';
         $emptyClass = $count > 0 ? 'hidden' : 'block';
         $fragments['div[data-cart-modal-empty="true"]'] = '<div data-cart-modal-empty="true" class="' . esc_attr($emptyClass) . ' py-8 text-center text-sm text-slate-500">سبد خرید شما خالی است.</div>';
-        $fragments['span[data-header-cart-badge]'] = '<span data-header-cart-badge class="absolute -top-1 -left-1 grid h-5 min-w-5 place-items-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white">' . esc_html(number_format_i18n($count)) . '</span>';
+        $fragments['span[data-header-cart-badge]'] = '<span data-header-cart-badge class="absolute -top-1 -left-1 grid h-5 min-w-5 place-items-center rounded-full bg-emerald-700 px-1 text-[10px] font-bold text-white">' . esc_html(number_format_i18n($count)) . '</span>';
         return $fragments;
     }
 

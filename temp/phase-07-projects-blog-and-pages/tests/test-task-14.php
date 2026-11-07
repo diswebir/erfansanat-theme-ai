@@ -11,5 +11,7 @@ update_post_meta($pageId, '_es_sections', [
 $GLOBALS['post'] = get_post($pageId); setup_postdata($GLOBALS['post']); ob_start(); include $themeRoot . '/page-templates/template-licenses.php'; $html = (string) ob_get_clean();
 foreach (['data-license-section="hero"', 'مجوزها و افتخارات QA', 'data-license-section="certificates"', 'گواهینامه‌های ISO QA', 'گواهی ISO QA', 'data-license-section="honors"', 'تقدیرنامه‌ها QA', 'تقدیرنامه QA', 'data-gallery-root="true"', 'data-gallery-lightbox="true"'] as $needle) $assert(str_contains($html, $needle), 'licenses page contract ' . $needle);
 $assert(substr_count($html, 'data-gallery-root="true"') >= 2, 'certificate and honors galleries are independently usable');
+$assert(substr_count($html, 'loading="lazy"') >= 2 && str_contains($html, 'alt=""'), 'license thumbnails are lazy-loaded and decorative inside named buttons');
+$assert(str_contains((string) file_get_contents($themeRoot . '/page-templates/template-licenses.php'), 'wp_get_attachment_image_url($imageId, \'thumbnail\')'), 'media-library license entries use WordPress thumbnail derivatives');
 $assert(is_file($themeRoot . '/page-templates/template-licenses.php'), 'licenses page template exists');
 wp_delete_post($pageId, true); $finishTest();

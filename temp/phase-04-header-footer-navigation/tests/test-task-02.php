@@ -8,6 +8,6 @@ $render=static function(string $part): string { ob_start(); get_template_part($p
 $check=static function(string $html, array $needles) use ($assert): void { foreach($needles as $n) $assert(str_contains($html,$n),"contains: $n"); };
 echo "=== [TEST] Task 4.2 header bar ===\n";
 $h=$render('template-parts/global/header-bar');
-$check($h,['data-navbar-header','fixed inset-x-0 top-0 z-50','عرفان صنعت اصفهان','ese-logo.svg','data-search-modal-open','data-cart-modal-open','data-header-cart-badge','data-mobile-toggle']);
+$check($h,['data-navbar-header','fixed inset-x-0 top-0 z-50','عرفان صنعت اصفهان','ese-logo.svg','width="40" height="40"','data-search-modal-open','data-cart-modal-open','data-header-cart-badge','data-mobile-toggle']);
 $assert(empty($errs),'zero theme warnings ('.implode(';',$errs).')'); restore_error_handler();
 if($failures){fwrite(STDERR,"[FAILED]\n");exit(1);} echo "\n[PASSED]\n";
