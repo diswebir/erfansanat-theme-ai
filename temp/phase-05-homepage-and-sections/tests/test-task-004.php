@@ -8,7 +8,7 @@ require dirname( __DIR__, 2 ) . '/tests/bootstrap.php';
 es_task( 'P05-T004', 'کارت استاندارد مقاله' );
 
 es_check( 'target: cards/card-post.php', es_file( 'template-parts/cards/card-post.php' ) );
-es_check( 'AC-02: تاریخ از get_the_date (سازگار با WP-Parsidate)', es_contains( 'template-parts/cards/card-post.php', 'get_the_date(' ) );
+es_check( 'AC-02: تاریخ از Calendar::post_date (سازگار با WP-Parsidate)', es_contains( 'template-parts/cards/card-post.php', 'Calendar::post_date(' ) && es_contains( 'inc/Core/Calendar.php', 'get_the_date(' ) );
 es_check( 'AC-03: خلاصه با wp_trim_words کنترل طول می‌شود', es_contains( 'template-parts/cards/card-post.php', 'wp_trim_words(' ) );
 
 if ( es_load_wp() ) {
@@ -43,7 +43,7 @@ if ( es_load_wp() ) {
 	es_check( 'AC-01: کلاس‌های کارت وبلاگ حفظ شده', false !== strpos( $html, 'card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]' ) );
 	es_check( 'AC-01: ساختار تصویر/بدنه/فوتر کارت', false !== strpos( $html, 'relative h-52 overflow-hidden' ) && false !== strpos( $html, 'mt-auto flex items-center justify-between border-t border-slate-100 pt-4' ) );
 	es_check( 'دسته مقاله نمایش داده می‌شود', false !== strpos( $html, 'مجله علمی' ) );
-	es_check( 'AC-02: تاریخ رندر می‌شود', false !== strpos( $html, strtr( get_the_date( '', $pid ), array( '0'=>'۰','1'=>'۱','2'=>'۲','3'=>'۳','4'=>'۴','5'=>'۵','6'=>'۶','7'=>'۷','8'=>'۸','9'=>'۹' ) ) ) );
+	es_check( 'AC-02: تاریخ شمسی دقیق رندر می‌شود', false !== strpos( $html, '۱۲ مرداد ۱۴۰۴' ) );
 	es_check( 'زمان مطالعه نمایش داده می‌شود', 1 === preg_match( '/[۰-۹]+ دقیقه مطالعه/u', $html ) );
 	es_check( 'خلاصه نمایش داده می‌شود', false !== strpos( $html, 'جذاب‌ترین سازه‌های نورپردازی' ) );
 	es_check( 'نویسنده نمایش داده می‌شود', false !== strpos( $html, 'ادامه مطلب' ) );

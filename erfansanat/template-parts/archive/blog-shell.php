@@ -49,36 +49,14 @@ $es_fa = static function ( $value ) {
 						<p class="mt-2 text-[13.5px] font-medium text-slate-500" data-blog-summary="true"><span data-blog-count="true"><?php echo esc_html( $es_fa( $es_total ) ); ?></span> <?php echo esc_html( $es_count_suffix ); ?></p>
 					</div>
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="flex items-center gap-1.5 text-[12px] font-extrabold text-slate-600"><svg aria-hidden="true" class="lucide lucide-layers h-4 w-4 text-emerald-700" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg><span><?php esc_html_e( 'آرشیو دسته‌بندی‌ها:', 'erfansanat' ); ?></span></span>
-						<a class="rounded-xl px-3.5 py-2 text-[12px] font-bold transition-colors <?php echo null === $es_term ? 'bg-emerald-700 text-white' : 'border border-slate-200 bg-slate-50 text-slate-700 hover:border-emerald-300'; ?>" href="<?php echo esc_url( $es_blog_url ); ?>"><?php esc_html_e( 'همه مطالب', 'erfansanat' ); ?></a>
-						<?php foreach ( $es_categories as $es_category ) : ?>
-							<a class="rounded-xl px-3.5 py-2 text-[12px] font-bold transition-colors <?php echo $es_term && (int) $es_term->term_id === (int) $es_category->term_id ? 'bg-emerald-700 text-white' : 'border border-slate-200 bg-slate-50 text-slate-700 hover:border-emerald-300'; ?>" href="<?php echo esc_url( get_category_link( $es_category ) ); ?>"><?php echo esc_html( $es_category->name ); ?></a>
-						<?php endforeach; ?>
-						<button class="hidden rounded-xl border border-slate-200 px-4 py-2 text-[12px] font-bold text-slate-600 transition-colors hover:border-emerald-400 hover:text-emerald-700 cursor-pointer" data-blog-reset="true" type="button"><?php esc_html_e( 'حذف فیلترها', 'erfansanat' ); ?></button>
+						<?php get_template_part( 'template-parts/archive/blog-filter', null, array( 'categories' => $es_categories, 'context' => $es_context, 'term' => $es_term, 'blog_url' => $es_blog_url, 'variant' => 'toolbar' ) ); ?>
 					</div>
 				</div>
 			</div>
 
 			<div data-blog-grid="true" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 <?php echo 0 === $es_total ? 'hidden' : ''; ?>">
 				<?php foreach ( $es_posts as $es_article ) : ?>
-					<?php
-					$es_article_id    = (int) $es_article->ID;
-					$es_article_cats  = get_the_category( $es_article_id );
-					$es_article_cat   = $es_article_cats ? $es_article_cats[0]->name : '';
-					$es_article_text  = get_the_title( $es_article_id ) . ' ' . ( '' !== trim( $es_article->post_excerpt ) ? $es_article->post_excerpt : wp_strip_all_tags( $es_article->post_content ) );
-					foreach ( $es_article_cats as $es_article_category ) {
-						$es_article_text .= ' ' . $es_article_category->name;
-					}
-					foreach ( get_the_tags( $es_article_id ) ?: array() as $es_tag ) {
-						$es_article_text .= ' ' . $es_tag->name;
-					}
-					$es_article_text = mb_strtolower( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $es_article_text ) ), 'UTF-8' );
-					?>
-					<div class="block" data-blog-item="true" data-blog-category="<?php echo esc_attr( $es_article_cat ); ?>" data-blog-search-text="<?php echo esc_attr( $es_article_text ); ?>">
-						<div>
-							<?php get_template_part( 'template-parts/cards/card-post', null, array( 'post_id' => $es_article_id ) ); ?>
-						</div>
-					</div>
+					<?php get_template_part( 'template-parts/cards/card-post', null, array( 'post_id' => (int) $es_article->ID, 'archive_item' => true ) ); ?>
 				<?php endforeach; ?>
 			</div>
 

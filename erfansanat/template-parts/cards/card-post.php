@@ -12,11 +12,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use ErfanSanat\Theme\Core\Calendar;
+
 $es_post_id = isset( $args['post_id'] ) ? (int) $args['post_id'] : (int) get_the_ID();
 if ( ! $es_post_id || 'post' !== get_post_type( $es_post_id ) ) {
 	return;
 }
 
+$es_archive_item = ! empty( $args['archive_item'] );
+$es_search_result = ! empty( $args['search_result'] );
 $es_title = get_the_title( $es_post_id );
 $es_link  = (string) get_permalink( $es_post_id );
 
@@ -38,7 +42,7 @@ $es_featured = (bool) apply_filters( 'es_post_card_featured', is_sticky( $es_pos
 $es_fa_digits = array( '0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹' );
 
 // Date: get_the_date() is WP-Parsidate-compatible (AC-02).
-$es_date    = get_the_date( '', $es_post_id );
+$es_date    = Calendar::post_date( $es_post_id );
 $es_date_fa = strtr( (string) $es_date, $es_fa_digits );
 
 // Reading time estimate from content word count (filterable).
@@ -58,8 +62,18 @@ $es_excerpt = wp_trim_words( $es_excerpt, 35, '…' );
 // Author.
 $es_author_id = (int) get_post_field( 'post_author', $es_post_id );
 $es_author    = (string) get_the_author_meta( 'display_name', $es_author_id );
-?>
-<a href="<?php echo esc_url( $es_link ); ?>" class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]">
+$es_search_raw = $es_title . ' ' . $es_excerpt . ' ' . $es_cat;
+foreach ( $es_cats as $es_search_cat ) { $es_search_raw .= ' ' . $es_search_cat->name; }
+foreach ( get_the_tags( $es_post_id ) ?: array() as $es_search_tag ) { $es_search_raw .= ' ' . $es_search_tag->name; }
+$es_search_raw = wp_strip_all_tags( $es_search_raw );
+$es_search_norm = mb_strtolower( strtr( $es_search_raw, array( 'ي' => 'ی', 'ك' => 'ک', 'ة' => 'ه', 'ؤ' => 'و', "\u{200c}" => ' ' ) ), 'UTF-8' );
+$es_search_ar = strtr( $es_search_norm, array( 'ی' => 'ي', 'ک' => 'ك' ) );
+$es_digits = array( '0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹' );
+$es_search_text = preg_replace( '/\s+/u', ' ', $es_search_raw . ' ' . $es_search_norm . ' ' . $es_search_ar . ' ' . strtr( $es_search_norm, $es_digits ) . ' ' . strtr( $es_search_ar, $es_digits ) );
+if ( $es_archive_item ) : ?>
+<div class="block" data-blog-item="true" data-blog-category="<?php echo esc_attr( $es_cat ); ?>" data-blog-search-text="<?php echo esc_attr( $es_search_text ); ?>"><div>
+<?php endif; ?>
+<a <?php echo $es_search_result ? 'data-search-item="' . esc_attr( $es_search_text ) . '"' : ''; ?> href="<?php echo esc_url( $es_link ); ?>" class="card-light group flex h-full flex-col overflow-hidden rounded-[1.5rem]">
 	<div class="relative h-52 overflow-hidden">
 		<img src="<?php echo esc_url( $es_img ); ?>" alt="<?php echo esc_attr( $es_title ); ?>" loading="lazy" class="h-full w-full object-cover transition-transform duration-[1.1s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"/>
 		<?php if ( '' !== $es_cat ) : ?>
@@ -85,3 +99,5 @@ $es_author    = (string) get_the_author_meta( 'display_name', $es_author_id );
 		</div>
 	</div>
 </a>
+
+<?php if ( $es_archive_item ) : ?></div></div><?php endif; ?>

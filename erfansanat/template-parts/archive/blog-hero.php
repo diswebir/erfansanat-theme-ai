@@ -68,19 +68,7 @@ $es_hero_minutes = max( 1, (int) ceil( $es_hero_words / 200 ) );
 					<input id="blog-search" aria-label="<?php esc_attr_e( 'جستجو در مقالات', 'erfansanat' ); ?>" class="w-full rounded-2xl border border-emerald-200 bg-white py-4 pl-5 pr-13 text-[14px] font-medium text-slate-800 shadow-[0_18px_40px_-22px_rgba(0,80,40,0.18)] outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/15" data-blog-search="true" placeholder="<?php esc_attr_e( 'جستجو در مقالات… (مثلاً تونل نوری، والواشر)', 'erfansanat' ); ?>" type="text" value=""/>
 				</div>
 				<div class="mt-5 flex flex-wrap gap-2">
-					<?php if ( 'home' === $es_context ) : ?>
-						<button class="rounded-xl px-4 py-2.5 text-[12.5px] font-bold transition-all cursor-pointer bg-emerald-700 text-white shadow-md shadow-emerald-700/25" data-blog-cat-btn="<?php esc_attr_e( 'همه', 'erfansanat' ); ?>" type="button"><?php esc_html_e( 'همه', 'erfansanat' ); ?></button>
-					<?php else : ?>
-						<a class="rounded-xl px-4 py-2.5 text-[12.5px] font-bold transition-all cursor-pointer border border-slate-200 bg-white text-slate-600 hover:border-emerald-400 hover:text-emerald-700" href="<?php echo esc_url( $es_blog_url ); ?>"><?php esc_html_e( 'همه', 'erfansanat' ); ?></a>
-					<?php endif; ?>
-					<?php foreach ( $es_categories as $es_category ) : ?>
-						<?php $es_active_cat = $es_term && (int) $es_term->term_id === (int) $es_category->term_id; ?>
-						<?php if ( 'home' === $es_context ) : ?>
-							<button class="rounded-xl px-4 py-2.5 text-[12.5px] font-bold transition-all cursor-pointer <?php echo $es_active_cat ? 'bg-emerald-700 text-white shadow-md shadow-emerald-700/25' : 'border border-slate-200 bg-white text-slate-600 hover:border-emerald-400 hover:text-emerald-700'; ?>" data-blog-cat-btn="<?php echo esc_attr( $es_category->name ); ?>" type="button"><?php echo esc_html( $es_category->name ); ?></button>
-						<?php else : ?>
-							<a class="rounded-xl px-4 py-2.5 text-[12.5px] font-bold transition-all cursor-pointer <?php echo $es_active_cat ? 'bg-emerald-700 text-white shadow-md shadow-emerald-700/25' : 'border border-slate-200 bg-white text-slate-600 hover:border-emerald-400 hover:text-emerald-700'; ?>" href="<?php echo esc_url( get_category_link( $es_category ) ); ?>"><?php echo esc_html( $es_category->name ); ?></a>
-						<?php endif; ?>
-					<?php endforeach; ?>
+					<?php get_template_part( 'template-parts/archive/blog-filter', null, array( 'categories' => $es_categories, 'context' => $es_context, 'term' => $es_term, 'blog_url' => $es_blog_url, 'variant' => 'hero' ) ); ?>
 				</div>
 			</div>
 			<?php if ( $es_post ) : ?>
