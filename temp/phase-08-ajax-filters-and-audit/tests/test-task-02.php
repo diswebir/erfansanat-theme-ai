@@ -248,4 +248,40 @@ final class TaskP08T02Test extends TestCase {
 		$this->assertStringContainsString( 'part-contact-form.php', $source, 'One form definition, not a copy per page.' );
 		$this->assertSame( 1, substr_count( $source, '<h1' ) );
 	}
+
+	/**
+	 * A rejected submission must return to a page that prints the reason.
+	 *
+	 * `wp_get_referer()` is empty whenever the browser or a proxy withholds the
+	 * header. Falling back to the front page put `?es_sent=invalid` in the URL of
+	 * a page with no form on it, so the visitor never saw the message at all.
+	 */
+	public function test_a_submission_returns_to_the_form_it_came_from(): void {
+		$pages = \ErfanSanat\Theme\Forms\FormHandler::form_pages();
+
+		$this->assertArrayHasKey( 'contact', $pages );
+		$this->assertGreaterThan( 0, (int) $pages['contact'], 'The contact page must be discoverable.' );
+
+		$url = \ErfanSanat\Theme\Forms\FormHandler::form_url( 'contact' );
+		$this->assertNotSame( home_url( '/' ), $url, 'Falling back to the front page loses the message.' );
+		$this->assertStringContainsString( 'contact', $url );
+
+		// An unknown form still resolves to something rather than an empty string.
+		$this->assertNotSame( '', \ErfanSanat\Theme\Forms\FormHandler::form_url( 'nonsense' ) );
+	}
+
+	/**
+	 * The status message is announced, and the form points at it.
+	 */
+	public function test_the_status_message_is_announced(): void {
+		$form = (string) file_get_contents(
+			get_template_directory() . '/template-parts/forms/part-contact-form.php'
+		);
+
+		// A polite `status` queued behind other speech is not enough for an error.
+		$this->assertStringContainsString( "'ok' === \$erfansanat_form_status['state'] ? 'status' : 'alert'", $form );
+		$this->assertStringContainsString( 'id="es-form-status"', $form );
+		$this->assertStringContainsString( 'aria-describedby="es-form-status"', $form );
+		$this->assertStringContainsString( 'tabindex="-1"', $form, 'The message must be focusable for the redirect.' );
+	}
 }

@@ -85,18 +85,20 @@ class Session:
         except urllib.error.URLError as error:
             return 0, str(error)
 
-    def post(self, url: str, fields: dict[str, str], referer: str) -> tuple[int, str]:
-        """POST through this session without following the redirect."""
+    def post(self, url: str, fields: dict[str, str], referer: str = "") -> tuple[int, str]:
+        """POST through this session without following the redirect.
+
+        An empty `referer` sends no header at all, which is what a strict
+        referrer-policy, a privacy extension or a stripping proxy produces.
+        """
         data = urllib.parse.urlencode(fields).encode()
-        request = urllib.request.Request(
-            url,
-            data=data,
-            headers={
-                "User-Agent": "erfansanat-phase8-check",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Referer": referer,
-            },
-        )
+        headers = {
+            "User-Agent": "erfansanat-phase8-check",
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+        if referer:
+            headers["Referer"] = referer
+        request = urllib.request.Request(url, data=data, headers=headers)
         try:
             with self.opener.open(request, timeout=30) as response:
                 return response.status, ""
@@ -297,6 +299,28 @@ def task_8_2() -> None:
     attempt({"name": ""}, "a missing required field is rejected", "invalid")
     attempt({"es_form": "evil"}, "an unknown form is rejected", "invalid")
     attempt({"email": "not-an-email"}, "a malformed e-mail is rejected", "invalid")
+
+    # --- the visitor has to be able to read the answer ---
+    # A browser that strips the Referer header used to send the visitor to the
+    # front page with `?es_sent=invalid` and no form in sight, so the message the
+    # handler wrote was never printed anywhere.
+    no_ref = Session()
+    _, page = no_ref.get(referer)
+    hit = re.search(r'name="es_nonce" value="([^"]+)"', page)
+    payload = dict(fields)
+    payload["es_nonce"] = hit.group(1) if hit else ""
+    payload["name"] = ""
+    code, where = no_ref.post(action_url, payload)
+    check("8.2", "a submission without a referer still answers", code == 302, f"status={code}")
+    check("8.2", "…and returns to the contact page, not the front page",
+          where.startswith(f"{BASE}/contact/"), where)
+    if code == 302 and where.startswith(f"{BASE}/contact/"):
+        _, back = Session().get(where)
+        check("8.2", "the error is announced, not merely printed", 'role="alert"' in back)
+        check("8.2", "the error is reachable from the form",
+              'id="es-form-status"' in back and 'aria-describedby="es-form-status"' in back)
+        check("8.2", "the message is rendered on the page the visitor lands on",
+              'data-contact-status="error"' in back)
 
     # The rate limit is real: exhaust it deliberately, prove the refusal, then
     # clear it so a rerun starts from zero.

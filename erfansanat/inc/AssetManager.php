@@ -38,6 +38,14 @@ final class AssetManager {
 	public const ARTICLE_STYLE_HANDLE = 'erfansanat-article';
 
 	/**
+	 * Accessibility helpers handle.
+	 *
+	 * `styles.css` is the approved build artefact and is never edited by hand, so
+	 * the two rules the reference never needed live in their own small file.
+	 */
+	public const A11Y_STYLE_HANDLE = 'erfansanat-a11y';
+
+	/**
 	 * WordPress dashicons are not needed on the front end.
 	 */
 	private const UNNEEDED_STYLES = array( 'dashicons' );
@@ -122,6 +130,15 @@ final class AssetManager {
 			self::uri( 'css/styles.css' ),
 			array(),
 			self::version( 'css/styles.css' )
+		);
+
+		// Loaded after styles.css and depending on it: the skip link and
+		// `.screen-reader-text` are not in the compiled build.
+		wp_enqueue_style(
+			self::A11Y_STYLE_HANDLE,
+			self::uri( 'css/a11y.css' ),
+			array( self::STYLE_HANDLE ),
+			self::version( 'css/a11y.css' )
 		);
 
 		wp_enqueue_script(

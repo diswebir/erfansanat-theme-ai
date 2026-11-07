@@ -406,6 +406,24 @@ def audit_theme_package() -> None:
         if field not in header:
             record("FAIL", "package", f"style.css is missing {field}")
 
+    # Translation readiness: the theme loads its text domain from languages/, so
+    # a template has to be there or the directory is a dead end for translators.
+    pot = theme / "languages" / "erfansanat.pot"
+    if not pot.exists():
+        record("FAIL", "package", "languages/erfansanat.pot is missing")
+    else:
+        text = pot.read_text(encoding="utf-8")
+        if 'X-Domain: erfansanat' not in text:
+            record("FAIL", "package", "the template declares no text domain")
+        entries = text.count('\nmsgid "') - 1  # the header's own empty msgid
+        if entries < 500:
+            record("FAIL", "package", f"the template has only {entries} strings — extraction broke")
+        # A stale template is worse than none: a translator translates strings
+        # that the theme no longer prints.
+        newest = max((p.stat().st_mtime for p in theme.rglob("*.php")), default=0)
+        if pot.stat().st_mtime < newest:
+            record("WARN", "package", "languages/erfansanat.pot is older than the theme sources")
+
     for name in ("index.php", "functions.php", "readme.txt", "theme.json", "screenshot.png"):
         if not (theme / name).exists():
             record("FAIL", "package", f"{name} is missing from the theme")

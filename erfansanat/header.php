@@ -44,6 +44,16 @@ $erfansanat_menu_tree = MenuTree::from_location( 'main-mega-menu' );
 <?php wp_body_open(); ?>
 <div id="erfansanat-page" class="erfansanat-page relative min-h-screen overflow-x-clip selection:bg-emerald-600 selection:text-white">
 
+	<?php
+	/*
+	 * First focusable element on the page. The header holds the top bar, the mega
+	 * menu and the drawer, so a keyboard user should not have to tab through all
+	 * of them to reach the content. The target is the `<main id="primary">`
+	 * opened below.
+	 */
+	?>
+	<a class="erfansanat-skip-link" href="#primary"><?php esc_html_e( 'پرش به محتوای اصلی', 'erfansanat' ); ?></a>
+
 	<?php SiteParts::notice_bar(); ?>
 
 	<header data-navbar-header="true"
@@ -110,4 +120,4 @@ $erfansanat_menu_tree = MenuTree::from_location( 'main-mega-menu' );
 
 	<?php MobileMenu::render( $erfansanat_menu_tree ); ?>
 
-	<main id="primary" class="site-main pt-[104px]">
+	<main id="primary" tabindex="-1" class="site-main pt-[104px]">

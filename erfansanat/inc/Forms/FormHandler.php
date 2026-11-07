@@ -161,15 +161,84 @@ final class FormHandler {
 	}
 
 	/**
+	 * The page each form is rendered on, used when the referer is unavailable.
+	 *
+	 * `wp_get_referer()` returns nothing for a browser or proxy that strips the
+	 * header (a strict referrer-policy, a privacy extension, a reverse proxy).
+	 * The handler used to fall back to the front page, so the visitor landed on
+	 * `/` with `?es_sent=invalid` in the URL and no form in sight — the message
+	 * it was supposed to read was never rendered. The form kind is already posted,
+	 * so the right page is known without trusting any header.
+	 *
+	 * Filterable because a site that moves its contact form to another page should
+	 * not have to edit the handler.
+	 *
+	 * @return array<string, int>
+	 */
+	public static function form_pages(): array {
+		// The page is found by the template it is assigned, which is how the theme
+		// decides what a page is everywhere else. An option would be a second
+		// source of truth that can disagree with the page itself.
+		$id    = 0;
+		$found = get_pages(
+			array(
+				'meta_key'    => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One page, cached.
+				'meta_value'  => 'page-templates/contact.php', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- See above.
+				'number'      => 1,
+				'post_status' => 'publish',
+			)
+		);
+		if ( is_array( $found ) && isset( $found[0] ) && $found[0] instanceof \WP_Post ) {
+			$id = (int) $found[0]->ID;
+		}
+
+		$pages = array(
+			'contact'  => $id,
+			'quote'    => $id,
+			'callback' => $id,
+		);
+
+		return (array) apply_filters( 'erfansanat_form_page_ids', $pages ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Theme's own filter.
+	}
+
+	/**
+	 * The page a form kind belongs on, or the front page when it has none.
+	 *
+	 * @param string $form Form kind.
+	 * @return string
+	 */
+	public static function form_url( string $form ): string {
+		$pages = self::form_pages();
+		$id    = isset( $pages[ $form ] ) ? (int) $pages[ $form ] : 0;
+
+		if ( $id > 0 ) {
+			$url = get_permalink( $id );
+			if ( is_string( $url ) && '' !== $url ) {
+				return $url;
+			}
+		}
+
+		return home_url( '/' );
+	}
+
+	/**
 	 * Handle one submission.
 	 *
 	 * @return void
 	 */
 	public static function handle(): void {
-		$redirect = wp_get_referer();
-		if ( ! is_string( $redirect ) || '' === $redirect ) {
-			$redirect = home_url( '/' );
+		// The form kind is posted by the form itself, so the page it lives on is
+		// known even when the request carries no referer. Prefer it over the
+		// header: the header can be stripped, and it can point at a page that does
+		// not render this form at all.
+		$posted_form = isset( $_POST['es_form'] ) ? sanitize_key( wp_unslash( (string) $_POST['es_form'] ) ) : '';
+		$redirect    = '' !== $posted_form ? self::form_url( $posted_form ) : '';
+
+		if ( '' === $redirect ) {
+			$referer  = wp_get_referer();
+			$redirect = is_string( $referer ) && '' !== $referer ? $referer : home_url( '/' );
 		}
+
 		$redirect = remove_query_arg( self::STATUS_ARG, $redirect );
 
 		$fail = static function ( string $reason ) use ( $redirect ): void {

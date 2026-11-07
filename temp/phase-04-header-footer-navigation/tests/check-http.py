@@ -82,7 +82,27 @@ def task_4_1(_: str) -> None:
     id_set = set(home_ids)
     check("4.1", "every aria-controls target exists", controls <= id_set, ",".join(sorted(controls - id_set)))
     check("4.1", "nav is labelled", 'aria-label="منوی اصلی"' in home)
-    check("4.1", "skip-to-content or main landmark target exists", 'id="primary"' in home)
+    # The target existing is not the same as a control pointing at it: a keyboard
+    # user needs the link, and it has to be the first focusable element.
+    check("4.1", "skip link targets <main>", 'class="erfansanat-skip-link" href="#primary"' in home.replace("'", '"'))
+    check("4.1", "skip link is first in the page wrapper",
+          home.find("erfansanat-skip-link") < home.find("data-navbar-header") and
+          home.find("erfansanat-skip-link") < home.find("data-notice-bar") if "data-notice-bar" in home else
+          home.find("erfansanat-skip-link") < home.find("data-navbar-header"))
+    check("4.1", "the skip target is focusable", re.search(r'<main[^>]*id="primary"[^>]*tabindex="-1"', home) is not None
+          or re.search(r'<main[^>]*tabindex="-1"[^>]*id="primary"', home) is not None)
+
+    # `.screen-reader-text` is used on the search label, so the sheet that defines
+    # it must be loaded on every front-end page, not only where it is used.
+    a11y = re.search(r"assets/css/a11y[.]css[^\"']*", home)
+    check("4.1", "accessibility stylesheet is loaded", a11y is not None)
+    check("4.1", "accessibility stylesheet follows the main sheet",
+          home.find("assets/css/a11y.css") > home.find("assets/css/styles.css"))
+    if a11y:
+        css_status, css = fetch(BASE + "/wp-content/themes/erfansanat/" + a11y.group(0).split("?")[0].replace("assets/", "assets/"))
+        check("4.1", "the stylesheet defines screen-reader-text",
+              css_status == 200 and ".screen-reader-text" in css and "clip-path" in css,
+              f"status={css_status}")
 
     # No duplicated SEO head tags.
     check("4.1", "single <title>", len(re.findall(r"<title\b", home)) == 1, str(len(re.findall(r"<title\b", home))))

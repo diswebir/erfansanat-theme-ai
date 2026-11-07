@@ -30,7 +30,9 @@ $erfansanat_field_class = 'w-full rounded-xl border border-slate-200 bg-slate-50
 $erfansanat_plain_class = 'w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-[14px] text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10';
 ?>
 <?php if ( '' !== $erfansanat_form_status['message'] ) : ?>
-	<div role="status"
+	<div role="<?php echo 'ok' === $erfansanat_form_status['state'] ? 'status' : 'alert'; ?>"
+		id="es-form-status"
+		tabindex="-1"
 		data-contact-status="<?php echo esc_attr( $erfansanat_form_status['state'] ); ?>"
 		class="mt-8 rounded-2xl border px-5 py-4 text-[13px] font-bold leading-7 <?php echo 'ok' === $erfansanat_form_status['state'] ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-rose-200 bg-rose-50 text-rose-900'; ?>">
 		<?php echo esc_html( $erfansanat_form_status['message'] ); ?>
@@ -42,7 +44,7 @@ $erfansanat_plain_class = 'w-full rounded-xl border border-slate-200 bg-slate-50
 	method="post"
 	action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
 	class="mt-8 flex flex-col gap-5"
-	novalidate="novalidate">
+	novalidate="novalidate"<?php echo '' !== $erfansanat_form_status['message'] ? ' aria-describedby="es-form-status"' : ''; ?>>
 	<input type="hidden" name="action" value="<?php echo esc_attr( FormHandler::ACTION ); ?>" />
 	<input type="hidden" name="es_form" value="<?php echo esc_attr( $erfansanat_form_kind ); ?>" />
 	<input type="hidden" name="es_nonce" value="<?php echo esc_attr( wp_create_nonce( FormHandler::NONCE ) ); ?>" />

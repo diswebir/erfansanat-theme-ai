@@ -256,4 +256,49 @@ final class TaskP08T03Test extends TestCase {
 		$form = (string) file_get_contents( get_template_directory() . '/template-parts/archive/part-native-filters.php' );
 		$this->assertStringContainsString( 'method="get"', $form, 'A filter form must be a GET, so the URL is shareable.' );
 	}
+
+	/**
+	 * Every visible string is translatable, and the template proves it.
+	 *
+	 * The sources are Persian, so there is nothing to translate at run time; the
+	 * .pot exists so the theme can be reused on another language without editing
+	 * PHP. A string wrapped without the text domain would silently stay Persian,
+	 * which is why the domain is asserted here rather than assumed.
+	 */
+	public function test_theme_ships_a_translation_template(): void {
+		$root = rtrim( (string) getcwd(), '/' ) . '/erfansanat';
+		if ( ! is_file( $root . '/languages/erfansanat.pot' ) ) {
+			$root = '/home/user/erfansanat-theme-ai/erfansanat';
+		}
+
+		$pot = $root . '/languages/erfansanat.pot';
+		$this->assertFileExists( $pot );
+
+		$text = (string) file_get_contents( $pot );
+		$this->assertStringContainsString( 'X-Domain: erfansanat', $text );
+		$this->assertStringContainsString( 'charset=UTF-8', $text );
+
+		// The header block is the only entry with an empty msgid.
+		$entries = substr_count( $text, "\nmsgid \"" ) - 1;
+		$this->assertGreaterThan( 500, $entries, 'Extraction found almost nothing, so it broke.' );
+
+		// A gettext call without the theme's domain is dead code: the string can
+		// never be translated and the catalogue will never mention it.
+		$offenders = array();
+		$files     = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( get_template_directory(), FilesystemIterator::SKIP_DOTS )
+		);
+		foreach ( $files as $file ) {
+			if ( ! $file->isFile() || 'php' !== $file->getExtension() ) {
+				continue;
+			}
+			$source = (string) file_get_contents( $file->getPathname() );
+			if ( preg_match_all( '/\\b(?:esc_html__|esc_html_e|esc_attr__|esc_attr_e|__|_e|_x|_n|_nx)\\s*\\(/', $source, $m ) ) {
+				if ( ! preg_match( "/['\"]erfansanat['\"]/", $source ) ) {
+					$offenders[] = $file->getFilename();
+				}
+			}
+		}
+		$this->assertSame( array(), $offenders, 'A file calls gettext without the erfansanat domain.' );
+	}
 }

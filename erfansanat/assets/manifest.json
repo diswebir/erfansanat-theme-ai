@@ -26,6 +26,14 @@
       "identical_to_source": false,
       "authored": true
     },
+    "css/a11y.css": {
+      "sha256": "5399ec7d236f512957eb0bfd7f90b6fb04324ba38c17a3e6c3ea5aed8c47d7ee",
+      "bytes": 2614,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
     "css/article.css": {
       "sha256": "b2537710ded0601c23b850bec4f193b9f4ace2966c42f855614402c14112e0dc",
       "bytes": 3665,

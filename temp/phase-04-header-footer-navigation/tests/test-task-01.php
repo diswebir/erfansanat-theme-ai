@@ -194,4 +194,43 @@ final class TaskP04T01Test extends TestCase {
 			$this->assertStringNotContainsString( 'http://erfansanat.com', $code, $file . ' must not hard-code the live host.' );
 		}
 	}
+
+	/**
+	 * A keyboard user must be able to skip the header.
+	 *
+	 * The header carries the top bar, the mega menu and the mobile drawer. Without
+	 * a skip link every keyboard and screen-reader user tabs through all of it on
+	 * every page load before reaching any content.
+	 */
+	public function test_header_provides_a_skip_link(): void {
+		$header = (string) file_get_contents( get_template_directory() . '/header.php' );
+
+		$this->assertStringContainsString( 'erfansanat-skip-link', $header );
+		$this->assertStringContainsString( 'href="#primary"', $header );
+		$this->assertStringContainsString( '<main id="primary"', $header );
+
+		// The jump must actually move focus, not only scroll.
+		$this->assertStringContainsString( 'tabindex="-1"', $header );
+	}
+
+	/**
+	 * `.screen-reader-text` has to be defined somewhere the front end loads.
+	 *
+	 * The class is WordPress's, but the theme does not load core's stylesheet on
+	 * the front end. The search label uses the class, so an undefined rule prints
+	 * the word "جستجو" above the input in every browser.
+	 */
+	public function test_screen_reader_text_is_defined_and_loaded(): void {
+		$css = (string) file_get_contents( get_template_directory() . '/assets/css/a11y.css' );
+
+		$this->assertStringContainsString( '.screen-reader-text', $css );
+		$this->assertStringContainsString( 'clip-path', $css, 'The modern hiding technique.' );
+		// It must become visible when focused, or the text is unreachable.
+		$this->assertStringContainsString( '.screen-reader-text:focus', $css );
+		$this->assertStringContainsString( '.erfansanat-skip-link', $css );
+
+		$asset = (string) file_get_contents( get_template_directory() . '/inc/AssetManager.php' );
+		$this->assertStringContainsString( "'css/a11y.css'", $asset );
+		$this->assertStringContainsString( 'A11Y_STYLE_HANDLE', $asset );
+	}
 }
