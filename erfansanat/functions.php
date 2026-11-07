@@ -37,6 +37,18 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Admin\TermMetaboxes::boot();
 \ErfanSanat\Theme\Admin\HreflangMetabox::boot();
 
+// Blog comments (P07-T017): wire the T012 single-post hook to the core
+// comments template so all WP comment hooks keep working.
+add_action(
+	'es_single_post_comments',
+	static function () {
+		if ( comments_open() || have_comments() ) {
+			comments_template();
+		}
+	},
+	10
+);
+
 // Admin typography (Vazirmatn) — P02-T019. Boots before the dashboard so the
 // shared font stylesheet is registered ahead of dashboard/metabox assets.
 \ErfanSanat\Theme\Admin\Typography::boot();

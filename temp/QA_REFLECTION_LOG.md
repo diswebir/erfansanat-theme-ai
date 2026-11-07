@@ -203,3 +203,8 @@
 - `template-parts/post/related.php`: رتبه‌بندی هم‌پوشانی دسته+برچسب (تاریخ جدیدتر در تساوی)، حذف نوشته جاری/پیش‌نویس/رمزدار، تعداد args+فیلتر `es_related_posts_count`، کوئری فیلترپذیر. fallback جدیدترین فقط وقتی نوشته هیچ دسته/برچسبی ندارد؛ در غیر این صورت حالت خالی=بدون سکشن (AC-03؛ اصلاح حین تست).
 - کارت استاندارد `card-post` گونه `compact` گرفت (وابستگی P05-T004 ثبت شد) با DOM مرجع h-44؛ single.php سکشن inline را به part سپرد.
 - تست **13/0**؛ رگرسیون T012=14، T013=13، T014=14، T011=16، P05-T004=18.
+
+
+## 2026-11-07 — P07-T017 دیدگاه‌های وبلاگ (14)
+- `comments.php` + `template-parts/post/comments.php`: لیست/فرم کامل هسته (wp_list_comments/comment_form با همه هوک‌ها)، callback طراحی `es_comment_callback` در Helpers (وابستگی ثبت‌شده)، پاسخ تودرتو با walker/script هسته، پیام moderation، حالت بسته و رمزدار. فیلدهای author/email/url فقط کلاس گرفتند (حذف نشدند). وایرینگ `es_single_post_comments`→comments_template در functions.php.
+- تست **14/0**؛ رگرسیون T012=14، T013=13+6 DOM، P01-T004=9. اصلاحات: در style=div هسته کلاس children نمی‌سازد (depth-2+ترتیب+data-belowelement تست شد)؛ کلاس‌های تکراری callback حذف شد؛ تست TOC теперь فقط داخل nav خودش لنگرها را می‌سنجد تا لینک #respond دیدگاه تداخل نکند.

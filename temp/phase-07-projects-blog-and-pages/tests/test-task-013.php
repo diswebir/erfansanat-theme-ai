@@ -49,7 +49,9 @@ if ( es_load_wp() ) {
 
 	wp_update_post( array( 'ID' => $pid, 'post_password' => '', 'post_content' => '<h2>بخش نهایی</h2><p>متن</p>' ) );
 	ob_start(); include ES_THEME . '/single.php'; $single = ob_get_clean();
-	preg_match_all( '/href="#([^"]+)"/', $single, $toc_hrefs );
+	$es_toc_nav = '';
+	if ( preg_match( '/<nav[^>]*aria-label="سرفصل‌های مقاله".*?<\/nav>/s', $single, $navm ) ) { $es_toc_nav = $navm[0]; }
+	preg_match_all( '/href="#([^"]+)"/', $es_toc_nav, $toc_hrefs );
 	preg_match_all( '/<h[23][^>]*id="([^"]+)"/', $single, $toc_ids );
 	es_check( 'SC-01: تک‌نوشته کامل TOC و لنگر هدف دارد', false !== strpos( $single, 'سرفصل‌های مقاله' ) && ! empty( $toc_hrefs[1] ) && ! array_diff( $toc_hrefs[1], $toc_ids[1] ) );
 	wp_reset_postdata();
