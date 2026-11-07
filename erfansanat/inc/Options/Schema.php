@@ -593,6 +593,36 @@ final class Schema {
 				'min'       => 0,
 				'max'       => 40,
 			),
+			'services_intro'          => array(
+				'type'    => 'textarea',
+				'default' => 'طیف کاملی از خدمات طراحی، تولید و اجرای پروژه‌های روشنایی برای شهرداری‌ها، سازمان‌های عمرانی و پیمانکاران پروژه‌های شهری',
+				'label'   => 'توضیح هیرو برگه خدمات',
+				'tab'     => 'pages',
+			),
+			'services_path'           => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'مسیر همکاری (مراحل ایده تا درخشش)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'title'       => array( 'type' => 'text', 'default' => '' ),
+					'description' => array( 'type' => 'textarea', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 8,
+			),
+			'services_cta_text'       => array(
+				'type'    => 'text',
+				'default' => 'درخواست مشاوره رایگان',
+				'label'   => 'متن دکمه CTA خدمات',
+				'tab'     => 'pages',
+			),
+			'services_cta_url'        => array(
+				'type'    => 'text',
+				'default' => '',
+				'label'   => 'لینک دکمه CTA خدمات (خالی = برگه تماس)',
+				'tab'     => 'pages',
+			),
 		);
 	}
 

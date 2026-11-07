@@ -252,3 +252,9 @@
 - یافته مهم: مرجع `data-recruit-tab-panel` دارد ولی main.js `[data-recruit-panel]` می‌جوید → هر پنل هر دو صفت را دارد؛ کلاس‌های وضعیت دکمه مطابق قرارداد toggle main.js (bg-emerald-700/bg-slate-50). فرم #apply-form بدون action/method/name + یادداشت امن تا فاز ۸.
 - تست PHP **14/0**؛ JSDOM **8/0** (سوئیچ واقعی هر ۴ تب + کلاس فعال + محتوای پنل). رگرسیون P02-T007=18، P02-T018=10، T024=13.
 - بازنشانی snapshot دوباره رخ داد؛ fetch+reset --mixed به 50567f4، harness reinstall + theme activate + rewrite flush.
+
+
+## 2026-11-07 — P07-T026 برگه خدمات smartelement (15)
+- `page-templates/services.php`: ردیف‌های خدمت از CPT services (publish، menu_order/date؛ ۲۰تا). نشان/مزیت‌ها از متای `_es_service_badge`/`_es_service_bullets` (خط‌به‌خط؛ متباکس رسمی در T027)، توصیف از excerpt→content. تصویر شاخص با fallback. مسیر همکاری ۵ مرحله + CTA از تب pages (`services_path/services_cta_text/services_cta_url`؛ لینک خالی→تماس). id=services-list و چیپس هیرو حفظ شد. آرشیو مستقل ندارد (has_archive=false تایید شد).
+- تست **15/0**؛ رگرسیون P02-T007=18، P02-T018=10، P03-T002=12، T025=14.
+- **نکته محیطی مهم:** بعد از harness reinstall، ساختار پیوند یکتا خالی می‌ماند (wp rewrite structure کرش می‌کند) → P03-T002 دو fail داد.رفع مشکل: `wp eval 'update_option("permalink_structure","/%postname%/"); flush_rewrite_rules();'`. بعد از هر setup-harness، این را هم اجرا کن (علاوه بر theme activate).

@@ -402,4 +402,28 @@ final class PagesTab {
 			),
 		);
 	}
+	/**
+	 * Cooperation path steps for the services page. Saved items replace
+	 * the reference five steps; order preserved.
+	 *
+	 * @return array<int,array<string,string>>
+	 */
+	public static function services_path(): array {
+		$out = array();
+		foreach ( self::repeater_items( 'services_path' ) as $item ) {
+			$title = trim( (string) ( $item['title'] ?? '' ) );
+			if ( '' === $title ) { continue; }
+			$out[] = array( 'title' => $title, 'description' => (string) ( $item['description'] ?? '' ) );
+		}
+		if ( array() === $out ) {
+			$out = array(
+				array( 'title' => 'بازدید و مشاوره رایگان', 'description' => 'کارشناسان ما از محل پروژه بازدید و نیازسنجی می‌کنند' ),
+				array( 'title' => 'طراحی اختصاصی', 'description' => 'طرح سه‌بعدی و سناریوی نوری مخصوص پروژه شما آماده می‌شود' ),
+				array( 'title' => 'تولید در کارخانه', 'description' => 'ساخت با متریال درجه‌یک و استانداردهای IP67/IP68' ),
+				array( 'title' => 'نصب و اجرا', 'description' => 'تیم اجرایی مجرب، نصب سریع و ایمن را انجام می‌دهد' ),
+				array( 'title' => 'تحویل و پشتیبانی', 'description' => '۲۴ ماه گارانتی و ۵ سال خدمات پس از فروش' ),
+			);
+		}
+		return $out;
+	}
 }
