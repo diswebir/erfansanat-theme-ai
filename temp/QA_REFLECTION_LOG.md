@@ -114,3 +114,6 @@
 
 ## RELEASE READINESS — 2026-11-04
 - Package audit: required files, full style.css header, no debug leftovers, consistent text domain, all PHP lint-clean, full template hierarchy. ALL PASS, E2E 0 FAILs. Theme is release-ready.
+
+## HARDENING + PERF POLISH — 2026-11-04
+- IP rate limiting on AJAX (forms/filters), honeypot kept, font+CSS preload, aria-live on grids, print stylesheet, GitHub Actions CI, expanded fa_IR.mo, README changelog. 9/9 PASS, E2E 0 FAILs.

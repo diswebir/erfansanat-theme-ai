@@ -27,3 +27,14 @@ php-wasm-cli temp/phase-08-ajax-filters-and-audit/tests/test-smoke-render.php
 
 ## کلیدهای متای legacy (سازگار با دیتابیس فعلی)
 `galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`, `number2-viewc`, `hrefmeta_*` و... با همان املای دیتابیس خوانده/نوشته می‌شوند.
+
+## Changelog
+
+### 1.0.0 — 2026-11-04
+- Full theme from 128-page static mirror; 19-layer QA suite ALL-PASS on real WP 7.2.
+- Security hardening: nonce + honeypot + IP rate-limit (forms 5/min, filters 30/min) on AJAX.
+- Performance: font/CSS preload, deferred scripts, lazy images, print stylesheet.
+- Admin: Vazirmatn across full admin + login; options/section-manager/migrator panels.
+- SEO: hreflang + canonical + OG + JSON-LD; RSS + core sitemap verified.
+- i18n: fa_IR locale, pot + mo; RTL verified.
+- CI: .github/workflows/e2e.yml.

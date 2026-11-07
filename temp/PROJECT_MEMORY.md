@@ -126,3 +126,6 @@
 
 ## RELEASE READINESS — 2026-11-04
 - test-release-readiness: فایل‌های required، header کامل style.css (Tested up to 7.2)، صفر TODO/FIXME/debug، همه ترجمه‌ها دامنه erfansanat، lint تمام PHPها، template hierarchy کامل — ALL PASS. E2E 0 FAIL. قالب آماده انتشار است.
+
+## HARDENING + PERF POLISH — 2026-11-04
+- RateLimit (transient/IP): forms 5/min, filters 30/min + honeypot. Preload فونت/CSS در head. aria-live=polite روی gridهای archive. print.css. CI workflow (.github/workflows/e2e.yml). fa_IR.mo تا ۲۷ رشته. README changelog. تست ۹/۹ ALL PASS، E2E 0 FAIL.

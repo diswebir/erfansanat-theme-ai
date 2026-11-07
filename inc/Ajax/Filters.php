@@ -40,6 +40,10 @@ final class Filters
         if (!isset($_REQUEST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['nonce'])), self::NONCE)) {
             wp_send_json_error(['message' => 'bad nonce'], 403);
         }
+        // Rate limit: max 30 filter requests per minute per IP.
+        if (!RateLimit::allow('filters', 30, MINUTE_IN_SECONDS)) {
+            wp_send_json_error(['message' => 'too many requests'], 429);
+        }
     }
 
     public static function assets(): void

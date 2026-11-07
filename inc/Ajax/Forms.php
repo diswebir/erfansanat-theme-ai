@@ -57,6 +57,11 @@ final class Forms
     {
         check_ajax_referer(self::NONCE, 'nonce');
 
+        // Rate limit: max 5 form submissions per minute per IP.
+        if (!RateLimit::allow('forms', 5, MINUTE_IN_SECONDS)) {
+            wp_send_json_error(['message' => 'too many requests'], 429);
+        }
+
         // Honeypot: bots fill this hidden field.
         if (!empty($_POST['website_url'])) {
             wp_send_json_error(['message' => 'spam'], 400);

@@ -50,6 +50,13 @@ final class AssetManager
             [],
             self::version('assets/css/styles.css')
         );
+        wp_enqueue_style(
+            'erfansanat-print',
+            ERFANSANAT_THEME_URI . 'assets/css/print.css',
+            [],
+            self::version('assets/css/print.css'),
+            'print'
+        );
         wp_enqueue_script(
             'erfansanat-main',
             $js,

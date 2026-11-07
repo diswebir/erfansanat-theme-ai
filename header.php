@@ -13,6 +13,8 @@ if (!defined('ABSPATH')) { exit; }
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
+    <link rel="preload" href="<?php echo esc_url(ERFANSANAT_THEME_URI); ?>assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="<?php echo esc_url(ERFANSANAT_THEME_URI); ?>assets/css/styles.css" as="style" />
     <title><?php echo esc_html(wp_get_document_title()); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
