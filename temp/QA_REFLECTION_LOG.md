@@ -282,3 +282,9 @@
 ## 2026-11-07 — P08-T002 جستجوی زنده محصولات (14)
 - `inc/Core/AjaxSearch.php`: اکشن عمومی `es_product_search` روی قرارداد Ajax؛ ورودی term/limit (سقف 12). موتور سه‌مرحله‌ای: WP search عنوان/متن → متا LIKE (english_titl/zireonvan/_sku) → نام product_cat؛ فقط publish + NOT IN product_visibility (وقتی تاکسونومی موجود است)؛ ردیف type=product/url=permalink واقعی/true_sale. نرمال‌سازی ي/ك + ZWNJ؛ عبارت تک‌کاراکتری کوئری نمی‌زند.
 - تست **14/0** شامل SC-03 بودجه: 1.3ms (زیر 200ms). رگرسیون T001=20، P03-T005=13، P03-T014=10.
+
+
+## 2026-11-07 — P08-T003 جستجوی پروژه‌ها/مقالات (13)
+- `AjaxSearch::search_content` + اکشن `es_content_search`: عنوان/متن projects+post، سپس ترم‌های city/project_type؛ ردیف type=project|post با permalink واقعی؛ publish-only؛ پیام امن خالی.
+- باگ واقعی رفع شد: normalize() نیم‌فاصله را به فاصله تبدیل می‌کرد و name__like روی ترم ذخیره‌شده «خرم‌آباد» (با ZWNJ) شکست می‌خورد → `term_variants()` دو شکل (نرمال + حافظ ZWNJ) را برای جستجوی ترم‌ها امتحان می‌کند؛ در product_cat هم اعمال شد.
+- تست **13/0**؛ رگرسیون T002=14، T001=20، P03-T001=15.

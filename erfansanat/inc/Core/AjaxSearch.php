@@ -34,6 +34,126 @@ final class AjaxSearch {
 				'limit' => array( 'type' => 'int', 'default' => 6, 'min' => 1, 'max' => self::MAX_RESULTS ),
 			),
 		) );
+
+		// P08-T003: projects + articles.
+		Ajax::register( 'content_search', array( __CLASS__, 'ajax_content_search' ), array(
+			'public' => true,
+			'inputs' => array(
+				'term'  => array( 'type' => 'text', 'default' => '' ),
+				'limit' => array( 'type' => 'int', 'default' => 6, 'min' => 1, 'max' => self::MAX_RESULTS ),
+			),
+		) );
+	}
+
+	/**
+	 * Endpoint callback for projects/posts (P08-T003).
+	 *
+	 * @param array<string,mixed> $input Whitelisted input.
+	 * @return array<string,mixed>
+	 */
+	public static function ajax_content_search( array $input ): array {
+		$rows = self::search_content( (string) $input['term'], (int) $input['limit'] );
+		return array(
+			'results' => $rows,
+			'total'   => count( $rows ),
+			'message' => $rows ? '' : __( 'نتیجه‌ای یافت نشد.', 'erfansanat' ),
+		);
+	}
+
+	/**
+	 * Projects + posts search (P08-T003): title/content plus project taxonomy
+	 * terms (city / project_type). Publish-only, type-flagged, real permalinks.
+	 *
+	 * @return array<int,array<string,mixed>>
+	 */
+	public static function search_content( string $term, int $limit = 6 ): array {
+		$variants = self::term_variants( $term );
+		$term     = $variants[0];
+		if ( preg_match_all( '/./us', $term ) < 2 ) {
+			return array();
+		}
+		$cap   = max( 1, min( self::MAX_RESULTS, $limit ) );
+		$types = array_values( array_filter( array( 'projects', 'post' ), 'post_type_exists' ) );
+		if ( ! $types ) {
+			return array();
+		}
+		$base = array(
+			'post_type'              => $types,
+			'post_status'            => 'publish',
+			'posts_per_page'         => $cap,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'ignore_sticky_posts'    => true,
+		);
+
+		// 1) Title/content in both post types.
+		$q   = new \WP_Query( array_merge( $base, array( 's' => $term ) ) );
+		$ids = array_map( 'intval', $q->posts );
+
+		// 2) Project taxonomy terms (city/project_type names, Persian terms).
+		if ( count( $ids ) < $cap && post_type_exists( 'projects' ) ) {
+			$tax_ids = array();
+			foreach ( array( 'city', 'project_type' ) as $tax ) {
+				if ( ! taxonomy_exists( $tax ) ) {
+					continue;
+				}
+				$found = array();
+				foreach ( $variants as $variant ) {
+					$terms = get_terms( array( 'taxonomy' => $tax, 'name__like' => $variant, 'hide_empty' => false, 'fields' => 'ids', 'number' => 10 ) );
+					if ( is_array( $terms ) ) {
+						$found = array_merge( $found, array_map( 'intval', $terms ) );
+					}
+				}
+				$found = array_values( array_unique( $found ) );
+				if ( $found ) {
+					$tax_ids[] = array( 'taxonomy' => $tax, 'field' => 'term_id', 'terms' => $found );
+				}
+			}
+			if ( $tax_ids ) {
+				$tax_ids['relation'] = 'OR';
+				$q   = new \WP_Query( array_merge( $base, array( 'post_type' => 'projects', 'tax_query' => $tax_ids ) ) );
+				$ids = array_merge( $ids, array_map( 'intval', $q->posts ) );
+			}
+		}
+
+		$ids = array_slice( array_values( array_unique( $ids ) ), 0, $cap );
+		$out = array();
+		foreach ( $ids as $id ) {
+			$out[] = self::content_row( $id );
+		}
+		return $out;
+	}
+
+	/**
+	 * One project/post result row (AC-01 type flag, AC-02 real permalink).
+	 *
+	 * @return array<string,mixed>
+	 */
+	public static function content_row( int $id ): array {
+		$type     = 'projects' === get_post_type( $id ) ? 'project' : 'post';
+		$subtitle = '';
+		$taxes    = 'project' === $type ? array( 'city', 'project_type' ) : array( 'category' );
+		foreach ( $taxes as $tax ) {
+			if ( ! taxonomy_exists( $tax ) ) {
+				continue;
+			}
+			$terms = get_the_terms( $id, $tax );
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				$subtitle = $terms[0]->name;
+				break;
+			}
+		}
+		$thumb = get_the_post_thumbnail_url( $id, 'thumbnail' );
+		return array(
+			'id'       => $id,
+			'type'     => $type,
+			'title'    => get_the_title( $id ),
+			'url'      => (string) get_permalink( $id ),
+			'subtitle' => $subtitle,
+			'image'    => $thumb ? (string) $thumb : ES_ASSETS_URI . 'images/hero.jpg',
+		);
 	}
 
 	/**
@@ -59,7 +179,8 @@ final class AjaxSearch {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function search_products( string $term, int $limit = 6 ): array {
-		$term = self::normalize( $term );
+		$variants = self::term_variants( $term );
+		$term     = $variants[0];
 		// AC-03: no query for very short terms (1 char, any script).
 		if ( preg_match_all( '/./us', $term ) < 2 || ! post_type_exists( 'product' ) ) {
 			return array();
@@ -100,15 +221,22 @@ final class AjaxSearch {
 
 		// 3) Category names (product_cat).
 		if ( count( $ids ) < $cap && taxonomy_exists( 'product_cat' ) ) {
-			$terms = get_terms( array(
-				'taxonomy'   => 'product_cat',
-				'name__like' => $term,
-				'hide_empty' => false,
-				'fields'     => 'ids',
-				'number'     => 10,
-			) );
-			if ( is_array( $terms ) && $terms ) {
-				$tax = array( array( 'taxonomy' => 'product_cat', 'field' => 'term_id', 'terms' => array_map( 'intval', $terms ) ) );
+			$terms = array();
+			foreach ( $variants as $variant ) {
+				$found = get_terms( array(
+					'taxonomy'   => 'product_cat',
+					'name__like' => $variant,
+					'hide_empty' => false,
+					'fields'     => 'ids',
+					'number'     => 10,
+				) );
+				if ( is_array( $found ) ) {
+					$terms = array_merge( $terms, array_map( 'intval', $found ) );
+				}
+			}
+			$terms = array_values( array_unique( $terms ) );
+			if ( $terms ) {
+				$tax = array( array( 'taxonomy' => 'product_cat', 'field' => 'term_id', 'terms' => $terms ) );
 				if ( isset( $visibility['tax_query'] ) ) {
 					$tax = array_merge( $tax, $visibility['tax_query'] );
 				}
@@ -155,6 +283,19 @@ final class AjaxSearch {
 		$term = str_replace( array( 'ي', 'ك', '‌' ), array( 'ی', 'ک', ' ' ), $term );
 		$term = preg_replace( '/\s+/u', ' ', $term );
 		return trim( (string) $term );
+	}
+
+	/**
+	 * Term lookup variants: normalized first, then a ye/kaf-normalized form
+	 * that KEEPS ZWNJ — stored terms may contain «خرم‌آباد» with a ZWNJ that
+	 * normalize() would turn into a space (name__like would then miss).
+	 *
+	 * @return array<int,string>
+	 */
+	private static function term_variants( string $term ): array {
+		$normalized = self::normalize( $term );
+		$keep_zwnj  = trim( (string) preg_replace( '/\s+/u', ' ', str_replace( array( 'ي', 'ك' ), array( 'ی', 'ک' ), $term ) ) );
+		return array_values( array_unique( array_filter( array( $normalized, $keep_zwnj ) ) ) );
 	}
 
 	/**
