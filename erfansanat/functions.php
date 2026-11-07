@@ -83,6 +83,7 @@ add_action(
 \ErfanSanat\Theme\Options\Tabs\FooterTab::boot();
 \ErfanSanat\Theme\Options\Tabs\BrandTab::boot();
 \ErfanSanat\Theme\Options\Tabs\ArchiveTab::boot();
+\ErfanSanat\Theme\Options\Tabs\PagesTab::boot(); // P07-T022+: static-page repeaters.
 \ErfanSanat\Theme\Admin\SectionMetabox::boot();
 \ErfanSanat\Theme\Sections\Renderer::boot();
 
@@ -182,6 +183,25 @@ add_action(
 			'es-product-quantity',
 			ES_ASSETS_URI . 'js/product-quantity.js',
 			array( 'es-main' ),
+			is_file( $js ) ? (string) filemtime( $js ) : ES_VERSION,
+			true
+		);
+	},
+	20
+);
+
+// P07-T022: certificates lightbox, only on the licenses & honors page.
+add_action(
+	'wp_enqueue_scripts',
+	static function () {
+		if ( ! is_page_template( 'page-templates/licenses.php' ) ) {
+			return;
+		}
+		$js = ES_ASSETS_DIR . 'js/certificates.js';
+		wp_enqueue_script(
+			'es-certificates',
+			ES_ASSETS_URI . 'js/certificates.js',
+			array(),
 			is_file( $js ) ? (string) filemtime( $js ) : ES_VERSION,
 			true
 		);

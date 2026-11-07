@@ -226,3 +226,10 @@
 
 ## 2026-11-07 — P07-T021 برگه تماس (10)
 - کنترلر Renderer context=contact؛ Schema contact به hero/form بازطراحی شد (info داخل form؛ fallback به FooterTab::contact، override هر فیلد، map فقط http(s)، فرم بدون action/method/name + یادداشت امن تا فاز ۸). تست **10/0**؛ رگرسیون T020=10.
+
+
+## 2026-11-07 — P07-T022 برگه مجوزها و افتخارات (13)
+- `page-templates/licenses.php` با DOM مرجع (هیرو + نوار ۴ نشان + گرید کارت‌ها + باند ستاد). گواهینامه‌ها Repeater رسانه‌ای در تب جدید `pages` تنظیمات (`licenses_items` با زیرفیلد image رسانه‌ای + alt/category/code/issuer/year). `PagesTab::licenses()` ترتیب ذخیره‌شده را حفظ می‌کند و در حالت خالی ۶ کارت مرجع را برمی‌گرداند.
+- لایت‌باکس اختصاصی `assets/js/certificates.js` (قلاب‌های data-cert-*، باز/بسته/قبلی/بعدی/Escape، alt روی تصویر بزرگ) فقط در همین برگه enqueue می‌شود؛ main.js دست‌نخورده. CTA تماس فقط از فوتر.
+- وابستگی ثبت‌شده: Options/Schema.php (فیلدهای licenses + تب pages) و functions.php (boot PagesTab + enqueue شرطی). تست **13/0**؛ رگرسیون P02-T007=18، P02-T018=10، T020=10، T021=10.
+- نکته: بازنشانی snapshot رخ داد؛ با fetch + reset --mixed به a28c48d بازیابی شد و harness (node_modules/temp/wp) دوباره نصب + تم فعال + rewrite flush شد.

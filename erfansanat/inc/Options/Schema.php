@@ -434,6 +434,38 @@ final class Schema {
 				'min'       => 0,
 				'max'       => 8,
 			),
+
+			// ── Static pages: licenses / faq / warranty / recruitment (P07) ──.
+			'licenses_heading'        => array(
+				'type'    => 'text',
+				'default' => 'مجوزها و افتخارات',
+				'label'   => 'عنوان صفحه مجوزها',
+				'tab'     => 'pages',
+			),
+			'licenses_intro'          => array(
+				'type'    => 'textarea',
+				'default' => 'پشتوانه بیش از دو دهه تولید صنعتی؛ از گواهی دانش‌بنیان معاونت علمی ریاست جمهوری و استاندارد مدیریت کیفیت ISO 9001:2015 تا گواهی‌های آزمایشگاهی IP67 / IP68 و کدهای بین‌المللی GS1',
+				'label'   => 'توضیح صفحه مجوزها',
+				'tab'     => 'pages',
+			),
+			'licenses_items'          => array(
+				'type'      => 'repeater',
+				'default'   => array(),
+				'label'     => 'گواهی‌ها و افتخارات (به‌ترتیب نمایش)',
+				'tab'       => 'pages',
+				'subfields' => array(
+					'category'    => array( 'type' => 'text', 'default' => '' ),
+					'title'       => array( 'type' => 'text', 'default' => '' ),
+					'code'        => array( 'type' => 'text', 'default' => '' ),
+					'description' => array( 'type' => 'textarea', 'default' => '' ),
+					'issuer'      => array( 'type' => 'text', 'default' => '' ),
+					'year'        => array( 'type' => 'text', 'default' => '' ),
+					'image'       => array( 'type' => 'media', 'default' => 0 ),
+					'alt'         => array( 'type' => 'text', 'default' => '' ),
+				),
+				'min'       => 0,
+				'max'       => 30,
+			),
 		);
 	}
 
@@ -451,6 +483,7 @@ final class Schema {
 			'footer'   => array( 'title' => 'فوتر، تماس و شبکه‌ها', 'icon' => 'dashicons-admin-site-alt3' ),
 			'brand'    => array( 'title' => 'برند، رنگ و کد سفارشی', 'icon' => 'dashicons-art' ),
 			'archive'  => array( 'title' => 'تنظیمات آرشیو', 'icon' => 'dashicons-screenoptions' ),
+			'pages'    => array( 'title' => 'برگه‌های ثابت (مجوز/سوالات/گارانتی/استخدام)', 'icon' => 'dashicons-media-document' ),
 		);
 
 		foreach ( $tabs as $id => $tab ) {
