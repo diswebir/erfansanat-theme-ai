@@ -85,6 +85,17 @@
 - `page_for_posts`=7426 و `front_page_id`=8146 — قالب‌ها باید با برگه‌های موجود کار کنند.
 - متاهای legacy با املای دقیق (`galerry_produ`, `foure-image`, `english_titl`, `vaule_of_variable`, `usage_countr`).
 
+## رویدادهای فاز ۷ (2026-11-07)
+
+### ۷.۱ (تسک اول فاز ۷) — single-projects (2026-11-07)
+- خروجی‌ها: `single-projects.php` (شل: ترم‌های city/project_type + خلاصه چکیده→برش محتوا + ۵ فراخوان es_get_template + کوئری مرتبط tax_query OR + سکشن‌های مخفی وقتی داده خالی) + `template-parts/single-project/{hero,gallery,tabs,product-card,related-card,products,related}.php` — هر پارشیال nowdoc بایت‌دقیق میرور projects/esfahan-shohada-square.html با توکن {ES_*}؛ ژنراتور `temp/gen_p71.py` (برش ۶ رگیون + assert بازسازی هر فرگمنت + raw_sum مرزها).
+- کلیدهای متا: `es_client` / `es_duration` (شناسنامه سایدبار + تب specs) / `es_standard` / `finish-pro-time` (تاریخ تکمیل تب) / `mortabet_mahsole_2` (محصولات از ProjectGallery::get_products) — گالری از ProjectGallery::get_gallery (کلیدهای legacy second..six-image) → ۵ اسلات با fallback میرور light-sphere؛ شمارنده es_fa_num.
+- نکات ساختاری: اتریبیوت design میرور custom با مقادیر 0/0.06/0.12/0.18 لیست ثابت در شل است (نه هاردکد در پارتیال)؛ lightbox گالری یک img هاردکد دارد → sweep توکن {ES_Gn} بر اساس نام فایل؛ {ES_CONTENT} فقط ردیف پاراگراف‌هاست و بستن کول گرید static در قالب می‌ماند (برش DESC تا lg:col-span-5 منهای بستن آخر)؛ hero خلاصه = post_excerpt → wp_trim_words(content, 24).
+- **الگوی مهم اسلات‌ها:** وقتی اسلات توکنی وسط فرگمنت است ({ES_PRODUCT_CARDS}/{ES_RELATED_CARDS})، کارت‌های ۲ به بعد باید از دم static حذف شوند (برش تا انتهای کارت آخر) — وگرنه کارت‌های هاردکد میرور به خروجی داینامیک می‌چسبند.
+- مارکر «مخفی شدن سکشن» باید سکشن‌محور باشد: هدر (باکس global-search) لینک پروژه‌های ahvaz/half-arch را همیشه دارد؛ مارکر امن = tunnel-90-alborz / تیتر سکشن.
+- استاب هارنس: get_posts اکنون field=slug/name را در tax_query می‌فهمد (پیش‌فرض term_id — سازگار با قبل).
+- تست ۷.۱: ۲۵/۲۵ (۵ قیاس بایت‌دقیق + ترکیب main شل + متا + lightbox + مخفی‌ها + args کوئری) · رگرسیون: ۶۳ فایل پیاده‌شده = **۱۱۶۸ پاس / ۰ رد**؛ ۱۹ رد فقط placeholder طراحی‌شده فاز ۷/۸ (هر کدام check(false)). عدد مستند قبلی «۱۱۶۴» شامل شمارش دوباره یک فایل بود — مبنا با هر دو نسخه استاب ۱۱۴۳ (فاز ۱–۶) تأیید شد.
+
 ## رویدادهای فاز ۶ (2026-11-04)
 
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)

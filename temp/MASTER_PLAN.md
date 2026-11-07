@@ -352,7 +352,7 @@
 **هدف فاز:** قالب‌های سینگل/آرشیو پروژه‌ها، وبلاگ کامل (TOC/بازدید/اشتراک)، برگه‌های اختصاصی قابل ویرایش و لندینگ‌ها
 **پوشه:** `temp/phase-07-projects-blog-and-pages/` · **تست جامع:** `tests/run-phase-07-tests.sh`
 
-### Task 7.1 — single-projects.php — سینگل کامل پروژه `[PENDING]`
+### Task 7.1 — single-projects.php — سینگل کامل پروژه `[DONE — 25/25 · رگرسیون ۱۱۶۸/۰]`
 - 🎯 هیرو، گالری شش‌تایی، مشخصات (تاریخ/شهر/نوع)، بدنه، محصولات پروژه و پروژه‌های مرتبط
 - 📤 خروجی: `single-projects.php`؛ `template-parts/single-project/*.php` · **وابستگی:** Task 3.11, Task 3.12, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
@@ -800,7 +800,7 @@
 **هدف فاز:** قالب‌های سینگل/آرشیو پروژه‌ها، وبلاگ کامل (TOC/بازدید/اشتراک)، برگه‌های اختصاصی قابل ویرایش و لندینگ‌ها
 **پوشه:** `temp/phase-07-projects-blog-and-pages/` · **تست جامع:** `tests/run-phase-07-tests.sh`
 
-### Task 7.1 — single-projects.php — سینگل کامل پروژه `[PENDING]`
+### Task 7.1 — single-projects.php — سینگل کامل پروژه `[DONE — 25/25 · رگرسیون ۱۱۶۸/۰]`
 - 🎯 هیرو، گالری شش‌تایی، مشخصات (تاریخ/شهر/نوع)، بدنه، محصولات پروژه و پروژه‌های مرتبط
 - 📤 خروجی: `single-projects.php`؛ `template-parts/single-project/*.php` · **وابستگی:** Task 3.11, Task 3.12, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا

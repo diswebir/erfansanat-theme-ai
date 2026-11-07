@@ -870,7 +870,10 @@ if (!function_exists('get_posts')) {
         $taxes = [];
         foreach ((array) ($args['tax_query'] ?? []) as $tq) {
             if (is_array($tq) && isset($tq['taxonomy'])) {
-                $taxes[(string) $tq['taxonomy']] = array_map('intval', (array) ($tq['terms'] ?? []));
+                $taxes[(string) $tq['taxonomy']] = [
+                    'field' => (string) ($tq['field'] ?? 'term_id'),
+                    'terms' => (array) ($tq['terms'] ?? []),
+                ];
             }
         }
         $out = [];
@@ -886,13 +889,23 @@ if (!function_exists('get_posts')) {
                 continue;
             }
             $ok = true;
-            foreach ($taxes as $tax => $terms) {
-                // map ممکن است آبجکت ترم باشد — term_id
+            foreach ($taxes as $tax => $spec) {
+                // map ممکن است آبجکت ترم باشد — term_id/slug/name بسته به field
                 $have_ids = [];
+                $have_slugs = [];
+                $have_names = [];
                 foreach (($GLOBALS['__es_stub_post_term_map'][$pid][$tax] ?? []) as $t) {
-                    $have_ids[] = is_object($t) ? (int) ($t->term_id ?? 0) : (int) $t;
+                    if (is_object($t)) {
+                        $have_ids[] = (int) ($t->term_id ?? 0);
+                        $have_slugs[] = (string) ($t->slug ?? '');
+                        $have_names[] = (string) ($t->name ?? '');
+                    } else {
+                        $have_ids[] = (int) $t;
+                    }
                 }
-                if (array_intersect($terms, $have_ids) === []) {
+                $pool = $spec['field'] === 'slug' ? $have_slugs : ($spec['field'] === 'name' ? $have_names : $have_ids);
+                $want = $spec['field'] === 'term_id' ? array_map('intval', $spec['terms']) : array_map('strval', $spec['terms']);
+                if (array_intersect($want, $pool) === []) {
                     $ok = false;
                     break;
                 }
