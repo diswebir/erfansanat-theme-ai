@@ -1,7 +1,7 @@
 # Task 6.10 — checkout، فیلدهای شخص/شرکت و صفحه دریافت فاکتور (thank-you)
 
 **فاز:** 06 — ووکامرس: محصول تکی، آرشیوها، سبد و پرداخت
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 21/21 · رگرسیون صفر رد]`
 **تست:** `temp/phase-06-woocommerce-and-products/tests/test-task-10.php`
 
 ## 🎯 هدف
@@ -29,15 +29,15 @@
 - هرگز فیلد اجباری ووکامرس حذف نشود
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] toggle حقیقی/حقوقی کار کند
-- [ ] متادیتای سفارش ذخیره شود (fixture)
-- [ ] thank-you مارک‌آپ receipt بدهد
-- [ ] فرم بدون خطا submit شود
+- [x] toggle حقیقی/حقوقی کار کند
+- [x] متادیتای سفارش ذخیره شود (fixture)
+- [x] thank-you مارک‌آپ receipt بدهد
+- [x] فرم بدون خطا submit شود
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-10.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-06-woocommerce-and-products/tests/test-task-10.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit

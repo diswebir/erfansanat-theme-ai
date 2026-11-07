@@ -337,7 +337,7 @@
 - 📤 خروجی: `woocommerce/cart/cart.php (override)`؛ `بسط inc/Woo/Setup.php` · **وابستگی:** Task 6.1
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.10 — checkout، فیلدهای شخص/شرکت و صفحه دریافت فاکتور (thank-you) `[PENDING]`
+### Task 6.10 — checkout، فیلدهای شخص/شرکت و صفحه دریافت فاکتور (thank-you) `[DONE — 21/21 · رگرسیون صفر رد]`
 - 🎯 پوسته checkout میرور + toggle نوع خریدار + فیلدهای رسید (کد پستی/شناسه ملی) + thank-you مطابق checkout-receipt
 - 📤 خروجی: `woocommerce/checkout/*.php overrides (form-checkout.php، thankyou.php)`؛ `inc/Woo/CheckoutFields.php` · **وابستگی:** Task 6.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا
@@ -785,7 +785,7 @@
 - 📤 خروجی: `woocommerce/cart/cart.php (override)`؛ `بسط inc/Woo/Setup.php` · **وابستگی:** Task 6.1
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 6.10 — checkout، فیلدهای شخص/شرکت و صفحه دریافت فاکتور (thank-you) `[PENDING]`
+### Task 6.10 — checkout، فیلدهای شخص/شرکت و صفحه دریافت فاکتور (thank-you) `[DONE — 21/21 · رگرسیون صفر رد]`
 - 🎯 پوسته checkout میرور + toggle نوع خریدار + فیلدهای رسید (کد پستی/شناسه ملی) + thank-you مطابق checkout-receipt
 - 📤 خروجی: `woocommerce/checkout/*.php overrides (form-checkout.php، thankyou.php)`؛ `inc/Woo/CheckoutFields.php` · **وابستگی:** Task 6.9
 - ✅ 4 شرط پاس · 🛠 5 گام اجرا

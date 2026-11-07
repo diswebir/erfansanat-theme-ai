@@ -65,6 +65,10 @@ final class Theme {
             Woo\ShopFilters::init();
         }
 
+        if (class_exists(Woo\CheckoutFields::class)) {
+            Woo\CheckoutFields::init();
+        }
+
         if (class_exists(Admin\ProductMetaboxes::class)) {
             Admin\ProductMetaboxes::init();
         }
