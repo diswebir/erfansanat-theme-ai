@@ -1,6 +1,6 @@
 # P08-T006 — UI فیلترهای آرشیو محصول
 
-> فاز 8: ایجکس، فرم‌ها، ممیزی و استقرار · وضعیت: `[PENDING]` · اندازه: اتمیک
+> فاز 8: ایجکس، فرم‌ها، ممیزی و استقرار · وضعیت: `[PASSED]` · اندازه: اتمیک
 > نگاشت از برنامه قبلی: `8.1` · وابستگی‌ها: `P08-T005`, `P06-T016`
 
 ## هدف دقیق
@@ -22,20 +22,20 @@ drawer/checkbox/range/search فیلترها با data-attr مرجع به endpoin
 —
 
 ## شروط پذیرش اختصاصی
-- [ ] AC-01: DOM فیلتر مرجع حفظ شود.
-- [ ] AC-02: انتخاب‌ها در URL/state قابل اشتراک باشند.
-- [ ] AC-03: بدون رفرش کارت‌ها عوض شوند.
+- [x] AC-01: DOM فیلتر مرجع حفظ شود.
+- [x] AC-02: انتخاب‌ها در URL/state قابل اشتراک باشند.
+- [x] AC-03: بدون رفرش کارت‌ها عوض شوند.
 
 ## سناریوهای تست اختصاصی
-- [ ] SC-01: انتخاب دسته کارت‌ها را فیلتر کند.
-- [ ] SC-02: دکمه حذف فیلترها حالت اول را برگرداند.
+- [x] SC-01: انتخاب دسته کارت‌ها را فیلتر کند.
+- [x] SC-02: دکمه حذف فیلترها حالت اول را برگرداند.
 
 ## Definition of Done مشترک
-- [ ] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
-- [ ] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
-- [ ] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
-- [ ] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
-- [ ] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
+- [x] php -l روی فایل‌های PHP تغییر‌یافته بدون خطا باشد.
+- [x] هیچ TODO/Placeholder/مارک‌آپ حذف‌شده برای کوتاه‌سازی وجود نداشته باشد.
+- [x] کلاس‌ها، DOM، id و data-* مرجع استاتیک حفظ شوند؛ خروجی escape شود.
+- [x] تست اختصاصی تسک و تست‌های رگرسیون وابستگی‌ها اجرا و نتیجه در QA_REFLECTION_LOG ثبت شود.
+- [x] PROJECT_MEMORY و MASTER_PLAN به‌روزرسانی و تغییرات فقط روی برنچ arena/7378effd-erfansanat-theme-ai کامیت شوند.
 
 ## تست و اجرا
 - اسکریپت: `temp/phase-08-ajax-filters-and-audit/tests/test-task-006.php`
@@ -45,3 +45,8 @@ drawer/checkbox/range/search فیلترها با data-attr مرجع به endpoin
 
 ## پروتکل اجرا
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`
+
+
+## نتیجه اجرا (2026-11-07)
+- تست اختصاصی: `php temp/phase-08-ajax-filters-and-audit/tests/test-task-006.php` → **16 passed, 0 failed, 0 pending**.
+- تست رفتاری DOM (test-task-006-dom.mjs): 9 passed, 0 failed — فیلتر دسته/جستجو/حذف/URL با endpoint واقعی.

@@ -18,6 +18,95 @@ final class SmartFilters {
 
 	public const MAX_PER_PAGE = 48;
 
+	private static bool $booted = false;
+
+	/** Register the public filter endpoint on the shared Ajax contract (P08-T006). */
+	public static function boot(): void {
+		if ( self::$booted ) {
+			return;
+		}
+		self::$booted = true;
+
+		if ( did_action( 'init' ) ) {
+			self::register_endpoint();
+		} else {
+			add_action( 'init', array( __CLASS__, 'register_endpoint' ), 20 );
+		}
+	}
+
+	/**
+	 * Endpoint inputs cover the QueryBuilder surface; UI controls land
+	 * progressively (categories T006, price/mode T007, pa_* T008).
+	 */
+	public static function register_endpoint(): void {
+		$inputs = array(
+			'term'      => array( 'type' => 'text', 'default' => '' ),
+			'cats'      => array( 'type' => 'int_list', 'default' => array(), 'max' => 50 ),
+			'price_min' => array( 'type' => 'float', 'default' => 0 ),
+			'price_max' => array( 'type' => 'float', 'default' => 0 ),
+			'sale_mode' => array( 'type' => 'enum', 'default' => 'all', 'choices' => array( 'all', 'online', 'inquiry' ) ),
+			'orderby'   => array( 'type' => 'enum', 'default' => 'latest', 'choices' => array_keys( self::ORDERBY ) ),
+			'page'      => array( 'type' => 'int', 'default' => 1, 'min' => 1, 'max' => 1000 ),
+			'per_page'  => array( 'type' => 'int', 'default' => 12, 'min' => 1, 'max' => self::MAX_PER_PAGE ),
+		);
+		foreach ( AttributeMap::all() as $tax => $def ) {
+			$inputs[ $tax ] = array( 'type' => 'key_list', 'default' => array(), 'max' => 50 );
+		}
+		Ajax::register( 'product_filters', array( __CLASS__, 'ajax_product_filters' ), array(
+			'public' => true,
+			'inputs' => $inputs,
+		) );
+	}
+
+	/**
+	 * Endpoint callback: filter state → query → server-rendered reference cards.
+	 *
+	 * @param array<string,mixed> $input Whitelisted input.
+	 * @return array<string,mixed>
+	 */
+	public static function ajax_product_filters( array $input ): array {
+		$tax = array();
+		if ( ! empty( $input['cats'] ) ) {
+			$tax['product_cat'] = $input['cats'];
+		}
+		foreach ( AttributeMap::all() as $tax_key => $def ) {
+			if ( ! empty( $input[ $tax_key ] ) ) {
+				$tax[ $tax_key ] = $input[ $tax_key ];
+			}
+		}
+		$result = self::query_products( array(
+			'term'      => $input['term'],
+			'tax'       => $tax,
+			'price_min' => $input['price_min'],
+			'price_max' => $input['price_max'],
+			'sale_mode' => $input['sale_mode'],
+			'orderby'   => $input['orderby'],
+			'page'      => $input['page'],
+			'per_page'  => $input['per_page'],
+		) );
+
+		// Render the exact reference card (woocommerce/content-product.php).
+		$template = locate_template( 'woocommerce/content-product.php' );
+		$html     = '';
+		if ( $template && $result['ids'] ) {
+			ob_start();
+			foreach ( $result['ids'] as $id ) {
+				$GLOBALS['post'] = get_post( $id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				setup_postdata( $GLOBALS['post'] );
+				include $template; // include (not require_once): cards repeat per request.
+			}
+			wp_reset_postdata();
+			$html = (string) ob_get_clean();
+		}
+
+		return array(
+			'html'  => $html,
+			'total' => $result['total'],
+			'pages' => $result['pages'],
+			'page'  => $result['page'],
+		);
+	}
+
 	/** Sorting whitelist: request key → WP_Query orderby. */
 	public const ORDERBY = array(
 		'latest'    => 'date',

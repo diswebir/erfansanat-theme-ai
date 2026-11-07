@@ -234,6 +234,7 @@ $es_filter_controls = static function ( $uid, $active ) use ( $es_fa, $es_top_ca
 					</div>
 				</div>
 				<?php $es_filter_controls( 'product-sidebar', $es_initial ); ?>
+				<?php get_template_part( 'template-parts/archive/product-filters' ); // P08-T006: AJAX category filters + clear. ?>
 			</div>
 		</aside>
 
@@ -274,6 +275,7 @@ $es_filter_controls = static function ( $uid, $active ) use ( $es_fa, $es_top_ca
 			</div>
 			<div class="space-y-5 overflow-y-auto px-5 py-5">
 				<?php $es_filter_controls( 'product-drawer', $es_initial ); ?>
+				<?php get_template_part( 'template-parts/archive/product-filters' ); // P08-T006 (drawer copy). ?>
 			</div>
 			<div class="border-t border-slate-100 px-5 py-4">
 				<button type="button" data-archive-drawer-close="true" class="w-full rounded-xl bg-emerald-700 px-4 py-3 text-[13px] font-extrabold text-white transition hover:bg-emerald-800"><?php esc_html_e( 'اعمال فیلترها', 'erfansanat' ); ?></button>

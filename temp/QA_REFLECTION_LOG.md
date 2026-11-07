@@ -298,4 +298,11 @@
 
 ## 2026-11-07 — P08-T005 QueryBuilder فیلتر محصول (15)
 - `inc/Core/SmartFilters.php`: فقط WP_Query args (بدون $wpdb/SQL). whitelist تاکسونومی = product_cat + pa_*های موجود از AttributeMap؛ ترم‌ها id یا slug تمیز؛ visibility exclusion؛ قیمت NUMERIC BETWEEN (_price) با جابه‌جایی min/max؛ sale_mode online|inquiry → متای true_sale؛ orderby لیست‌سفید (latest/oldest/price_asc/desc/name/popular)؛ per_page سقف 48، page کف 1. خروجی query_products: ids/total/pages/page/args.
-- تست **15/0** (ترکیبی دسته+قیمت+IP فقط هدف؛ کلید ناشناخته حذف؛ مرتب‌سازی قیمت واقعی). رگرسیون P03-T005=13، P03-T007=13، P06-T010 سبز.
+- تست **15/0** (ترکیبی دسته+قیمت+IP فقط هدف؛ کلید ناشناخته حذف؛ مرتب‌سازی قیمت واقعی). رگرسیون P03-T005=13، P03-T007=10، P06-T010=10.
+
+
+## 2026-11-07 — P08-T006 UI فیلترهای آرشیو محصول (16 + 9 DOM)
+- `template-parts/archive/product-filters.php`: چک‌باکس دسته‌ها با شمارنده + دکمه «حذف همه فیلترها» (data-product-cat-filter/data-product-filters-clear)؛ در سایدبار و drawer شل آرشیو include شد (وابستگی ثبت‌شده در تست). enqueue es-product-filters با dep es-main.
+- `SmartFilters::boot()` (init 20 یا مستقیم اگر init گذشته): اکشن عمومی `es_product_filters` با ورودی‌های کامل QueryBuilder (cats/term/price/sale_mode/orderby/page/per_page + ۱۸ pa_* به‌صورت key_list)؛ پاسخ html کارت‌های مرجع (include woocommerce/content-product.php per product) + total/pages/page.
+- `assets/js/product-filters.js`: state قابل اشتراک در URL (replaceState؛ es_cats/es_q/...)، restore از URL هنگام لود، debounce+abort+seq، تعویض grid.innerHTML با کارت سرور، به‌روزرسانی شمارنده/حالت خالی، رویداد es:products-filtered؛ window.ES_PRODUCT_FILTERS برای توسعه T007-T009.
+- زیرساخت تست: `ajax-bridge.php` (اجرای endpoint واقعی از CLI برای JSDOM) + `build-shop-fixture.php` (فیکسچر در DB مشترک؛ پاکسازی از طریق bridge). تست PHP **16/0** + JSDOM **9/0** (fetch→bridge→endpoint واقعی). رگرسیون T005=15، T001=20، P06-T016=17، P06-T018=13.
