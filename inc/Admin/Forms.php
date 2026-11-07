@@ -50,6 +50,7 @@ final class Forms
         $rawRecipient = !empty($settings['notification_email']) ? $settings['notification_email'] : get_option('admin_email');
         $recipient = is_scalar($rawRecipient) ? (string) $rawRecipient : '';
         $enabled = !array_key_exists('notifications_enabled', $settings) || !empty($settings['notifications_enabled']);
+        $retentionDays = Submission::retention_days();
         $rawNotice = isset($_GET['notice']) ? wp_unslash($_GET['notice']) : '';
         $notice = is_scalar($rawNotice) ? sanitize_key((string) $rawNotice) : '';
         $statusLabels = self::status_labels();
@@ -57,7 +58,7 @@ final class Forms
         <div class="wrap">
             <h1><?php echo esc_html__('درخواست‌های سایت', 'erfansanat-theme'); ?></h1>
             <?php if ('updated' === $notice) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('تغییرات ذخیره شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
-            <?php if ('settings_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('نشانی ایمیل اعلان معتبر نیست؛ تنظیمات قبلی حفظ شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
+            <?php if ('settings_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('نشانی ایمیل یا دورهٔ نگهداری معتبر نیست؛ تنظیمات قبلی حفظ شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <?php if ('update_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('به‌روزرسانی وضعیت درخواست انجام نشد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <?php if ('notification_sent' === $notice) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('اعلان ایمیلی با موفقیت دوباره ارسال شد.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
             <?php if ('notification_error' === $notice) : ?><div class="notice notice-error"><p><?php echo esc_html__('ارسال دوبارهٔ اعلان انجام نشد؛ نشانی ایمیل و تنظیمات ارسال را بررسی کنید.', 'erfansanat-theme'); ?></p></div><?php endif; ?>
@@ -68,7 +69,15 @@ final class Forms
                     <?php wp_nonce_field('ese_save_form_settings'); ?>
                     <p><label for="ese-notification-email"><?php echo esc_html__('گیرندهٔ اعلان', 'erfansanat-theme'); ?></label><br /><input id="ese-notification-email" type="email" name="notification_email" class="regular-text" value="<?php echo esc_attr($recipient); ?>" autocomplete="email" /></p>
                     <p><label><input type="checkbox" name="notifications_enabled" value="1" <?php checked($enabled); ?> /> <?php echo esc_html__('ارسال اعلان پس از ثبت درخواست', 'erfansanat-theme'); ?></label></p>
-                    <?php submit_button(__('ذخیره تنظیمات اعلان', 'erfansanat-theme'), 'secondary', 'submit', false); ?>
+                    <p><label for="ese-submission-retention"><strong><?php echo esc_html__('مدت نگهداری درخواست‌ها', 'erfansanat-theme'); ?></strong></label><br />
+                        <select id="ese-submission-retention" name="submission_retention_days" aria-describedby="ese-submission-retention-help">
+                            <?php foreach ([0 => __('حذف خودکار غیرفعال', 'erfansanat-theme'), 90 => __('۹۰ روز', 'erfansanat-theme'), 180 => __('۱۸۰ روز', 'erfansanat-theme'), 365 => __('۳۶۵ روز', 'erfansanat-theme')] as $days => $label) : ?>
+                                <option value="<?php echo esc_attr((string) $days); ?>" <?php selected($retentionDays, $days); ?>><?php echo esc_html($label); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </p>
+                    <p id="ese-submission-retention-help" class="description"><?php echo esc_html__('در صورت فعال‌سازی، درخواست‌های خصوصی پس از این مدت به‌طور دائمی حذف می‌شوند. مقدار پیش‌فرض حذف خودکار را غیرفعال می‌کند؛ پیش از انتخاب، سیاست نگهداری و الزامات قانونی سایت را بررسی کنید.', 'erfansanat-theme'); ?></p>
+                    <?php submit_button(__('ذخیره تنظیمات', 'erfansanat-theme'), 'secondary', 'submit', false); ?>
                 </form>
             </details>
 
@@ -116,10 +125,16 @@ final class Forms
             self::redirect('settings_error');
         }
         $rawEnabled = isset($_POST['notifications_enabled']) ? wp_unslash($_POST['notifications_enabled']) : '';
+        $rawRetentionDays = isset($_POST['submission_retention_days']) ? wp_unslash($_POST['submission_retention_days']) : '0';
+        if (!is_scalar($rawRetentionDays) || !in_array((string) $rawRetentionDays, ['0', '90', '180', '365'], true)) {
+            self::redirect('settings_error');
+        }
         update_option('ese_form_settings', [
             'notification_email' => $email,
             'notifications_enabled' => is_scalar($rawEnabled) && '1' === (string) $rawEnabled,
+            'submission_retention_days' => (int) $rawRetentionDays,
         ], false);
+        Submission::sync_retention_schedule();
         self::redirect('updated');
     }
 

@@ -2,8 +2,8 @@
 /** WordPress integration test for Task 8.2: secure public forms and private inbox. */
 $root = dirname(__DIR__, 3);
 $checks = [
-    'inc/Forms/Submission.php' => ['wp_verify_nonce', 'wp_mail', 'honeypot', 'wp_insert_post', 'wp_send_json_error', 'wp_privacy_personal_data_exporters', 'wp_privacy_personal_data_erasers'],
-    'inc/Admin/Forms.php' => ['manage_options', 'wp_nonce_field', 'ese_update_form_status', 'ese_form_status', 'ese_retry_form_notification'],
+    'inc/Forms/Submission.php' => ['wp_verify_nonce', 'wp_mail', 'honeypot', 'wp_insert_post', 'wp_send_json_error', 'wp_privacy_personal_data_exporters', 'wp_privacy_personal_data_erasers', 'ese_purge_expired_submissions'],
+    'inc/Admin/Forms.php' => ['manage_options', 'wp_nonce_field', 'ese_update_form_status', 'ese_form_status', 'ese_retry_form_notification', 'submission_retention_days'],
     'inc/Theme.php' => ['Forms\\Submission::register', 'Admin\\Forms::register'],
     'assets/js/main.js' => ['data-ese-submission-form', 'ese_submit_form', 'data-ese-form-success'],
     'template-parts/pages/section-page.php' => ['template-parts/forms/contact', 'template-parts/forms/recruitment'],
@@ -89,6 +89,42 @@ $createdIds = [];
 $initialSubmissionIds = get_posts(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'numberposts' => -1, 'fields' => 'ids', 'orderby' => 'ID', 'order' => 'DESC']);
 if (!is_array($initialSubmissionIds)) {
     $initialSubmissionIds = [];
+}
+$submissionClass::clear_retention_schedule();
+$expiredDate = current_datetime()->modify('-100 days')->format('Y-m-d H:i:s');
+$expiredSubmissionId = wp_insert_post([
+    'post_type' => $submissionClass::POST_TYPE,
+    'post_status' => 'private',
+    'post_title' => 'Expired retention fixture',
+    'post_date' => $expiredDate,
+]);
+$freshSubmissionId = wp_insert_post([
+    'post_type' => $submissionClass::POST_TYPE,
+    'post_status' => 'private',
+    'post_title' => 'Fresh retention fixture',
+]);
+if (0 !== $submissionClass::retention_days() || wp_next_scheduled('ese_purge_expired_submissions')) {
+    fwrite(STDERR, "FAIL submission retention did not default to disabled\n");
+    $failed++;
+}
+update_option('ese_form_settings', ['notifications_enabled' => false, 'notification_email' => '', 'submission_retention_days' => 90], false);
+$submissionClass::sync_retention_schedule();
+$purgedCount = $submissionClass::purge_expired_submissions();
+if (
+    90 !== $submissionClass::retention_days()
+    || !wp_next_scheduled('ese_purge_expired_submissions')
+    || !$purgedCount
+    || get_post((int) $expiredSubmissionId)
+    || !(get_post((int) $freshSubmissionId) instanceof WP_Post)
+) {
+    fwrite(STDERR, "FAIL opt-in submission retention did not selectively purge expired private records\n");
+    $failed++;
+}
+update_option('ese_form_settings', ['notifications_enabled' => false, 'notification_email' => '', 'submission_retention_days' => 0], false);
+$submissionClass::sync_retention_schedule();
+if (wp_next_scheduled('ese_purge_expired_submissions')) {
+    fwrite(STDERR, "FAIL disabled submission retention left a cleanup event scheduled\n");
+    $failed++;
 }
 $privacyTargetId = wp_insert_post(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'post_title' => 'Privacy target']);
 $privacyNearMatchId = wp_insert_post(['post_type' => $submissionClass::POST_TYPE, 'post_status' => 'private', 'post_title' => 'Privacy near-match']);
@@ -281,7 +317,13 @@ ob_start();
 $adminClass::render_inbox_page();
 $adminHtml = (string) ob_get_clean();
 $_GET = $originalGet;
-if (false === strpos($adminHtml, 'درخواست‌های سایت') || false !== strpos($adminHtml, '<script>alert(1)</script>')) {
+if (
+    false === strpos($adminHtml, 'درخواست‌های سایت')
+    || false === strpos($adminHtml, 'id="ese-submission-retention"')
+    || false === strpos($adminHtml, 'aria-describedby="ese-submission-retention-help"')
+    || false === strpos($adminHtml, 'حذف خودکار غیرفعال')
+    || false !== strpos($adminHtml, '<script>alert(1)</script>')
+) {
     fwrite(STDERR, "FAIL capability-bound inbox did not render safely with array-valued query filters\n");
     $failed++;
 }
@@ -335,6 +377,7 @@ if (is_null($settingsBefore)) {
 } else {
     update_option('ese_form_settings', $settingsBefore, false);
 }
+$submissionClass::sync_retention_schedule();
 $_POST = [];
 $wpTestDir = getenv('WP_TEST_DIR') ?: $root . '/node_modules/.cache/ese-wp-test';
 if (is_file($wpTestDir . '/wp-debug.log') && filesize($wpTestDir . '/wp-debug.log') > 0) {
@@ -344,4 +387,4 @@ if (is_file($wpTestDir . '/wp-debug.log') && filesize($wpTestDir . '/wp-debug.lo
 if ($failed) {
     exit(1);
 }
-fwrite(STDOUT, "PASS contact/quote/recruitment/feedback validation, privacy export/erasure, rate limit, private inbox, status and email retry controls, escaping, and WP_DEBUG checks\n");
+fwrite(STDOUT, "PASS form validation, privacy export/erasure, opt-in retention cleanup, rate limit, private inbox, admin notification retry, escaping, and WP_DEBUG checks\n");

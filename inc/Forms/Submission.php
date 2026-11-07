@@ -23,6 +23,9 @@ final class Submission
     public static function register(): void
     {
         add_action('init', [self::class, 'register_post_type']);
+        add_action('init', [self::class, 'sync_retention_schedule'], 20);
+        add_action('ese_purge_expired_submissions', [self::class, 'purge_expired_submissions']);
+        add_action('switch_theme', [self::class, 'clear_retention_schedule']);
         add_action('wp_ajax_ese_submit_form', [self::class, 'dispatch']);
         add_action('wp_ajax_nopriv_ese_submit_form', [self::class, 'dispatch']);
         add_filter('wp_privacy_personal_data_exporters', [self::class, 'register_privacy_exporter']);
@@ -328,6 +331,64 @@ final class Submission
             'messages' => [],
             'done' => $query->max_num_pages <= max(1, $page),
         ];
+    }
+
+    /** Return the administrator-selected retention window; zero means keep records until manually removed. */
+    public static function retention_days(): int
+    {
+        $settings = get_option('ese_form_settings', []);
+        $days = is_array($settings) && isset($settings['submission_retention_days'])
+            ? (int) $settings['submission_retention_days']
+            : 0;
+        return in_array($days, [0, 90, 180, 365], true) ? $days : 0;
+    }
+
+    /** Keep the daily cleanup schedule in sync with the explicit opt-in retention setting. */
+    public static function sync_retention_schedule(): void
+    {
+        if (0 === self::retention_days()) {
+            self::clear_retention_schedule();
+            return;
+        }
+        if (!wp_next_scheduled('ese_purge_expired_submissions')) {
+            wp_schedule_event(time() + HOUR_IN_SECONDS, 'daily', 'ese_purge_expired_submissions');
+        }
+    }
+
+    /** Remove scheduled cleanup when this theme is switched off or retention is disabled. */
+    public static function clear_retention_schedule(): void
+    {
+        wp_clear_scheduled_hook('ese_purge_expired_submissions');
+    }
+
+    /** Permanently remove a bounded batch of private submissions older than the opted-in window. */
+    public static function purge_expired_submissions(): int
+    {
+        $retentionDays = self::retention_days();
+        if (0 === $retentionDays) {
+            return 0;
+        }
+        $cutoff = current_datetime()->modify('-' . $retentionDays . ' days')->format('Y-m-d H:i:s');
+        $query = new \WP_Query([
+            'post_type' => self::POST_TYPE,
+            'post_status' => 'private',
+            'posts_per_page' => 200,
+            'fields' => 'ids',
+            'orderby' => 'date',
+            'order' => 'ASC',
+            'no_found_rows' => true,
+            'date_query' => [[
+                'before' => $cutoff,
+                'inclusive' => true,
+            ]],
+        ]);
+        $removed = 0;
+        foreach ((array) $query->posts as $postId) {
+            if (wp_delete_post((int) $postId, true)) {
+                $removed++;
+            }
+        }
+        return $removed;
     }
 
     /** Retry a failed mail notification after checking administrator permission and record integrity. */
