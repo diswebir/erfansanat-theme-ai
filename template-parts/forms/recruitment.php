@@ -1,0 +1,34 @@
+<?php
+/** Recruitment application form. */
+$submissionUrl = admin_url('admin-ajax.php');
+$departments = [
+    'project' => __('واحد پروژه و اجرا', 'erfansanat-theme'),
+    'research' => __('تحقیق و توسعه', 'erfansanat-theme'),
+    'accounting' => __('حسابداری و مالی', 'erfansanat-theme'),
+    'it' => __('فناوری اطلاعات', 'erfansanat-theme'),
+    'other' => __('سایر واحدها', 'erfansanat-theme'),
+];
+?>
+<section id="recruitment-application" class="mx-auto max-w-5xl px-5 py-12 lg:px-8" aria-labelledby="recruitment-application-title">
+    <div class="rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm sm:p-8">
+        <h2 id="recruitment-application-title" class="text-xl font-black text-slate-900 sm:text-2xl"><?php echo esc_html__('فرم درخواست همکاری', 'erfansanat-theme'); ?></h2>
+        <p class="mt-2 text-sm leading-7 text-slate-600"><?php echo esc_html__('اطلاعات و خلاصهٔ سوابق خود را وارد کنید. پیوند رزومه اختیاری است.', 'erfansanat-theme'); ?></p>
+        <form action="<?php echo esc_url($submissionUrl); ?>" method="post" class="mt-6 grid gap-4 sm:grid-cols-2" data-ese-submission-form="true" data-form-type="recruitment">
+            <input type="hidden" name="action" value="ese_submit_form" />
+            <input type="hidden" name="form_type" value="recruitment" />
+            <input type="hidden" name="form_nonce" value="<?php echo esc_attr(wp_create_nonce(\ErfanSanat\Theme\Forms\Submission::NONCE_ACTION)); ?>" />
+            <div class="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label for="ese-recruitment-website"><?php echo esc_html__('وب‌سایت', 'erfansanat-theme'); ?></label><input id="ese-recruitment-website" type="text" name="website" value="" tabindex="-1" autocomplete="off" /></div>
+            <div><label for="ese-recruitment-name" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('نام و نام خانوادگی *', 'erfansanat-theme'); ?></label><input id="ese-recruitment-name" name="name" type="text" required maxlength="100" autocomplete="name" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none" /></div>
+            <div><label for="ese-recruitment-phone" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('شماره تماس *', 'erfansanat-theme'); ?></label><input id="ese-recruitment-phone" name="phone" type="tel" required maxlength="32" autocomplete="tel" inputmode="tel" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none" /></div>
+            <div><label for="ese-recruitment-email" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('ایمیل (اختیاری)', 'erfansanat-theme'); ?></label><input id="ese-recruitment-email" name="email" type="email" maxlength="254" autocomplete="email" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none" /></div>
+            <div><label for="ese-recruitment-position" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('عنوان شغلی موردنظر *', 'erfansanat-theme'); ?></label><input id="ese-recruitment-position" name="position" type="text" required maxlength="160" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none" /></div>
+            <div><label for="ese-recruitment-department" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('واحد سازمانی', 'erfansanat-theme'); ?></label><select id="ese-recruitment-department" name="department" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none"><option value=""><?php echo esc_html__('انتخاب کنید', 'erfansanat-theme'); ?></option><?php foreach ($departments as $value => $label) : ?><option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option><?php endforeach; ?></select></div>
+            <div><label for="ese-recruitment-experience" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('سابقهٔ کاری مرتبط', 'erfansanat-theme'); ?></label><select id="ese-recruitment-experience" name="experience" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none"><option value=""><?php echo esc_html__('انتخاب کنید', 'erfansanat-theme'); ?></option><option value="junior"><?php echo esc_html__('تازه‌کار / کارآموز', 'erfansanat-theme'); ?></option><option value="1-3"><?php echo esc_html__('۱ تا ۳ سال', 'erfansanat-theme'); ?></option><option value="3-5"><?php echo esc_html__('۳ تا ۵ سال', 'erfansanat-theme'); ?></option><option value="5+"><?php echo esc_html__('بیش از ۵ سال', 'erfansanat-theme'); ?></option></select></div>
+            <div class="sm:col-span-2"><label for="ese-recruitment-resume" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('پیوند رزومه (اختیاری)', 'erfansanat-theme'); ?></label><input id="ese-recruitment-resume" name="resume_url" type="url" maxlength="500" placeholder="https://" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-emerald-500 focus:bg-white focus:outline-none" /></div>
+            <div class="sm:col-span-2"><label for="ese-recruitment-message" class="mb-1.5 block text-xs font-bold text-slate-700"><?php echo esc_html__('خلاصهٔ سوابق، تحصیلات و مهارت‌ها *', 'erfansanat-theme'); ?></label><textarea id="ese-recruitment-message" name="message" required minlength="20" maxlength="4000" rows="6" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 focus:border-emerald-500 focus:bg-white focus:outline-none"></textarea></div>
+            <div class="sm:col-span-2"><button type="submit" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-emerald-800 px-6 py-3 text-sm font-black text-white transition hover:bg-emerald-900 disabled:cursor-wait disabled:opacity-60"><?php echo esc_html__('ثبت درخواست همکاری', 'erfansanat-theme'); ?></button></div>
+        </form>
+        <div class="mt-5 hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm font-semibold text-emerald-900" role="status" aria-live="polite" data-ese-form-success="true"><?php echo esc_html__('درخواست همکاری شما ثبت شد و برای بررسی به واحد منابع انسانی ارسال شد.', 'erfansanat-theme'); ?><button type="button" class="mr-3 underline" data-ese-form-reset="true"><?php echo esc_html__('ارسال درخواست جدید', 'erfansanat-theme'); ?></button></div>
+        <p class="mt-4 hidden rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert" data-ese-form-error="true"></p>
+    </div>
+</section>
