@@ -34,6 +34,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Admin\ProductMetaboxes::boot();
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
 \ErfanSanat\Theme\Admin\ProjectMetaboxes::boot();
+\ErfanSanat\Theme\Admin\ServiceMetabox::boot(); // P07-T027: service deliverables/steps.
 \ErfanSanat\Theme\Admin\TermMetaboxes::boot();
 \ErfanSanat\Theme\Admin\HreflangMetabox::boot();
 

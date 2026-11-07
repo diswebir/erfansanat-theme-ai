@@ -258,3 +258,9 @@
 - `page-templates/services.php`: ردیف‌های خدمت از CPT services (publish، menu_order/date؛ ۲۰تا). نشان/مزیت‌ها از متای `_es_service_badge`/`_es_service_bullets` (خط‌به‌خط؛ متباکس رسمی در T027)، توصیف از excerpt→content. تصویر شاخص با fallback. مسیر همکاری ۵ مرحله + CTA از تب pages (`services_path/services_cta_text/services_cta_url`؛ لینک خالی→تماس). id=services-list و چیپس هیرو حفظ شد. آرشیو مستقل ندارد (has_archive=false تایید شد).
 - تست **15/0**؛ رگرسیون P02-T007=18، P02-T018=10، P03-T002=12، T025=14.
 - **نکته محیطی مهم:** بعد از harness reinstall، ساختار پیوند یکتا خالی می‌ماند (wp rewrite structure کرش می‌کند) → P03-T002 دو fail داد.رفع مشکل: `wp eval 'update_option("permalink_structure","/%postname%/"); flush_rewrite_rules();'`. بعد از هر setup-harness، این را هم اجرا کن (علاوه بر theme activate).
+
+
+## 2026-11-07 — P07-T027 تک‌خدمت (15)
+- `single-services.php` (هیرو: نشان/موقعیت «خدمت N از M»/قبلی-بعدی/تصویر؛ گارد پست نامعتبر → پیام امن بدون fatal) + `template-parts/service/details.php` (id=service-details؛ اقلام شماره‌دار/نکته/محتوا + مسیر اجرا + CTA تلفن + پروژه‌های مرتبط با card-project استاندارد؛ ترم همنام project_type در اولویت).
+- وابستگی ثبت‌شده: `inc/Admin/ServiceMetabox.php` جدید (nonce+capability؛ کلیدهای _es_service_badge/_bullets/_note/_steps؛ steps خطی «عنوان|توضیح» با fallback مسیر مرجع) + boot در functions.php. T026 همان کلیدها را می‌خواند.
+- تست **15/0**؛ رگرسیون T026=15، P03-T002=12، P03-T023=11. یادآوری: شمارش CTA فوتر روی اولین رندر کامل پروسه (require_once).

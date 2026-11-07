@@ -2,14 +2,14 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — T001..T026 پاس؛ T027 گام بعدی.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — T001..T027 پاس؛ T028 گام بعدی.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
 ADMIN-PRO: 25 PHP + 7 JSDOM checks; phase-02 regression 287 passed / 0 failed
 P07-T009=23 (16 PHP + 7 JSDOM)
-P07-T010=12; P07-T011=26; P07-T012=14; P07-T013=19; P07-T014=20; P07-T015=17; P07-T016=13; P07-T017=14; P07-T018=14; P07-T019=12; P07-T020=10; P07-T021=10; P07-T022=13; P07-T023=13(+9 DOM); P07-T024=13; P07-T025=14(+8 DOM); P07-T026=15
-NEXT: P07-T027 single-services + details part; then T028 and phase 8 (24 tasks)
+P07-T010=12; P07-T011=26; P07-T012=14; P07-T013=19; P07-T014=20; P07-T015=17; P07-T016=13; P07-T017=14; P07-T018=14; P07-T019=12; P07-T020=10; P07-T021=10; P07-T022=13; P07-T023=13(+9 DOM); P07-T024=13; P07-T025=14(+8 DOM); P07-T026=15; P07-T027=15
+NEXT: P07-T028 landing-arya (last P07 task); then phase 8 (24) and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.
