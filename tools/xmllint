@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+// Small file-based adapter for xmllint-wasm; supports XML/SVG well-formedness.
+const fs = require('node:fs');
+const path = require('node:path');
+const cache = process.env.ERFANSANAT_TOOL_CACHE || path.join(process.env.HOME, '.cache/erfansanat-tools');
+const { validateXML } = require(path.join(cache, 'node_modules/xmllint-wasm'));
+(async () => {
+  const files = process.argv.slice(2).filter(arg => arg !== '--noout');
+  if (!files.length) throw new Error('Usage: tools/xmllint [--noout] file.xml ...');
+  let failed = false;
+  for (const file of files) {
+    const result = await validateXML({ xml: [{ fileName: file, contents: fs.readFileSync(file, 'utf8') }], schema: [] });
+    if (!result.valid) { failed = true; console.error(result.rawOutput); }
+    else console.log(`${file}: valid XML`);
+  }
+  process.exitCode = failed ? 1 : 0;
+})().catch(error => { console.error(error.message); process.exitCode = 1; });

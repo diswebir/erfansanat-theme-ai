@@ -1,0 +1,32 @@
+{
+  "wordpress": {
+    "repo": "WordPress/WordPress",
+    "commit": "db96f5eaa77a8d3e8eec8923a518fa2326f0d46a",
+    "version": "7.1.4",
+    "archive_sha256": "050814351b0dd7c57a6753e1f02d56774349cfcaa55dc5164583f67b316d705c"
+  },
+  "sqlite": {
+    "repo": "WordPress/sqlite-database-integration",
+    "commit": "dd0bcd6f1a52b79c934b33ec6a3dc4b20811225a",
+    "version": "3.1.2"
+  },
+  "woocommerce": {
+    "official_repo": "woocommerce/woocommerce",
+    "official_commit": "884d89cbccaccc8e0b9c2c26f91c51df67e66cab",
+    "version": "10.9.4",
+    "distribution_mirror_repo": "assassinaj602/wp-plugins",
+    "distribution_mirror_commit": "0d90b757fb0e7c856166ea31a3bfd6a025ad885e",
+    "archive_sha256": "d27a2184b1622bd5098f1ff909fd7a84c031b6ae93e6bcf97e2300241bccda8b",
+    "official_release_sha256": "f852559c9d20c0e69abaecf09db999ffc70ca38fdff1683f85034c6c6c28b41b",
+    "note": "Official release asset redirects to a host outside the sandbox allowlist. The pinned distribution mirror is verified file-by-file against its Git tree, and every file common with the official 10.9.4 source tag is hash-identical. The mirror archive digest is not the official release ZIP digest."
+  },
+  "woocommerce_fa_ir": {
+    "repo": "woocommerce/woocommerce-language-packs",
+    "blob": "10efdd20b9e94bc34cd8a6b1d2f601c930850d5c"
+  },
+  "core_fa_ir": {
+    "repo": "common-repository/wp-persian",
+    "commit": "bbcd3bb62fe3ed94f4d7b142608e2cd617d473dc",
+    "note": "Older Persian core translation mirror; missing current strings fall back to English. RTL and Persian admin are enabled. Official Woo language pack is used for WooCommerce."
+  }
+}

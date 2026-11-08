@@ -1,0 +1,778 @@
+/**
+ * Erfan Sanat admin panel styles.
+ *
+ * Vazirmatn is no longer declared here. It lives in `font.css`, which is loaded
+ * on every admin screen and on the login form, because a font that only arrives
+ * with this panel would leave the rest of the dashboard in a different typeface.
+ * This file is the panel layout: the settings screen, the section manager and
+ * the theme's meta boxes.
+ *
+ * RTL-first with logical properties so it also reads well in LTR.
+ */
+
+/* ---------------------------------------------------------------------------
+ * 2. Theme panel
+ * ------------------------------------------------------------------------- */
+
+.erfansanat-admin {
+	--es-green: #00a83e;
+	--es-green-dark: #007d2d;
+	--es-ink: #1e293b;
+	--es-muted: #64748b;
+	--es-line: #e2e8f0;
+	--es-surface: #ffffff;
+	--es-soft: #f6f8f7;
+	--es-danger: #b32d2e;
+	--es-warning: #8a6d00;
+	max-width: 1180px;
+}
+
+.erfansanat-admin h1 {
+	font-weight: 800;
+	letter-spacing: -0.01em;
+}
+
+.erfansanat-admin__layout {
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr);
+	gap: 20px;
+	margin-top: 18px;
+	align-items: start;
+}
+
+.erfansanat-admin__tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	background: var(--es-surface);
+	border: 1px solid var(--es-line);
+	border-radius: 14px;
+	padding: 8px;
+	position: sticky;
+	top: 46px;
+}
+
+.erfansanat-admin__tab {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	border-radius: 10px;
+	color: var(--es-ink);
+	cursor: pointer;
+	font: inherit;
+	font-weight: 600;
+	padding: 10px 12px;
+	text-align: start;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.erfansanat-admin__tab:hover,
+.erfansanat-admin__tab:focus-visible {
+	background: var(--es-soft);
+	color: var(--es-green-dark);
+}
+
+.erfansanat-admin__tab.is-active {
+	background: var(--es-green);
+	color: #fff;
+}
+
+.erfansanat-admin__tab:focus-visible {
+	outline: 2px solid var(--es-green-dark);
+	outline-offset: 2px;
+}
+
+.erfansanat-admin__form {
+	background: var(--es-surface);
+	border: 1px solid var(--es-line);
+	border-radius: 14px;
+	padding: 22px;
+}
+
+.erfansanat-admin__panel {
+	display: grid;
+	gap: 18px;
+}
+
+.erfansanat-admin__panel[hidden] {
+	display: none;
+}
+
+.erfansanat-field {
+	display: grid;
+	gap: 6px;
+}
+
+.erfansanat-field__label {
+	font-weight: 700;
+	color: var(--es-ink);
+}
+
+.erfansanat-field input[type="text"],
+.erfansanat-field input[type="url"],
+.erfansanat-field input[type="email"],
+.erfansanat-field input[type="tel"],
+.erfansanat-field input[type="number"],
+.erfansanat-field textarea,
+.erfansanat-field select {
+	border: 1px solid var(--es-line);
+	border-radius: 8px;
+	padding: 8px 10px;
+	max-width: 640px;
+	width: 100%;
+	background: #fff;
+	color: var(--es-ink);
+}
+
+.erfansanat-field input:focus,
+.erfansanat-field textarea:focus,
+.erfansanat-field select:focus {
+	border-color: var(--es-green);
+	box-shadow: 0 0 0 1px var(--es-green);
+	outline: none;
+}
+
+.erfansanat-field .description {
+	color: var(--es-muted);
+	margin: 0;
+}
+
+.erfansanat-field__locked {
+	color: var(--es-warning) !important;
+}
+
+.erfansanat-field--bool {
+	grid-template-columns: auto 1fr;
+	align-items: center;
+}
+
+.erfansanat-field--bool .erfansanat-field__label {
+	order: 2;
+	margin: 0;
+}
+
+.erfansanat-field--bool input[type="checkbox"] {
+	order: 1;
+	width: 18px;
+	height: 18px;
+	margin: 0;
+}
+
+.erfansanat-media {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.erfansanat-media__preview {
+	width: 64px;
+	height: 64px;
+	object-fit: contain;
+	background: var(--es-soft);
+	border: 1px solid var(--es-line);
+	border-radius: 8px;
+	padding: 4px;
+}
+
+.erfansanat-repeater {
+	display: grid;
+	gap: 8px;
+	max-width: 780px;
+}
+
+.erfansanat-repeater__rows {
+	display: grid;
+	gap: 6px;
+}
+
+.erfansanat-repeater__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+	gap: 6px;
+	align-items: center;
+}
+
+.erfansanat-repeater__remove {
+	color: var(--es-danger);
+	font-size: 18px;
+	line-height: 1;
+	padding: 6px 10px;
+	text-decoration: none;
+}
+
+.erfansanat-admin__actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	border-top: 1px solid var(--es-line);
+	margin-top: 22px;
+	padding-top: 18px;
+}
+
+.erfansanat-admin__hint {
+	color: var(--es-muted);
+}
+
+.erfansanat-admin__status {
+	border-radius: 10px;
+	border-inline-start: 4px solid var(--es-green);
+	background: var(--es-soft);
+	padding: 10px 14px;
+	margin: 12px 0;
+	font-weight: 600;
+}
+
+.erfansanat-admin__status.is-error {
+	border-color: var(--es-danger);
+	color: var(--es-danger);
+}
+
+.erfansanat-admin__status.is-warning {
+	border-color: #dba617;
+	color: var(--es-warning);
+}
+
+.erfansanat-admin__status.is-success {
+	border-color: var(--es-green);
+	color: var(--es-green-dark);
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Section manager: ordered list, drag handle, per-section field panel
+ * ------------------------------------------------------------------------- */
+
+.erfansanat-sections {
+	max-width: 900px;
+}
+
+.erfansanat-sections__list {
+	display: grid;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.erfansanat-sections__item {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+	gap: 10px;
+	align-items: center;
+	background: var(--es-surface);
+	border: 1px solid var(--es-line);
+	border-radius: 12px;
+	padding: 10px 14px;
+}
+
+.erfansanat-sections__item.is-dragging {
+	opacity: 0.55;
+	border-color: var(--es-green);
+	box-shadow: 0 8px 24px -16px rgba(0, 168, 62, 0.5);
+}
+
+.erfansanat-sections__item.is-disabled .erfansanat-sections__title {
+	color: var(--es-muted);
+	text-decoration: line-through;
+}
+
+.erfansanat-sections__handle {
+	cursor: grab;
+	color: var(--es-muted);
+	letter-spacing: -2px;
+	user-select: none;
+}
+
+.erfansanat-sections__title {
+	font-weight: 700;
+	color: var(--es-ink);
+}
+
+.erfansanat-sections__anchor {
+	color: var(--es-muted);
+	direction: ltr;
+	font-size: 12px;
+}
+
+.erfansanat-sections__move {
+	display: inline-flex;
+	gap: 2px;
+}
+
+.erfansanat-sections__fields {
+	grid-column: 1 / -1;
+	border-top: 1px dashed var(--es-line);
+	margin-top: 8px;
+	padding-top: 12px;
+	display: grid;
+	gap: 14px;
+}
+
+.erfansanat-sections__fields[hidden] {
+	display: none;
+}
+
+.erfansanat-sections__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.erfansanat-sections__edit[aria-expanded="true"] {
+	color: var(--es-green-dark);
+	font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Meta boxes shared by products, projects, terms and content
+ * ------------------------------------------------------------------------- */
+
+.erfansanat-product-meta,
+.erfansanat-project-meta,
+.erfansanat-repeater-meta,
+.erfansanat-term-faq,
+.erfansanat-term-thumbnail {
+	display: grid;
+	gap: 4px;
+}
+
+.erfansanat-product-meta__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	gap: 12px 18px;
+}
+
+.erfansanat-product-meta .form-field,
+.erfansanat-project-meta .form-field,
+.erfansanat-repeater-meta .form-field {
+	margin: 0 0 8px;
+}
+
+.erfansanat-product-meta .form-field label,
+.erfansanat-project-meta .form-field label {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.erfansanat-product-meta .form-field input[type="text"],
+.erfansanat-product-meta .form-field input[type="number"],
+.erfansanat-product-meta .form-field input[type="url"],
+.erfansanat-product-meta .form-field textarea,
+.erfansanat-project-meta .form-field input[type="text"],
+.erfansanat-project-meta .form-field input[type="number"],
+.erfansanat-project-meta .form-field input[type="url"],
+.erfansanat-project-meta .form-field textarea {
+	border-radius: 8px;
+}
+
+.erfansanat-repeater-meta {
+	max-width: 780px;
+}
+
+.erfansanat-repeater-meta .erfansanat-rows,
+.erfansanat-term-faq .erfansanat-rows {
+	display: grid;
+	gap: 6px;
+}
+
+.erfansanat-repeater-meta .erfansanat-repeater__row input {
+	width: 100%;
+}
+
+.erfansanat-icon-preview {
+	display: inline-grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border: 1px solid var(--es-line);
+	border-radius: 9px;
+	background: var(--es-soft);
+	color: var(--es-green-dark);
+}
+
+.erfansanat-icon-preview svg {
+	width: 18px;
+	height: 18px;
+}
+
+.erfansanat-link-field {
+	display: grid;
+	grid-template-columns: 120px minmax(0, 1fr);
+	gap: 6px;
+	max-width: 640px;
+}
+
+.erfansanat-link-field[hidden] {
+	display: none;
+}
+
+.erfansanat-select--multi {
+	min-width: 260px;
+	height: auto;
+}
+
+/* Media rows inside meta boxes reuse the panel preview, but smaller. */
+.erfansanat-product-meta .erfansanat-media,
+.erfansanat-project-meta .erfansanat-media,
+.erfansanat-term-thumbnail .erfansanat-media {
+	gap: 8px;
+}
+
+.erfansanat-product-meta .erfansanat-media__preview,
+.erfansanat-project-meta .erfansanat-media__preview,
+.erfansanat-term-thumbnail .erfansanat-media__preview {
+	width: 56px;
+	height: 56px;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Small screens
+ * ------------------------------------------------------------------------- */
+
+@media screen and (max-width: 782px) {
+	.erfansanat-admin__layout {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.erfansanat-admin__tabs {
+		position: static;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.erfansanat-repeater__row {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.erfansanat-repeater__row input[type="url"] {
+		grid-column: 1 / -1;
+	}
+
+	.erfansanat-sections__item {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+
+	.erfansanat-sections__anchor {
+		display: none;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Dashboard overview
+ * ------------------------------------------------------------------------- */
+.erfansanat-admin__welcome {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	margin: 18px 0 22px;
+	padding: 26px 30px;
+	border: 1px solid #ccebd7;
+	border-radius: 18px;
+	background: linear-gradient(120deg, #f0fbf4 0%, #fff 70%);
+	box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
+}
+
+.erfansanat-admin__welcome h1 {
+	margin: 0 0 7px;
+	font-size: 25px;
+}
+
+.erfansanat-admin__welcome-copy > p:last-child {
+	margin: 0;
+	color: var(--es-muted);
+	font-size: 13px;
+}
+
+.erfansanat-admin__eyebrow {
+	margin: 0 0 5px;
+	color: var(--es-green-dark);
+	font-size: 11px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__view-site {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	flex: 0 0 auto;
+	padding: 10px 15px;
+	border: 1px solid #b9dec7;
+	border-radius: 10px;
+	background: #fff;
+	color: var(--es-green-dark);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__view-site:hover,
+.erfansanat-admin__view-site:focus-visible {
+	border-color: var(--es-green);
+	background: #f4fbf6;
+	color: var(--es-green-dark);
+}
+
+.erfansanat-admin__overview {
+	margin-bottom: 22px;
+	padding: 22px;
+	border: 1px solid var(--es-line);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 5px 20px rgba(15, 23, 42, 0.035);
+}
+
+.erfansanat-admin__overview-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 18px;
+}
+
+.erfansanat-admin__overview-heading h2,
+.erfansanat-admin__quicklinks h3 {
+	margin: 0;
+	color: var(--es-ink);
+	font-size: 15px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__overview-heading p {
+	margin: 4px 0 0;
+	color: var(--es-muted);
+	font-size: 12px;
+}
+
+.erfansanat-admin__live {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	color: var(--es-muted);
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+.erfansanat-admin__live span {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #16a34a;
+	box-shadow: 0 0 0 3px #dcfce7;
+}
+
+.erfansanat-admin__stats {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.erfansanat-admin__stat {
+	display: grid;
+	grid-template-columns: 38px minmax(0, 1fr);
+	align-items: center;
+	column-gap: 11px;
+	row-gap: 4px;
+	min-width: 0;
+	padding: 16px;
+	border: 1px solid #e8edf1;
+	border-radius: 13px;
+	background: #fff;
+	color: var(--es-ink);
+	text-decoration: none;
+	transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erfansanat-admin__stat:hover,
+.erfansanat-admin__stat:focus-visible {
+	transform: translateY(-2px);
+	border-color: #a7d9b8;
+	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+	color: var(--es-ink);
+}
+
+.erfansanat-admin__stat-icon {
+	grid-row: span 3;
+	display: grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 11px;
+	background: #eaf8ee;
+	color: var(--es-green-dark);
+	font-size: 18px;
+}
+
+.erfansanat-admin__stat-label {
+	color: var(--es-muted);
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.erfansanat-admin__stat-count {
+	font-size: 22px;
+	line-height: 1.2;
+	font-variant-numeric: tabular-nums;
+}
+
+.erfansanat-admin__stat-link {
+	color: var(--es-green-dark);
+	font-size: 10px;
+	font-weight: 700;
+}
+
+.erfansanat-admin__quicklinks {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 9px;
+	margin-top: 20px;
+	padding-top: 17px;
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__quicklinks h3 {
+	margin-inline-end: 5px;
+	font-size: 12px;
+}
+
+.erfansanat-admin__quicklinks a {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 11px;
+	border: 1px solid #e2e8f0;
+	border-radius: 9px;
+	background: #fff;
+	color: #334155;
+	font-size: 11px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__quicklinks a:hover,
+.erfansanat-admin__quicklinks a:focus-visible {
+	border-color: #a7d9b8;
+	background: #f4fbf6;
+	color: var(--es-green-dark);
+}
+
+@media (max-width: 960px) {
+	.erfansanat-admin__stats {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.erfansanat-admin__welcome {
+		align-items: flex-start;
+		flex-direction: column;
+		padding: 21px;
+	}
+
+	.erfansanat-admin__stats {
+		grid-template-columns: 1fr;
+	}
+
+	.erfansanat-admin__overview {
+		padding: 16px;
+	}
+}
+
+.erfansanat-admin__checklist {
+	margin-top: 22px;
+	padding-top: 20px;
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__checklist-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 12px;
+}
+
+.erfansanat-admin__checklist-heading h3 {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__checklist-heading p {
+	margin: 4px 0 0;
+	color: var(--es-muted);
+	font-size: 11px;
+}
+
+.erfansanat-admin__checklist-heading > span {
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: #f1f5f9;
+	color: #334155;
+	font-size: 10px;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+.erfansanat-admin__checklist ul {
+	margin: 0;
+	border: 1px solid #edf0f2;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.erfansanat-admin__checklist li {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 10px 12px;
+	background: #fff;
+	font-size: 11px;
+}
+
+.erfansanat-admin__checklist li + li {
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__check-icon {
+	font-size: 18px;
+}
+
+.erfansanat-admin__checklist [data-check-status="ready"] .erfansanat-admin__check-icon,
+.erfansanat-admin__checklist [data-check-status="ready"] strong {
+	color: #15803d;
+}
+
+.erfansanat-admin__checklist [data-check-status="attention"] .erfansanat-admin__check-icon,
+.erfansanat-admin__checklist [data-check-status="attention"] strong {
+	color: #b45309;
+}
+
+.erfansanat-admin__checklist li > span:nth-child(2) {
+	color: #334155;
+}
+
+.erfansanat-admin__checklist li > a {
+	color: var(--es-green-dark);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__checklist li > a:hover,
+.erfansanat-admin__checklist li > a:focus-visible {
+	text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+	.erfansanat-admin__checklist li {
+		grid-template-columns: 24px minmax(0, 1fr) auto;
+	}
+
+	.erfansanat-admin__checklist li > a {
+		grid-column: 2 / -1;
+		justify-self: start;
+	}
+}

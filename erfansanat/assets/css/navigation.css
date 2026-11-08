@@ -1,0 +1,32 @@
+/* Desktop mega-menu geometry. Keep these dimensions explicit: the mirrored
+   Tailwind build omits several arbitrary sizing utilities used by the panels. */
+[data-navbar-header] {
+	position: fixed;
+	inset-block-start: 0;
+	inset-inline: 0;
+	z-index: 50;
+}
+
+[data-navbar-header] .erfansanat-mega-panel {
+	position: absolute;
+	inset-block-start: 100%;
+	inset-inline: 1rem;
+	z-index: 1000;
+	box-sizing: border-box;
+	width: min(780px, calc(100vw - 2rem));
+	max-width: 780px;
+	margin-inline: auto;
+	padding-block-start: 0.625rem;
+}
+
+[data-navbar-header] .erfansanat-mega-panel > div {
+	width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+@media (max-width: 1023px) {
+	[data-navbar-header] .erfansanat-mega-panel {
+		display: none;
+	}
+}

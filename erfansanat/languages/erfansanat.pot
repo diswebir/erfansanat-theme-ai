@@ -1,0 +1,2797 @@
+# Translation template for the Erfan Sanat Esfahan theme.
+#
+# The theme's own strings are written in Persian, because the site is
+# Persian. This catalogue is what a translator starts from when the theme
+# is reused on a non-Persian site: copy it to <locale>.po, translate the
+# msgstr fields (keeping the source as msgid) and compile with
+# tools/compile-po.py.
+#
+# Every user-visible string goes through one of the gettext functions with
+# the `erfansanat` text domain, so nothing in the theme has to be edited to
+# add a language.
+msgid ""
+msgstr ""
+"Project-Id-Version: Erfan Sanat Esfahan 0.1.0\n"
+"Report-Msgid-Bugs-To: https://erfansanat.com\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Domain: erfansanat\n"
+
+#: inc/Seo.php:208
+msgid "%1$s %2$s — نمونه‌کارها و اطلاعات فنی %3$s"
+msgstr ""
+
+#: inc/ContentTypes.php:310
+msgid "%s در زباله‌دان یافت نشد"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:270
+msgid "%s دیدگاه ثبت‌شده"
+msgstr ""
+
+#: inc/Seo.php:246
+msgid "%s — طراحی، تولید و اجرای نورپردازی شهری و روشنایی معماری."
+msgstr ""
+
+#: inc/Data/ProjectData.php:119
+msgid "آبان"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:197
+msgid "آثار اجراشده"
+msgstr ""
+
+#: inc/Sections.php:550
+msgid "آخرین مقالات"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:38
+msgid "آخرین مقالات و اخبار"
+msgstr ""
+
+#: inc/Data/ProjectData.php:120
+msgid "آذر"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:118
+msgid "آرشیو دسته‌بندی محصولات"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:135
+msgid "آرشیو شهر"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:109
+msgid "آرشیو نوع پروژه"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:128
+msgid "آرشیو پروژه‌ها بر اساس شهر"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:129
+msgid "آرشیو پروژه‌ها بر اساس نوع"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:161
+msgid "آرشیو پروژه‌های مرتبط با این محصول:"
+msgstr ""
+
+#: page-templates/featured-projects.php:68
+msgid "آرشیو کامل پروژه‌ها"
+msgstr ""
+
+#: inc/Settings.php:46
+msgid "آرشیوها و فهرست‌ها"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:399
+msgid "آماده"
+msgstr ""
+
+#: template-parts/product/part-summary.php:49
+msgid "آماده ثبت سفارش آنلاین"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:315
+msgid "آمار فعلی"
+msgstr ""
+
+#: inc/Sections.php:210
+msgid "آمار کوتاه"
+msgstr ""
+
+#: inc/Sections.php:117 inc/Sections.php:243 inc/Sections.php:362 inc/Sections.php:415 inc/Sections.php:460
+msgid "آیکون"
+msgstr ""
+
+#: inc/Sections.php:408 inc/Sections.php:454
+msgid "آیکون اصلی"
+msgstr ""
+
+#: template-parts/navigation/header-search.php:42
+msgid "اجرای جستجو"
+msgstr ""
+
+#: single.php:34 template-parts/blog/part-blog-hero.php:57
+msgid "اخبار و مقالات"
+msgstr ""
+
+#: template-parts/project/part-summary.php:87
+msgid "ارتباط با مدیر پروژه"
+msgstr ""
+
+#: inc/Data/ProjectData.php:113
+msgid "اردیبهشت"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:44
+msgid "ارزان‌ترین"
+msgstr ""
+
+#: page.php:52
+msgid "ارسال از انبار کارخانه با باربری بیمه"
+msgstr ""
+
+#: inc/Forms/FormHandler.php:143
+msgid "ارسال بیش از حد سریع بود. لطفاً چند لحظه صبر کنید و دوباره تلاش کنید."
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:94
+msgid "ارسال درخواست"
+msgstr ""
+
+#: page-templates/recruitment.php:90
+msgid "ارسال رزومه"
+msgstr ""
+
+#: comments.php:92
+msgid "ارسال نظر"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:110
+msgid "ارسال پیام دیگر"
+msgstr ""
+
+#: archive-services.php:67
+msgid "از طراحی تا اجرا و تحویل؛ هر خدمت با تیم فنی، تجهیزات تولید کارخانه و گارانتی رسمی ارائه می‌شود."
+msgstr ""
+
+#: template-parts/product/part-summary.php:62
+msgid "از ۵"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:122
+msgid "استاندارد IP67 / IP68"
+msgstr ""
+
+#: inc/Sections.php:401
+msgid "استانداردهای کیفیت"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:99 template-parts/cards/card-product-tile.php:97 template-parts/product/part-mobile-bar.php:34
+msgid "استعلام قیمت"
+msgstr ""
+
+#: template-parts/archive/part-shop-hero.php:110
+msgid "استعلام قیمت روز + مشاوره رایگان"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:148
+msgid "استعلام قیمت عمده و دریافت پیش‌فاکتور رسمی:"
+msgstr ""
+
+#: template-parts/product/part-summary.php:153
+msgid "استعلام قیمت و ثبت پیش‌فاکتور"
+msgstr ""
+
+#: single-services.php:131
+msgid "استعلام قیمت و مشاوره"
+msgstr ""
+
+#: template-parts/product/part-summary.php:154
+msgid "استعلام موجودی و زمان تحویل"
+msgstr ""
+
+#: template-parts/product/part-mobile-bar.php:40
+msgid "استعلام و تماس"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:582 template-parts/archive/part-shop-filters.php:74 template-parts/cards/card-product-tile.php:52
+msgid "استعلامی"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:131
+msgid "استعلامی / تماس با فروش"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:180
+msgid "استفاده از این تصویر"
+msgstr ""
+
+#: inc/Data/ProjectData.php:123
+msgid "اسفند"
+msgstr ""
+
+#: inc/Settings.php:280
+msgid "اسکریپت سفارشی فوتر"
+msgstr ""
+
+#: inc/Settings.php:273
+msgid "اسکریپت سفارشی هدر"
+msgstr ""
+
+#: inc/Settings.php:48
+msgid "اسکریپت و پیشرفته"
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:53
+msgid "اشتراک‌گذاری مقاله"
+msgstr ""
+
+#: page.php:44
+msgid "اطلاعات ارسال و نوع فاکتور"
+msgstr ""
+
+#: inc/Settings.php:44
+msgid "اطلاعات تماس"
+msgstr ""
+
+#: footer.php:65
+msgid "اطلاعات تماس کارخانه"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:464 inc/Admin/ProductMetaboxes.php:516
+msgid "اطلاعات عرفان صنعت"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:77
+msgid "اطلاعات محصول عرفان صنعت"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:49
+msgid "اطلاعات پروژه عرفان صنعت"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:489
+msgid "اطلاعیه قبل از خرید"
+msgstr ""
+
+#: inc/Frontend/SiteParts.php:45
+msgid "اعلان سایت"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:102
+msgid "اعمال فیلتر"
+msgstr ""
+
+#: inc/ContentTypes.php:298
+msgid "افزودن %s"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:331
+msgid "افزودن خدمت"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:229 inc/Admin/SectionManager.php:186 inc/Admin/ThemeOptions.php:576
+msgid "افزودن ردیف"
+msgstr ""
+
+#: inc/Admin/TermMetaboxes.php:101
+msgid "افزودن سوال"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:329
+msgid "افزودن محصول"
+msgstr ""
+
+#: inc/ContentTypes.php:329
+msgid "افزودن مورد جدید"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:293
+msgid "امتیاز %s از ۵"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:332
+msgid "امتیاز شما"
+msgstr ""
+
+#: search.php:90
+msgid "املای عبارت را بررسی کنید یا از عبارت کوتاه‌تری استفاده کنید."
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:97 inc/Admin/SectionManager.php:134 inc/Admin/TermMetaboxes.php:74 inc/Admin/ThemeOptions.php:179 inc/Admin/ThemeOptions.php:555
+msgid "انتخاب تصویر"
+msgstr ""
+
+#: page.php:38
+msgid "انتخاب تعداد، متراژ و ویژگی‌های فنی"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:145
+msgid "انتخاب فایل"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:76
+msgid "انتقال «%s» به بالا"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:77
+msgid "انتقال «%s» به پایین"
+msgstr ""
+
+#: template-parts/project/part-details.php:74
+msgid "اندازه‌گیری محل، بررسی سازه و نورپردازی موجود، و ارائهٔ طرح سه‌بعدی پیش از تولید."
+msgstr ""
+
+#: inc/Settings.php:93
+msgid "اگر «نمایش نوار» روشن باشد و این متن خالی نباشد، نوار بالای سایت چاپ می‌شود."
+msgstr ""
+
+#: inc/Settings.php:80
+msgid "اگر خالی بماند نشان متنی استفاده می‌شود. SVG مجاز است."
+msgstr ""
+
+#: inc/Admin/SectionManager.php:272
+msgid "اگر چیزی انتخاب نشود، ترتیب صفحه اصلی اعمال می‌شود."
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:139 inc/Settings.php:152 page-templates/contact.php:74 template-parts/forms/part-contact-form.php:78 template-parts/product/part-tabs.php:327
+msgid "ایمیل"
+msgstr ""
+
+#: inc/Forms/Inbox.php:159
+msgid "ایمیل: "
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:178
+msgid "این ردیف حذف شود؟"
+msgstr ""
+
+#: 404.php:55
+msgid "این صفحه پیدا نشد"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:54
+msgid "این فیلد را خالی بگذارید"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:113
+msgid "این مقادیر فقط دادهٔ ترجمه را نگه می‌دارند؛ تگ‌های alternate با SEOPress هماهنگ می‌شوند."
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:49
+msgid "این مقاله را با همکاران خود به اشتراک بگذارید."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:390
+msgid "این موارد از وضعیت فعلی وردپرس بررسی می‌شوند و در هر زمان قابل اصلاح‌اند."
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:99
+msgid "با ارسال این فرم، با تماس کارشناسان عرفان صنعت موافقت می‌کنید. اطلاعات شما فقط برای پاسخ به همین درخواست استفاده می‌شود."
+msgstr ""
+
+#: template-parts/home/section-history.php:61
+msgid "با اسکرول یا کلیک بین سال‌ها حرکت کنید"
+msgstr ""
+
+#: inc/Settings.php:267
+msgid "با کشیدن یا کلیدهای جابه‌جایی، ترتیب را تغییر دهید. بخش خاموش رندر نمی‌شود."
+msgstr ""
+
+#: header.php:111
+msgid "باز کردن منو"
+msgstr ""
+
+#: single-services.php:66
+msgid "بازدید میدانی و برداشت فنی"
+msgstr ""
+
+#: template-parts/project/part-details.php:73
+msgid "بازدید میدانی و طراحی سه‌بعدی"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:77
+msgid "بازهٔ قیمت"
+msgstr ""
+
+#: template-parts/home/section-history.php:132
+msgid "بازگشت به ابتدا"
+msgstr ""
+
+#: footer.php:74
+msgid "بازگشت به بالا"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:36 template-parts/archive/part-shop-grid.php:43
+msgid "بالاترین امتیاز"
+msgstr ""
+
+#: template-parts/home/section-hero.php:42
+msgid "بخش آغازین - هیرو صفحه اصلی"
+msgstr ""
+
+#: comments.php:77
+msgid "بخش نظرات برای این نوشته بسته شده است."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:479
+msgid "بخش‌های تنظیمات"
+msgstr ""
+
+#: inc/Settings.php:47
+msgid "بخش‌های صفحه اصلی"
+msgstr ""
+
+#: template-parts/cards/card-product-tile.php:44
+msgid "بدون تصویر"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:74
+msgid "بدون نام"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:156 inc/Navigation/MegaMenu.php:176 inc/Navigation/MobileMenu.php:176
+msgid "بر اساس شهر اجرا"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:155 inc/Navigation/MegaMenu.php:175 inc/Navigation/MobileMenu.php:175
+msgid "بر اساس نوع سازه"
+msgstr ""
+
+#: page-templates/recruitment.php:91
+msgid "برای ارسال رزومه، آن را به نشانی ایمیل واحد منابع انسانی بفرستید و در عنوان ایمیل، نام موقعیت مورد نظر را بنویسید."
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:78
+msgid "برای انتخاب تجهیز مناسب پروژه، کارشناسان فنی ما در کنار شما هستند."
+msgstr ""
+
+#: inc/Commerce.php:107
+msgid "برای تکمیل سفارش، جاوااسکریپت مرورگر را فعال کنید یا با شماره فروش تماس بگیرید."
+msgstr ""
+
+#: single-services.php:132
+msgid "برای دریافت برآورد هزینهٔ این خدمت، کارشناسان فنی ما آمادهٔ پاسخگویی هستند."
+msgstr ""
+
+#: inc/Commerce.php:108
+msgid "برای مدیریت سبد خرید، جاوااسکریپت مرورگر را فعال کنید یا با شماره فروش تماس بگیرید."
+msgstr ""
+
+#: page-templates/contact.php:47
+msgid "برای مشاورهٔ فنی، استعلام قیمت یا بازدید از کارخانه، فرم زیر را پر کنید یا مستقیم تماس بگیرید."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:617
+msgid "برای ویرایش این فیلد مجوز unfiltered_html لازم است."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:400
+msgid "بررسی"
+msgstr ""
+
+#: page.php:37
+msgid "بررسی سبد خرید"
+msgstr ""
+
+#: single-services.php:67
+msgid "بررسی محل اجرا، سازه و شبکهٔ برق، و ثبت اندازه‌های دقیق پیش از طراحی."
+msgstr ""
+
+#: inc/Settings.php:42
+msgid "برند و لوگو"
+msgstr ""
+
+#: inc/Sections.php:212 inc/Sections.php:278
+msgid "برچسب"
+msgstr ""
+
+#: inc/Sections.php:63 inc/Sections.php:142 inc/Sections.php:185 inc/Sections.php:196 inc/Sections.php:233 inc/Sections.php:270
+msgid "برچسب بالای تیتر"
+msgstr ""
+
+#: inc/Sections.php:70
+msgid "برچسب دکمهٔ صحنه"
+msgstr ""
+
+#: inc/Sections.php:149
+msgid "برچسب کوچک"
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:43
+msgid "برچسب‌ها:"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:375
+msgid "برگهٔ تماس با قالب تماس منتشر شده است"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:242
+msgid "برگه‌های معرفی شرکت یافت نشد."
+msgstr ""
+
+#: template-parts/product/part-gallery.php:71 template-parts/project/part-gallery.php:70
+msgid "بزرگ‌نمایی"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:238 template-parts/archive/part-shop-drawer.php:26 template-parts/archive/part-shop-filters.php:52
+msgid "بستن فیلترها"
+msgstr ""
+
+#: inc/Navigation/MobileMenu.php:52
+msgid "بستن منو"
+msgstr ""
+
+#: template-parts/product/part-gallery.php:103
+msgid "بستن گالری"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:170 template-parts/archive/part-shop-grid.php:181 template-parts/blog/part-blog-grid.php:152 template-parts/home/section-history.php:132 template-parts/product/part-gallery.php:110
+msgid "بعدی"
+msgstr ""
+
+#: inc/Data/ProjectData.php:122
+msgid "بهمن"
+msgstr ""
+
+#: inc/ArchiveFilters.php:73
+msgid "بیشترین امتیاز"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:54
+msgid "تاریخ"
+msgstr ""
+
+#: inc/ContentTypes.php:347 single-projects.php:54
+msgid "تاریخ تکمیل"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:129
+msgid "تاریخ تکمیل (مثال: 1404/01/01)"
+msgstr ""
+
+#: template-parts/project/part-details.php:45
+msgid "تاریخ تکمیل و بهره‌برداری"
+msgstr ""
+
+#: inc/Sections.php:266
+msgid "تاریخچه"
+msgstr ""
+
+#: page.php:51
+msgid "تایید نهایی و کد پیگیری"
+msgstr ""
+
+#: template-parts/project/part-products.php:29
+msgid "تجهیزات به‌کاررفته"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:90
+msgid "ترتیب"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:247
+msgid "ترتیب بخش‌های صفحه"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:52
+msgid "ترتیب بخش‌های صفحه اصلی را با کشیدن هر ردیف یا با کلیدهای بالا/پایین تغییر دهید. بخش‌های خاموش در سایت رندر نمی‌شوند."
+msgstr ""
+
+#: inc/Settings.php:265
+msgid "ترتیب و وضعیت بخش‌های صفحه اصلی"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:62
+msgid "ترجمه‌ها و Hreflang"
+msgstr ""
+
+#: inc/Admin/TermMetaboxes.php:223
+msgid "تصویر"
+msgstr ""
+
+#: template-parts/product/part-gallery.php:120
+msgid "تصویر %s"
+msgstr ""
+
+#: inc/Sections.php:199 inc/Sections.php:236
+msgid "تصویر بخش"
+msgstr ""
+
+#: template-parts/product/part-gallery.php:62 template-parts/project/part-gallery.php:54
+msgid "تصویر بعدی"
+msgstr ""
+
+#: inc/Admin/TermMetaboxes.php:69
+msgid "تصویر بندانگشتی"
+msgstr ""
+
+#: inc/Admin/TermMetaboxes.php:120
+msgid "تصویر بندانگشتی (شناسه)"
+msgstr ""
+
+#: inc/Sections.php:273
+msgid "تصویر تاریخچه"
+msgstr ""
+
+#: template-parts/product/part-gallery.php:59 template-parts/project/part-gallery.php:51
+msgid "تصویر قبلی"
+msgstr ""
+
+#: inc/Sections.php:64
+msgid "تصویر یا پوستر ویدیو"
+msgstr ""
+
+#: template-parts/product/part-gallery.php:43
+msgid "تصویری برای این محصول ثبت نشده است"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:134
+msgid "تعداد بازدید"
+msgstr ""
+
+#: inc/Settings.php:237
+msgid "تعداد محصول در هر صفحه"
+msgstr ""
+
+#: inc/Settings.php:251
+msgid "تعداد نوشته در هر صفحه"
+msgstr ""
+
+#: inc/Settings.php:244
+msgid "تعداد پروژه در هر صفحه"
+msgstr ""
+
+#: inc/Forms/FormHandler.php:148
+msgid "تعداد پیام‌های ارسالی از این دستگاه زیاد بوده است. کمی بعد دوباره تلاش کنید."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:519
+msgid "تغییرات فقط پس از ذخیره اعمال می‌شوند."
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:149
+msgid "تفکیک پروژه‌ها"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:138 page-templates/contact.php:68
+msgid "تلفن"
+msgstr ""
+
+#: inc/Settings.php:132
+msgid "تلفن اصلی"
+msgstr ""
+
+#: inc/Settings.php:142
+msgid "تلفن مدیر فروش"
+msgstr ""
+
+#: inc/Forms/Inbox.php:158
+msgid "تلفن: "
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:51 inc/Forms/InboxAdmin.php:98
+msgid "تماس"
+msgstr ""
+
+#: inc/Frontend/SiteParts.php:372
+msgid "تماس با ما"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:284
+msgid "تماس با کارخانه و دفتر مرکزی"
+msgstr ""
+
+#: template-parts/archive/part-shop-hero.php:112
+msgid "تماس بگیرید"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:69
+msgid "تماس مستقیم با واحد فروش و مهندسی"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:28
+msgid "تماس مستقیم با کارشناسان فروش"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:654
+msgid "تنظیمات ذخیره شد."
+msgstr ""
+
+#: inc/Sections.php:242 inc/Sections.php:280 inc/Sections.php:361 inc/Sections.php:413
+msgid "توضیح"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:99
+msgid "توضیح تخصصی برای این محصول ثبت نشده است؛ برای جزئیات فنی با واحد فروش تماس بگیرید."
+msgstr ""
+
+#: inc/Sections.php:150
+msgid "توضیح کوتاه"
+msgstr ""
+
+#: single-services.php:124
+msgid "توضیحات تکمیلی این خدمت هنوز ثبت نشده است. برای دریافت جزئیات فنی و قیمت با واحد فروش تماس بگیرید."
+msgstr ""
+
+#: template-parts/project/part-details.php:129
+msgid "توضیحات تکمیلی این پروژه هنوز ثبت نشده است. برای دریافت گزارش فنی و تصاویر اجرا با واحد فروش تماس بگیرید."
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:89
+msgid "توضیحات پروژه *"
+msgstr ""
+
+#: template-parts/home/section-hero.php:88
+msgid "توقف ویدیو و بازگشت به نمای طرح"
+msgstr ""
+
+#: template-parts/home/section-knowledge.php:83
+msgid "تولید انحصاری"
+msgstr ""
+
+#: template-parts/project/part-details.php:77
+msgid "تولید سفارشی در کارخانه"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:148
+msgid "تولید و قیمت کارخانه"
+msgstr ""
+
+#: single-services.php:74
+msgid "تولید، نصب و تحویل"
+msgstr ""
+
+#: inc/Theme.php:92
+msgid "تولیدات شرکت"
+msgstr ""
+
+#: template-parts/home/section-knowledge.php:78
+msgid "تونل‌های نوری پیکسلی و کمانی"
+msgstr ""
+
+#: inc/Sections.php:143 inc/Sections.php:186 inc/Sections.php:197 inc/Sections.php:234 inc/Sections.php:271 inc/Sections.php:329
+msgid "تیتر"
+msgstr ""
+
+#: inc/Sections.php:61
+msgid "تیتر اصلی"
+msgstr ""
+
+#: inc/Data/ProjectData.php:115
+msgid "تیر"
+msgstr ""
+
+#: template-parts/product/part-mobile-bar.php:40
+msgid "ثبت سفارش"
+msgstr ""
+
+#: template-parts/home/section-products.php:73
+msgid "ثبت سفارش اختصاصی"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:322
+msgid "ثبت نظر و امتیاز"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:317
+msgid "ثبت نظر و امتیاز شما"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:330
+msgid "ثبت پروژه"
+msgstr ""
+
+#: inc/Forms/FormHandler.php:153
+msgid "ثبت پیام ممکن نشد. لطفاً با شمارهٔ تماس با ما در ارتباط باشید."
+msgstr ""
+
+#: inc/Admin/SectionManager.php:66
+msgid "جابه‌جایی با کشیدن"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:81
+msgid "جایگاه"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:120
+msgid "جایگاه گالری مدرن"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:191
+msgid "جدول کامل مشخصات فنی و مهندسی %s"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:79
+msgid "جدید"
+msgstr ""
+
+#: inc/ArchiveFilters.php:71
+msgid "جدیدترین"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:34
+msgid "جدیدترین پروژه‌ها"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:127
+msgid "جزئیات تکمیل"
+msgstr ""
+
+#: archive-services.php:120
+msgid "جزئیات خدمت"
+msgstr ""
+
+#: inc/ContentTypes.php:330 search.php:80 template-parts/navigation/header-search.php:33
+msgid "جستجو"
+msgstr ""
+
+#: inc/LiveSearch.php:87
+msgid "جستجو در دسترس نیست. از دکمهٔ جستجو استفاده کنید."
+msgstr ""
+
+#: 404.php:62 search.php:65
+msgid "جستجو در سایت"
+msgstr ""
+
+#: template-parts/navigation/header-search.php:20
+msgid "جستجو در محصولات و پروژه‌ها"
+msgstr ""
+
+#: template-parts/navigation/header-search.php:47
+msgid "جستجو در محصولات، پروژه‌ها، خدمات و مقالات."
+msgstr ""
+
+#: template-parts/blog/part-blog-hero.php:64
+msgid "جستجو در مقالات"
+msgstr ""
+
+#: template-parts/blog/part-blog-hero.php:65
+msgid "جستجو در مقالات…"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:59
+msgid "جستجو در نام یا کد محصول"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:96
+msgid "جستجو در پروژه‌ها"
+msgstr ""
+
+#: inc/ContentTypes.php:306
+msgid "جستجوی %s"
+msgstr ""
+
+#: template-parts/navigation/header-search.php:40
+msgid "جستجوی سریع نام محصول یا پروژه…"
+msgstr ""
+
+#: inc/Forms/Inbox.php:65
+msgid "جستجوی پیام‌ها"
+msgstr ""
+
+#: inc/Sections.php:344
+msgid "جلد کاتالوگ"
+msgstr ""
+
+#: template-parts/home/section-catalog.php:50
+msgid "جلد کاتالوگ محصولات"
+msgstr ""
+
+#: template-parts/product/part-summary.php:92
+msgid "حداقل سفارش: %s"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:206 inc/Admin/ProjectMetaboxes.php:98 inc/Admin/SectionManager.php:135 inc/Admin/TermMetaboxes.php:75 inc/Admin/ThemeOptions.php:556
+msgid "حذف"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:219 inc/Admin/SectionManager.php:174 inc/Admin/SectionManager.php:183 inc/Admin/TermMetaboxes.php:94 inc/Admin/ThemeOptions.php:565 inc/Admin/ThemeOptions.php:573
+msgid "حذف ردیف"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:103 template-parts/blog/part-blog-grid.php:46
+msgid "حذف فیلترها"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:147
+msgid "حذف همهٔ فیلترها"
+msgstr ""
+
+#: inc/Settings.php:226
+msgid "خالی بماند تا از دسته‌های معرفی‌شدهٔ مرجع استفاده شود."
+msgstr ""
+
+#: archive-services.php:45 archive-services.php:64 inc/ContentTypes.php:99 inc/Frontend/SiteParts.php:360 inc/Navigation/MenuTree.php:336 inc/Sections.php:349
+msgid "خدمات"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:296
+msgid "خدمات منتشرشده"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:212
+msgid "خدمات مهندسی و اجرایی"
+msgstr ""
+
+#: inc/ContentTypes.php:99
+msgid "خدمت"
+msgstr ""
+
+#: single-services.php:100
+msgid "خدمت تخصصی عرفان صنعت"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:218
+msgid "خدمتی منتشر نشده است."
+msgstr ""
+
+#: inc/Data/ProjectData.php:114
+msgid "خرداد"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:581 template-parts/archive/part-shop-filters.php:73 template-parts/cards/card-product-tile.php:52
+msgid "خرید آنلاین"
+msgstr ""
+
+#: page.php:45
+msgid "خرید آنلاین یا درخواست پیش‌فاکتور رسمی"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:289
+msgid "خرید تأییدشده"
+msgstr ""
+
+#: 404.php:50
+msgid "خطای ۴۰۴"
+msgstr ""
+
+#: template-parts/project/part-summary.php:34
+msgid "خلاصه پروژه"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:313
+msgid "خلاصه‌ای زنده از محتوای سایت و میان‌برهای مدیریت."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:642
+msgid "داده‌ای برای ذخیره ارسال نشد."
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:126
+msgid "دارای کد GS1 و ستاد"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:122 inc/Admin/ThemeOptions.php:465
+msgid "داشبورد عرفان صنعت"
+msgstr ""
+
+#: template-parts/product/part-summary.php:176
+msgid "دانلود کاتالوگ محصول"
+msgstr ""
+
+#: inc/LiveSearch.php:85
+msgid "در حال جستجو…"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:114
+msgid "در حال حاضر %d تصویر معتبر از این پروژه شناسایی شد."
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:156
+msgid "در حال حاضر %s تصویر از همهٔ کلیدهای پشتیبانی‌شده شناسایی شد."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:175
+msgid "در حال ذخیره…"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:491
+msgid "در صفحهٔ محصول، بالای دکمهٔ خرید نمایش داده می‌شود."
+msgstr ""
+
+#: template-parts/project/part-details.php:120
+msgid "درباره %s"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:337
+msgid "درباره شرکت"
+msgstr ""
+
+#: inc/Frontend/SiteParts.php:368
+msgid "درباره ما"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:280
+msgid "درباره کارخانه عرفان صنعت"
+msgstr ""
+
+#: inc/Sections.php:192
+msgid "دربارهٔ شرکت"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:93
+msgid "درجه حفاظت (IP)"
+msgstr ""
+
+#: template-parts/home/section-knowledge.php:84
+msgid "درختان نوری هوشمند NRF"
+msgstr ""
+
+#: template-parts/project/part-summary.php:92
+msgid "درخواست بازدید و طرح"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:100
+msgid "درخواست تماس"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:107
+msgid "درخواست شما ثبت شد."
+msgstr ""
+
+#: inc/LiveSearch.php:101
+msgid "درخواست معتبر نیست."
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:84
+msgid "دریافت استعلام فنی و پیش‌فاکتور رسمی"
+msgstr ""
+
+#: inc/Sections.php:345
+msgid "دریافت کاتالوگ"
+msgstr ""
+
+#: inc/Sections.php:275
+msgid "دستاوردها"
+msgstr ""
+
+#: template-parts/project/part-details.php:139
+msgid "دستاوردها و شاخصه‌های فنی این پروژه"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:453
+msgid "دسترسی به این صفحه مجاز نیست."
+msgstr ""
+
+#: footer.php:55 inc/Admin/ThemeOptions.php:328 inc/Settings.php:185
+msgid "دسترسی سریع"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:630
+msgid "دسترسی مجاز نیست."
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:147
+msgid "دسته‌بندی تخصصی محصولات · تولید کارخانه عرفان صنعت"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:99
+msgid "دسته‌بندی تولیدات"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:44
+msgid "دسته‌بندی محصول"
+msgstr ""
+
+#: footer.php:60 template-parts/archive/part-shop-filters.php:116
+msgid "دسته‌بندی محصولات"
+msgstr ""
+
+#: inc/Settings.php:223
+msgid "دسته‌بندی محصولات در فوتر"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:92
+msgid "دسته‌بندی محصولی برای نمایش وجود ندارد."
+msgstr ""
+
+#: template-parts/home/section-projects.php:55
+msgid "دسته‌بندی نمونه‌کارها"
+msgstr ""
+
+#: inc/Sections.php:146
+msgid "دسته‌ها"
+msgstr ""
+
+#: inc/Sections.php:137
+msgid "دسته‌های پروژه"
+msgstr ""
+
+#: inc/LiveSearch.php:115
+msgid "دست‌کم دو حرف بنویسید."
+msgstr ""
+
+#: inc/Sections.php:568
+msgid "دکمهٔ تماس"
+msgstr ""
+
+#: inc/Sections.php:569
+msgid "دکمهٔ دوم"
+msgstr ""
+
+#: inc/Sections.php:65
+msgid "دکمهٔ فراخوان"
+msgstr ""
+
+#: inc/Data/ProjectData.php:121
+msgid "دی"
+msgstr ""
+
+#: inc/LiveSearch.php:86
+msgid "دیدن همهٔ نتایج"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:516
+msgid "ذخیره تغییرات"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:176
+msgid "ذخیره شد."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:177
+msgid "ذخیره نشد. دوباره تلاش کنید."
+msgstr ""
+
+#: page-templates/contact.php:64
+msgid "راه‌های تماس"
+msgstr ""
+
+#: inc/Sections.php:239
+msgid "ردیف‌های معرفی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:332
+msgid "رفتن به صندوق پیام‌ها"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:163
+msgid "روابط"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:123
+msgid "روایتی از هنر، مهندسی و نور در سراسر ایران و عراق؛ از تونل‌های نوری و میادین اصلی تا نورپردازی پل‌ها و ساختمان‌های شاخص."
+msgstr ""
+
+#: inc/Sections.php:494
+msgid "زمینهٔ همکاری"
+msgstr ""
+
+#: inc/Sections.php:62 inc/Sections.php:144 inc/Sections.php:187 inc/Sections.php:235 inc/Sections.php:272 inc/Sections.php:330
+msgid "زیرتیتر"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:118
+msgid "زیرعنوان محصول"
+msgstr ""
+
+#: inc/Settings.php:107
+msgid "زیرنویس نوار بالای هدر"
+msgstr ""
+
+#: template-parts/project/part-details.php:78
+msgid "ساخت تجهیزات بر اساس طرح تأییدشده، با آزمون آب‌بندی و روشنایی پیش از ارسال."
+msgstr ""
+
+#: single-services.php:75
+msgid "ساخت تجهیزات در کارخانه، نصب توسط تیم اجرایی و تحویل با آموزش بهره‌برداری."
+msgstr ""
+
+#: template-parts/home/section-products.php:63
+msgid "ساخت سفارشی"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:140
+msgid "سازمان"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:83
+msgid "سازمان / شهرداری"
+msgstr ""
+
+#: inc/Forms/Inbox.php:160
+msgid "سازمان: "
+msgstr ""
+
+#: template-parts/home/section-knowledge.php:77
+msgid "سازه و المان شهری"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:95
+msgid "ساعات پاسخگویی کارخانه"
+msgstr ""
+
+#: inc/Settings.php:162
+msgid "ساعات کاری"
+msgstr ""
+
+#: inc/Sections.php:277
+msgid "سال"
+msgstr ""
+
+#: template-parts/cards/card-project.php:58
+msgid "سال %s"
+msgstr ""
+
+#: template-parts/home/section-history.php:102
+msgid "سال %s خورشیدی"
+msgstr ""
+
+#: template-parts/home/section-history.php:131
+msgid "سال بعد"
+msgstr ""
+
+#: template-parts/home/section-history.php:128
+msgid "سال قبل"
+msgstr ""
+
+#: template-parts/home/section-history.php:68
+msgid "سال‌های شاخص تاریخچه شرکت"
+msgstr ""
+
+#: template-parts/product/part-related-products.php:73
+msgid "سایر تولیدات عرفان صنعت"
+msgstr ""
+
+#: single-services.php:176
+msgid "سایر خدمات نورپردازی شهری"
+msgstr ""
+
+#: template-parts/project/part-related.php:29
+msgid "سایر پروژه‌های شاخص عرفان صنعت"
+msgstr ""
+
+#: header.php:101
+msgid "سبد خرید و پیش‌فاکتور"
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:60 template-parts/blog/part-post-body.php:63
+msgid "سرفصل‌های مقاله"
+msgstr ""
+
+#: inc/Commerce.php:137
+msgid "سفارش شماره %s با موفقیت ثبت و پرداخت آن تایید شد."
+msgstr ""
+
+#: inc/Commerce.php:145
+msgid "سفارش شماره %s ثبت شد و تا تایید پرداخت در حالت «در انتظار بررسی» است."
+msgstr ""
+
+#: inc/Commerce.php:152
+msgid "سفارش شماره %s ثبت شد و در حال بررسی توسط واحد فروش است."
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:84
+msgid "سقف بودجه"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:81
+msgid "سقف بودجه (فیلتر قیمت)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:263 inc/Admin/TermMetaboxes.php:91
+msgid "سوال"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:247 inc/Admin/TermMetaboxes.php:83
+msgid "سوالات متداول"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:282
+msgid "سوالات متداول (FAQ)"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:227 template-parts/product/part-faq.php:36
+msgid "سوالات متداول درباره %s"
+msgstr ""
+
+#: inc/Settings.php:167
+msgid "شبکه‌های اجتماعی"
+msgstr ""
+
+#: inc/Settings.php:73
+msgid "شعار کوتاه برند"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:147
+msgid "شمارنده با هر بازدید یک واحد افزایش می‌یابد."
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:68
+msgid "شماره تماس *"
+msgstr ""
+
+#: template-parts/project/part-details.php:61
+msgid "شناسنامه کامل اجرایی"
+msgstr ""
+
+#: template-parts/project/part-details.php:161
+msgid "شناسنامه کامل اجرایی %s"
+msgstr ""
+
+#: template-parts/project/part-summary.php:65
+msgid "شناسنامه کامل اجرایی ↓"
+msgstr ""
+
+#: template-parts/project/part-details.php:169
+msgid "شناسنامهٔ اجرایی این پروژه تکمیل نشده است."
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:47
+msgid "شناسه CPC"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:43
+msgid "شناسه GS1 (GTIN)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:45
+msgid "شناسه HS"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:46
+msgid "شناسه ISIC"
+msgstr ""
+
+#: inc/Data/ProductData.php:35
+msgid "شناسه فنی محصول در کارخانه"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:48
+msgid "شناسه محصول"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:122
+msgid "شناسهٔ تصاویر با کاما (5 شکاف بالا را بازنویسی می‌کند)"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:83
+msgid "شناسهٔ تصویر"
+msgstr ""
+
+#: inc/Settings.php:481
+msgid "شناسهٔ رسانه معتبر نیست."
+msgstr ""
+
+#: template-parts/product/part-tabs.php:215
+msgid "شناسه‌های رسمی کالا (ویژه سامانه ستاد، تدارکات دولتی و ایران‌کد)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:103
+msgid "شناسه‌های صنعتی و قانونی"
+msgstr ""
+
+#: inc/ContentTypes.php:156 inc/ContentTypes.php:345 template-parts/archive/part-native-filters.php:60
+msgid "شهر"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:133
+msgid "شهر اجرا"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:122
+msgid "شهری"
+msgstr ""
+
+#: inc/Data/ProjectData.php:117
+msgid "شهریور"
+msgstr ""
+
+#: inc/Sections.php:67
+msgid "صحنه‌های هیرو"
+msgstr ""
+
+#: search.php:42
+msgid "صفحات"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:143 template-parts/archive/part-shop-grid.php:136 template-parts/blog/part-blog-grid.php:131
+msgid "صفحه %1$s از %2$s (%3$s مورد)"
+msgstr ""
+
+#: 404.php:69 archive-services.php:42 header.php:71 inc/Frontend/SiteParts.php:348 inc/Navigation/MobileMenu.php:60 page-templates/contact.php:35
+msgid "صفحه اصلی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:365
+msgid "صفحهٔ خانهٔ منتشرشده"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:123
+msgid "صفحه‌بندی محصولات"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:119
+msgid "صفحه‌بندی مقالات"
+msgstr ""
+
+#: search.php:137
+msgid "صفحه‌بندی نتایج"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:131
+msgid "صفحه‌بندی پروژه‌ها"
+msgstr ""
+
+#: inc/Forms/Inbox.php:61
+msgid "صندوق پیام‌ها"
+msgstr ""
+
+#: single-services.php:70
+msgid "طراحی و ارائهٔ طرح نوری"
+msgstr ""
+
+#: template-parts/home/section-products.php:67
+msgid "طراحی و ساخت المان"
+msgstr ""
+
+#: template-parts/project/part-summary.php:59
+msgid "طراحی، تولید و اجرای تخصصی توسط کارخانه دانش‌بنیان عرفان صنعت اصفهان"
+msgstr ""
+
+#: single-services.php:71
+msgid "طرح سه‌بعدی، شبیه‌سازی نور و انتخاب تجهیزات متناسب با بودجه و کاربری."
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:53 template-parts/blog/part-blog-grid.php:115
+msgid "عبارت جستجو را تغییر دهید یا فیلتر دسته را پاک کنید."
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:67 template-parts/archive/part-projects-grid.php:127 template-parts/archive/part-shop-grid.php:76 template-parts/archive/part-shop-grid.php:115
+msgid "عبارت جستجو را تغییر دهید یا فیلترهای فعال را پاک کنید."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:123
+msgid "عرفان صنعت"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:563 inc/Admin/ThemeOptions.php:571 inc/Sections.php:148 inc/Sections.php:241 inc/Sections.php:360 inc/Sections.php:412
+msgid "عنوان"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:123
+msgid "عنوان انگلیسی محصول"
+msgstr ""
+
+#: inc/Sections.php:279
+msgid "عنوان دستاورد"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:158
+msgid "عنوان دکمه"
+msgstr ""
+
+#: inc/Sections.php:69
+msgid "عنوان صحنه"
+msgstr ""
+
+#: inc/Settings.php:102
+msgid "عنوان نوار بالای هدر"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:116
+msgid "عنوان و وضعیت فروش"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:135
+msgid "فایل و گالری"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:141
+msgid "فایل کاتالوگ (نشانی)"
+msgstr ""
+
+#: template-parts/project/part-details.php:62
+msgid "فرآیند مهندسی و اجرا"
+msgstr ""
+
+#: template-parts/project/part-details.php:187
+msgid "فرآیند مهندسی، تولید و اجرای پروژه"
+msgstr ""
+
+#: inc/Sections.php:561
+msgid "فراخوان تماس"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:50
+msgid "فرستنده"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:283
+msgid "فرصت‌های شغلی و استخدام"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:52 inc/Forms/InboxAdmin.php:141
+msgid "فرم"
+msgstr ""
+
+#: inc/Forms/Inbox.php:154
+msgid "فرم: %s"
+msgstr ""
+
+#: inc/Data/ProjectData.php:112
+msgid "فروردین"
+msgstr ""
+
+#: template-parts/product/part-summary.php:51
+msgid "فروش استعلامی — تماس با واحد فروش"
+msgstr ""
+
+#: inc/Frontend/SiteParts.php:352
+msgid "فروشگاه"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:130
+msgid "فروشگاه آنلاین"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:140
+msgid "فروشگاه رسمی تولیدات کارخانه عرفان صنعت"
+msgstr ""
+
+#: 404.php:72 search.php:92 template-parts/archive/part-shop-archive.php:95 template-parts/archive/part-shop-archive.php:100 template-parts/archive/part-shop-archive.php:141 template-parts/product/part-header.php:49
+msgid "فروشگاه محصولات"
+msgstr ""
+
+#: inc/Settings.php:276
+msgid "فقط برای مدیر کل با مجوز unfiltered_html؛ روی سایت چندنویسنده برای ادمین نمایش داده نمی‌شود."
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:76
+msgid "فقط محصولات قابل خرید آنلاین"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:370
+msgid "فهرست اصلی به جایگاه هدر متصل است"
+msgstr ""
+
+#: inc/Sections.php:358
+msgid "فهرست خدمات"
+msgstr ""
+
+#: inc/Sections.php:201
+msgid "فهرست مزیت‌ها"
+msgstr ""
+
+#: inc/Sections.php:491
+msgid "فهرست مشتریان"
+msgstr ""
+
+#: inc/Settings.php:45
+msgid "فوتر"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:89
+msgid "فیلتر"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:41
+msgid "فیلتر نتایج"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:59
+msgid "فیلتر و آرشیو"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:215 template-parts/archive/part-projects-archive.php:237 template-parts/archive/part-projects-filters.php:81
+msgid "فیلتر و آرشیو پروژه‌ها"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:68 template-parts/archive/part-shop-grid.php:191
+msgid "فیلتر و دسته‌بندی"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:184 template-parts/archive/part-shop-drawer.php:25
+msgid "فیلتر و دسته‌بندی محصولات"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:44
+msgid "فیلترهای هوشمند فروشگاه"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:177
+msgid "فیلدهای تکرارشونده"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:130
+msgid "قابل خرید آنلاین"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:159 template-parts/archive/part-shop-grid.php:156 template-parts/blog/part-blog-grid.php:143 template-parts/home/section-history.php:129 template-parts/product/part-gallery.php:107
+msgid "قبلی"
+msgstr ""
+
+#: template-parts/home/section-hero.php:90
+msgid "قطع یا وصل صدای ویدیو"
+msgstr ""
+
+#: template-parts/product/part-summary.php:100
+msgid "قیمت این محصول پس از استعلام اعلام می‌شود."
+msgstr ""
+
+#: template-parts/product/part-summary.php:85
+msgid "قیمت با تخفیف"
+msgstr ""
+
+#: template-parts/product/part-mobile-bar.php:29
+msgid "قیمت روز کارخانه"
+msgstr ""
+
+#: template-parts/product/part-summary.php:82
+msgid "قیمت مصوب کارخانه — با احتساب مالیات بر ارزش افزوده"
+msgstr ""
+
+#: inc/Forms/FormHandler.php:138
+msgid "لطفاً فیلدهای ضروری را کامل و درست پر کنید."
+msgstr ""
+
+#: inc/Settings.php:78
+msgid "لوگو (تصویر)"
+msgstr ""
+
+#: inc/Sections.php:152 inc/Sections.php:237
+msgid "لینک"
+msgstr ""
+
+#: inc/Sections.php:188 inc/Sections.php:557
+msgid "لینک آرشیو"
+msgstr ""
+
+#: inc/Sections.php:72
+msgid "لینک صحنه"
+msgstr ""
+
+#: inc/Sections.php:331
+msgid "لینک فروشگاه"
+msgstr ""
+
+#: inc/Settings.php:97
+msgid "لینک نوار اعلان"
+msgstr ""
+
+#: inc/Settings.php:112
+msgid "لینک‌های نوار بالا"
+msgstr ""
+
+#: inc/Sections.php:116 inc/Sections.php:202
+msgid "متن"
+msgstr ""
+
+#: inc/Sections.php:73
+msgid "متن دکمهٔ صحنه"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:341
+msgid "متن دیدگاه شما"
+msgstr ""
+
+#: inc/Settings.php:137
+msgid "متن نمایشی تلفن اصلی"
+msgstr ""
+
+#: inc/Settings.php:147
+msgid "متن نمایشی تلفن فروش"
+msgstr ""
+
+#: inc/Settings.php:91
+msgid "متن نوار اعلان"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:53 inc/Forms/InboxAdmin.php:121
+msgid "متن پیام"
+msgstr ""
+
+#: inc/Sections.php:198
+msgid "متن کوتاه"
+msgstr ""
+
+#: inc/Settings.php:230
+msgid "متن کپی‌رایت"
+msgstr ""
+
+#: template-parts/blog/part-blog-hero.php:49
+msgid "مجله فنی و آموزشی عرفان صنعت · %s مقاله"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:143
+msgid "مجموعه‌ای کامل از تجهیزات نورپردازی پیشرفته؛ از پوینت لایت پیکسل و ریسه‌های بلوطی، فندقی و سوزنی IP68 تا درختان نوری هوشمند، خورشیدنماها و باکس کنترل مرکزی."
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:281
+msgid "مجوزها و افتخارات رسمی"
+msgstr ""
+
+#: inc/ArchiveFilters.php:72
+msgid "محبوب‌ترین"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:53
+msgid "محصول"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:47
+msgid "محصول منطبق"
+msgstr ""
+
+#: 404.php:63 search.php:81
+msgid "محصول، پروژه یا مقاله…"
+msgstr ""
+
+#: inc/Navigation/MenuTree.php:334 search.php:38
+msgid "محصولات"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:135
+msgid "محصولات مرتبط (شناسهٔ محصول، جداشده با کاما)"
+msgstr ""
+
+#: template-parts/product/part-related-products.php:75
+msgid "محصولات مشابه و مکمل"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:284
+msgid "محصولات منتشرشده"
+msgstr ""
+
+#: template-parts/home/section-catalog.php:61
+msgid "محصولات نورپردازی شهری"
+msgstr ""
+
+#: template-parts/project/part-products.php:30
+msgid "محصولات و تجهیزات استفاده‌شده"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:75 template-parts/archive/part-shop-grid.php:114
+msgid "محصولی با این مشخصات یافت نشد."
+msgstr ""
+
+#: single-projects.php:48
+msgid "محل اجرا"
+msgstr ""
+
+#: template-parts/project/part-details.php:48
+msgid "محل اجرا (آرشیو شهر)"
+msgstr ""
+
+#: template-parts/home/section-hero.php:213
+msgid "مدل"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:323
+msgid "مدیریت"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:50 template-parts/archive/part-shop-grid.php:59
+msgid "مرتب‌سازی:"
+msgstr ""
+
+#: inc/Settings.php:169
+msgid "مرجع استاتیک هیچ شبکه اجتماعی فعالی ندارد؛ فقط نشانی‌های تأییدشده را اضافه کنید."
+msgstr ""
+
+#: inc/Sections.php:229
+msgid "مرجع بومی‌سازی"
+msgstr ""
+
+#: template-parts/home/section-history.php:121
+msgid "مرحله %1$s از %2$s"
+msgstr ""
+
+#: inc/Data/ProjectData.php:116
+msgid "مرداد"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:464
+msgid "مرکز مدیریت وب‌سایت"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:107
+msgid "مزایا و ویژگی‌های برجسته محصول"
+msgstr ""
+
+#: inc/Sections.php:456
+msgid "مزیت‌های پشتیبانی"
+msgstr ""
+
+#: single-services.php:143
+msgid "مسیر اجرای خدمت"
+msgstr ""
+
+#: template-parts/home/section-history.php:46
+msgid "مسیر تکامل صنعتی شرکت"
+msgstr ""
+
+#: archive-services.php:41 page-templates/contact.php:34 page-templates/recruitment.php:49 page.php:73 single-services.php:85 template-parts/archive/part-projects-archive.php:149
+msgid "مسیر صفحه"
+msgstr ""
+
+#: template-parts/home/section-location.php:40
+msgid "مسیریابی و ثبت درخواست بازدید"
+msgstr ""
+
+#: template-parts/home/section-location.php:55
+msgid "مشاهده جزئیات تماس"
+msgstr ""
+
+#: template-parts/cards/card-project.php:71
+msgid "مشاهده جزئیات پروژه"
+msgstr ""
+
+#: inc/Forms/Inbox.php:165
+msgid "مشاهده در پیشخوان: %s"
+msgstr ""
+
+#: template-parts/product/part-summary.php:169
+msgid "مشاهده سبد خرید"
+msgstr ""
+
+#: template-parts/project/part-products.php:33
+msgid "مشاهده فروشگاه"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:114
+msgid "مشاهده همه"
+msgstr ""
+
+#: template-parts/product/part-related-products.php:79
+msgid "مشاهده همه محصولات"
+msgstr ""
+
+#: inc/Navigation/MobileMenu.php:154
+msgid "مشاهده همه محصولات این دسته"
+msgstr ""
+
+#: template-parts/product/part-related-projects.php:49
+msgid "مشاهده همه پروژه‌ها"
+msgstr ""
+
+#: template-parts/home/section-catalog.php:39
+msgid "مشاهده و دریافت کاتالوگ محصولات"
+msgstr ""
+
+#: inc/ContentTypes.php:304
+msgid "مشاهدهٔ %s"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:470
+msgid "مشاهدهٔ وب‌سایت"
+msgstr ""
+
+#: inc/Forms/Inbox.php:63 inc/Forms/Inbox.php:64
+msgid "مشاهدهٔ پیام"
+msgstr ""
+
+#: archive-services.php:71
+msgid "مشاوره فنی رایگان"
+msgstr ""
+
+#: template-parts/blog/part-post-body.php:77
+msgid "مشاوره فنی رایگان پروژه"
+msgstr ""
+
+#: template-parts/project/part-summary.php:78
+msgid "مشاوره و استعلام پروژه مشابه (%s)"
+msgstr ""
+
+#: inc/Sections.php:483
+msgid "مشتریان"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:232
+msgid "مشخصات فنی این محصول هنوز در سیستم ثبت نشده است."
+msgstr ""
+
+#: template-parts/product/part-tabs.php:47
+msgid "مشخصات فنی و شناسه‌ها"
+msgstr ""
+
+#: template-parts/project/part-details.php:166
+msgid "مشخصات قراردادی، کارفرما، موقعیت جغرافیایی و استانداردهای فنی پروژه"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:244
+msgid "مشخصات محصول"
+msgstr ""
+
+#: template-parts/product/part-summary.php:118
+msgid "مشخصات کامل ↓"
+msgstr ""
+
+#: template-parts/home/section-products.php:68
+msgid "مطابق طرح اختصاصی شما"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:105 template-parts/cards/card-post.php:75
+msgid "مطالعه مقاله"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:87
+msgid "معرفی تخصصی %s"
+msgstr ""
+
+#: template-parts/project/part-details.php:60
+msgid "معرفی و دستاوردهای فنی"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:46
+msgid "معرفی و کاربردها"
+msgstr ""
+
+#: inc/Settings.php:175
+msgid "معرفی کوتاه در فوتر"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:196
+msgid "مقادیر مستقیماً از ویژگی‌های ثبت‌شدهٔ این محصول در ووکامرس خوانده می‌شوند."
+msgstr ""
+
+#: 404.php:78 search.php:41
+msgid "مقالات"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:38
+msgid "مقالات این دسته"
+msgstr ""
+
+#: template-parts/blog/part-blog-hero.php:60
+msgid "مقالات تخصصی، راهنماهای خرید، اخبار و رویدادها و دانش فنی صنعت روشنایی شهری و صنعتی؛ نوشته‌شده توسط کارشناسان فنی شرکت دانش‌بنیان عرفان صنعت اصفهان."
+msgstr ""
+
+#: template-parts/blog/part-post-related.php:66
+msgid "مقالات مرتبط"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:41
+msgid "مقاله"
+msgstr ""
+
+#: template-parts/blog/part-blog-grid.php:52 template-parts/blog/part-blog-grid.php:114
+msgid "مقاله‌ای با این مشخصات یافت نشد."
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:261 inc/Sections.php:213 inc/Sections.php:459
+msgid "مقدار"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:143
+msgid "مقدار از کلید قدیمی number-viewc خوانده شد (%s). تا زمانی که این فیلد ذخیره نشود، کلید قدیمی دست‌نخورده می‌ماند."
+msgstr ""
+
+#: inc/Sections.php:324
+msgid "منتخب محصولات"
+msgstr ""
+
+#: page-templates/featured-projects.php:62
+msgid "منتخب کارنامهٔ اجرایی"
+msgstr ""
+
+#: header.php:115
+msgid "منو"
+msgstr ""
+
+#: header.php:68
+msgid "منوی اصلی"
+msgstr ""
+
+#: inc/Theme.php:93
+msgid "منوی لندینگ"
+msgstr ""
+
+#: inc/Navigation/MobileMenu.php:38 inc/Theme.php:91
+msgid "منوی موبایل"
+msgstr ""
+
+#: inc/Data/ProjectData.php:118
+msgid "مهر"
+msgstr ""
+
+#: template-parts/cards/card-product-tile.php:101
+msgid "موجود در انبار"
+msgstr ""
+
+#: inc/Navigation/MobileMenu.php:138 inc/Navigation/MobileMenu.php:238
+msgid "موردی برای نمایش وجود ندارد."
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:183 inc/Navigation/MobileMenu.php:191
+msgid "موردی ثبت نشده است."
+msgstr ""
+
+#: template-parts/product/part-summary.php:52
+msgid "موقتاً ناموجود — استعلام موجودی"
+msgstr ""
+
+#: page-templates/recruitment.php:73
+msgid "موقعیت‌های شغلی باز"
+msgstr ""
+
+#: inc/Theme.php:90
+msgid "مگامنوی اصلی"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:259
+msgid "میانگین امتیاز خریداران برای %s"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:70
+msgid "میزان بازدید"
+msgstr ""
+
+#: inc/Forms/InboxAdmin.php:137 inc/Sections.php:493
+msgid "نام"
+msgstr ""
+
+#: inc/Settings.php:68
+msgid "نام برند در هدر"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:84
+msgid "نام سازمان یا شرکت (اختیاری)"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:63
+msgid "نام شما"
+msgstr ""
+
+#: inc/Sections.php:71 inc/Sections.php:151 inc/Sections.php:363
+msgid "نام فایل تصویر"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:62
+msgid "نام محصول، کد GS1 یا ویژگی…"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:326
+msgid "نام و نام خانوادگی"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:60
+msgid "نام و نام خانوادگی *"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:100
+msgid "نام پروژه، شهر یا نوع..."
+msgstr ""
+
+#: inc/Forms/Inbox.php:157
+msgid "نام: "
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:111
+msgid "نامشخص"
+msgstr ""
+
+#: template-parts/cards/card-product-tile.php:103
+msgid "ناموجود"
+msgstr ""
+
+#: search.php:60
+msgid "نتایج برای «%s»"
+msgstr ""
+
+#: inc/Seo.php:231
+msgid "نتایج جستجو برای «%s» در محصولات و پروژه‌های عرفان صنعت."
+msgstr ""
+
+#: search.php:53
+msgid "نتایج جستجو در کل سایت"
+msgstr ""
+
+#: template-parts/navigation/header-search.php:51
+msgid "نتایج جستجوی زنده"
+msgstr ""
+
+#: search.php:89
+msgid "نتیجه‌ای برای این جستجو پیدا نشد."
+msgstr ""
+
+#: inc/LiveSearch.php:84 inc/LiveSearch.php:182
+msgid "نتیجه‌ای پیدا نشد."
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:93
+msgid "نسخهٔ انگلیسی"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:94
+msgid "نسخهٔ عربی"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:92
+msgid "نسخهٔ فارسی"
+msgstr ""
+
+#: inc/Sections.php:343
+msgid "نسخهٔ کاتالوگ"
+msgstr ""
+
+#: inc/Settings.php:62
+msgid "نشان متنی (ESE)"
+msgstr ""
+
+#: inc/Sections.php:578 inc/Settings.php:157
+msgid "نشانی"
+msgstr ""
+
+#: comments.php:89 template-parts/product/part-tabs.php:320
+msgid "نشانی ایمیل شما منتشر نخواهد شد."
+msgstr ""
+
+#: 404.php:57
+msgid "نشانی واردشده وجود ندارد یا صفحه جابه‌جا شده است. می‌توانید از جستجوی زیر استفاده کنید یا از یکی از مسیرهای پیشنهادی ادامه دهید."
+msgstr ""
+
+#: inc/Sections.php:573
+msgid "نشانی کارخانه"
+msgstr ""
+
+#: inc/Settings.php:180
+msgid "نشان‌های اعتماد"
+msgstr ""
+
+#: inc/Sections.php:114
+msgid "نشان‌های کوتاه"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:636
+msgid "نشست منقضی شده است. صفحه را دوباره بارگذاری کنید."
+msgstr ""
+
+#: template-parts/project/part-details.php:82
+msgid "نصب توسط تیم اجرایی، تنظیم سناریوهای نوری و تحویل با آموزش بهره‌برداری."
+msgstr ""
+
+#: template-parts/project/part-details.php:81
+msgid "نصب سریع و راه‌اندازی هوشمند"
+msgstr ""
+
+#: comments.php:90
+msgid "نظر"
+msgstr ""
+
+#: comments.php:86
+msgid "نظر خود را بنویسید"
+msgstr ""
+
+#: comments.php:130
+msgid "نظر شما پس از تأیید نمایش داده می‌شود."
+msgstr ""
+
+#: comments.php:32
+msgid "نظرات"
+msgstr ""
+
+#: comments.php:36
+msgid "نظرات (%s)"
+msgstr ""
+
+#: comments.php:67
+msgid "نظرات بعدی"
+msgstr ""
+
+#: comments.php:66
+msgid "نظرات قبلی"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:51
+msgid "نظرات کاربران"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:50
+msgid "نظرات کاربران (%s)"
+msgstr ""
+
+#: inc/Sections.php:579
+msgid "نقشه یا تصویر"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:170
+msgid "نمای درخت نوری هوشمند تولید عرفان صنعت اصفهان"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:312
+msgid "نمای کلی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:309
+msgid "نمای کلی وب‌سایت"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:70
+msgid "نمایش"
+msgstr ""
+
+#: template-parts/project/part-gallery.php:82
+msgid "نمایش تصویر %s"
+msgstr ""
+
+#: inc/Settings.php:258
+msgid "نمایش ستون کنار در آرشیوها"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:138 template-parts/archive/part-shop-grid.php:131 template-parts/blog/part-blog-grid.php:126
+msgid "نمایش صفحه"
+msgstr ""
+
+#: inc/Settings.php:86
+msgid "نمایش نوار اعلان بالای هدر"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:79 template-parts/archive/part-shop-grid.php:118
+msgid "نمایش همه محصولات"
+msgstr ""
+
+#: archive-services.php:73
+msgid "نمونه پروژه‌ها"
+msgstr ""
+
+#: single-services.php:159
+msgid "نمونه پروژه‌های مرتبط"
+msgstr ""
+
+#: template-parts/project/part-related.php:28
+msgid "نمونه‌های مشابه"
+msgstr ""
+
+#: inc/Sections.php:181
+msgid "نمونه‌کارها"
+msgstr ""
+
+#: template-parts/product/part-related-projects.php:35
+msgid "نمونه‌کارهای واقعی اجراشده با این محصول"
+msgstr ""
+
+#: archive-services.php:65 template-parts/blog/part-blog-hero.php:58
+msgid "نورپردازی شهری"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:142
+msgid "نورپردازی شهری و صنعتی"
+msgstr ""
+
+#: comments.php:44
+msgid "نوشتن نظر"
+msgstr ""
+
+#: template-parts/project/part-details.php:51
+msgid "نوع سازه و کاربری (آرشیو)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:564
+msgid "نوع فروش"
+msgstr ""
+
+#: inc/ContentTypes.php:138 inc/ContentTypes.php:346 single-projects.php:51 template-parts/archive/part-native-filters.php:44 template-parts/archive/part-projects-filters.php:107
+msgid "نوع پروژه"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:90
+msgid "نوع پروژه (میدان، خیابان، پل…)، محل اجرا و بازهٔ زمانی مورد نظر را بنویسید."
+msgstr ""
+
+#: comments.php:124
+msgid "نویسنده"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:124
+msgid "نکات کلیدی پیش از ثبت سفارش"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:399
+msgid "نیاز به بررسی"
+msgstr ""
+
+#: inc/Settings.php:43
+msgid "هدر و نوار اعلان"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:580
+msgid "هر مورد در یک خط."
+msgstr ""
+
+#: template-parts/project/part-details.php:188
+msgid "همان مسیری که هر پروژهٔ نورپردازی عرفان صنعت از تماس اولیه تا تحویل طی می‌کند."
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:46 template-parts/archive/part-projects-archive.php:209 template-parts/archive/part-projects-archive.php:210 template-parts/archive/part-shop-archive.php:178 template-parts/archive/part-shop-filters.php:72 template-parts/blog/part-blog-hero.php:70
+msgid "همه"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:95
+msgid "همه استانداردها"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:113
+msgid "همه انواع پروژه‌ها"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:214
+msgid "همه خدمات"
+msgstr ""
+
+#: template-parts/home/section-projects.php:24
+msgid "همه سازه‌های نوری"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:62
+msgid "همه شهرها"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:82
+msgid "همه قیمت‌ها"
+msgstr ""
+
+#: 404.php:90
+msgid "همه محصولات"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:122
+msgid "همه محصولات تولیدی"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:157
+msgid "همه محصولات تولیدی عرفان صنعت"
+msgstr ""
+
+#: template-parts/blog/part-post-related.php:68
+msgid "همه مقالات"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:104
+msgid "همه ولتاژها"
+msgstr ""
+
+#: inc/Navigation/MegaMenu.php:169 single-services.php:161 template-parts/project/part-related.php:33
+msgid "همه پروژه‌ها"
+msgstr ""
+
+#: template-parts/archive/part-native-filters.php:79
+msgid "همهٔ قیمت‌ها"
+msgstr ""
+
+#: inc/Forms/Inbox.php:62
+msgid "همهٔ پیام‌ها"
+msgstr ""
+
+#: page-templates/recruitment.php:59
+msgid "همکاری با تیم عرفان صنعت"
+msgstr ""
+
+#: archive-services.php:89
+msgid "هنوز خدمتی ثبت نشده است."
+msgstr ""
+
+#: template-parts/product/part-tabs.php:280
+msgid "هنوز دیدگاهی برای این محصول ثبت نشده است. اولین نفری باشید که تجربه خود را می‌نویسد."
+msgstr ""
+
+#: comments.php:73
+msgid "هنوز نظری ثبت نشده است. اولین نفر باشید."
+msgstr ""
+
+#: page-templates/featured-projects.php:78
+msgid "هنوز پروژه‌ای ثبت نشده است."
+msgstr ""
+
+#: inc/Sections.php:56
+msgid "هیرو صفحه اصلی"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:71
+msgid "واحد فروش و پشتیبانی فنی"
+msgstr ""
+
+#: template-parts/home/section-products.php:70
+msgid "واحد مهندسی و قالب‌سازی کارخانه آماده طراحی سه‌بعدی و ساخت سازه‌های نوری سفارشی برای میادین و بوستان‌هاست."
+msgstr ""
+
+#: inc/Frontend/SiteParts.php:364
+msgid "وبلاگ"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:71
+msgid "وضعیت خرید"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:128
+msgid "وضعیت خرید آنلاین"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:69
+msgid "وضعیت خرید و استعلام"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:466
+msgid "وضعیت محتوا را ببینید، به کارهای روزمره دسترسی سریع داشته باشید و تنظیمات سراسری قالب را مدیریت کنید."
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:102
+msgid "ولتاژ ورودی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:380
+msgid "ووکامرس برای فروشگاه فعال است"
+msgstr ""
+
+#: inc/ContentTypes.php:328
+msgid "ویرایش"
+msgstr ""
+
+#: inc/ContentTypes.php:300
+msgid "ویرایش %s"
+msgstr ""
+
+#: inc/Admin/SectionManager.php:80
+msgid "ویرایش محتوا"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:260
+msgid "ویژگی / عنوان"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:245
+msgid "ویژگی‌های کلیدی"
+msgstr ""
+
+#: comments.php:142 inc/Admin/ProductMetaboxes.php:264 inc/Admin/TermMetaboxes.php:93
+msgid "پاسخ"
+msgstr ""
+
+#: template-parts/product/part-faq.php:41
+msgid "پاسخ به پرتکرارترین سوالات خریداران و کارفرمایان"
+msgstr ""
+
+#: page-templates/contact.php:44
+msgid "پاسخگویی در ساعات کاری"
+msgstr ""
+
+#: template-parts/home/section-hero.php:144
+msgid "پخش کامل تیزر ویدیویی شرکت در همین بخش"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:35 template-parts/archive/part-shop-grid.php:42
+msgid "پربازدیدترین"
+msgstr ""
+
+#: template-parts/home/section-hero.php:193
+msgid "پربازدیدترین دسته‌بندی‌ها"
+msgstr ""
+
+#: header.php:55
+msgid "پرش به محتوای اصلی"
+msgstr ""
+
+#: inc/ContentTypes.php:78 template-parts/archive/part-projects-grid.php:44
+msgid "پروژه"
+msgstr ""
+
+#: template-parts/project/part-summary.php:57
+msgid "پروژه اجراشده"
+msgstr ""
+
+#: template-parts/project/part-summary.php:38
+msgid "پروژه تحویل‌شده و در حال بهره‌برداری"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:184
+msgid "پروژه ثبت‌شده در این آرشیو"
+msgstr ""
+
+#: template-parts/archive/part-projects-filters.php:84
+msgid "پروژه در این آرشیو"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:66 template-parts/archive/part-projects-grid.php:126
+msgid "پروژه‌ای با این مشخصات یافت نشد."
+msgstr ""
+
+#: 404.php:75 inc/ContentTypes.php:78 inc/Frontend/SiteParts.php:356 inc/Navigation/MenuTree.php:335 search.php:39 search.php:93
+msgid "پروژه‌ها"
+msgstr ""
+
+#: template-parts/product/part-related-projects.php:41
+msgid "پروژه‌های اجراشده با %s"
+msgstr ""
+
+#: page-templates/featured-projects.php:64
+msgid "پروژه‌های برگزیده عرفان صنعت"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:165
+msgid "پروژه‌های مرتبط (شناسه، جداشده با کاما)"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:290
+msgid "پروژه‌های منتشرشده"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:121
+msgid "پروژه‌های نورپردازی"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:82
+msgid "پست الکترونیک سازمانی"
+msgstr ""
+
+#: template-parts/home/section-products.php:42
+msgid "پشتیبانی از پروتکل بی‌سیم NRF و WiFi"
+msgstr ""
+
+#: template-parts/home/section-contact-cta.php:97
+msgid "پشتیبانی تلفنی پروژه‌ها در تمام ایام هفته"
+msgstr ""
+
+#: template-parts/home/section-support.php:77
+msgid "پشتیبانی قطعات"
+msgstr ""
+
+#: inc/Sections.php:447
+msgid "پشتیبانی و گارانتی"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:76
+msgid "پنج شکاف تاریخی ثابت‌اند: دوم، سوم، چهارم (foure-image)، پنجم و ششم. تصویر شاخص جدا و از پنل خودش مدیریت می‌شود."
+msgstr ""
+
+#: template-parts/home/section-support.php:72
+msgid "پوشش سراسری"
+msgstr ""
+
+#: inc/Forms/Inbox.php:60
+msgid "پیام"
+msgstr ""
+
+#: inc/Forms/Inbox.php:106
+msgid "پیام بدون عنوان"
+msgstr ""
+
+#: inc/Forms/Inbox.php:172
+msgid "پیام جدید از سایت: %s"
+msgstr ""
+
+#: inc/Forms/FormHandler.php:133
+msgid "پیام شما ثبت شد. کارشناسان ما در اولین فرصت با شما تماس می‌گیرند."
+msgstr ""
+
+#: inc/Forms/Inbox.php:67
+msgid "پیامی در زباله‌دان نیست."
+msgstr ""
+
+#: inc/Forms/Inbox.php:66
+msgid "پیامی یافت نشد."
+msgstr ""
+
+#: inc/Forms/Inbox.php:59
+msgid "پیام‌ها"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:302
+msgid "پیام‌های خوانده‌نشده"
+msgstr ""
+
+#: 404.php:87
+msgid "پیشنهاد ما برای شما"
+msgstr ""
+
+#: template-parts/archive/part-shop-hero.php:109
+msgid "پیشنهاد ویژه کارخانه"
+msgstr ""
+
+#: inc/ArchiveFilters.php:70
+msgid "پیش‌فرض"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:41
+msgid "پیش‌فرض کارخانه"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:84
+msgid "پیش‌نمایش"
+msgstr ""
+
+#: page-templates/featured-projects.php:65
+msgid "چند نمونه از پروژه‌هایی که بیشترین بازخورد را از کارفرمایان گرفته‌اند؛ برای دیدن همهٔ پروژه‌ها، آرشیو کامل را ببینید."
+msgstr ""
+
+#: template-parts/project/part-summary.php:64
+msgid "چکیده اطلاعات پروژه"
+msgstr ""
+
+#: template-parts/product/part-summary.php:117
+msgid "چکیده مشخصات"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:389
+msgid "چک‌لیست راه‌اندازی"
+msgstr ""
+
+#: index.php:31
+msgid "چیزی یافت نشد"
+msgstr ""
+
+#: inc/Sections.php:335
+msgid "کاتالوگ"
+msgstr ""
+
+#: template-parts/home/section-catalog.php:59
+msgid "کاتالوگ فنی و اجرایی"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:262
+msgid "کاربرد"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:171
+msgid "کاربردها (شناسهٔ ترم نوع پروژه، جداشده با کاما)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:246
+msgid "کاربردها و موارد مصرف"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:147
+msgid "کاربردهای اصلی در پروژه‌ها"
+msgstr ""
+
+#: inc/Sections.php:410
+msgid "کارت‌های کیفیت"
+msgstr ""
+
+#: template-parts/forms/part-contact-form.php:108
+msgid "کارشناسان ما در اولین فرصت با شما تماس می‌گیرند. برای پیگیری سریع‌تر می‌توانید با شمارهٔ زیر تماس بگیرید."
+msgstr ""
+
+#: single-projects.php:58
+msgid "کارفرما"
+msgstr ""
+
+#: template-parts/archive/part-projects-grid.php:41
+msgid "کارنامه پروژه‌ها"
+msgstr ""
+
+#: template-parts/archive/part-projects-archive.php:120
+msgid "کارنامهٔ اجرایی کارخانه عرفان صنعت"
+msgstr ""
+
+#: inc/Data/ProductData.php:39
+msgid "کد آیسیک صنعتی (ISIC)"
+msgstr ""
+
+#: inc/Data/ProductData.php:36
+msgid "کد بین‌الملل GS1 (GTIN)"
+msgstr ""
+
+#: inc/Data/ProductData.php:38
+msgid "کد تعرفه هماهنگ گمرکی (HS Code)"
+msgstr ""
+
+#: inc/Data/ProductData.php:40
+msgid "کد طبقه‌بندی مرکزی محصول (CPC)"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:44
+msgid "کد ملی کالا"
+msgstr ""
+
+#: inc/Data/ProductData.php:37
+msgid "کد ملی کالا (ایران‌کد)"
+msgstr ""
+
+#: inc/Sections.php:414
+msgid "کد یا استاندارد"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:217
+msgid "کدهای ثبت‌شده محصول جهت درج در اسناد مناقصات، فاکتور رسمی و سامانه تدارکات الکترونیکی دولت"
+msgstr ""
+
+#: template-parts/home/section-location.php:33
+msgid "کدپستی: %s"
+msgstr ""
+
+#: inc/ContentTypes.php:466
+msgid "کلید hreflang"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:82
+msgid "کلید متا"
+msgstr ""
+
+#: inc/Admin/ContentMetaboxes.php:107
+msgid "کلید مشترک"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:100
+msgid "کلیدها عیناً با نام تاریخی ذخیره می‌شوند. مقدار خالی یعنی فیلد در دیتابیس وجود ندارد و نوشته نمی‌شود."
+msgstr ""
+
+#: template-parts/home/section-products.php:41
+msgid "کنترل هوشمند یکپارچه"
+msgstr ""
+
+#: template-parts/home/section-support.php:67
+msgid "گارانتی تعویض"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:149
+msgid "گالری محصول (شناسه‌های تصویر با کاما)"
+msgstr ""
+
+#: inc/Admin/ProjectMetaboxes.php:74
+msgid "گالری پروژه"
+msgstr ""
+
+#: template-parts/home/section-history.php:52
+msgid "گام %1$s از %2$s (سال %3$s)"
+msgstr ""
+
+#: template-parts/archive/part-shop-grid.php:45
+msgid "گران‌ترین"
+msgstr ""
+
+#: template-parts/project/part-details.php:115
+msgid "گزارش فنی و روایت اجرایی پروژه"
+msgstr ""
+
+#: inc/Sections.php:342
+msgid "یادداشت کنار دکمه"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:337
+msgid "۱ از ۵ (ضعیف)"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:87
+msgid "۱۵ میلیون تومان+"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:336
+msgid "۲ از ۵ (متوسط)"
+msgstr ""
+
+#: template-parts/home/section-support.php:66
+msgid "۲۴ ماه"
+msgstr ""
+
+#: template-parts/archive/part-shop-hero.php:135
+msgid "۲۴ ماه گارانتی"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:130
+msgid "۲۴ ماه گارانتی تعویض"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:335
+msgid "۳ از ۵ (خوب)"
+msgstr ""
+
+#: template-parts/home/section-support.php:71
+msgid "۳۱ استان"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:334
+msgid "۴ از ۵ (خیلی خوب)"
+msgstr ""
+
+#: template-parts/product/part-tabs.php:333
+msgid "۵ از ۵ (عالی و درجه یک)"
+msgstr ""
+
+#: template-parts/home/section-support.php:76
+msgid "۵ سال"
+msgstr ""
+
+#: template-parts/archive/part-shop-archive.php:134 template-parts/archive/part-shop-hero.php:136
+msgid "۵ سال خدمات پس از فروش"
+msgstr ""
+
+#: template-parts/archive/part-shop-filters.php:86
+msgid "۵۰۰ هزار تومان"
+msgstr ""
