@@ -129,6 +129,14 @@
 - بازدید: ViewCounter فاز ۳.۱۴ (number2-viewc) — میرور نمایش بازدید ندارد؛ فقط شمارش سمت سرور (maybe_track با UA/is_singular/cookie dedupe). TOC حتی با ۲ سرفصل رندر می‌شود (برخلاف حدس «≥۳» spec — میرور حاکم است)؛ دیدگاه‌ها در میرور نیست → رندر نمی‌شود.
 - تست ۷.۵: 20/20 (بایت‌دقیق دو سینگل + TOC واحد + h3 دست‌نخورده + هوک the_content + قاعده مرتبط ×۳ + increment/maybe_track/بات + کارت مرتبط مستقل + share). رگرسیون کامل: **۱۲۵۹/۰** (۶۷ فایل پیاده‌شده + ۱۵ placeholder).
 
+### ۷.۶ — search / 404 / searchform (2026-11-08)
+- خروجی‌ها: `search.php` (main + شل) + `template-parts/search/search-shell.php` (هیرو جستجو + سکشن نتایج + تب‌ها + ناو) + `searchform.php` (فرم GET با کلاس‌های اینپوت بایت‌دقیق بلاگ) + `404.php` (backdrop/کرامب/۴۰۴/فرم/قرص‌های دسترسی سریع) + `inc/Frontend/SearchArchive.php` (pre_get_posts فقط روی is_search: type GET whitelist → post_type، per_page=9 فیلترپذیر es_search_per_page) — boot در Theme.php.
+- صفحه جستجو/۴۰۴ مرجع میرور ندارد (Q3) — از کامپوننت‌های بایت‌دقیق ساخته شد: backdrop/حالت‌خالی/کلاس اینپوت از blog.html؛ کرامب از ۷.۵؛ قرص‌های لینک از ۷.۴ (بایت‌دقیق با regex تأییدی در gen_p76.py)؛ گرید `grid gap-6 sm:grid-cols-2 xl:grid-cols-3` از ۶.۷؛ ناو مشترک (products پیش‌فرض، root=search، unit=نتیجه).
+- تب‌ها: همه/محصولات/پروژه‌ها/مقالات با `?s=…&type=…`؛ بدون s → بدون تب‌ها و H1 ساده. حالت خالی همیشه رندر (الگوی میرور بلاگ: hidden وقتی نتیجه هست) با متن عمومی. فیلتر type با sanitize_key — نامعتبر → همه.
+- کارت‌ها بر اساس post_type: product→card-product (custom 0/0.06/0.12)، projects→card-project (0.04/0.1)، post→card-post (0.05/0.12/0.19) — همه standalone.
+- تک‌صفحه‌ای بدون ناو (early-return مشترک) — برخلاف بلاگ که always_show دارد.
+- تست ۷.۶: 34/34 (سه کارت سه‌نوع + فیلتر type + حالت خالی + apply/query_args/هوک + searchform کلاس‌بایت‌دقیق + 404 کامل + جستجوی خالی + ناو دوصفحه‌ای). رگرسیون کامل: **۱۲۹۳/۰** (۶۸ فایل پیاده‌شده + ۱۴ placeholder).
+
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
 - خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
 - گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.

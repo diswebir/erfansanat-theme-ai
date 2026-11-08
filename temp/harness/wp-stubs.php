@@ -1036,6 +1036,30 @@ if (!function_exists('is_front_page')) {
     }
 }
 
+if (!function_exists('is_search')) {
+    function is_search(): bool
+    {
+        return (bool) ($GLOBALS['__es_stub_is_search'] ?? false);
+    }
+}
+
+if (!function_exists('get_search_form')) {
+    function get_search_form(bool $echo = true): string
+    {
+        $file = ($GLOBALS['__es_theme_dir'] ?? '') . '/searchform.php';
+        ob_start();
+        if (is_file($file)) {
+            include $file;
+        }
+        $html = (string) ob_get_clean();
+        if ($echo) {
+            echo $html;
+            return '';
+        }
+        return $html;
+    }
+}
+
 if (!function_exists('is_home')) {
     function is_home(): bool
     {

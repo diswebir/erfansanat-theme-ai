@@ -1,7 +1,7 @@
 # Task 7.6 — search.php و 404.php
 
 **فاز:** 07 — پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 34/34 · رگرسیون ۱۲۹۳/۰]`
 **تست:** `temp/phase-07-projects-blog-and-pages/tests/test-task-06.php`
 
 ## 🎯 هدف
@@ -28,14 +28,20 @@
 - جستجو فقط با WP_Query استاندارد (بدون plugin)
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] نتایج با کارت درست هر نوع
-- [ ] فیلتر type کار کند
-- [ ] 404 رندر و فرم کار کند
+- [x] نتایج با کارت درست هر نوع
+- [x] فیلتر type کار کند
+- [x] 404 رندر و فرم کار کند
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-07-projects-blog-and-pages/tests/test-task-06.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-07-projects-blog-and-pages/tests/test-task-06.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+
+## 🧾 گزارش اجرا (2026-11-08)
+- خروجی‌ها: `search.php` + `template-parts/search/search-shell.php` + `searchform.php` + `404.php` + `inc/Frontend/SearchArchive.php` + `temp/gen_p76.py` (استخراج assert-دار فرگمنت‌های بایت‌دقیق از blog.html/magazine/led/۶.۷).
+- مرجع نداشت → ترکیب کامپوننت‌های بایت‌دقیق میرور (قرارداد Q3)؛ بدون هیچ مارک‌آپ تازه‌نویسی‌شده خارج از الگوها.
+- تب‌بندی `?type=` با whitelist (sanitize_key)؛ per_page=9 با هوک es_search_per_page؛ تک‌صفحه‌ای بدون ناو.
+- انحراف: حالت خالی با متن عمومی «نتیجه‌ای برای این جستجو یافت نشد.» (الگوی کلاس‌ها بایت‌دقیق بلاگ).

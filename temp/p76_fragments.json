@@ -1,0 +1,11 @@
+{
+ "ES76_SEARCH_HERO": "<section class=\"relative overflow-hidden bg-[#f6f8f7] pt-28 lg:pt-36\"><div aria-hidden=\"true\" class=…",
+ "ES76_SEC_HEAD": "<section id=\"results\" class=\"bg-white py-14 lg:py-16\" data-search-archive=\"true\"><div class=\"mx-auto…",
+ "ES76_LINK_ON": "<a href=\"{URL}\" class=\"rounded-xl px-3.5 py-2 text-[12px] font-bold transition-colors bg-emerald-700…",
+ "ES76_LINK_OFF": "<a href=\"{URL}\" class=\"rounded-xl px-3.5 py-2 text-[12px] font-bold transition-colors border border-…",
+ "ES76_404": "<section class=\"relative overflow-hidden bg-[#f6f8f7] pt-28 lg:pt-36\"><div aria-hidden=\"true\" class=…",
+ "ES76_GRID_CLS": "grid gap-6 sm:grid-cols-2 xl:grid-cols-3",
+ "ES76_EMPTY_CLS": "rounded-2xl border border-dashed border-slate-300 bg-slate-50/60 py-16 text-center",
+ "ES76_EMPTY_P_CLS": "text-[14px] font-bold text-slate-500",
+ "ES76_CRUMB_PILL": "<span class=\"flex min-w-0 items-center gap-1.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" h…"
+}

@@ -108,5 +108,9 @@ final class Theme {
         if (class_exists(Frontend\TOC::class)) {
             Frontend\TOC::init();
         }
+
+        if (class_exists(Frontend\SearchArchive::class)) {
+            Frontend\SearchArchive::init();
+        }
     }
 }

@@ -377,7 +377,7 @@
 - 📤 خروجی: `single.php`؛ `inc/Frontend/TOC.php` · **وابستگی:** Task 7.4, Task 3.14
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 7.6 — search.php و 404.php `[PENDING]`
+### Task 7.6 — search.php و 404.php `[DONE — 34/34 · رگرسیون ۱۲۹۳/۰]`
 - 🎯 نتایج جستجوی ترکیبی با کارت‌های استاندارد + صفحه ۴۰۴ مطابق سبک میرور
 - 📤 خروجی: `search.php`؛ `404.php`؛ `searchform.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
@@ -825,7 +825,7 @@
 - 📤 خروجی: `single.php`؛ `inc/Frontend/TOC.php` · **وابستگی:** Task 7.4, Task 3.14
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 7.6 — search.php و 404.php `[PENDING]`
+### Task 7.6 — search.php و 404.php `[DONE — 34/34 · رگرسیون ۱۲۹۳/۰]`
 - 🎯 نتایج جستجوی ترکیبی با کارت‌های استاندارد + صفحه ۴۰۴ مطابق سبک میرور
 - 📤 خروجی: `search.php`؛ `404.php`؛ `searchform.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
