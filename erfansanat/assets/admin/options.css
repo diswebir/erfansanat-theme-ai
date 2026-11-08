@@ -678,3 +678,101 @@
 		padding: 16px;
 	}
 }
+
+.erfansanat-admin__checklist {
+	margin-top: 22px;
+	padding-top: 20px;
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__checklist-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 12px;
+}
+
+.erfansanat-admin__checklist-heading h3 {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__checklist-heading p {
+	margin: 4px 0 0;
+	color: var(--es-muted);
+	font-size: 11px;
+}
+
+.erfansanat-admin__checklist-heading > span {
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: #f1f5f9;
+	color: #334155;
+	font-size: 10px;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+.erfansanat-admin__checklist ul {
+	margin: 0;
+	border: 1px solid #edf0f2;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.erfansanat-admin__checklist li {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 10px 12px;
+	background: #fff;
+	font-size: 11px;
+}
+
+.erfansanat-admin__checklist li + li {
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__check-icon {
+	font-size: 18px;
+}
+
+.erfansanat-admin__checklist [data-check-status="ready"] .erfansanat-admin__check-icon,
+.erfansanat-admin__checklist [data-check-status="ready"] strong {
+	color: #15803d;
+}
+
+.erfansanat-admin__checklist [data-check-status="attention"] .erfansanat-admin__check-icon,
+.erfansanat-admin__checklist [data-check-status="attention"] strong {
+	color: #b45309;
+}
+
+.erfansanat-admin__checklist li > span:nth-child(2) {
+	color: #334155;
+}
+
+.erfansanat-admin__checklist li > a {
+	color: var(--es-green-dark);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__checklist li > a:hover,
+.erfansanat-admin__checklist li > a:focus-visible {
+	text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+	.erfansanat-admin__checklist li {
+		grid-template-columns: 24px minmax(0, 1fr) auto;
+	}
+
+	.erfansanat-admin__checklist li > a {
+		grid-column: 2 / -1;
+		justify-self: start;
+	}
+}

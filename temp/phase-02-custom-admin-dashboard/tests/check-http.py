@@ -113,6 +113,8 @@ def task_2_1(jar: Path) -> None:
     check("2.1", "overview dashboard renders live content metrics", all(text in panel for text in ["نمای کلی", "محصولات منتشرشده", "پروژه‌های منتشرشده", "خدمات منتشرشده", "پیام‌های خوانده‌نشده"]))
     check("2.1", "overview provides quick-create actions", all(path in panel for path in ["post-new.php?post_type=product", "post-new.php?post_type=projects", "post-new.php?post_type=services"]))
     check("2.1", "overview links to the live site", "مشاهدهٔ وب‌سایت" in panel and "target=\"_blank\"" in panel)
+    check("2.1", "setup checklist shows live readiness rows", all(text in panel for text in ["چک‌لیست راه‌اندازی", "صفحهٔ خانهٔ منتشرشده", "فهرست اصلی به جایگاه هدر متصل است", "برگهٔ تماس با قالب تماس منتشر شده است", "ووکامرس برای فروشگاه فعال است"]))
+    check("2.1", "setup checklist marks ready or attention states", "data-check-status=\"ready\"" in panel and "data-check-status=\"attention\"" in panel)
     check("2.1", "panel exposes every settings tab", all(f'data-tab="{tab}"' in panel for tab in ["brand", "header", "contact", "footer", "archive", "advanced"]))
     check("2.1", "panel carries the AJAX nonce", bool(nonce_from(panel)))
     nonce = nonce_from(panel)

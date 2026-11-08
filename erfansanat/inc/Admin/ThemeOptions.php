@@ -331,7 +331,77 @@ final class ThemeOptions {
 				<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=services' ) ); ?>"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'افزودن خدمت', 'erfansanat' ); ?></a>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=erfansanat_message' ) ); ?>"><span class="dashicons dashicons-inbox" aria-hidden="true"></span><?php esc_html_e( 'رفتن به صندوق پیام‌ها', 'erfansanat' ); ?></a>
 			</div>
+			<?php self::render_setup_checklist(); ?>
 		</section>
+		<?php
+	}
+
+	/**
+	 * Render a short configuration checklist with direct repair links.
+	 *
+	 * @return void
+	 */
+	private static function render_setup_checklist(): void {
+		$front_id   = (int) get_option( 'page_on_front', 0 );
+		$front_page = $front_id > 0 ? get_post( $front_id ) : null;
+		$front_ok   = 'page' === get_option( 'show_on_front' ) && $front_page instanceof \WP_Post && 'publish' === $front_page->post_status;
+
+		$locations = get_nav_menu_locations();
+		$menu_id   = isset( $locations['main-mega-menu'] ) ? (int) $locations['main-mega-menu'] : 0;
+		$menu_ok   = $menu_id > 0 && false !== wp_get_nav_menu_object( $menu_id );
+
+		$contact_pages = get_pages(
+			array(
+				'meta_key'   => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- One published contact page; this is an admin-only checklist.
+				'meta_value' => 'page-templates/contact.php', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- See above.
+				'number'     => 1,
+			)
+		);
+		$contact_page  = is_array( $contact_pages ) && isset( $contact_pages[0] ) && $contact_pages[0] instanceof \WP_Post ? $contact_pages[0] : null;
+		$contact_ok    = $contact_page instanceof \WP_Post && 'publish' === $contact_page->post_status;
+
+		$checks = array(
+			array(
+				'label' => __( 'صفحهٔ خانهٔ منتشرشده', 'erfansanat' ),
+				'ok'    => $front_ok,
+				'href'  => $front_page instanceof \WP_Post ? get_edit_post_link( $front_page->ID, 'raw' ) : admin_url( 'options-reading.php' ),
+			),
+			array(
+				'label' => __( 'فهرست اصلی به جایگاه هدر متصل است', 'erfansanat' ),
+				'ok'    => $menu_ok,
+				'href'  => admin_url( 'nav-menus.php' ),
+			),
+			array(
+				'label' => __( 'برگهٔ تماس با قالب تماس منتشر شده است', 'erfansanat' ),
+				'ok'    => $contact_ok,
+				'href'  => $contact_page instanceof \WP_Post ? get_edit_post_link( $contact_page->ID, 'raw' ) : admin_url( 'edit.php?post_type=page' ),
+			),
+			array(
+				'label' => __( 'ووکامرس برای فروشگاه فعال است', 'erfansanat' ),
+				'ok'    => class_exists( 'WooCommerce' ),
+				'href'  => admin_url( 'plugins.php' ),
+			),
+		);
+		?>
+		<div class="erfansanat-admin__checklist">
+			<div class="erfansanat-admin__checklist-heading">
+				<div>
+					<h3><?php esc_html_e( 'چک‌لیست راه‌اندازی', 'erfansanat' ); ?></h3>
+					<p><?php esc_html_e( 'این موارد از وضعیت فعلی وردپرس بررسی می‌شوند و در هر زمان قابل اصلاح‌اند.', 'erfansanat' ); ?></p>
+				</div>
+				<span><?php echo esc_html( sprintf( /* translators: 1: passing checks, 2: total checks. */ __( '%1$d از %2$d آماده', 'erfansanat' ), count( array_filter( $checks, static fn( array $check ): bool => $check['ok'] ) ), count( $checks ) ) ); ?></span>
+			</div>
+			<ul>
+				<?php foreach ( $checks as $check ) : ?>
+					<li data-check-status="<?php echo $check['ok'] ? 'ready' : 'attention'; ?>">
+						<span class="erfansanat-admin__check-icon dashicons <?php echo $check['ok'] ? 'dashicons-yes-alt' : 'dashicons-warning'; ?>" aria-hidden="true"></span>
+						<span><?php echo esc_html( $check['label'] ); ?></span>
+						<strong><?php echo $check['ok'] ? esc_html__( 'آماده', 'erfansanat' ) : esc_html__( 'نیاز به بررسی', 'erfansanat' ); ?></strong>
+						<a href="<?php echo esc_url( (string) $check['href'] ); ?>"><?php esc_html_e( 'بررسی', 'erfansanat' ); ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 		<?php
 	}
 

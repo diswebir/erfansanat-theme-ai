@@ -228,6 +228,10 @@ final class TaskP02T01Test extends TestCase {
 		$this->assertStringContainsString( 'پیام‌های خوانده‌نشده', $html );
 		$this->assertStringContainsString( 'post-new.php?post_type=product', $html );
 		$this->assertStringContainsString( 'مشاهدهٔ وب‌سایت', $html );
+		$this->assertStringContainsString( 'چک‌لیست راه‌اندازی', $html );
+		$this->assertStringContainsString( 'فهرست اصلی به جایگاه هدر متصل است', $html );
+		$this->assertStringContainsString( 'data-check-status="ready"', $html );
+		$this->assertStringContainsString( 'data-check-status="attention"', $html );
 		$this->assertStringContainsString( 'data-tab="brand"', $html );
 		$this->assertStringContainsString( 'data-tab="advanced"', $html );
 		$this->assertStringNotContainsString( '<script>alert(1)</script>', $html );
