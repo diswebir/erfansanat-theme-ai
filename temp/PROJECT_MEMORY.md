@@ -104,6 +104,14 @@
 - تست ۷.۲: 20/20 — قیاس کل main شل ≡ میرور (۱۲ کارت دم → ۶ کارت رندر per-page=۶؛ custom یک‌درمیان 0.04/0.1) + empty toggle + selected مرتب‌سازی + query_args/apply/sanitize/کلامپ. رگرسیون کامل: **۱۱۸۸/۰** (۶۴ فایل پیاده‌شده + ۱۸ placeholder).
 - تغییرات جانبی مجاز: دیفالت `archives.projects_per_page` اسکیما ۱۲→۶ (+تست ۲.۵) چون میرور data-items-per-page="6" و ناو دوصفحه‌ای دارد؛ card-project فلگ `nested` (آرشیو محتوا را داخل data-project-item می‌گیرد برخلاف صفحه اصلی) + `es_client` به data-project-search-text.
 
+### ۷.۳ — taxonomy-project_type / taxonomy-city (2026-11-08)
+- خروجی‌ها: `taxonomy-project_type.php` + `taxonomy-city.php` (دوقلوی توکن‌مشترک؛ heredocهای جدا برای هیرو/تاپ‌بار/مقاله) + `template-parts/archive/project-drawer.php` (دراور پویا با ESP73_DALL_ON/OFF، DROW/DROW_ON، DCITY/DCITY_ON) · ژنراتور `temp/gen_p73.py` (فرگمنت‌ها assert-دار؛ بازسازی کامل دراور هر دو میرور).
+- متاهای ترم با fallback میرور: es_archive_crumb/badge/title_a/title_b/caption/top_title/chip/image_id (+term_description).
+- تفاوت ترم از آرشیو اصلی: ناو همیشه رندر (hidden در تک‌صفحه‌ای) + disabled قبلی/بعدی؛ بلوک بازنشانی؛ «همه» غیرفعال با نقطه slate-300 و شمارش کل (wp_count_posts→__es_stub_post_counts)؛ deactivate_all در سایدبارِ شهر؛ چیپ شهر فعال = واریانت emerald-800 (سایدبار و دراور).
+- pagination مشترک: always_show + nav_cls + {ES_NEXT_TAG} (enabled: class+data-href بعد از class طبق ۶.۷ / disabled: disabled قبل از class) — هر دو چیدمان میرور با یک توکن.
+- ProjectArchive::apply روی is_tax(['project_type','city']) هم فعال.
+- تست ۷.۳: 25/25 (قیاس کل main هر دو شل + ناو/فیلتر/دراور/خالی/چندصفحه‌ای/apply). رگرسیون کامل: **۱۲۱۳/۰** (۶۵ فایل پیاده‌شده + ۱۷ placeholder).
+
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
 - خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
 - گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.

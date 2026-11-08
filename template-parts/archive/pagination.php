@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 $ES_PAGI = <<<'ESP72P'
-<nav aria-label="{ES_PAGI_LABEL}" data-pagination-root="{ES_ROOT}" class="flex mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-2xs"><div class="text-[12.5px] font-bold text-slate-600">نمایش صفحه <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span> (مجموعاً <span {ES_COUNT_ATTR}>{ES_TOTAL_PRODUCTS}</span> {ES_UNIT})</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_NEXT_URL}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
+<nav aria-label="{ES_PAGI_LABEL}" data-pagination-root="{ES_ROOT}" class="{ES_NAV_CLS} mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-2xs"><div class="text-[12.5px] font-bold text-slate-600">نمایش صفحه <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span> (مجموعاً <span {ES_COUNT_ATTR}>{ES_TOTAL_PRODUCTS}</span> {ES_UNIT})</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true"{ES_NEXT_TAG}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
 ESP72P;
 $es_args = $args ?? [];
 $es_current = max(1, (int) ($es_args['current'] ?? 1));
@@ -24,8 +24,10 @@ $es_url = static function (int $n) use ($es_base): string {
     return $n <= 1 ? $es_base : $es_base . (str_contains($es_base, '?') ? '&' : '?') . 'paged=' . $n;
 };
 
-if ($es_total_pages <= 1) {
-    return; // تک‌صفحه‌ای → بدون نوار
+$es_always = !empty($es_args['always_show']);
+$es_nav_cls = (string) ($es_args['nav_cls'] ?? 'flex');
+if ($es_total_pages <= 1 && !$es_always) {
+    return; // تک‌صفحه‌ای → بدون نوار (آرشیو ترم با always_show نمایش داده می‌شود)
 }
 $es_pages_html = '';
 foreach (range(1, $es_total_pages) as $es_n) {
@@ -37,6 +39,7 @@ foreach (range(1, $es_total_pages) as $es_n) {
 }
 echo strtr($ES_PAGI, [
     '{ES_PAGI_LABEL}'     => esc_html($es_label),
+    '{ES_NAV_CLS}'        => (string) $es_nav_cls,
     '{ES_ROOT}'           => esc_attr($es_root),
     '{ES_COUNT_ATTR}'     => (string) $es_count_attr,
     '{ES_UNIT}'           => esc_html($es_unit),
@@ -48,4 +51,7 @@ echo strtr($ES_PAGI, [
     '{ES_PAGES_HTML}'     => $es_pages_html,
     '{ES_NEXT_ATTR}'      => $es_current >= $es_total_pages ? ' disabled=""' : '',
     '{ES_NEXT_URL}'       => $es_current < $es_total_pages ? ' data-href="' . esc_url($es_url($es_current + 1)) . '"' : '',
+    '{ES_NEXT_TAG}'       => $es_current < $es_total_pages
+        ? ' class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer" data-href="' . esc_url($es_url($es_current + 1)) . '"'
+        : ' disabled="" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"',
 ]);

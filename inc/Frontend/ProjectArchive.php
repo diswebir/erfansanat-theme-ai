@@ -61,7 +61,8 @@ final class ProjectArchive {
         if (!method_exists($query, 'is_main_query') || !$query->is_main_query()) {
             return;
         }
-        if (!(function_exists('is_post_type_archive') && is_post_type_archive('projects'))) {
+        if (!(function_exists('is_post_type_archive') && is_post_type_archive('projects'))
+            && !(function_exists('is_tax') && is_tax(['project_type', 'city']))) {
             return;
         }
         $per = (int) es_option('archives.projects_per_page', '6');

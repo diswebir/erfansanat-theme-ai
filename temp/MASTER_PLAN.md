@@ -362,9 +362,9 @@
 - 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php`؛ `pagination.php` مشترک + `inc/Frontend/ProjectArchive.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[PENDING]`
+### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[DONE — 25/25 · رگرسیون ۱۲۱۳/۰]`
 - 🎯 آرشیو ترم‌های پروژه مطابق میرور city/*.html و project_type/*.html
-- 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php` · **وابستگی:** Task 7.2
+- 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php`؛ `template-parts/archive/project-drawer.php` · **وابستگی:** Task 7.2
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
 ### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[PENDING]`
@@ -810,9 +810,9 @@
 - 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php`؛ `pagination.php` مشترک + `inc/Frontend/ProjectArchive.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
-### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[PENDING]`
+### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[DONE — 25/25 · رگرسیون ۱۲۱۳/۰]`
 - 🎯 آرشیو ترم‌های پروژه مطابق میرور city/*.html و project_type/*.html
-- 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php` · **وابستگی:** Task 7.2
+- 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php`؛ `template-parts/archive/project-drawer.php` · **وابستگی:** Task 7.2
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
 ### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[PENDING]`
