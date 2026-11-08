@@ -32,6 +32,12 @@ final class Theme {
             if (class_exists(Sections\HomeSections::class)) {
                 Sections\HomeSections::init();
             }
+            if (class_exists(Sections\AboutSections::class)) {
+                Sections\AboutSections::init();
+            }
+            if (class_exists(Sections\ContactSections::class)) {
+                Sections\ContactSections::init();
+            }
             if (class_exists(Sections\Registry::class)) {
                 Sections\Registry::init();
             }

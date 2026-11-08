@@ -32,6 +32,35 @@ final class HomeSections {
         'map',
     ];
 
+    /**
+     * اسکیم سکشن contact — مشترک بین صفحه اصلی و قالب «درباره ما» (AboutSections)
+     *
+     * @return list<array<string,mixed>>
+     */
+    public static function contact_schema(): array {
+        return [
+                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مشاوره مهندسی و استعلام قیمت مستقیم از کارخانه'],
+                ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'روشنایی و هویت بصری متمایز را به '],
+                ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'شهر خود'],
+                ['key' => 'title_post', 'type' => 'text', 'label' => __('عنوان — بخش پایانی', 'erfansanat'), 'default' => ' دعوت کنید'],
+                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن دعوت', 'erfansanat'), 'default' => 'واحد مهندسی فروش عرفان صنعت اصفهان آماده ارائه مشاوره تخصصی، طراحی سه‌بعدی المان‌های نوری، صدور پیش‌فاکتور رسمی سامانه تدارکات الکترونیکی دولت (ستاد) و ارسال مستقیم به سراسر کشور است.'],
+                ['key' => 'cta1_text', 'type' => 'text', 'label' => __('دکمه اصلی', 'erfansanat'), 'default' => 'تماس مستقیم با کارشناسان فروش'],
+                ['key' => 'cta1_url', 'type' => 'text', 'label' => __('لینک دکمه اصلی', 'erfansanat'), 'default' => 'tel:031-91091011'],
+                ['key' => 'cta2_text', 'type' => 'text', 'label' => __('دکمه دوم', 'erfansanat'), 'default' => 'درخواست پیش‌فاکتور رسمی ستاد'],
+                ['key' => 'cta2_url', 'type' => 'url', 'label' => __('لینک دکمه دوم', 'erfansanat'), 'default' => '/contact/'],
+                ['key' => 'phone_label', 'type' => 'text', 'label' => __('برچسب تلفن', 'erfansanat'), 'default' => 'تماس مستقیم با واحد فروش و مهندسی'],
+                ['key' => 'phone', 'type' => 'text', 'label' => __('تلفن (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => '۰۳۱ - ۹۱۰۹۱۰۱۱'],
+                ['key' => 'phone_url', 'type' => 'text', 'label' => __('لینک تلفن (خالی = tel از گزینه)', 'erfansanat'), 'default' => 'tel:031-91091011'],
+                ['key' => 'phone_sub', 'type' => 'text', 'label' => __('زیرنویس تلفن', 'erfansanat'), 'default' => '۱۰ خط ویژه'],
+                ['key' => 'email_label', 'type' => 'text', 'label' => __('برچسب ایمیل', 'erfansanat'), 'default' => 'پست الکترونیک سازمانی'],
+                ['key' => 'email', 'type' => 'text', 'label' => __('ایمیل (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'info@erfansanat.com'],
+                ['key' => 'email_sub', 'type' => 'text', 'label' => __('زیرنویس ایمیل', 'erfansanat'), 'default' => 'دریافت استعلام فنی و پیش‌فاکتور رسمی'],
+                ['key' => 'hours_label', 'type' => 'text', 'label' => __('برچسب ساعات', 'erfansanat'), 'default' => 'ساعات پاسخگویی کارخانه'],
+                ['key' => 'hours', 'type' => 'text', 'label' => __('ساعات (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'شنبه تا پنجشنبه · ۷:۰۰ الی ۱۶:۳۰'],
+                ['key' => 'hours_sub', 'type' => 'text', 'label' => __('زیرنویس ساعات', 'erfansanat'), 'default' => 'پشتیبانی تلفنی پروژه‌ها در تمام ایام هفته'],
+        ];
+    }
+
     public static function init(): void {
         add_filter('es_sections_registry', [self::class, 'register']);
     }
@@ -245,27 +274,7 @@ final class HomeSections {
         ];
         $items['contact'] = [
             'label'  => __('تماس با ما', 'erfansanat'),
-            'schema' => [
-                ['key' => 'kicker', 'type' => 'text', 'label' => __('بالانویس', 'erfansanat'), 'default' => 'مشاوره مهندسی و استعلام قیمت مستقیم از کارخانه'],
-                ['key' => 'title_pre', 'type' => 'text', 'label' => __('عنوان — بخش اول', 'erfansanat'), 'default' => 'روشنایی و هویت بصری متمایز را به '],
-                ['key' => 'title_hl', 'type' => 'text', 'label' => __('بخش سبز عنوان', 'erfansanat'), 'default' => 'شهر خود'],
-                ['key' => 'title_post', 'type' => 'text', 'label' => __('عنوان — بخش پایانی', 'erfansanat'), 'default' => ' دعوت کنید'],
-                ['key' => 'desc', 'type' => 'textarea', 'label' => __('متن دعوت', 'erfansanat'), 'default' => 'واحد مهندسی فروش عرفان صنعت اصفهان آماده ارائه مشاوره تخصصی، طراحی سه‌بعدی المان‌های نوری، صدور پیش‌فاکتور رسمی سامانه تدارکات الکترونیکی دولت (ستاد) و ارسال مستقیم به سراسر کشور است.'],
-                ['key' => 'cta1_text', 'type' => 'text', 'label' => __('دکمه اصلی', 'erfansanat'), 'default' => 'تماس مستقیم با کارشناسان فروش'],
-                ['key' => 'cta1_url', 'type' => 'text', 'label' => __('لینک دکمه اصلی', 'erfansanat'), 'default' => 'tel:031-91091011'],
-                ['key' => 'cta2_text', 'type' => 'text', 'label' => __('دکمه دوم', 'erfansanat'), 'default' => 'درخواست پیش‌فاکتور رسمی ستاد'],
-                ['key' => 'cta2_url', 'type' => 'url', 'label' => __('لینک دکمه دوم', 'erfansanat'), 'default' => '/contact/'],
-                ['key' => 'phone_label', 'type' => 'text', 'label' => __('برچسب تلفن', 'erfansanat'), 'default' => 'تماس مستقیم با واحد فروش و مهندسی'],
-                ['key' => 'phone', 'type' => 'text', 'label' => __('تلفن (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => '۰۳۱ - ۹۱۰۹۱۰۱۱'],
-                ['key' => 'phone_url', 'type' => 'text', 'label' => __('لینک تلفن (خالی = tel از گزینه)', 'erfansanat'), 'default' => 'tel:031-91091011'],
-                ['key' => 'phone_sub', 'type' => 'text', 'label' => __('زیرنویس تلفن', 'erfansanat'), 'default' => '۱۰ خط ویژه'],
-                ['key' => 'email_label', 'type' => 'text', 'label' => __('برچسب ایمیل', 'erfansanat'), 'default' => 'پست الکترونیک سازمانی'],
-                ['key' => 'email', 'type' => 'text', 'label' => __('ایمیل (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'info@erfansanat.com'],
-                ['key' => 'email_sub', 'type' => 'text', 'label' => __('زیرنویس ایمیل', 'erfansanat'), 'default' => 'دریافت استعلام فنی و پیش‌فاکتور رسمی'],
-                ['key' => 'hours_label', 'type' => 'text', 'label' => __('برچسب ساعات', 'erfansanat'), 'default' => 'ساعات پاسخگویی کارخانه'],
-                ['key' => 'hours', 'type' => 'text', 'label' => __('ساعات (خالی = گزینه مرکزی)', 'erfansanat'), 'default' => 'شنبه تا پنجشنبه · ۷:۰۰ الی ۱۶:۳۰'],
-                ['key' => 'hours_sub', 'type' => 'text', 'label' => __('زیرنویس ساعات', 'erfansanat'), 'default' => 'پشتیبانی تلفنی پروژه‌ها در تمام ایام هفته'],
-            ],
+            'schema' => self::contact_schema(),
         ];
         $items['map'] = [
             'label'  => __('نقشه کارخانه', 'erfansanat'),

@@ -14,7 +14,7 @@ namespace ErfanSanat\Theme\Nav;
 final class MobileWalker {
 
     private const F_HEAD = <<<'ESFRAG7K'
-<div data-mobile-menu="true" class="fixed inset-0 z-[90] lg:hidden hidden" aria-hidden="true"><div data-mobile-backdrop="true" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"></div><aside data-mobile-sidebar="true" aria-label="منوی موبایل" class="fixed inset-y-0 right-0 z-[95] flex h-dvh max-h-dvh w-[88vw] max-w-[380px] flex-col border-l border-emerald-100 bg-white shadow-2xl"><div class="flex shrink-0 items-center justify-between border-b border-slate-100 px-4 py-3.5"><a href="{ES_HOME_URL}" class="flex items-center gap-2.5"><?php if (es_logo_url() !== ''): ?><img src="<?php echo esc_url(es_logo_url()); ?>" alt="<?php echo esc_attr(es_logo_alt()); ?>" class="h-9 w-9 rounded-xl object-contain"><?php else: ?><div class="grid h-9 w-9 place-items-center rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-black text-emerald-800">ESE</div><?php endif; ?><div><div class="text-sm font-black text-slate-900">{ES_BLOGNAME}</div><div class="text-[10px] font-semibold text-emerald-700">شرکت دانش‌بنیان نورپردازی شهری</div></div></a><button type="button" data-mobile-close="true" aria-label="بستن منو" class="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4.5 w-4.5" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div><div class="shrink-0 border-b border-slate-100 px-4 py-2.5">
+<div data-mobile-menu="true" class="fixed inset-0 z-[90] lg:hidden hidden" aria-hidden="true"><div data-mobile-backdrop="true" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"></div><aside data-mobile-sidebar="true" aria-label="منوی موبایل" class="fixed inset-y-0 right-0 z-[95] flex h-dvh max-h-dvh w-[88vw] max-w-[380px] flex-col border-l border-emerald-100 bg-white shadow-2xl"><div class="flex shrink-0 items-center justify-between border-b border-slate-100 px-4 py-3.5"><a href="{ES_HOME_URL}" class="flex items-center gap-2.5">{ES_LOGO_HTML}<div><div class="text-sm font-black text-slate-900">{ES_BLOGNAME}</div><div class="text-[10px] font-semibold text-emerald-700">شرکت دانش‌بنیان نورپردازی شهری</div></div></a><button type="button" data-mobile-close="true" aria-label="بستن منو" class="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4.5 w-4.5" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div><div class="shrink-0 border-b border-slate-100 px-4 py-2.5">
 ESFRAG7K;
 
     private const F_ZONE = <<<'ESFRAG7K'
@@ -97,9 +97,13 @@ ESFRAG7K;
         $top_terms = get_terms(['taxonomy' => 'product_cat', 'parent' => 0, 'hide_empty' => false]);
         $top_terms = is_array($top_terms) ? $top_terms : [];
 
+        $es_logo = es_logo_url();
         $out = strtr(self::F_HEAD, [
-            '{ES_HOME_URL}'  => esc_url(home_url('/')),
-            '{ES_BLOGNAME}'  => esc_html(get_bloginfo('name') !== '' ? get_bloginfo('name') : 'عرفان صنعت اصفهان'),
+            '{ES_HOME_URL}'   => esc_url(home_url('/')),
+            '{ES_BLOGNAME}'   => esc_html(get_bloginfo('name') !== '' ? get_bloginfo('name') : 'عرفان صنعت اصفهان'),
+            '{ES_LOGO_HTML}'  => $es_logo !== ''
+                ? '<img src="' . esc_url($es_logo) . '" alt="' . esc_attr(es_logo_alt()) . '" class="h-9 w-9 rounded-xl object-contain">'
+                : '<div class="grid h-9 w-9 place-items-center rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-black text-emerald-800">ESE</div>',
         ]);
         $out .= str_replace('{ES_HOME_URL}', esc_url(home_url('/')), self::F_ZONE);
 

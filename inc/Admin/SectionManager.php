@@ -21,6 +21,12 @@ final class SectionManager {
     private static array $sections = [];
     private static int $sequence   = 0;
 
+    /** نگاشت slug قالب برگه → گروه سکشن (فاز ۷.۷ — about/contact) */
+    private const TEMPLATE_GROUPS = [
+        'page-templates/page-about.php'   => 'about',
+        'page-templates/page-contact.php' => 'contact',
+    ];
+
     public static function init(): void {
         add_action('add_meta_boxes', [self::class, 'register_metabox']);
         add_action('save_post', [self::class, 'save'], 10, 2);
@@ -62,6 +68,18 @@ final class SectionManager {
         return [];
     }
 
+    /**
+     * گروه سکشن‌های یک برگه بر اساس قالب انتخابی — پیش‌فرض: page
+     *
+     * @param int $post_id
+     */
+    public static function group_for_post(int $post_id): string {
+        $slug  = function_exists('get_page_template_slug') ? (string) get_page_template_slug($post_id) : '';
+        $map   = apply_filters('es_sections_template_groups', self::TEMPLATE_GROUPS);
+        $group = is_array($map) ? (string) ($map[$slug] ?? '') : '';
+        return $group !== '' ? $group : 'page';
+    }
+
     /** انواع پست دارای متاباکس سکشن */
     public static function post_types(): array {
         $types = apply_filters('es_sections_post_types', ['page']);
@@ -82,7 +100,7 @@ final class SectionManager {
     }
 
     /**
-     * سکشن‌های فعال یک برگه به ترتیب ثبت/ذخیره — بدون متا: همه ثبت‌شده‌ها فعال
+     * سکشن‌های فعال یک برگه به ترتیب ثبت/ذخیره — بدون متا: سکشن‌های گروه قالب برگه
      *
      * @return list<array{id:string,enabled:int,order:int,fields:array}>
      */
@@ -92,9 +110,9 @@ final class SectionManager {
         if (!is_array($raw) || $raw === []) {
             // پیش‌فرض: همه سکشن‌های ثبت‌شده، فعال، به ترتیب ثبت (ظاهر عین میرور)
             $out = [];
-            $all = self::registered_flat();
-            foreach ($all as $key => $info) {
-                $out[] = ['id' => (string) substr((string) $key, (int) strpos((string) $key, '|') + 1), 'enabled' => 1, 'order' => count($out), 'fields' => []];
+            // پیش‌فرض: سکشن‌های گروه قالب همین برگه، فعال، به ترتیب ثبت (ظاهر عین میرور)
+            foreach (self::sections_of(self::group_for_post($post_id)) as $id => $info) {
+                $out[] = ['id' => (string) $id, 'enabled' => 1, 'order' => count($out), 'fields' => []];
             }
             return $out;
         }
@@ -134,18 +152,14 @@ final class SectionManager {
     public static function render_metabox(object $post): void {
         wp_nonce_field(self::NONCE_ACTION, 'es_sections_nonce');
 
-        $saved    = self::get_sections((int) $post->ID);
-        $registry = self::registered_flat();
+        $saved = self::get_sections((int) $post->ID);
 
-        // نگاشت id خالص → تعریف (کلیدهای مسطح «گروه|id» هستند)
-        $by_id = [];
-        foreach ($registry as $key => $info) {
-            $by_id[(string) substr((string) $key, (int) strpos((string) $key, '|') + 1)] = $info;
-        }
+        // فقط سکشن‌های گروه قالب همین برگه (نگاشت قالب برگه → گروه، فاز ۷.۷)
+        $by_id = self::sections_of(self::group_for_post((int) $post->ID));
 
         echo '<div class="es-sections" data-es-sections>';
 
-        if ($registry === []) {
+        if ($by_id === []) {
             printf('<p class="es-sections__empty">%s</p>', esc_html__('هنوز سکشنی برای این قالب ثبت نشده است.', 'erfansanat'));
             echo '</div>';
             return;

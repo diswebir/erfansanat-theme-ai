@@ -382,10 +382,11 @@
 - 📤 خروجی: `search.php`؛ `404.php`؛ `searchform.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 7.7 — قالب برگه‌های about و contact (با SectionManager) `[PENDING]`
+### Task 7.7 — قالب برگه‌های about و contact (با SectionManager) `[DONE — 58/58 · رگرسیون ۱۳۵۳/۰]`
 - 🎯 دو قالب برگه با سکشن‌های کاملاً قابل ویرایش از ادمین — پیش‌فرض عین میرور
 - 📤 خروجی: `page-templates/page-about.php`؛ `page-templates/page-contact.php`؛ `inc/Sections/AboutSections.php`؛ `inc/Sections/ContactSections.php` · **وابستگی:** Task 2.9, Task 8.5 (اسکلت فرم)
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
+- 📌 انجام شد (2026-11-03): گروه about = ۵ سکشن عین میرور (بدون ویدیو/تایم‌لاین — میرور ندارد) + reuse سکشن contact؛ گروه contact = هیرو + form (نقشه در میرور contact نیست)؛ نگاشت قالب→گروه در SectionManager (group_for_post + فیلتر es_sections_template_groups)؛ فرم تا ۸.۵ نمایشی با فیلتر es_contact_form_extra؛ fix نشتی PHP در MobileWalker؛ رانر php-wasm بازسازی شد.
 
 ### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[PENDING]`
 - 🎯 چهار قالب برگه اختصاصی با Repeaterهای قابل ویرایش و فرم استخدام
@@ -830,10 +831,11 @@
 - 📤 خروجی: `search.php`؛ `404.php`؛ `searchform.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 7.7 — قالب برگه‌های about و contact (با SectionManager) `[PENDING]`
+### Task 7.7 — قالب برگه‌های about و contact (با SectionManager) `[DONE — 58/58 · رگرسیون ۱۳۵۳/۰]`
 - 🎯 دو قالب برگه با سکشن‌های کاملاً قابل ویرایش از ادمین — پیش‌فرض عین میرور
 - 📤 خروجی: `page-templates/page-about.php`؛ `page-templates/page-contact.php`؛ `inc/Sections/AboutSections.php`؛ `inc/Sections/ContactSections.php` · **وابستگی:** Task 2.9, Task 8.5 (اسکلت فرم)
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
+- 📌 انجام شد (2026-11-03): گروه about = ۵ سکشن عین میرور (بدون ویدیو/تایم‌لاین — میرور ندارد) + reuse سکشن contact؛ گروه contact = هیرو + form (نقشه در میرور contact نیست)؛ نگاشت قالب→گروه در SectionManager (group_for_post + فیلتر es_sections_template_groups)؛ فرم تا ۸.۵ نمایشی با فیلتر es_contact_form_extra؛ fix نشتی PHP در MobileWalker؛ رانر php-wasm بازسازی شد.
 
 ### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[PENDING]`
 - 🎯 چهار قالب برگه اختصاصی با Repeaterهای قابل ویرایش و فرم استخدام

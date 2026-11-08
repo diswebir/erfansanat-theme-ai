@@ -38,6 +38,10 @@ SectionManager::register_section('home', 'hero', 'هیرو', [
     ],
 ]);
 
+// نگاشت قالب برگه 300 → گروه home نمونه (فاز ۷.۷ — متاباکس گروه قالب را نشان می‌دهد)
+$_map28 = static fn(array $map): array => $map + ['template-300.php' => 'home'];
+add_filter('es_sections_template_groups', $_map28);
+$GLOBALS['__es_stub_template_slug'][300] = 'template-300.php';
 $GLOBALS['__es_stub_post_types'][300] = 'page';
 $GLOBALS['__wp_post_meta'][300][SectionManager::META_KEY] = [
     ['id' => 'hero', 'enabled' => 1, 'order' => 0, 'fields' => [

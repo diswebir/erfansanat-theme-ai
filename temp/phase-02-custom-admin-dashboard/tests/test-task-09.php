@@ -51,6 +51,11 @@ SectionManager::register_section('home', 'demo-hero', 'هیرو', [['key' => 'ti
 SectionManager::register_section('home', 'demo-gallery', 'گالری', []);
 SectionManager::register_section('home', 'demo-contact', 'تماس', []);
 
+// نگاشت قالب برگه 500 → گروه home نمونه (فاز ۷.۷ — رندر پیش‌فرض سکشن‌های گروه قالب)
+$_map29 = static fn(array $map): array => $map + ['template-demo.php' => 'home'];
+add_filter('es_sections_template_groups', $_map29);
+$GLOBALS['__es_stub_template_slug'][500] = 'template-demo.php';
+
 // Registry در بوت با فیلترِ پیش‌ثبت‌شده اجرا شد
 check(isset(SectionManager::registered()['about']['about-intro']), 'Registry سکشن about-intro را ثبت کرد');
 

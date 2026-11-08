@@ -34,7 +34,7 @@ SectionManager::register_section('home', 'hero', 'هیرو', [['key' => 'title',
 SectionManager::register_section('home', 'categories', 'دسته‌بندی‌ها', []);
 SectionManager::register_section('home', 'contact', 'تماس', []);
 
-check(count(SectionManager::registered()) === 2, 'دو گروه ثبت شد (page واقعی + home نمونه)');
+check(count(SectionManager::registered()) === 4, 'چهار گروه ثبت شد (page واقعی + about + contact فاز ۷.۷ + home نمونه)');
 check(count(SectionManager::sections_of('home')) === 3, 'سه سکشن در گروه home');
 check(count(SectionManager::sections_of('page')) === 15, '۱۵ سکشن واقعی در گروه page (HomeSections)');
 
@@ -47,11 +47,22 @@ check(($metaboxes['es-sections']['priority'] ?? '') === 'high', 'اولویت م
 // حالت بدون متا: همه ثبت‌شده‌ها فعال به ترتیب ثبت
 $GLOBALS['__wp_post_meta'][100][SectionManager::META_KEY] = null;
 $sections = SectionManager::get_sections(100);
-check(count($sections) === 18, 'حالت متای خالی → ۱۸ سکشن پیش‌فرض (۱۵ واقعی + ۳ نمونه)');
+check(count($sections) === 15, 'حالت متای خالی → ۱۵ سکشن گروه page (نگاشت قالب→گروه، فاز ۷.۷)');
 $es_ids = array_column($sections, 'id');
 check(array_slice($es_ids, 0, 15) === \ErfanSanat\Theme\Sections\HomeSections::ORDER, 'ترتیب پیش‌فرض = ترتیب ثبت (واقعی‌ها اول)');
 check(min(array_column($sections, 'enabled')) === 1, 'همه پیش‌فرض فعال');
-check(array_column($sections, 'order') === range(0, 17), 'order پیوسته ۰..۱۷');
+check(array_column($sections, 'order') === range(0, 14), 'order پیوسته ۰..۱۴');
+
+// نگاشت قالب برگه → گروه نمونه (فاز ۷.۷): برگه با قالب تستی → فقط ۳ سکشن گروه home
+$_map27 = static fn(array $map): array => $map + ['template-home.php' => 'home'];
+add_filter('es_sections_template_groups', $_map27);
+$GLOBALS['__es_stub_template_slug'][101] = 'template-home.php';
+$GLOBALS['__wp_post_meta'][101][SectionManager::META_KEY] = null;
+$sections_home = SectionManager::get_sections(101);
+check(array_column($sections_home, 'id') === ['hero', 'categories', 'contact'], 'برگه با قالب نگاشت‌شده → فقط سکشن‌های گروه home');
+check(array_column($sections_home, 'order') === range(0, 2), 'order گروه home پیوسته ۰..۲');
+remove_filter('es_sections_template_groups', $_map27);
+unset($GLOBALS['__es_stub_template_slug'][101]);
 
 // رندر UI متاباکس
 $GLOBALS['__es_stub_post_types'] = [100 => 'page'];
@@ -63,7 +74,7 @@ SectionManager::render_metabox($post);
 $ui = (string) ob_get_clean();
 check(str_contains($ui, 'name="es_sections_nonce"'), 'نانس داخل متاباکس');
 check(str_contains($ui, 'data-es-section-row'), 'ردیف سکشن رندر شد');
-check(substr_count($ui, 'data-es-section-move') === 18, '۱۸ دستگیره درگ');
+check(substr_count($ui, 'data-es-section-move') === 15, '۱۵ دستگیره درگ (گروه page)');
 check(str_contains($ui, 'name="opt_sections[0][id]" value="hero-home1"'), 'hidden id ردیف اول = hero-home1');
 check(str_contains($ui, 'name="opt_sections[0][enabled]" value="0"') && str_contains($ui, 'name="opt_sections[0][enabled]" value="1"'), 'سوییچ enabled با hidden صفر');
 

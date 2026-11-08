@@ -114,6 +114,15 @@ function add_filter(string $hook_name, callable|array|string $callback, int $pri
 if (!function_exists('remove_filter')) {
 function remove_filter(string $hook_name, callable|array|string $callback, int $priority = 10): bool
 {
+    if (isset($GLOBALS['__wp_hooks']['filters'][$hook_name]) && is_array($GLOBALS['__wp_hooks']['filters'][$hook_name])) {
+        foreach ($GLOBALS['__wp_hooks']['filters'][$hook_name] as $i => $entry) {
+            $cb   = $entry['cb'] ?? null;
+            $same = is_object($cb) && is_object($callback) ? spl_object_id($cb) === spl_object_id($callback) : $cb === $callback;
+            if ($same && (int) ($entry['priority'] ?? 10) === $priority) {
+                unset($GLOBALS['__wp_hooks']['filters'][$hook_name][$i]);
+            }
+        }
+    }
     $GLOBALS['__wp_hooks']['removed_filters'][] = ['hook' => $hook_name, 'cb' => $callback, 'priority' => $priority];
     return true;
 }
@@ -1137,6 +1146,15 @@ if (!class_exists('Walker_Nav_Menu')) {
         public function end_lvl(int $depth = 0, array $args = []): string { return ''; }
         public function start_el(object $el, int $depth = 0, array $args = []): string { return ''; }
         public function end_el(object $el, int $depth = 0, array $args = []): string { return ''; }
+    }
+}
+
+/** قالب انتخابی برگه — برای نگاشت گروه سکشن‌ها (فاز ۷.۷) */
+if (!function_exists('get_page_template_slug')) {
+    function get_page_template_slug(int|string|object|null $post = null): string
+    {
+        $id = is_object($post) ? (int) ($post->ID ?? 0) : (int) $post;
+        return (string) ($GLOBALS['__es_stub_template_slug'][$id] ?? '');
     }
 }
 
