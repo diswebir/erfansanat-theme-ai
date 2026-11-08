@@ -1,0 +1,16 @@
+{
+ "ES75_HERO_HEAD": "<section class=\"relative overflow-hidden bg-[#f6f8f7] pt-28 lg:pt-36\"><div aria-hidden=\"true\" class=\"pointer-events-none…",
+ "ES75_CRUMB_PILL": "<span class=\"flex min-w-0 items-center gap-1.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"…",
+ "ES75_CRUMB_LINK": "<span class=\"flex min-w-0 items-center gap-1.5\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"…",
+ "ES75_HERO_TAIL": "</nav></div><div class=\"mt-8 flex items-center justify-center gap-3\"><span class=\"h-px w-8 bg-emerald-400/60\"></span><sp…",
+ "ES75_FEAT_TPL": "<div class=\"relative z-10 mx-auto mt-10 max-w-[1300px] px-5 lg:px-8\"><div class=\"overflow-hidden rounded-[2rem] border b…",
+ "ES75_TAG_PILL": "<span class=\"rounded-full border border-emerald-200 bg-white px-3.5 py-1.5 text-[12px] font-bold text-emerald-800 shadow…",
+ "ES75_TAG_BOX_PILL": "<span class=\"rounded-full bg-emerald-50 px-3 py-1.5 text-[12px] font-bold text-emerald-800\">{TAG}</span>",
+ "ES75_CONTENT_OPEN": "<section class=\"mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16\"><div class=\"grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px…",
+ "ES75_CONTENT_CLOSE": "</div></div>",
+ "ES75_TAGS_SHARE": "<div custom=\"0.1\"><div class=\"mt-12 flex flex-col gap-5 rounded-3xl border border-emerald-100 bg-white p-6 shadow-xs sm:…",
+ "ES75_ASIDE": "<aside class=\"flex flex-col gap-6\"><div custom=\"0.08\"><nav class=\"rounded-3xl border border-emerald-100 bg-white p-6 sha…",
+ "ES75_REL_CHROME": "<section class=\"border-t border-emerald-100 bg-white py-14 lg:py-16\"><div class=\"mx-auto max-w-7xl px-5 lg:px-8\"><div cu…",
+ "ES75_CARD_RELATED": "<div custom=\"{ES_CUSTOM}\"><a href=\"{ES_URL}\" class=\"card-light group flex h-full flex-col overflow-hidden rounded-[1.5re…",
+ "ES75_REL_TAIL": "</div></div></section>"
+}

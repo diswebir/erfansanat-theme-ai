@@ -104,5 +104,9 @@ final class Theme {
         if (class_exists(Frontend\BlogArchive::class)) {
             Frontend\BlogArchive::init();
         }
+
+        if (class_exists(Frontend\TOC::class)) {
+            Frontend\TOC::init();
+        }
     }
 }

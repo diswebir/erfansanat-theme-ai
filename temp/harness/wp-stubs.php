@@ -270,6 +270,18 @@ function wp_kses_post(string $content): string
 }
 }
 
+if (!function_exists('wp_strip_all_tags')) {
+function wp_strip_all_tags(string $string, bool $remove_breaks = false): string
+{
+    $string = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $string) ?? '';
+    $string = strip_tags($string);
+    if ($remove_breaks) {
+        $string = preg_replace('/[\\r\\n\\t ]+/', ' ', $string) ?? '';
+    }
+    return trim($string);
+}
+}
+
 if (!function_exists('sanitize_text_field')) {
 function sanitize_text_field(string $str): string
 {

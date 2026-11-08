@@ -146,6 +146,24 @@ if (!function_exists('es_fa_num')) {
     }
 }
 
+if (!function_exists('es_related_posts')) {
+    /**
+     * مقالات مرتبط — جدیدترین مقالات به‌جز جاری (قاعده میرور blog/*.html)
+     * ترتیب میرور = نزولیِ تاریخ؛ مقدار پیش‌فرض ۳ کارت.
+     *
+     * @return list<object>
+     */
+    function es_related_posts(int $post_id, int $count = 3): array {
+        $posts = get_posts([
+            'post_type'           => 'post',
+            'posts_per_page'      => max(1, $count),
+            'post__not_in'        => [$post_id],
+            'ignore_sticky_posts' => true,
+        ]);
+        return (array) apply_filters('es_related_posts', is_array($posts) ? $posts : [], $post_id, $count);
+    }
+}
+
 if (!function_exists('es_page_url')) {
     /**
      * URL صفحه از اسلاگ میرور — نگاشت صفحات ثابت سایت

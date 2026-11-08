@@ -121,6 +121,14 @@
 - home فقط برای صفحه نوشته‌ها (page_for_posts=7426)؛ متاهای برگه/ترم با fallback میرور: es_blog_crumb/badge/title_a/title_b/desc/heading (+term_description برای desc کت)؛ بج کت شمارش کل دسته (۷) را می‌دهد نه صفحه (۵)؛ شمارنده سکشن = تعداد رندر.
 - تست ۷.۴: 26/26 (بایت‌دقیق home ≡ blog.html و category ≡ magazine.html + خالی + sticky + GET cat/s + هوک es_blog_archive_query_args + apply + سازگاری کارت مستقل). رگرسیون کامل: **۱۲۳۹/۰** (۶۶ فایل پیاده‌شده + ۱۶ placeholder).
 
+### ۷.۵ — single.php سینگل مقاله (2026-11-08)
+- خروجی‌ها: `single.php` (نازک: main + شل با get_queried_object) + `template-parts/single/article-shell.php` (هیرو/محتوا/تگ‌وعرSEO/سایدبار/مرتبط — ژنراتور `temp/gen_p75.py` با assert بازسازی دو میرور led-wall-washer-guide و point-light-pixel-led) + `inc/Frontend/TOC.php` (کلاس TOC: process هر h2 را در `<div id="sec-N" class="scroll-mt-24">` می‌پوشاند و آیتم‌ها را جمع می‌کند؛ init فیلتر the_content @20) + `template-parts/cards/card-related.php` (کارت فشرده h-44/h4/line-clamp-2 — متفاوت از card-post) + `es_related_posts()` در Helpers.
+- قاعده مرتبط میرور = «۳ مقاله جدیدتر به‌جز جاری» (تاریخ نزولی) — با هفت میرور راستی‌آزمایی شد (تاریخ‌ها: تونل ۱۲م، المان ۵م، ریسه ۲۸ت، خورشیدنما ۲۱ت، والواشر ۱۴ت، پوینت ۷ت، قاب ۲خ).
+- توکن‌های فرگمنت بدون پیشوند ES_ را جا ندهید: CRUMB_LINK={URL}/{X}، TAG_PILL={TAG} — PHP باید همان توکن‌ها را strtr کند (دو ردِ تست همین بود).
+- محتوای پست: raw = رندر میرور منهای wrapperها؛ تصاویر درون‌محتوایی در وردپرس مطلق‌اند (فیکسچر src="../images/" → uploads).
+- بازدید: ViewCounter فاز ۳.۱۴ (number2-viewc) — میرور نمایش بازدید ندارد؛ فقط شمارش سمت سرور (maybe_track با UA/is_singular/cookie dedupe). TOC حتی با ۲ سرفصل رندر می‌شود (برخلاف حدس «≥۳» spec — میرور حاکم است)؛ دیدگاه‌ها در میرور نیست → رندر نمی‌شود.
+- تست ۷.۵: 20/20 (بایت‌دقیق دو سینگل + TOC واحد + h3 دست‌نخورده + هوک the_content + قاعده مرتبط ×۳ + increment/maybe_track/بات + کارت مرتبط مستقل + share). رگرسیون کامل: **۱۲۵۹/۰** (۶۷ فایل پیاده‌شده + ۱۵ placeholder).
+
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
 - خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
 - گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.

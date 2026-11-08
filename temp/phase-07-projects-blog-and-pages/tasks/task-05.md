@@ -1,7 +1,7 @@
 # Task 7.5 — single.php — مقاله کامل با TOC، اشتراک، بازدید و مرتبط
 
 **فاز:** 07 — پروژه‌ها، وبلاگ، برگه‌های عمومی و لندینگ‌ها
-**وضعیت:** `[PENDING]`
+**وضعیت:** `[DONE — 20/20 · رگرسیون ۱۲۵۹/۰]`
 **تست:** `temp/phase-07-projects-blog-and-pages/tests/test-task-05.php`
 
 ## 🎯 هدف
@@ -31,15 +31,22 @@
 - escaping محتوا حفظ شود
 
 ## ✅ Pass Conditions (چک‌لیست پاس شدن)
-- [ ] TOC از h2/h3 fixture ساخته شود + idها تزریق
-- [ ] share لینک‌ها صحیح
-- [ ] بازدید افزایش یابد
-- [ ] مرتبط‌ها صحیح
+- [x] TOC از h2/h3 fixture ساخته شود + idها تزریق
+- [x] share لینک‌ها صحیح
+- [x] بازدید افزایش یابد
+- [x] مرتبط‌ها صحیح
 
 ## 🔄 چرخه اجرای الزامی (۶ گام)
-- [ ] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
-- [ ] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
-- [ ] WRITE TEST — تکمیل temp/phase-07-projects-blog-and-pages/tests/test-task-05.php
-- [ ] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
-- [ ] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
-- [ ] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+- [x] READ MEMORY — خواندن temp/PROJECT_MEMORY.md و این فایل
+- [x] THINK & PLAN — تحلیل مارک‌آپ مرجع و نوشتن منطق اتصال وردپرس
+- [x] WRITE TEST — تکمیل temp/phase-07-projects-blog-and-pages/tests/test-task-05.php
+- [x] IMPLEMENT — پیاده‌سازی بدون حذف هیچ کلاس/hook مرجع
+- [x] RUN TEST — اجرای تست تا ۱۰۰٪ پاس + ثبت در QA_REFLECTION_LOG
+- [x] UPDATE MEMORY — آپدیت PROJECT_MEMORY/MASTER_PLAN + Git Commit
+
+## 🧾 گزارش اجرا (2026-11-08)
+- خروجی‌ها: `single.php` + `template-parts/single/article-shell.php` + `inc/Frontend/TOC.php` + `template-parts/cards/card-related.php` + `es_related_posts()` در Helpers + `temp/gen_p75.py` (assert بازسازی دو میرور).
+- بایت‌دقیق: سینگل LED (۲۲٬۲۶۶ کاراکتر) و سینگل POINT (۲۱٬۱۸۲ کاراکتر) بعد از لینک‌سازی محیطی.
+- TOC: هر h2 در `<div id="sec-N" class="scroll-mt-24">` می‌نشیند (حتی با ۲ سرفصل — مطابق میرور)؛ آیتم‌های سایدبار از همین پردازش.
+- مرتبط: ۳ مقاله جدیدتر به‌جز جاری (قاعده با ۷ میرور تأیید شد) با کارت فشرده card-related.
+- انحراف از spec: بازدید فقط شمارش سرور (میرور نمایش ندارد)؛ دیدگاه‌ها رندر نمی‌شود (در میرور نیست).
