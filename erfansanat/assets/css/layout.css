@@ -1,0 +1,8 @@
+/*
+ * Front-end layout corrections that cannot live in the immutable compiled
+ * reference stylesheet. The header is fixed, so the document's main landmark
+ * must reserve its full height or the first section renders underneath it.
+ */
+.erfansanat-main-offset {
+	padding-top: 104px;
+}

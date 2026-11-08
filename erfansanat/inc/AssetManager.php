@@ -46,6 +46,11 @@ final class AssetManager {
 	public const A11Y_STYLE_HANDLE = 'erfansanat-a11y';
 
 	/**
+	 * Front-end layout corrections for fixed theme chrome.
+	 */
+	public const LAYOUT_STYLE_HANDLE = 'erfansanat-layout';
+
+	/**
 	 * WordPress dashicons are not needed on the front end.
 	 */
 	private const UNNEEDED_STYLES = array( 'dashicons' );
@@ -139,6 +144,15 @@ final class AssetManager {
 			self::uri( 'css/a11y.css' ),
 			array( self::STYLE_HANDLE ),
 			self::version( 'css/a11y.css' )
+		);
+
+		// The compiled reference CSS does not contain the arbitrary 104px
+		// top-padding utility used by the fixed-header layout.
+		wp_enqueue_style(
+			self::LAYOUT_STYLE_HANDLE,
+			self::uri( 'css/layout.css' ),
+			array( self::A11Y_STYLE_HANDLE ),
+			self::version( 'css/layout.css' )
 		);
 
 		wp_enqueue_script(

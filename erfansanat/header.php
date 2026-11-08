@@ -120,4 +120,4 @@ $erfansanat_menu_tree = MenuTree::from_location( 'main-mega-menu' );
 
 	<?php MobileMenu::render( $erfansanat_menu_tree ); ?>
 
-	<main id="primary" tabindex="-1" class="site-main pt-[104px]">
+	<main id="primary" tabindex="-1" class="site-main erfansanat-main-offset">

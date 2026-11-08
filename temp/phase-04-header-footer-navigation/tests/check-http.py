@@ -104,6 +104,18 @@ def task_4_1(_: str) -> None:
               css_status == 200 and ".screen-reader-text" in css and "clip-path" in css,
               f"status={css_status}")
 
+    layout = re.search(r"assets/css/layout[.]css[^\"']*", home)
+    check("4.1", "fixed-header layout stylesheet is loaded", layout is not None)
+    check("4.1", "layout sheet follows the accessibility sheet",
+          home.find("assets/css/layout.css") > home.find("assets/css/a11y.css"))
+    check("4.1", "main explicitly reserves fixed-header height",
+          'class="site-main erfansanat-main-offset"' in home)
+    if layout:
+        layout_status, layout_css = fetch(BASE + "/wp-content/themes/erfansanat/" + layout.group(0).split("?")[0])
+        check("4.1", "served layout sheet offsets content below the header",
+              layout_status == 200 and ".erfansanat-main-offset" in layout_css and "padding-top: 104px" in layout_css,
+              f"status={layout_status}")
+
     # No duplicated SEO head tags.
     check("4.1", "single <title>", len(re.findall(r"<title\b", home)) == 1, str(len(re.findall(r"<title\b", home))))
     # Core prints one canonical on singular views (and SEOPress owns it in

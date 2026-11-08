@@ -214,6 +214,22 @@ final class TaskP04T01Test extends TestCase {
 	}
 
 	/**
+	 * The fixed header must not cover the first content section.
+	 */
+	public function test_main_content_reserves_space_for_fixed_header(): void {
+		$header = $this->theme_file( 'header.php' );
+		$layout = $this->theme_file( 'assets/css/layout.css' );
+		$assets = $this->theme_file( 'inc/AssetManager.php' );
+
+		$this->assertStringContainsString( 'erfansanat-main-offset', $header );
+		$this->assertStringContainsString( '.erfansanat-main-offset', $layout );
+		$this->assertStringContainsString( 'padding-top: 104px', $layout );
+		$this->assertStringContainsString( "'css/layout.css'", $assets );
+		$this->assertStringContainsString( 'LAYOUT_STYLE_HANDLE', $assets );
+		$this->assertStringContainsString( 'array( self::A11Y_STYLE_HANDLE )', $assets );
+	}
+
+	/**
 	 * `.screen-reader-text` has to be defined somewhere the front end loads.
 	 *
 	 * The class is WordPress's, but the theme does not load core's stylesheet on
