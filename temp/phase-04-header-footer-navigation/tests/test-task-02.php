@@ -90,6 +90,18 @@ final class TaskP04T02Test extends TestCase {
 	/**
 	 * The reference blocks are exactly the four mega panels, in order.
 	 */
+	public function testMegaPanelHasExplicitResponsiveGeometry(): void {
+		$markup = (string) file_get_contents( get_template_directory() . '/inc/Navigation/MegaMenu.php' );
+		$css    = (string) file_get_contents( get_template_directory() . '/assets/css/navigation.css' );
+		$assets = (string) file_get_contents( get_template_directory() . '/inc/AssetManager.php' );
+
+		$this->assertStringContainsString( 'erfansanat-mega-panel', $markup );
+		$this->assertStringContainsString( 'width: min(780px, calc(100vw - 2rem))', $css );
+		$this->assertStringContainsString( 'inset-block-start: 100%', $css );
+		$this->assertStringContainsString( '@media (max-width: 1023px)', $css );
+		$this->assertStringContainsString( "'css/navigation.css'", $assets );
+	}
+
 	public function testBlocksMatchTheReferencePanels(): void {
 		$this->assertSame(
 			array( 'products', 'projects', 'services', 'corporate' ),

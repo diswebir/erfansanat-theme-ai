@@ -116,6 +116,16 @@ def task_4_1(_: str) -> None:
               layout_status == 200 and ".erfansanat-main-offset" in layout_css and "padding-top: 104px" in layout_css,
               f"status={layout_status}")
 
+    navigation = re.search(r"assets/css/navigation[.]css[^\"']*", home)
+    check("4.1", "mega-menu geometry stylesheet is loaded", navigation is not None)
+    check("4.1", "navigation sheet follows the layout sheet",
+          home.find("assets/css/navigation.css") > home.find("assets/css/layout.css"))
+    if navigation:
+        nav_status, nav_css = fetch(BASE + "/wp-content/themes/erfansanat/" + navigation.group(0).split("?")[0])
+        check("4.1", "served mega-menu CSS constrains panel width and mobile visibility",
+              nav_status == 200 and "width: min(780px, calc(100vw - 2rem))" in nav_css and "max-width: 1023px" in nav_css,
+              f"status={nav_status}")
+
     # No duplicated SEO head tags.
     check("4.1", "single <title>", len(re.findall(r"<title\b", home)) == 1, str(len(re.findall(r"<title\b", home))))
     # Core prints one canonical on singular views (and SEOPress owns it in

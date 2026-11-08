@@ -51,6 +51,11 @@ final class AssetManager {
 	public const LAYOUT_STYLE_HANDLE = 'erfansanat-layout';
 
 	/**
+	 * Explicit desktop mega-menu geometry.
+	 */
+	public const NAVIGATION_STYLE_HANDLE = 'erfansanat-navigation';
+
+	/**
 	 * WordPress dashicons are not needed on the front end.
 	 */
 	private const UNNEEDED_STYLES = array( 'dashicons' );
@@ -153,6 +158,13 @@ final class AssetManager {
 			self::uri( 'css/layout.css' ),
 			array( self::A11Y_STYLE_HANDLE ),
 			self::version( 'css/layout.css' )
+		);
+
+		wp_enqueue_style(
+			self::NAVIGATION_STYLE_HANDLE,
+			self::uri( 'css/navigation.css' ),
+			array( self::LAYOUT_STYLE_HANDLE ),
+			self::version( 'css/navigation.css' )
 		);
 
 		wp_enqueue_script(

@@ -57,7 +57,7 @@ final class MegaMenu {
 				data-desktop-mega-panel="<?php echo esc_attr( $block ); ?>"
 				role="region"
 				aria-label="<?php echo esc_attr( $label ); ?>"
-				class="absolute inset-x-4 top-full z-50 mx-auto max-w-[780px] pt-2.5 transition-all duration-200 lg:inset-x-8 invisible translate-y-1 opacity-0 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+				class="erfansanat-mega-panel absolute inset-x-4 top-full z-50 mx-auto max-w-[780px] pt-2.5 transition-all duration-200 lg:inset-x-8 invisible translate-y-1 opacity-0 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
 				<div class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xl">
 					<?php
 					switch ( $block ) {

@@ -50,6 +50,14 @@
       "identical_to_source": false,
       "authored": true
     },
+    "css/navigation.css": {
+      "sha256": "db6b47666202bedfb88b1fe8be9be1df41dbab84de96ce48441cf78a242c76ed",
+      "bytes": 735,
+      "source": null,
+      "source_sha256": null,
+      "identical_to_source": false,
+      "authored": true
+    },
     "css/styles.css": {
       "sha256": "d05ea048277bd2942f7559107d77beb008fb9df4f4a4a1453b5a8539149b5bcb",
       "bytes": 190867,
