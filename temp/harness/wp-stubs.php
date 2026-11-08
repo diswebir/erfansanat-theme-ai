@@ -1459,9 +1459,9 @@ if (!function_exists('current_user_id') && false) {
 
 /** استاب get_query_var — فاز ۷: صفحه‌بندی آرشیوها (paged) */
 if (!function_exists('get_query_var')) {
-    function get_query_var(string $var): mixed
+    function get_query_var(string $var, mixed $default = ''): mixed
     {
-        return $GLOBALS['__es_stub_query_vars'][$var] ?? 0;
+        return $GLOBALS['__es_stub_query_vars'][$var] ?? $default;
     }
 }
 

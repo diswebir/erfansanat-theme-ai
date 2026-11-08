@@ -112,6 +112,15 @@
 - ProjectArchive::apply روی is_tax(['project_type','city']) هم فعال.
 - تست ۷.۳: 25/25 (قیاس کل main هر دو شل + ناو/فیلتر/دراور/خالی/چندصفحه‌ای/apply). رگرسیون کامل: **۱۲۱۳/۰** (۶۵ فایل پیاده‌شده + ۱۷ placeholder).
 
+### ۷.۴ — home / archive / category (وبلاگ) (2026-11-08)
+- خروجی‌ها: `home.php`/`archive.php`/`category.php` (نازک — همه از `template-parts/archive/blog-shell.php` با mode=home|category) + `inc/Frontend/BlogArchive.php` (pre_get_posts @20 فقط روی is_home/is_category: cat/s از GET، posts_per_page=100 برای رندر کامل DOM (فیلتر/صفحه‌بندی JS میرور data-items-per-page=4)، ignore_sticky_posts) — boot در Theme.php.
+- ژنراتور `temp/gen_p74.py`: هیرو/سکشن/featured/دکمه‌های JS/لینک‌های سکشن از blog.html + magazine.html با assert بازسازی بایت‌دقیق هر دو حالت؛ توکن {ES_CRUMB3_SPAN} (بلاگ: پیل «وبلاگ»؛ کت: لینک وبلاگ + پیل ترم) و {ES_FEATURED} (کت همان فرگمنت با ../ prefix).
+- card-post (۵.۱۱) سه فلگ جدید گرفت: nested (WRAP باز + بستن div custom+wrap بعد از BODY — چیدمان تودرتوی آرشیو)، visible (block/hidden — ۴ اولِ per-page)، search_chip=false چون search-text میرور chip ندارد (= title+excerpt+متا es_keywords)؛ پیش‌فرض‌ها سازگار ۵.۱۱.
+- sticky: sticky_posts چندگانه [۷۰۱,۷۰۲,۷۰۳] = ۳ نشان «★ ویژه» گرید؛ کارت هیرو «★ منتخب سردبیر» = نخستین sticky وگرنه نخستین مقاله؛ «بدون تکرار» = کارت sticky هم داخل گرید می‌ماند (مطابق میرور هر ۷ کارت).
+- pagination واریانت بلاگ از قالب مشترک: box_cls=bg-slate-50/70، navbtn_cls=bg-white px-3 py-2، cur_label=صفحه، count_seg='' (بدون «مجموعاً»)، page_btn (غیرفعال‌ها دکمه JS نه a)، next_href=false (بدون data-href)؛ pages=ceil(total/per) با per=es_option('archives.posts_per_page').
+- home فقط برای صفحه نوشته‌ها (page_for_posts=7426)؛ متاهای برگه/ترم با fallback میرور: es_blog_crumb/badge/title_a/title_b/desc/heading (+term_description برای desc کت)؛ بج کت شمارش کل دسته (۷) را می‌دهد نه صفحه (۵)؛ شمارنده سکشن = تعداد رندر.
+- تست ۷.۴: 26/26 (بایت‌دقیق home ≡ blog.html و category ≡ magazine.html + خالی + sticky + GET cat/s + هوک es_blog_archive_query_args + apply + سازگاری کارت مستقل). رگرسیون کامل: **۱۲۳۹/۰** (۶۶ فایل پیاده‌شده + ۱۶ placeholder).
+
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
 - خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
 - گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.

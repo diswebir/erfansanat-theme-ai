@@ -100,5 +100,9 @@ final class Theme {
         if (class_exists(Frontend\ProjectArchive::class)) {
             Frontend\ProjectArchive::init();
         }
+
+        if (class_exists(Frontend\BlogArchive::class)) {
+            Frontend\BlogArchive::init();
+        }
     }
 }

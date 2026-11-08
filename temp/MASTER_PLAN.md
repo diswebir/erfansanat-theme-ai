@@ -367,7 +367,7 @@
 - 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php`؛ `template-parts/archive/project-drawer.php` · **وابستگی:** Task 7.2
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[PENDING]`
+### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[DONE — 26/26 · رگرسیون ۱۲۳۹/۰]`
 - 🎯 آرشیو مقالات مطابق blog.html و category/magazine.html با فیلتر دسته کارا
 - 📤 خروجی: `home.php`؛ `archive.php`؛ `category.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
@@ -815,7 +815,7 @@
 - 📤 خروجی: `taxonomy-project_type.php`؛ `taxonomy-city.php`؛ `template-parts/archive/project-drawer.php` · **وابستگی:** Task 7.2
 - ✅ 3 شرط پاس · 🛠 4 گام اجرا
 
-### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[PENDING]`
+### Task 7.4 — home.php / archive.php / category.php — وبلاگ و فیلتر دسته `[DONE — 26/26 · رگرسیون ۱۲۳۹/۰]`
 - 🎯 آرشیو مقالات مطابق blog.html و category/magazine.html با فیلتر دسته کارا
 - 📤 خروجی: `home.php`؛ `archive.php`؛ `category.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا

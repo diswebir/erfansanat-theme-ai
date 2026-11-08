@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 $ES_PAGI = <<<'ESP72P'
-<nav aria-label="{ES_PAGI_LABEL}" data-pagination-root="{ES_ROOT}" class="{ES_NAV_CLS} mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-2xs"><div class="text-[12.5px] font-bold text-slate-600">نمایش صفحه <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span> (مجموعاً <span {ES_COUNT_ATTR}>{ES_TOTAL_PRODUCTS}</span> {ES_UNIT})</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true"{ES_NEXT_TAG}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
+<nav aria-label="{ES_PAGI_LABEL}" data-pagination-root="{ES_ROOT}" class="{ES_NAV_CLS} mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 {ES_BOX_CLS}"><div class="text-[12.5px] font-bold text-slate-600">{ES_CUR_LABEL} <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span>{ES_COUNT_SEG}</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 {ES_NAVBTN_CLS} text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true"{ES_NEXT_TAG}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
 ESP72P;
 $es_args = $args ?? [];
 $es_current = max(1, (int) ($es_args['current'] ?? 1));
@@ -19,6 +19,17 @@ $es_root = (string) ($es_args['root'] ?? 'products');
 $es_count_attr = (string) ($es_args['count_attr'] ?? 'data-product-count="true"');
 $es_unit = (string) ($es_args['unit'] ?? 'محصول');
 $es_label = (string) ($es_args['label'] ?? 'صفحه‌بندی محصولات');
+
+/* واریانت‌ها — پیش‌فرض‌ها = محصولات (۶.۷)؛ بلاگ (۷.۴): box slate-50/70، بدون شمارنده مجموع، دکمه‌های JS */
+$es_box_cls = (string) ($es_args['box_cls'] ?? 'bg-white px-5 py-4 shadow-2xs');
+$es_cur_label = (string) ($es_args['cur_label'] ?? 'نمایش صفحه');
+$es_navbtn_cls = (string) ($es_args['navbtn_cls'] ?? 'bg-slate-50 px-3 py-2');
+$es_count_seg = $es_args['count_seg'] ?? null;
+if ($es_count_seg === null) {
+    $es_count_seg = ' (مجموعاً <span ' . (string) $es_count_attr . '>' . es_fa_num((string) ($es_args['total_products'] ?? 0)) . '</span> ' . esc_html($es_unit) . ')';
+}
+$es_page_btn = !empty($es_args['page_btn']);   // صفحه‌های غیرفعال <button> به‌جای <a> (صفحه‌بندی سمت کلاینت)
+$es_next_href = !isset($es_args['next_href']) || $es_args['next_href']; // data-href روی «بعدی»
 
 $es_url = static function (int $n) use ($es_base): string {
     return $n <= 1 ? $es_base : $es_base . (str_contains($es_base, '?') ? '&' : '?') . 'paged=' . $n;
@@ -34,12 +45,18 @@ foreach (range(1, $es_total_pages) as $es_n) {
     if ($es_n === $es_current) {
         $es_pages_html .= '<button type="button" data-page-num="' . $es_n . '" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer bg-emerald-700 text-white shadow-sm shadow-emerald-700/25">' . es_fa_num((string) $es_n) . '</button>';
     } else {
-        $es_pages_html .= '<a href="' . esc_url($es_url($es_n)) . '" data-page-num="' . $es_n . '" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer border border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:text-emerald-800">' . es_fa_num((string) $es_n) . '</a>';
+        $es_pages_html .= $es_page_btn
+            ? '<button type="button" data-page-num="' . $es_n . '" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer border border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:text-emerald-800">' . es_fa_num((string) $es_n) . '</button>'
+            : '<a href="' . esc_url($es_url($es_n)) . '" data-page-num="' . $es_n . '" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer border border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:text-emerald-800">' . es_fa_num((string) $es_n) . '</a>';
     }
 }
 echo strtr($ES_PAGI, [
     '{ES_PAGI_LABEL}'     => esc_html($es_label),
     '{ES_NAV_CLS}'        => (string) $es_nav_cls,
+    '{ES_BOX_CLS}'        => (string) $es_box_cls,
+    '{ES_CUR_LABEL}'      => esc_html($es_cur_label),
+    '{ES_COUNT_SEG}'      => (string) $es_count_seg,
+    '{ES_NAVBTN_CLS}'     => (string) $es_navbtn_cls,
     '{ES_ROOT}'           => esc_attr($es_root),
     '{ES_COUNT_ATTR}'     => (string) $es_count_attr,
     '{ES_UNIT}'           => esc_html($es_unit),
@@ -51,7 +68,9 @@ echo strtr($ES_PAGI, [
     '{ES_PAGES_HTML}'     => $es_pages_html,
     '{ES_NEXT_ATTR}'      => $es_current >= $es_total_pages ? ' disabled=""' : '',
     '{ES_NEXT_URL}'       => $es_current < $es_total_pages ? ' data-href="' . esc_url($es_url($es_current + 1)) . '"' : '',
-    '{ES_NEXT_TAG}'       => $es_current < $es_total_pages
-        ? ' class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer" data-href="' . esc_url($es_url($es_current + 1)) . '"'
-        : ' disabled="" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"',
+    '{ES_NEXT_TAG}'       => !$es_next_href
+        ? ' class="inline-flex items-center gap-1 rounded-xl border border-slate-200 ' . (string) $es_navbtn_cls . ' text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"'
+        : ($es_current < $es_total_pages
+            ? ' class="inline-flex items-center gap-1 rounded-xl border border-slate-200 ' . (string) $es_navbtn_cls . ' text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer" data-href="' . esc_url($es_url($es_current + 1)) . '"'
+            : ' disabled="" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 ' . (string) $es_navbtn_cls . ' text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"'),
 ]);

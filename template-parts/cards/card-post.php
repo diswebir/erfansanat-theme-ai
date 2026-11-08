@@ -22,7 +22,7 @@ if (is_array($es_args)) {
 }
 
 $WRAP = <<<'ESC11B'
-<div data-blog-item="true" data-blog-category="{ES_CHIP}" data-blog-search-text="{ES_SEARCH}" class="block"></div>
+<div data-blog-item="true" data-blog-category="{ES_CHIP}" data-blog-search-text="{ES_SEARCH}" class="{ES_VIS}"></div>
 ESC11B;
 
 $BODY = <<<'ESC11B'
@@ -52,11 +52,24 @@ if ($es_min < 1) {
 $es_date = es_fa_num(get_the_date('j F Y', $es_post));
 $es_featured = !empty($args['featured']);
 $es_custom = (string) ($args['custom'] ?? '0');
-$es_search = trim($es_title . ' ' . $es_excerpt . ' ' . $es_chip);
+$es_kw = trim((string) get_post_meta($es_pid, 'es_keywords', true));
+$es_search_parts = [$es_title, $es_excerpt];
+if (!isset($args['search_chip']) || $args['search_chip']) {
+    $es_search_parts[] = $es_chip;
+}
+if ($es_kw !== '') {
+    $es_search_parts[] = $es_kw;
+}
+$es_search = trim(implode(' ', $es_search_parts));
 
-echo strtr($WRAP, [
+$es_nested = !empty($args['nested']);
+$es_visible = !isset($args['visible']) || $args['visible'];
+$es_wrap = $es_nested ? preg_replace('~</div>$~', '', $WRAP) : $WRAP;
+
+echo strtr($es_wrap, [
     '{ES_CHIP}'   => esc_html($es_chip),
     '{ES_SEARCH}' => esc_attr($es_search),
+    '{ES_VIS}'    => $es_visible ? 'block' : 'hidden',
 ]);
 echo strtr($BODY, [
     '{ES_CUSTOM}'   => esc_attr($es_custom),
@@ -69,4 +82,7 @@ echo strtr($BODY, [
     '{ES_MIN}'      => es_fa_num((string) $es_min),
     '{ES_EXCERPT}'  => esc_html($es_excerpt),
 ]);
+if ($es_nested) {
+    echo '</div></div>'; // بستن div تزئینی custom + WRAP (چیدمان تودرتوی میرور آرشیو بلاگ)
+}
 
