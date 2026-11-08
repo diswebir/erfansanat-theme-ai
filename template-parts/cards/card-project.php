@@ -45,11 +45,14 @@ $es_city = (is_array($es_terms_c) && isset($es_terms_c[0]->name)) ? (string) $es
 $es_date = (string) get_post_meta($es_pid, 'finish-pro-time', true);
 $es_views = (int) get_post_meta($es_pid, 'number2-viewc', true);
 $es_rating_raw = (string) get_post_meta($es_pid, 'es_rating', true);
-$es_search = trim($es_title . ' ' . $es_city . ' ' . $es_chip);
+$es_client = (string) get_post_meta($es_pid, 'es_client', true);
+$es_search = trim($es_title . ' ' . $es_city . ' ' . $es_chip . ($es_client !== '' ? ' ' . $es_client : ''));
 
 $es_custom = (string) ($args['custom'] ?? '0');
+$es_nested = !empty($args['nested']);
+$es_wrap = $es_nested ? preg_replace('~</div>$~', '', $WRAP) : $WRAP;
 
-echo strtr($WRAP, [
+echo strtr($es_wrap, [
     '{ES_CHIP}'       => esc_html($es_chip),
     '{ES_TYPES}'      => esc_html($es_types),
     '{ES_CITY}'       => esc_attr($es_city),
@@ -68,4 +71,7 @@ echo strtr($BODY, [
     '{ES_RATING}' => es_fa_num($es_rating_raw),
     '{ES_VIEWS}'  => es_fa_num((string) $es_views),
 ]);
+if ($es_nested) {
+    echo '</div>';
+}
 

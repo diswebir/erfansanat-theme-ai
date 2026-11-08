@@ -357,9 +357,9 @@
 - 📤 خروجی: `single-projects.php`؛ `template-parts/single-project/*.php` · **وابستگی:** Task 3.11, Task 3.12, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 7.2 — archive-projects.php — آرشیو پروژه‌ها با فیلترها `[PENDING]`
+### Task 7.2 — archive-projects.php — آرشیو پروژه‌ها با فیلترها `[DONE — 20/20 · رگرسیون ۱۱۸۸/۰]`
 - 🎯 آرشیو مطابق projects.html: هیرو، فیلتر نوع/شهر/مرتب‌سازی، گرید و صفحه‌بندی
-- 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php` · **وابستگی:** Task 5.11
+- 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php`؛ `pagination.php` مشترک + `inc/Frontend/ProjectArchive.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
 ### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[PENDING]`
@@ -805,9 +805,9 @@
 - 📤 خروجی: `single-projects.php`؛ `template-parts/single-project/*.php` · **وابستگی:** Task 3.11, Task 3.12, Task 5.11
 - ✅ 4 شرط پاس · 🛠 6 گام اجرا
 
-### Task 7.2 — archive-projects.php — آرشیو پروژه‌ها با فیلترها `[PENDING]`
+### Task 7.2 — archive-projects.php — آرشیو پروژه‌ها با فیلترها `[DONE — 20/20 · رگرسیون ۱۱۸۸/۰]`
 - 🎯 آرشیو مطابق projects.html: هیرو، فیلتر نوع/شهر/مرتب‌سازی، گرید و صفحه‌بندی
-- 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php` · **وابستگی:** Task 5.11
+- 📤 خروجی: `archive-projects.php`؛ `template-parts/archive/project-filters.php`؛ `pagination.php` مشترک + `inc/Frontend/ProjectArchive.php` · **وابستگی:** Task 5.11
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 
 ### Task 7.3 — taxonomy-project_type.php و taxonomy-city.php `[PENDING]`

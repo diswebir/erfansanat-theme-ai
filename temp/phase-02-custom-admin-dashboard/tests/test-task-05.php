@@ -50,7 +50,7 @@ check(($custom['head_js']['type'] ?? '') === 'textarea', 'نوع فیلد اسک
 $arch = $pick('archives');
 check(($arch['products_per_page']['default'] ?? 0) === 20, 'پیش‌فرض ۲۰ محصول در صفحه (گرید میرور)');
 check(($arch['products_columns']['default'] ?? '') === '4' && count($arch['products_columns']['options'] ?? []) === 3, 'ستون‌های محصولات: پیش‌فرض ۴ + سه گزینه');
-check(($arch['projects_per_page']['default'] ?? 0) === 12, 'پیش‌فرض ۱۲ پروژه در صفحه');
+check(($arch['projects_per_page']['default'] ?? 0) === 6, 'پیش‌فرض ۶ پروژه در صفحه (فاز ۷.۲: مطابق میرور projects.html)');
 check(($arch['posts_per_page']['default'] ?? 0) === 9, 'پیش‌فرض ۹ مقاله در صفحه');
 
 // clamp عدد در ذخیره: تست زنجیره sanitize عددی با min/max

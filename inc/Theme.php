@@ -96,5 +96,9 @@ final class Theme {
         if (class_exists(Frontend\ViewCounter::class)) {
             Frontend\ViewCounter::init();
         }
+
+        if (class_exists(Frontend\ProjectArchive::class)) {
+            Frontend\ProjectArchive::init();
+        }
     }
 }

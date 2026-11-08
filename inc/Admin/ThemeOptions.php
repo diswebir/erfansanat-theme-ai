@@ -321,7 +321,7 @@ final class ThemeOptions {
             ],
             [
                 'key' => 'projects_per_page', 'type' => 'number', 'label' => __('پروژه‌ها در هر صفحه', 'erfansanat'),
-                'default' => 12, 'min' => 1, 'max' => 100,
+                'default' => 6, 'min' => 1, 'max' => 100, // فاز ۷.۲: مطابق data-items-per-page="6" میرور projects.html
             ],
             [
                 'key' => 'posts_per_page', 'type' => 'number', 'label' => __('مقالات در هر صفحه', 'erfansanat'),

@@ -1456,3 +1456,19 @@ if (!function_exists('wp_parse_url')) {
 }
 if (!function_exists('current_user_id') && false) {
 }
+
+/** استاب get_query_var — فاز ۷: صفحه‌بندی آرشیوها (paged) */
+if (!function_exists('get_query_var')) {
+    function get_query_var(string $var): mixed
+    {
+        return $GLOBALS['__es_stub_query_vars'][$var] ?? 0;
+    }
+}
+
+/** استاب get_post_type_archive_link — فاز ۷: لینک پایه آرشیو */
+if (!function_exists('get_post_type_archive_link')) {
+    function get_post_type_archive_link(string $post_type): string
+    {
+        return (string) ($GLOBALS['__es_stub_archive_links'][$post_type] ?? '');
+    }
+}

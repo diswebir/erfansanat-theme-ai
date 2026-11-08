@@ -1,19 +1,25 @@
 <?php
 /**
- * صفحه‌بندی آرشیو فروشگاه — برش بایت‌دقیق میرور shop.html (nav) با دکمه‌های میرور
- * فرگمنت با temp/gen_p67.py تولید شده است.
+ * صفحه‌بندی مشترک آرشیوها (محصولات/پروژه‌ها) — برش بایت‌دقیق میرور
+ * فرگمنت با temp/gen_p72.py از ناو projects.html تولید شده (سازگار با shop.html).
+ * پیش‌فرض args = محصولات (۶.۷)؛ برای پروژه‌ها: root/count_attr/unit/label پاس داده شود.
  *
  * @package ErfanSanat
  */
 declare(strict_types=1);
 
-$ES_PAGI = <<<'ESP67B'
-<nav aria-label="صفحه‌بندی محصولات" data-pagination-root="products" class="flex mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-2xs"><div class="text-[12.5px] font-bold text-slate-600">نمایش صفحه <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span> (مجموعاً <span data-product-count="true">{ES_TOTAL_PRODUCTS}</span> محصول)</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true"{ES_NEXT_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_NEXT_URL}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
-ESP67B;
+$ES_PAGI = <<<'ESP72P'
+<nav aria-label="{ES_PAGI_LABEL}" data-pagination-root="{ES_ROOT}" class="flex mt-10 flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-2xs"><div class="text-[12.5px] font-bold text-slate-600">نمایش صفحه <span data-pagination-current="true" class="font-black text-emerald-800">{ES_CUR}</span> از <span data-pagination-total="true" class="font-black text-slate-900">{ES_TOTAL_PAGES}</span> (مجموعاً <span {ES_COUNT_ATTR}>{ES_TOTAL_PRODUCTS}</span> {ES_UNIT})</div><div class="flex items-center gap-1.5" data-pagination-buttons="true"><button type="button" data-page-prev="true"{ES_PREV_ATTR} class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_PREV_URL}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg><span>قبلی</span></button>{ES_PAGES_HTML}<button type="button" data-page-next="true" class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 disabled:opacity-40 cursor-pointer"{ES_NEXT_URL}><span>بعدی</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></div></nav>
+ESP72P;
 $es_args = $args ?? [];
 $es_current = max(1, (int) ($es_args['current'] ?? 1));
 $es_total_pages = max(1, (int) ($es_args['total_pages'] ?? 1));
 $es_base = (string) ($es_args['base_url'] ?? '');
+$es_root = (string) ($es_args['root'] ?? 'products');
+$es_count_attr = (string) ($es_args['count_attr'] ?? 'data-product-count="true"');
+$es_unit = (string) ($es_args['unit'] ?? 'محصول');
+$es_label = (string) ($es_args['label'] ?? 'صفحه‌بندی محصولات');
+
 $es_url = static function (int $n) use ($es_base): string {
     return $n <= 1 ? $es_base : $es_base . (str_contains($es_base, '?') ? '&' : '?') . 'paged=' . $n;
 };
@@ -30,6 +36,10 @@ foreach (range(1, $es_total_pages) as $es_n) {
     }
 }
 echo strtr($ES_PAGI, [
+    '{ES_PAGI_LABEL}'     => esc_html($es_label),
+    '{ES_ROOT}'           => esc_attr($es_root),
+    '{ES_COUNT_ATTR}'     => (string) $es_count_attr,
+    '{ES_UNIT}'           => esc_html($es_unit),
     '{ES_CUR}'            => es_fa_num((string) $es_current),
     '{ES_TOTAL_PAGES}'    => es_fa_num((string) $es_total_pages),
     '{ES_TOTAL_PRODUCTS}' => es_fa_num((string) ($es_args['total_products'] ?? 0)),

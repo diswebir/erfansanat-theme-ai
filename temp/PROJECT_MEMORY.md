@@ -98,6 +98,12 @@
 
 ## رویدادهای فاز ۶ (2026-11-04)
 
+### ۷.۲ — archive-projects (2026-11-08)
+- خروجی‌ها: `archive-projects.php` (شل: هیرو ESP72H + sec#archive + فیلترها + topbar + گرید ۶ کارت نستد + nav مشترک + empty/دراور/مقاله استاتیک + CTA) · `template-parts/archive/project-filters.php` (۹ ردیف نوع get_terms(project_type) + ۱۰ chip شهر get_terms(city)؛ فعال با مقایسه slug) · `template-parts/archive/pagination.php` مشترک (پیش‌فرض products؛ projects با root='projects'/count_attr/unit/label؛ early-return total≤1؛ data-href بعد از class طبق قرارداد ۶.۷) · `inc/Frontend/ProjectArchive.php` (pre_get_posts @20: type/location→tax_query slug، sort popular→number2-viewc / rating→es_rating، per-page clamp ۱..۱۰۰) — boot در Theme.php.
+- ژنراتور `temp/gen_p72.py`: ۹ ریجن از projects.html با assert بازسازی بایت‌دقیق + nav_norm(projects)≡nav_norm(shop)؛ توکن‌های ROW_ON/ROW_OFF/ROW_CITY از ردیف‌های یکتای میرور.
+- تست ۷.۲: 20/20 — قیاس کل main شل ≡ میرور (۱۲ کارت دم → ۶ کارت رندر per-page=۶؛ custom یک‌درمیان 0.04/0.1) + empty toggle + selected مرتب‌سازی + query_args/apply/sanitize/کلامپ. رگرسیون کامل: **۱۱۸۸/۰** (۶۴ فایل پیاده‌شده + ۱۸ placeholder).
+- تغییرات جانبی مجاز: دیفالت `archives.projects_per_page` اسکیما ۱۲→۶ (+تست ۲.۵) چون میرور data-items-per-page="6" و ناو دوصفحه‌ای دارد؛ card-project فلگ `nested` (آرشیو محتوا را داخل data-project-item می‌گیرد برخلاف صفحه اصلی) + `es_client` به data-project-search-text.
+
 ### ۶.۱۱ (تسک یازدهم — پایانی فاز ۶) — my-account (2026-11-07)
 - خروجی‌ها: `woocommerce/myaccount/form-login.php` (ورود/ثبت‌نام با کامپوننت‌های فرم میرور — کلاس اینپوت/لیبل checkout + btn-primary؛ نام فیلدها/nonce/هوک‌های استاندارد WC: username/password/rememberme/login/register + woocommerce-login-nonce/register-nonce + do_action login/register_form_*)؛ `assets/css/wc-forms-override.css` (نگاشت کلاس‌های WC به ظاهر میرور: input/label/button/navigation endpoints/orders-table/messages/dashboard)؛ Setup::enqueue_account_styles (wp_enqueue_scripts + is_account_page، ورژن filemtime با ERFANSANAT_URI).
 - گزینه‌های WC رعایت شد: generate_username/password=yes → فیلدهای ثبت‌نام حذف.
