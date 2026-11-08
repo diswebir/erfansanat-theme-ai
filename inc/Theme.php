@@ -38,6 +38,9 @@ final class Theme {
             if (class_exists(Sections\ContactSections::class)) {
                 Sections\ContactSections::init();
             }
+            if (class_exists(Sections\LandingSections::class)) {
+                Sections\LandingSections::init();
+            }
             if (class_exists(Sections\Registry::class)) {
                 Sections\Registry::init();
             }

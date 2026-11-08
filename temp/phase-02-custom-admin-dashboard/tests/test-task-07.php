@@ -34,7 +34,7 @@ SectionManager::register_section('home', 'hero', 'هیرو', [['key' => 'title',
 SectionManager::register_section('home', 'categories', 'دسته‌بندی‌ها', []);
 SectionManager::register_section('home', 'contact', 'تماس', []);
 
-check(count(SectionManager::registered()) === 4, 'چهار گروه ثبت شد (page واقعی + about + contact فاز ۷.۷ + home نمونه)');
+check(count(SectionManager::registered()) === 8, 'هشت گروه ثبت شد (page/about/contact فاز ۷.۷ + licenses/faq/refund/recruitment فاز ۷.۸ + home نمونه)');
 check(count(SectionManager::sections_of('home')) === 3, 'سه سکشن در گروه home');
 check(count(SectionManager::sections_of('page')) === 15, '۱۵ سکشن واقعی در گروه page (HomeSections)');
 

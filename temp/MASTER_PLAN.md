@@ -388,10 +388,11 @@
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 - 📌 انجام شد (2026-11-03): گروه about = ۵ سکشن عین میرور (بدون ویدیو/تایم‌لاین — میرور ندارد) + reuse سکشن contact؛ گروه contact = هیرو + form (نقشه در میرور contact نیست)؛ نگاشت قالب→گروه در SectionManager (group_for_post + فیلتر es_sections_template_groups)؛ فرم تا ۸.۵ نمایشی با فیلتر es_contact_form_extra؛ fix نشتی PHP در MobileWalker؛ رانر php-wasm بازسازی شد.
 
-### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[PENDING]`
+### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[DONE — 78/78 · رگرسیون ۱۴۵۲/۰]`
 - 🎯 چهار قالب برگه اختصاصی با Repeaterهای قابل ویرایش و فرم استخدام
-- 📤 خروجی: `page-templates/page-licenses.php`؛ `page-templates/page-faq.php`؛ `page-templates/page-refund.php`؛ `page-templates/page-recruitment.php`؛ `inc/Sections/*.php مربوطه` · **وابستگی:** Task 2.9
+- 📤 خروجی: `page-templates/page-licenses.php`؛ `page-templates/page-faq.php`؛ `page-templates/page-refund.php`؛ `page-templates/page-recruitment.php`؛ `inc/Sections/LandingSections.php` · **وابستگی:** Task 2.9
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
+- 📌 انجام شد (2026-11-03): ۴ گروه licenses/faq/refund/recruitment در LandingSections (ترتیب عین میرور؛ contact سومین reuse؛ recruitment بدون CTA طبق میرور)؛ Repeaterهای badges/certs/s_items/cats/items/cards/covered/excluded/steps/tabs/jobs با پیش‌فرض میرور و custom دوره‌ای/شماره فارسی از ایندکس؛ فرم recruitment با لنگر apply-form + فیلتر es_recruit_form_extra (تا ۸.۶ نمایشی)؛ بایت‌دقیق ×۴ با temp/p78_expect_*.html؛ پچ TEMPLATE_GROUPS ×۴ + بوت Theme؛ تست 2.7 به ۸ گروه به‌روز شد.
 
 ### Task 7.9 — خدمات: single-services.php + فهرست خدمات + card-service `[PENDING]`
 - 🎯 قالب‌های CPT services مطابق سینگل‌ها و services.html میرور
@@ -837,10 +838,11 @@
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
 - 📌 انجام شد (2026-11-03): گروه about = ۵ سکشن عین میرور (بدون ویدیو/تایم‌لاین — میرور ندارد) + reuse سکشن contact؛ گروه contact = هیرو + form (نقشه در میرور contact نیست)؛ نگاشت قالب→گروه در SectionManager (group_for_post + فیلتر es_sections_template_groups)؛ فرم تا ۸.۵ نمایشی با فیلتر es_contact_form_extra؛ fix نشتی PHP در MobileWalker؛ رانر php-wasm بازسازی شد.
 
-### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[PENDING]`
+### Task 7.8 — قالب برگه‌های licenses، faq، refund_returns و recruitment `[DONE — 78/78 · رگرسیون ۱۴۵۲/۰]`
 - 🎯 چهار قالب برگه اختصاصی با Repeaterهای قابل ویرایش و فرم استخدام
-- 📤 خروجی: `page-templates/page-licenses.php`؛ `page-templates/page-faq.php`؛ `page-templates/page-refund.php`؛ `page-templates/page-recruitment.php`؛ `inc/Sections/*.php مربوطه` · **وابستگی:** Task 2.9
+- 📤 خروجی: `page-templates/page-licenses.php`؛ `page-templates/page-faq.php`؛ `page-templates/page-refund.php`؛ `page-templates/page-recruitment.php`؛ `inc/Sections/LandingSections.php` · **وابستگی:** Task 2.9
 - ✅ 3 شرط پاس · 🛠 5 گام اجرا
+- 📌 انجام شد (2026-11-03): ۴ گروه licenses/faq/refund/recruitment در LandingSections (ترتیب عین میرور؛ contact سومین reuse؛ recruitment بدون CTA طبق میرور)؛ Repeaterهای badges/certs/s_items/cats/items/cards/covered/excluded/steps/tabs/jobs با پیش‌فرض میرور و custom دوره‌ای/شماره فارسی از ایندکس؛ فرم recruitment با لنگر apply-form + فیلتر es_recruit_form_extra (تا ۸.۶ نمایشی)؛ بایت‌دقیق ×۴ با temp/p78_expect_*.html؛ پچ TEMPLATE_GROUPS ×۴ + بوت Theme؛ تست 2.7 به ۸ گروه به‌روز شد.
 
 ### Task 7.9 — خدمات: single-services.php + فهرست خدمات + card-service `[PENDING]`
 - 🎯 قالب‌های CPT services مطابق سینگل‌ها و services.html میرور

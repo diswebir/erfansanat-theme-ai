@@ -25,6 +25,10 @@ final class SectionManager {
     private const TEMPLATE_GROUPS = [
         'page-templates/page-about.php'   => 'about',
         'page-templates/page-contact.php' => 'contact',
+        'page-templates/page-licenses.php'   => 'licenses',
+        'page-templates/page-faq.php'        => 'faq',
+        'page-templates/page-refund.php'     => 'refund',
+        'page-templates/page-recruitment.php' => 'recruitment',
     ];
 
     public static function init(): void {
