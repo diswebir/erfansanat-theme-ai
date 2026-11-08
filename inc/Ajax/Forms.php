@@ -97,11 +97,11 @@ final class Forms
             wp_send_json_error(['message' => 'خطا در ذخیره'], 500);
         }
 
-        $adminEmail = get_option('admin_email');
+        $adminEmail = es_option('forms.notify_email', '') ?: get_option('admin_email');
         if ($adminEmail) {
             wp_mail($adminEmail, "پیام جدید فرم $form — erfansanat.com", $body);
         }
 
-        wp_send_json_success(['message' => __('پیام شما با موفقیت ثبت شد.', 'erfansanat')]);
+        wp_send_json_success(['message' => es_option('forms.success_message', __('پیام شما با موفقیت ثبت شد.', 'erfansanat'))]);
     }
 }

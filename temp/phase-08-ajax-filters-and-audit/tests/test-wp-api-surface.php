@@ -39,7 +39,7 @@ $wcPrefixes = ['wc_', 'woocommerce_'];
 
 // theme's own global helpers
 $ownFuncs = ['es_option', 'es_sections', 'es_hreflang_tags', 'es_static_url', 'es_page_url', 'es_picture'];
-$jsNames = ['stringify','parse','log','fetch','then','catch','getelementbyid','addeventlistener','json'];
+$jsNames = ['stringify','parse','log','fetch','then','catch','getelementbyid','addeventlistener','json','format','elseif','endif','endforeach','endwhile','endfor','endwhile'];
 
 // 2. Scan theme PHP files for called functions
 $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($THEME, FilesystemIterator::SKIP_DOTS));

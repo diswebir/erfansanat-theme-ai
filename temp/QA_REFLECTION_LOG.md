@@ -117,3 +117,6 @@
 
 ## HARDENING + PERF POLISH — 2026-11-04
 - IP rate limiting on AJAX (forms/filters), honeypot kept, font+CSS preload, aria-live on grids, print stylesheet, GitHub Actions CI, expanded fa_IR.mo, README changelog. 9/9 PASS, E2E 0 FAILs.
+
+## OPTIONS PANEL PRO — 2026-11-04
+- Rebuilt admin options panel: 8 tabs, media pickers, toggles, selects; wired to front-end (brand vars, custom css/scripts, favicon, og, announcement, CTA, sticky, footer contact, per-page, maintenance mode, form messages). Fixed save() payload bug. 23/23 PASS, E2E 0 FAILs.

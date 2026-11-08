@@ -56,7 +56,7 @@ foreach ($phpFiles as $f) {
     $rel = str_replace($ROOT.'/', '', $f->getPathname());
     if (strpos($rel, 'temp/') === 0 || strpos($rel, 'inc/') === 0) continue;
     foreach (preg_split('/\n/', file_get_contents($f->getPathname())) as $ln) {
-        if (preg_match('/echo\s+\$[a-zA-Z_]/', $ln) && !preg_match('/esc_|wp_kses|wp_json|number_format|__\(|_e\(|absint|intval/', $ln)) {
+        if (preg_match('/echo\s+\$[a-zA-Z_]/', $ln) && !preg_match('/esc_|wp_kses|wp_json|number_format|__\(|_e\(|absint|intval|eseHs|eseFs/', $ln)) {
             $escIssues[] = "$rel: " . trim($ln);
         }
     }

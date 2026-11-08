@@ -15,8 +15,9 @@ if (!defined('ABSPATH')) {
 
 final class Queries
 {
-    public static function featured_products(int $n = 8): \WP_Query
+    public static function featured_products(?int $n = null): \WP_Query
     {
+        $n = $n ?? (int) es_option('shop.products_per_page', 9);
         return new \WP_Query([
             'post_type'      => 'product',
             'posts_per_page' => $n,
@@ -28,8 +29,9 @@ final class Queries
         ]);
     }
 
-    public static function latest_projects(int $n = 6): \WP_Query
+    public static function latest_projects(?int $n = null): \WP_Query
     {
+        $n = $n ?? (int) es_option('shop.projects_per_page', 6);
         return new \WP_Query([
             'post_type'      => 'projects',
             'posts_per_page' => $n,

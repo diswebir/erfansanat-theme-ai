@@ -42,10 +42,26 @@ final class Theme
         // Vazirmatn on the login screen as well (login is not is_admin()).
         add_action('login_enqueue_scripts', [$this, 'admin_font']);
         add_action('login_head', [$this, 'admin_font_css'], 1);
+        add_action('template_redirect', [$this, 'maintenance_mode']);
         add_action('after_setup_theme', [$this, 'setup']);
         add_action('init', [$this, 'register_core'], 5);
         Data\Registrar::hooks();
         Seo::hooks();
+    }
+
+    /** Coming-soon page for visitors when maintenance mode is on. */
+    public function maintenance_mode(): void
+    {
+        if (es_option('advanced.maintenance_mode', '0') !== '1') {
+            return;
+        }
+        if (current_user_can('manage_options') || is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
+            return;
+        }
+        status_header(503);
+        nocache_headers();
+        echo '<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>' . esc_html__('در حال به‌روزرسانی', 'erfansanat') . '</title><style>body{font-family:Tahoma,sans-serif;background:#f6f8f7;display:grid;place-items:center;min-height:100vh;margin:0;color:#1e293b}h1{color:#047857}</style></head><body><div style="text-align:center"><h1>' . esc_html__('سایت در حال به‌روزرسانی است', 'erfansanat') . '</h1><p>' . esc_html__('به زودی برمی‌گردیم.') . '</p></div></body></html>';
+        exit;
     }
 
     /**

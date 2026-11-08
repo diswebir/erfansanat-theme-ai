@@ -132,3 +132,6 @@
 
 ## WEBP + SCREENSHOT — 2026-11-04
 - ۷ تصویر بزرگ به webp تبدیل شد + helper es_picture() با fallback jpg در cardها (<picture>). screenshot.png واقعی ساخته شد. E2E 0 FAIL.
+
+## OPTIONS PANEL PRO — 2026-11-04
+- ThemeOptions بازنویسی کامل: ۸ تب (عمومی/هدر/فوتر/فروشگاه/فرم‌ها/سئو/برند/پیشرفته)، media uploader، toggle، select، textarea، ذخیره AJAX+POST. Front-end واقعی به optionها وصل شد: brand color CSS vars، custom_css، header/footer scripts، favicon، og:image، announcement، CTA، sticky header، footer تماس/شبکه‌ها، per-page از shop options، maintenance mode (503)، forms notify/success. تست ۲۳/۲۳ ALL PASS، E2E 0 FAIL.
