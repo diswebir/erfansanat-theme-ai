@@ -92,6 +92,10 @@ msgstr ""
 msgid "آماده ثبت سفارش آنلاین"
 msgstr ""
 
+#: inc/Admin/ThemeOptions.php:315
+msgid "آمار فعلی"
+msgstr ""
+
 #: inc/Sections.php:210
 msgid "آمار کوتاه"
 msgstr ""
@@ -264,12 +268,20 @@ msgstr ""
 msgid "افزودن %s"
 msgstr ""
 
-#: inc/Admin/ProductMetaboxes.php:229 inc/Admin/SectionManager.php:186 inc/Admin/ThemeOptions.php:393
+#: inc/Admin/ThemeOptions.php:331
+msgid "افزودن خدمت"
+msgstr ""
+
+#: inc/Admin/ProductMetaboxes.php:229 inc/Admin/SectionManager.php:186 inc/Admin/ThemeOptions.php:506
 msgid "افزودن ردیف"
 msgstr ""
 
 #: inc/Admin/TermMetaboxes.php:101
 msgid "افزودن سوال"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:329
+msgid "افزودن محصول"
 msgstr ""
 
 #: inc/ContentTypes.php:329
@@ -288,7 +300,7 @@ msgstr ""
 msgid "املای عبارت را بررسی کنید یا از عبارت کوتاه‌تری استفاده کنید."
 msgstr ""
 
-#: inc/Admin/ProjectMetaboxes.php:97 inc/Admin/SectionManager.php:134 inc/Admin/TermMetaboxes.php:74 inc/Admin/ThemeOptions.php:179 inc/Admin/ThemeOptions.php:372
+#: inc/Admin/ProjectMetaboxes.php:97 inc/Admin/SectionManager.php:134 inc/Admin/TermMetaboxes.php:74 inc/Admin/ThemeOptions.php:179 inc/Admin/ThemeOptions.php:485
 msgid "انتخاب تصویر"
 msgstr ""
 
@@ -400,7 +412,7 @@ msgstr ""
 msgid "بخش نظرات برای این نوشته بسته شده است."
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:296
+#: inc/Admin/ThemeOptions.php:409
 msgid "بخش‌های تنظیمات"
 msgstr ""
 
@@ -448,7 +460,7 @@ msgstr ""
 msgid "برای مشاورهٔ فنی، استعلام قیمت یا بازدید از کارخانه، فرم زیر را پر کنید یا مستقیم تماس بگیرید."
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:434
+#: inc/Admin/ThemeOptions.php:547
 msgid "برای ویرایش این فیلد مجوز unfiltered_html لازم است."
 msgstr ""
 
@@ -624,7 +636,7 @@ msgstr ""
 msgid "تعداد پیام‌های ارسالی از این دستگاه زیاد بوده است. کمی بعد دوباره تلاش کنید."
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:336
+#: inc/Admin/ThemeOptions.php:449
 msgid "تغییرات فقط پس از ذخیره اعمال می‌شوند."
 msgstr ""
 
@@ -672,12 +684,8 @@ msgstr ""
 msgid "تماس مستقیم با کارشناسان فروش"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:471
+#: inc/Admin/ThemeOptions.php:584
 msgid "تنظیمات ذخیره شد."
-msgstr ""
-
-#: inc/Admin/ThemeOptions.php:290
-msgid "تنظیمات سراسری قالب در یک ردیف ذخیره می‌شوند. محتوای صفحات با سازندهٔ بخش‌ها در هر برگه ویرایش می‌شود."
 msgstr ""
 
 #: inc/Sections.php:242 inc/Sections.php:280 inc/Sections.php:361 inc/Sections.php:413
@@ -758,6 +766,10 @@ msgstr ""
 
 #: template-parts/product/part-tabs.php:317
 msgid "ثبت نظر و امتیاز شما"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:330
+msgid "ثبت پروژه"
 msgstr ""
 
 #: inc/Forms/FormHandler.php:153
@@ -860,11 +872,11 @@ msgstr ""
 msgid "حداقل سفارش: %s"
 msgstr ""
 
-#: inc/Admin/ProductMetaboxes.php:206 inc/Admin/ProjectMetaboxes.php:98 inc/Admin/SectionManager.php:135 inc/Admin/TermMetaboxes.php:75 inc/Admin/ThemeOptions.php:373
+#: inc/Admin/ProductMetaboxes.php:206 inc/Admin/ProjectMetaboxes.php:98 inc/Admin/SectionManager.php:135 inc/Admin/TermMetaboxes.php:75 inc/Admin/ThemeOptions.php:486
 msgid "حذف"
 msgstr ""
 
-#: inc/Admin/ProductMetaboxes.php:219 inc/Admin/SectionManager.php:174 inc/Admin/SectionManager.php:183 inc/Admin/TermMetaboxes.php:94 inc/Admin/ThemeOptions.php:382 inc/Admin/ThemeOptions.php:390
+#: inc/Admin/ProductMetaboxes.php:219 inc/Admin/SectionManager.php:174 inc/Admin/SectionManager.php:183 inc/Admin/TermMetaboxes.php:94 inc/Admin/ThemeOptions.php:495 inc/Admin/ThemeOptions.php:503
 msgid "حذف ردیف"
 msgstr ""
 
@@ -882,6 +894,10 @@ msgstr ""
 
 #: archive-services.php:45 archive-services.php:64 inc/ContentTypes.php:99 inc/Frontend/SiteParts.php:360 inc/Navigation/MenuTree.php:336 inc/Sections.php:349
 msgid "خدمات"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:296
+msgid "خدمات منتشرشده"
 msgstr ""
 
 #: inc/Navigation/MegaMenu.php:212
@@ -924,7 +940,11 @@ msgstr ""
 msgid "خلاصه پروژه"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:459
+#: inc/Admin/ThemeOptions.php:313
+msgid "خلاصه‌ای زنده از محتوای سایت و میان‌برهای مدیریت."
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:572
 msgid "داده‌ای برای ذخیره ارسال نشد."
 msgstr ""
 
@@ -932,7 +952,7 @@ msgstr ""
 msgid "دارای کد GS1 و ستاد"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:122 inc/Admin/ThemeOptions.php:288
+#: inc/Admin/ThemeOptions.php:122 inc/Admin/ThemeOptions.php:395
 msgid "داشبورد عرفان صنعت"
 msgstr ""
 
@@ -1020,15 +1040,15 @@ msgstr ""
 msgid "دستاوردها و شاخصه‌های فنی این پروژه"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:279
+#: inc/Admin/ThemeOptions.php:383
 msgid "دسترسی به این صفحه مجاز نیست."
 msgstr ""
 
-#: footer.php:55 inc/Settings.php:185
+#: footer.php:55 inc/Admin/ThemeOptions.php:328 inc/Settings.php:185
 msgid "دسترسی سریع"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:447
+#: inc/Admin/ThemeOptions.php:560
 msgid "دسترسی مجاز نیست."
 msgstr ""
 
@@ -1092,7 +1112,7 @@ msgstr ""
 msgid "دیدن همهٔ نتایج"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:333
+#: inc/Admin/ThemeOptions.php:446
 msgid "ذخیره تغییرات"
 msgstr ""
 
@@ -1110,6 +1130,10 @@ msgstr ""
 
 #: inc/Sections.php:239
 msgid "ردیف‌های معرفی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:332
+msgid "رفتن به صندوق پیام‌ها"
 msgstr ""
 
 #: inc/Admin/ProductMetaboxes.php:163
@@ -1408,7 +1432,7 @@ msgstr ""
 msgid "عرفان صنعت"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:380 inc/Admin/ThemeOptions.php:388 inc/Sections.php:148 inc/Sections.php:241 inc/Sections.php:360 inc/Sections.php:412
+#: inc/Admin/ThemeOptions.php:493 inc/Admin/ThemeOptions.php:501 inc/Sections.php:148 inc/Sections.php:241 inc/Sections.php:360 inc/Sections.php:412
 msgid "عنوان"
 msgstr ""
 
@@ -1688,6 +1712,10 @@ msgstr ""
 msgid "محصولات مشابه و مکمل"
 msgstr ""
 
+#: inc/Admin/ThemeOptions.php:284
+msgid "محصولات منتشرشده"
+msgstr ""
+
 #: template-parts/home/section-catalog.php:61
 msgid "محصولات نورپردازی شهری"
 msgstr ""
@@ -1712,6 +1740,10 @@ msgstr ""
 msgid "مدل"
 msgstr ""
 
+#: inc/Admin/ThemeOptions.php:323
+msgid "مدیریت"
+msgstr ""
+
 #: template-parts/archive/part-projects-grid.php:50 template-parts/archive/part-shop-grid.php:59
 msgid "مرتب‌سازی:"
 msgstr ""
@@ -1730,6 +1762,10 @@ msgstr ""
 
 #: inc/Data/ProjectData.php:116
 msgid "مرداد"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:394
+msgid "مرکز مدیریت وب‌سایت"
 msgstr ""
 
 #: template-parts/product/part-tabs.php:107
@@ -1798,6 +1834,10 @@ msgstr ""
 
 #: inc/ContentTypes.php:304
 msgid "مشاهدهٔ %s"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:400
+msgid "مشاهدهٔ وب‌سایت"
 msgstr ""
 
 #: inc/Forms/Inbox.php:63 inc/Forms/Inbox.php:64
@@ -2076,7 +2116,7 @@ msgstr ""
 msgid "نشان‌های کوتاه"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:453
+#: inc/Admin/ThemeOptions.php:566
 msgid "نشست منقضی شده است. صفحه را دوباره بارگذاری کنید."
 msgstr ""
 
@@ -2130,6 +2170,14 @@ msgstr ""
 
 #: template-parts/archive/part-shop-archive.php:170
 msgid "نمای درخت نوری هوشمند تولید عرفان صنعت اصفهان"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:312
+msgid "نمای کلی"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:309
+msgid "نمای کلی وب‌سایت"
 msgstr ""
 
 #: inc/Admin/SectionManager.php:70
@@ -2216,7 +2264,7 @@ msgstr ""
 msgid "هدر و نوار اعلان"
 msgstr ""
 
-#: inc/Admin/ThemeOptions.php:397
+#: inc/Admin/ThemeOptions.php:510
 msgid "هر مورد در یک خط."
 msgstr ""
 
@@ -2332,6 +2380,10 @@ msgstr ""
 msgid "وضعیت خرید و استعلام"
 msgstr ""
 
+#: inc/Admin/ThemeOptions.php:396
+msgid "وضعیت محتوا را ببینید، به کارهای روزمره دسترسی سریع داشته باشید و تنظیمات سراسری قالب را مدیریت کنید."
+msgstr ""
+
 #: template-parts/archive/part-shop-filters.php:102
 msgid "ولتاژ ورودی"
 msgstr ""
@@ -2424,6 +2476,10 @@ msgstr ""
 msgid "پروژه‌های مرتبط (شناسه، جداشده با کاما)"
 msgstr ""
 
+#: inc/Admin/ThemeOptions.php:290
+msgid "پروژه‌های منتشرشده"
+msgstr ""
+
 #: template-parts/archive/part-projects-archive.php:121
 msgid "پروژه‌های نورپردازی"
 msgstr ""
@@ -2482,6 +2538,10 @@ msgstr ""
 
 #: inc/Forms/Inbox.php:59
 msgid "پیام‌ها"
+msgstr ""
+
+#: inc/Admin/ThemeOptions.php:302
+msgid "پیام‌های خوانده‌نشده"
 msgstr ""
 
 #: 404.php:87

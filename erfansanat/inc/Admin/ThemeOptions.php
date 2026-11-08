@@ -270,6 +270,110 @@ final class ThemeOptions {
 	}
 
 	/**
+	 * Render the admin overview with live content counts and safe shortcuts.
+	 *
+	 * Counts are derived from WordPress post tables; nothing is stored as a
+	 * second source of truth, and private form messages are represented only by
+	 * an unread count (their contents stay in the inbox screen).
+	 *
+	 * @return void
+	 */
+	private static function render_overview(): void {
+		$stats = array(
+			array(
+				'label' => __( 'محصولات منتشرشده', 'erfansanat' ),
+				'count' => self::published_count( 'product' ),
+				'icon'  => 'dashicons-products',
+				'href'  => admin_url( 'edit.php?post_type=product' ),
+			),
+			array(
+				'label' => __( 'پروژه‌های منتشرشده', 'erfansanat' ),
+				'count' => self::published_count( 'projects' ),
+				'icon'  => 'dashicons-building',
+				'href'  => admin_url( 'edit.php?post_type=projects' ),
+			),
+			array(
+				'label' => __( 'خدمات منتشرشده', 'erfansanat' ),
+				'count' => self::published_count( 'services' ),
+				'icon'  => 'dashicons-admin-tools',
+				'href'  => admin_url( 'edit.php?post_type=services' ),
+			),
+			array(
+				'label' => __( 'پیام‌های خوانده‌نشده', 'erfansanat' ),
+				'count' => self::unread_message_count(),
+				'icon'  => 'dashicons-email-alt',
+				'href'  => admin_url( 'edit.php?post_type=erfansanat_message' ),
+			),
+		);
+		?>
+		<section class="erfansanat-admin__overview" aria-label="<?php esc_attr_e( 'نمای کلی وب‌سایت', 'erfansanat' ); ?>">
+			<div class="erfansanat-admin__overview-heading">
+				<div>
+					<h2><?php esc_html_e( 'نمای کلی', 'erfansanat' ); ?></h2>
+					<p><?php esc_html_e( 'خلاصه‌ای زنده از محتوای سایت و میان‌برهای مدیریت.', 'erfansanat' ); ?></p>
+				</div>
+				<span class="erfansanat-admin__live"><span aria-hidden="true"></span><?php esc_html_e( 'آمار فعلی', 'erfansanat' ); ?></span>
+			</div>
+			<div class="erfansanat-admin__stats">
+				<?php foreach ( $stats as $stat ) : ?>
+					<a class="erfansanat-admin__stat" href="<?php echo esc_url( $stat['href'] ); ?>">
+						<span class="erfansanat-admin__stat-icon dashicons <?php echo esc_attr( $stat['icon'] ); ?>" aria-hidden="true"></span>
+						<span class="erfansanat-admin__stat-label"><?php echo esc_html( $stat['label'] ); ?></span>
+						<strong class="erfansanat-admin__stat-count"><?php echo esc_html( number_format_i18n( (int) $stat['count'] ) ); ?></strong>
+						<span class="erfansanat-admin__stat-link"><?php esc_html_e( 'مدیریت', 'erfansanat' ); ?> <span aria-hidden="true">←</span></span>
+					</a>
+				<?php endforeach; ?>
+			</div>
+			<div class="erfansanat-admin__quicklinks">
+				<h3><?php esc_html_e( 'دسترسی سریع', 'erfansanat' ); ?></h3>
+				<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=product' ) ); ?>"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'افزودن محصول', 'erfansanat' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=projects' ) ); ?>"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'ثبت پروژه', 'erfansanat' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=services' ) ); ?>"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'افزودن خدمت', 'erfansanat' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=erfansanat_message' ) ); ?>"><span class="dashicons dashicons-inbox" aria-hidden="true"></span><?php esc_html_e( 'رفتن به صندوق پیام‌ها', 'erfansanat' ); ?></a>
+			</div>
+		</section>
+		<?php
+	}
+
+	/**
+	 * Count published entries for a registered post type.
+	 *
+	 * @param string $post_type Post type slug.
+	 * @return int
+	 */
+	private static function published_count( string $post_type ): int {
+		$counts = wp_count_posts( $post_type );
+		return is_object( $counts ) && isset( $counts->publish ) ? (int) $counts->publish : 0;
+	}
+
+	/**
+	 * Count private messages whose read marker is still zero.
+	 *
+	 * @return int
+	 */
+	private static function unread_message_count(): int {
+		$query = new \WP_Query(
+			array(
+				'post_type'              => 'erfansanat_message',
+				'post_status'            => 'private',
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => false,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'meta_query'             => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- The inbox is a private, low-volume post type and this count runs only on the admin dashboard.
+					array(
+						'key'     => '_es_read',
+						'value'   => '0',
+						'compare' => '=',
+					),
+				),
+			)
+		);
+		return (int) $query->found_posts;
+	}
+
+	/**
 	 * Render the settings screen.
 	 *
 	 * @return void
@@ -285,10 +389,19 @@ final class ThemeOptions {
 		$active = 'brand';
 		?>
 		<div class="wrap erfansanat-admin" dir="rtl">
-			<h1><?php esc_html_e( 'داشبورد عرفان صنعت', 'erfansanat' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'تنظیمات سراسری قالب در یک ردیف ذخیره می‌شوند. محتوای صفحات با سازندهٔ بخش‌ها در هر برگه ویرایش می‌شود.', 'erfansanat' ); ?>
-			</p>
+			<header class="erfansanat-admin__welcome">
+				<div class="erfansanat-admin__welcome-copy">
+					<p class="erfansanat-admin__eyebrow"><?php esc_html_e( 'مرکز مدیریت وب‌سایت', 'erfansanat' ); ?></p>
+					<h1><?php esc_html_e( 'داشبورد عرفان صنعت', 'erfansanat' ); ?></h1>
+					<p><?php esc_html_e( 'وضعیت محتوا را ببینید، به کارهای روزمره دسترسی سریع داشته باشید و تنظیمات سراسری قالب را مدیریت کنید.', 'erfansanat' ); ?></p>
+				</div>
+				<a class="erfansanat-admin__view-site" href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener noreferrer">
+					<span class="dashicons dashicons-external" aria-hidden="true"></span>
+					<?php esc_html_e( 'مشاهدهٔ وب‌سایت', 'erfansanat' ); ?>
+				</a>
+			</header>
+
+			<?php self::render_overview(); ?>
 
 			<div class="erfansanat-admin__status" role="status" aria-live="polite" hidden></div>
 

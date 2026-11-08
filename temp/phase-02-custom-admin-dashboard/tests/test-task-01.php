@@ -221,6 +221,13 @@ final class TaskP02T01Test extends TestCase {
 		ThemeOptions::render();
 		$html = (string) ob_get_clean();
 
+		$this->assertStringContainsString( 'erfansanat-admin__overview', $html );
+		$this->assertStringContainsString( 'محصولات منتشرشده', $html );
+		$this->assertStringContainsString( 'پروژه‌های منتشرشده', $html );
+		$this->assertStringContainsString( 'خدمات منتشرشده', $html );
+		$this->assertStringContainsString( 'پیام‌های خوانده‌نشده', $html );
+		$this->assertStringContainsString( 'post-new.php?post_type=product', $html );
+		$this->assertStringContainsString( 'مشاهدهٔ وب‌سایت', $html );
 		$this->assertStringContainsString( 'data-tab="brand"', $html );
 		$this->assertStringContainsString( 'data-tab="advanced"', $html );
 		$this->assertStringNotContainsString( '<script>alert(1)</script>', $html );

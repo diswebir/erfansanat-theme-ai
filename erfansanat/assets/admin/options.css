@@ -457,3 +457,224 @@
 		display: none;
 	}
 }
+
+/* ---------------------------------------------------------------------------
+ * 3. Dashboard overview
+ * ------------------------------------------------------------------------- */
+.erfansanat-admin__welcome {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	margin: 18px 0 22px;
+	padding: 26px 30px;
+	border: 1px solid #ccebd7;
+	border-radius: 18px;
+	background: linear-gradient(120deg, #f0fbf4 0%, #fff 70%);
+	box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
+}
+
+.erfansanat-admin__welcome h1 {
+	margin: 0 0 7px;
+	font-size: 25px;
+}
+
+.erfansanat-admin__welcome-copy > p:last-child {
+	margin: 0;
+	color: var(--es-muted);
+	font-size: 13px;
+}
+
+.erfansanat-admin__eyebrow {
+	margin: 0 0 5px;
+	color: var(--es-green-dark);
+	font-size: 11px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__view-site {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	flex: 0 0 auto;
+	padding: 10px 15px;
+	border: 1px solid #b9dec7;
+	border-radius: 10px;
+	background: #fff;
+	color: var(--es-green-dark);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__view-site:hover,
+.erfansanat-admin__view-site:focus-visible {
+	border-color: var(--es-green);
+	background: #f4fbf6;
+	color: var(--es-green-dark);
+}
+
+.erfansanat-admin__overview {
+	margin-bottom: 22px;
+	padding: 22px;
+	border: 1px solid var(--es-line);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 5px 20px rgba(15, 23, 42, 0.035);
+}
+
+.erfansanat-admin__overview-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 18px;
+}
+
+.erfansanat-admin__overview-heading h2,
+.erfansanat-admin__quicklinks h3 {
+	margin: 0;
+	color: var(--es-ink);
+	font-size: 15px;
+	font-weight: 800;
+}
+
+.erfansanat-admin__overview-heading p {
+	margin: 4px 0 0;
+	color: var(--es-muted);
+	font-size: 12px;
+}
+
+.erfansanat-admin__live {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	color: var(--es-muted);
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+.erfansanat-admin__live span {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #16a34a;
+	box-shadow: 0 0 0 3px #dcfce7;
+}
+
+.erfansanat-admin__stats {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.erfansanat-admin__stat {
+	display: grid;
+	grid-template-columns: 38px minmax(0, 1fr);
+	align-items: center;
+	column-gap: 11px;
+	row-gap: 4px;
+	min-width: 0;
+	padding: 16px;
+	border: 1px solid #e8edf1;
+	border-radius: 13px;
+	background: #fff;
+	color: var(--es-ink);
+	text-decoration: none;
+	transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erfansanat-admin__stat:hover,
+.erfansanat-admin__stat:focus-visible {
+	transform: translateY(-2px);
+	border-color: #a7d9b8;
+	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+	color: var(--es-ink);
+}
+
+.erfansanat-admin__stat-icon {
+	grid-row: span 3;
+	display: grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 11px;
+	background: #eaf8ee;
+	color: var(--es-green-dark);
+	font-size: 18px;
+}
+
+.erfansanat-admin__stat-label {
+	color: var(--es-muted);
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.erfansanat-admin__stat-count {
+	font-size: 22px;
+	line-height: 1.2;
+	font-variant-numeric: tabular-nums;
+}
+
+.erfansanat-admin__stat-link {
+	color: var(--es-green-dark);
+	font-size: 10px;
+	font-weight: 700;
+}
+
+.erfansanat-admin__quicklinks {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 9px;
+	margin-top: 20px;
+	padding-top: 17px;
+	border-top: 1px solid #edf0f2;
+}
+
+.erfansanat-admin__quicklinks h3 {
+	margin-inline-end: 5px;
+	font-size: 12px;
+}
+
+.erfansanat-admin__quicklinks a {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 11px;
+	border: 1px solid #e2e8f0;
+	border-radius: 9px;
+	background: #fff;
+	color: #334155;
+	font-size: 11px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.erfansanat-admin__quicklinks a:hover,
+.erfansanat-admin__quicklinks a:focus-visible {
+	border-color: #a7d9b8;
+	background: #f4fbf6;
+	color: var(--es-green-dark);
+}
+
+@media (max-width: 960px) {
+	.erfansanat-admin__stats {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.erfansanat-admin__welcome {
+		align-items: flex-start;
+		flex-direction: column;
+		padding: 21px;
+	}
+
+	.erfansanat-admin__stats {
+		grid-template-columns: 1fr;
+	}
+
+	.erfansanat-admin__overview {
+		padding: 16px;
+	}
+}
