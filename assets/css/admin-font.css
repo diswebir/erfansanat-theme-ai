@@ -1,0 +1,36 @@
+/* Vazirmatn Persian font — full WP admin panel integration (local woff2, no CDN). */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../fonts/vazirmatn-arabic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Core admin chrome */
+body.wp-admin,
+#wpcontent, #wpwrap, #wpadminbar, #wpadminbar *,
+.wp-admin .button, .wp-admin input, .wp-admin select, .wp-admin textarea,
+.wp-admin .metabox-holder, .wp-admin table.wp-list-table, .wp-admin .notice,
+.wp-admin h1, .wp-admin h2, .wp-admin h3, .wp-admin .page-title-action {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif !important;
+}
+
+/* Login screen */
+body.login, body.login .login form, body.login .message, body.login #loginform,
+body.login #login h1 a, body.login .privacy-policy-page-link {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif !important;
+}
+body.login #login h1 a { background-size: contain; }
+
+/* Theme admin pages (options / sections / migrator) */
+.erfansanat-admin, .theme-options-wrap, .erfansanat-sections-admin,
+.erfansanat-admin table, .erfansanat-admin .form-table th, .erfansanat-admin .form-table td {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif !important;
+}
+.erfansanat-admin .button-primary { font-weight: 700; }
+
+/* Metaboxes */
+.postbox, .postbox h2, .postbox .inside, .postbox label {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif !important;
+}

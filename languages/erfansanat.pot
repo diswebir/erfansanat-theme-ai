@@ -1,0 +1,240 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ErfanSanat Theme 1.0.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "% دیدگاه"
+msgstr ""
+
+msgid "%s بازدید"
+msgstr ""
+
+msgid "CSS سفارشی"
+msgstr ""
+
+msgid "Converts Elementor _elementor_data into theme section meta and backfills legacy meta keys. Idempotent."
+msgstr ""
+
+msgid "ID تصویر مدیا"
+msgstr ""
+
+msgid "import داده‌ها (Elementor/JetEngine)"
+msgstr ""
+
+msgid "import داده‌های legacy"
+msgstr ""
+
+msgid "آدرس"
+msgstr ""
+
+msgid "استعلام قیمت"
+msgstr ""
+
+msgid "اسکریپت فوتر"
+msgstr ""
+
+msgid "اسکریپت هدر"
+msgstr ""
+
+msgid "اشتراک‌گذاری"
+msgstr ""
+
+msgid "اطلاعات محصول (عرفان صنعت)"
+msgstr ""
+
+msgid "اطلاعات پروژه"
+msgstr ""
+
+msgid "ایمیل"
+msgstr ""
+
+msgid "بازدید"
+msgstr ""
+
+msgid "بازگشت به صفحه اصلی"
+msgstr ""
+
+msgid "برای تغییر ترتیب، سکشن‌ها را با Drag & Drop جابجا کنید؛ تیک = فعال بودن سکشن."
+msgstr ""
+
+msgid "برند و رنگ‌ها"
+msgstr ""
+
+msgid "برچسب: %s"
+msgstr ""
+
+msgid "ترجمه‌ها / Hreflang"
+msgstr ""
+
+msgid "تصویر بندانگشتی دسته"
+msgstr ""
+
+msgid "تلفن"
+msgstr ""
+
+msgid "تنظیمات ذخیره شد."
+msgstr ""
+
+msgid "تولیدات شرکت"
+msgstr ""
+
+msgid "حساب کاربری"
+msgstr ""
+
+msgid "داشبورد اختصاصی عرفان صنعت اصفهان"
+msgstr ""
+
+msgid "داشبورد عرفان صنعت"
+msgstr ""
+
+msgid "دسترسی غیرمجاز."
+msgstr ""
+
+msgid "ذخیره"
+msgstr ""
+
+msgid "ذخیره شد"
+msgstr ""
+
+msgid "رنگ اصلی برند"
+msgstr ""
+
+msgid "رنگ تیره برند"
+msgstr ""
+
+msgid "سبد خرید"
+msgstr ""
+
+msgid "سوالات متداول دسته (faq)"
+msgstr ""
+
+msgid "شعار"
+msgstr ""
+
+msgid "شناسه‌های صنعتی و قانونی"
+msgstr ""
+
+msgid "شهر محل پروژه"
+msgstr ""
+
+msgid "صفحه پیدا نشد"
+msgstr ""
+
+msgid "عرفان صنعت"
+msgstr ""
+
+msgid "عمومی"
+msgstr ""
+
+msgid "فایل کاتالوگ"
+msgstr ""
+
+msgid "فهرست محتوا"
+msgstr ""
+
+msgid "فوتر و تماس"
+msgstr ""
+
+msgid "قابل خرید آنلاین"
+msgstr ""
+
+msgid "قابل خرید آنلاین (true_sale)"
+msgstr ""
+
+msgid "لوگو (مسیر)"
+msgstr ""
+
+msgid "لینک دکمه CTA"
+msgstr ""
+
+msgid "متن دکمه CTA"
+msgstr ""
+
+msgid "متن کپی‌رایت فوتر"
+msgstr ""
+
+msgid "محتوایی یافت نشد."
+msgstr ""
+
+msgid "محصولی یافت نشد."
+msgstr ""
+
+msgid "مدیریت سکشن‌های صفحه"
+msgstr ""
+
+msgid "مقالات مرتبط"
+msgstr ""
+
+msgid "مقاله‌ای در این دسته نیست."
+msgstr ""
+
+msgid "منوی لندینگ"
+msgstr ""
+
+msgid "منوی موبایل"
+msgstr ""
+
+msgid "مگامنوی اصلی"
+msgstr ""
+
+msgid "نام سایت"
+msgstr ""
+
+msgid "نتایج جستجو: %s"
+msgstr ""
+
+msgid "نتیجه‌ای یافت نشد."
+msgstr ""
+
+msgid "نشانی مورد نظر یافت نشد."
+msgstr ""
+
+msgid "نوار اعلان"
+msgstr ""
+
+msgid "نوع پروژه"
+msgstr ""
+
+msgid "هدر و مگامنو"
+msgstr ""
+
+msgid "همه"
+msgstr ""
+
+msgid "پرداخت"
+msgstr ""
+
+msgid "پروژه"
+msgstr ""
+
+msgid "پروژه‌ها"
+msgstr ""
+
+msgid "پروژه‌های مرتبط (project-ids)"
+msgstr ""
+
+msgid "پیام شما با موفقیت ثبت شد."
+msgstr ""
+
+msgid "پیام‌ها"
+msgstr ""
+
+msgid "پیام‌های دریافتی"
+msgstr ""
+
+msgid "پیام‌های فرم"
+msgstr ""
+
+msgid "کاربردها — term IDs of project_type (usage_countr)"
+msgstr ""
+
+msgid "کلید Hreflang"
+msgstr ""
+
+msgid "گالری (galerry_produ — CSV of image IDs)"
+msgstr ""
+
+msgid "یک دیدگاه"
+msgstr ""
