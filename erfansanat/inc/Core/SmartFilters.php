@@ -294,13 +294,30 @@ final class SmartFilters {
 	 */
 	public static function query_products( array $state ): array {
 		$args = self::build_product_query( $state );
-		$args['fields'] = 'ids';
-		$q = new \WP_Query( $args );
+		$args['fields']        = 'ids';
+		$args['no_found_rows'] = false;
+		$q     = new \WP_Query( $args );
+		$page  = max( 1, (int) ( $args['paged'] ?? 1 ) );
+		$pages = (int) $q->max_num_pages;
+		// SQLite QA-DB quirk: an offset past the last page reports found_rows=0.
+		// Fall back to a page-1 probe so out-of-range pages clamp to the last one.
+		if ( ! $q->posts && $page > 1 ) {
+			$probe_args           = $args;
+			$probe_args['paged']  = 1;
+			$probe                = new \WP_Query( $probe_args );
+			$total                = (int) $probe->found_posts;
+			$pages                = (int) ceil( $total / max( 1, (int) $probe_args['posts_per_page'] ) );
+			if ( $pages > 0 && $page > $pages ) {
+				$page          = $pages; // P08-T009: clamp to the last page.
+				$args['paged'] = $page;
+				$q             = new \WP_Query( $args );
+			}
+		}
 		return array(
 			'ids'   => array_map( 'intval', $q->posts ),
 			'total' => (int) $q->found_posts,
-			'pages' => (int) $q->max_num_pages,
-			'page'  => max( 1, (int) ( $args['paged'] ?? 1 ) ),
+			'pages' => $pages,
+			'page'  => $page,
 			'args'  => $args,
 		);
 	}

@@ -49,6 +49,8 @@
 		var priceRanges = archive.querySelectorAll('[data-product-price-range="true"]');
 		var modeRadios = archive.querySelectorAll("[data-product-purchase-mode]");
 		var attrBoxes = archive.querySelectorAll("[data-product-attr-filter]");
+		var sortSelects = archive.querySelectorAll('[data-product-sort="true"]');
+		var paginationRoots = archive.querySelectorAll('[data-pagination-root="true"]');
 
 		// P08-T008: attrs = { pa_tax: [termIds] }; everything else lives in state.
 		function readControls() {
@@ -77,6 +79,12 @@
 				var tax = box.getAttribute("data-product-attr-filter");
 				(state.attrs[tax] = state.attrs[tax] || []).push(box.value);
 			});
+			// P08-T009: reference sort select (default/popular/rating/price-asc/price-desc).
+			var sort = archive.querySelector('[data-product-sort="true"]');
+			if (sort) {
+				var sv = sort.value;
+				state.orderby = sv === "price-asc" ? "price_asc" : sv === "price-desc" ? "price_desc" : sv === "popular" ? "popular" : "latest";
+			}
 		}
 
 		function syncControls() {
@@ -100,6 +108,8 @@
 				var values = state.attrs[tax] || [];
 				box.checked = values.indexOf(box.value) !== -1;
 			});
+			var sortBack = { latest: "default", oldest: "default", name: "default", popular: "popular", price_asc: "price-asc", price_desc: "price-desc" };
+			sortSelects.forEach(function (select) { select.value = sortBack[state.orderby] || "default"; });
 		}
 
 		function writeUrl() {
@@ -136,6 +146,55 @@
 			state.orderby = params.get("es_sort") || "latest";
 			state.page = parseInt(params.get("es_page") || "1", 10) || 1;
 			return !!(state.cats.length || state.term || state.price_max || state.sale_mode !== "all" || state.orderby !== "latest" || state.page > 1 || Object.keys(state.attrs).length);
+		}
+
+		// P08-T009: server-driven pagination inside the reference root.
+		function renderPagination(data) {
+			var pages = data.pages || 1;
+			paginationRoots.forEach(function (root) {
+				if (pages <= 1) {
+					root.classList.add("hidden");
+					root.classList.remove("flex");
+					return;
+				}
+				root.classList.remove("hidden");
+				root.classList.add("flex");
+				var summary = root.querySelector('[data-pagination-summary="true"]');
+				if (summary) {
+					summary.textContent = "صفحه " + faDigits(data.page) + " از " + faDigits(pages) + " (" + faDigits(data.total) + " مورد)";
+				}
+				var buttons = root.querySelector('[data-pagination-buttons="true"]');
+				if (!buttons) return;
+				var out = "";
+				var navClass = "inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-extrabold text-slate-600 transition hover:bg-emerald-50 disabled:opacity-40";
+				out += '<button type="button" data-page-prev="true" ' + (data.page <= 1 ? "disabled" : "") + ' class="' + navClass + '">' +
+					'<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>' +
+					'<span>قبلی</span></button>';
+				for (var num = 1; num <= pages; num++) {
+					var active = num === data.page;
+					out += '<button type="button" data-page-btn="' + num + '" class="grid h-9 w-9 place-items-center rounded-xl text-[13px] font-black transition-all cursor-pointer ' +
+						(active ? "bg-emerald-700 text-white shadow-md shadow-emerald-700/25" : "border border-slate-200 bg-white text-slate-700 hover:border-emerald-400 hover:text-emerald-700") + '"' +
+						(active ? ' aria-current="page"' : "") + ">" + faDigits(num) + "</button>";
+				}
+				out += '<button type="button" data-page-next="true" ' + (data.page >= pages ? "disabled" : "") + ' class="' + navClass + '">' +
+					'<span>بعدی</span>' +
+					'<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>';
+				buttons.innerHTML = out;
+				buttons.querySelectorAll("[data-page-btn]").forEach(function (btn) {
+					btn.addEventListener("click", function () {
+						state.page = parseInt(btn.getAttribute("data-page-btn"), 10) || 1;
+						apply();
+					});
+				});
+				var prev = buttons.querySelector('[data-page-prev="true"]');
+				if (prev) prev.addEventListener("click", function () {
+					if (state.page > 1) { state.page--; apply(); }
+				});
+				var next = buttons.querySelector('[data-page-next="true"]');
+				if (next) next.addEventListener("click", function () {
+					if (state.page < pages) { state.page++; apply(); }
+				});
+			});
 		}
 
 		function setBusy(on) {
@@ -179,6 +238,7 @@
 					emptyEl.classList.toggle("hidden", !empty);
 					emptyEl.classList.toggle("block", empty);
 				}
+				renderPagination(data);
 				document.dispatchEvent(new CustomEvent("es:products-filtered", { detail: data }));
 			}).catch(function (err) {
 				if (err && err.name === "AbortError") return;
@@ -200,10 +260,12 @@
 		priceRanges.forEach(function (range) { range.addEventListener("input", schedule); });
 		modeRadios.forEach(function (radio) { radio.addEventListener("change", schedule); });
 		attrBoxes.forEach(function (box) { box.addEventListener("change", schedule); });
+		sortSelects.forEach(function (select) { select.addEventListener("change", schedule); });
 		clearBtns.forEach(function (btn) {
 			btn.addEventListener("click", function () {
 				state = { cats: [], attrs: {}, term: "", price_max: 0, sale_mode: "all", orderby: "latest", page: 1 };
 				syncControls();
+				renderPagination({ pages: 1 });
 				if (timer) clearTimeout(timer);
 				apply();
 			});

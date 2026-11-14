@@ -113,6 +113,26 @@ archive.querySelector('[data-product-filters-clear="true"]').click();
 await sleep(600);
 check('T008: حذف فیلترها ویژگی‌ها را هم پاک می‌کند', grid.querySelectorAll('[data-product-item="true"]').length === 3 && !ip68Box.checked && !window.location.search.includes('es_attr_'));
 
+// T009: server-driven sorting + pagination (per_page=1 → 3 pages).
+archive.setAttribute('data-items-per-page', '1');
+const sortSelect = archive.querySelector('[data-product-sort="true"]');
+sortSelect.value = 'price-asc';
+sortSelect.dispatchEvent(new window.Event('change', { bubbles: true }));
+await sleep(600);
+check('T009: ارزان‌ترین اول رندر می‌شود', grid.querySelectorAll('[data-product-item="true"]').length === 1 && grid.textContent.includes('ریسه سوزنی DOM'));
+const pagRoot = archive.querySelector('[data-pagination-root="true"]');
+check('T009: صفحه‌بندی سرور با سه صفحه رندر می‌شود', !pagRoot.classList.contains('hidden') && !!pagRoot.querySelector('[data-page-btn="3"]') && pagRoot.querySelector('[data-pagination-summary="true"]').textContent.includes('از ۳'));
+pagRoot.querySelector('[data-page-btn="3"]').click();
+await sleep(600);
+check('T009: کلیک صفحه ۳ گره درست را می‌آورد', grid.textContent.includes('درخت نوری DOM') && window.location.search.includes('es_page=3'));
+pagRoot.querySelector('[data-page-prev="true"]').click();
+await sleep(600);
+check('T009: دکمه قبلی به صفحه ۲ می‌رود', grid.textContent.includes('ریسه بلوطی DOM') && window.location.search.includes('es_page=2'));
+archive.setAttribute('data-items-per-page', '9');
+archive.querySelector('[data-product-filters-clear="true"]').click();
+await sleep(600);
+check('T009: ریست سورت/صفحه را هم برمی‌گرداند', sortSelect.value === 'default' && !window.location.search.includes('es_page') && !window.location.search.includes('es_sort') && archive.querySelector('[data-product-count="true"]').textContent.trim() === '۳' && grid.querySelectorAll('[data-product-item="true"]').length === 3 && pagRoot.classList.contains('hidden'));
+
 // Cleanup fixture data from the shared DB.
 execFileSync(join(root, 'temp/tools/php'), [join(here, 'ajax-bridge.php'), JSON.stringify({ cleanup: { posts: meta.ids, terms: meta.cats.map(c => [c, 'product_cat']) } })], { cwd: root, encoding: 'utf8' });
 

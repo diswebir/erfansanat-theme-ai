@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T008 پاس.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T009 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -18,7 +18,8 @@ P08-T005=15 (SmartFilters::build_product_query/query_products — whitelist prod
 P08-T006=16 (+9 DOM) (product-filters part+JS؛ endpoint es_product_filters در SmartFilters::boot/init؛ شل آرشیو پارت را include می‌کند؛ URL state es_cats/es_q/es_price/es_mode/es_sort/es_page؛ window.ES_PRODUCT_FILTERS + __esFiltersExtraBody هوک T007/T008؛ ajax-bridge.php برای DOM واقعی)
 P08-T007=12 (+4 DOM در سوئیت T006) (sanitize_price/sanitize_sale_mode عمومی؛ JS اسلایدر data-product-price-range و رادیو data-product-purchase-mode را می‌خواند؛ at-max یعنی بی‌فیلتر؛ es_price/es_mode در URL)
 P08-T008=11 (+5 DOM → مجموع سوئیت 19) (گروه‌های pa_* در product-filters.php با data-product-attr-group/attr-filter؛ سواچ pa_color از فیلتر es_product_color_swatch_map؛ JS state.attrs → body pa_* و URL es_attr_{tax}؛ کلیدها با خط تیره: pa_ip-rating، pa_input-voltage)
-NEXT: P08-T009 sort/pagination/clear-all UI; then T010 project filters+counters. and phase 8 (24 tasks)
+P08-T009=14 (+5 DOM → مجموع سوئیت 24) (sort select مرجع→ORDERBY؛ renderPagination سرور-محور داخل data-pagination-root با کلاس‌های مرجع؛ clamp صفحه خارج از بازه با probe page-1 برای SQLite quirk؛ ریست کامل شامل سورت/صفحه)
+NEXT: P08-T010 project filters+counters (SmartFilters پروژه + project-filters.js + template-parts/archive/project-filters.php); then T011 perf/cache. and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

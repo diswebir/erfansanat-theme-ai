@@ -320,3 +320,11 @@
 - JS: state.attrs={tax:[ids]} → body.set(tax, ids) و URL es_attr_{tax}؛ syncControls/clear/readUrl پشتیبانی کامل.
 - **دام مهم:** کلید تاکسونومی‌ها با خط تیره است (pa_ip-rating، pa_input-voltage، pa_led-chip-type...) نه زیرخط — تست اول با pa_ip_rating خطای Invalid taxonomy داد و ۷ چک fail شد؛ بعد از اصلاح کلیدها 11/0.
 - DOM: ۵ چک جدید (گروه IP، سواچ رنگ، فیلتر IP68، URL ویژگی، پاکسازی) — مجموع 19/0. فیکسچر shop حالا IP/ولتاژ/رنگ هم می‌گیرد. رگرسیون T007=12، T006=16، T005=15، P06-T010=10، P06-T016=17.
+
+
+## 2026-11-07 — P08-T009 مرتب‌سازی/صفحه‌بندی/حذف فیلتر (14 + 5 DOM)
+- JS: سورت مرجع (default/popular/rating/price-asc/price-desc) → state.orderby؛ renderPagination داخل data-pagination-root با همان data-page-btn/summary/kelasهای مرجع (active: bg-emerald-700) و prev/next؛ بعد از هر پاسخ re-render → نودهای main.js بازنویسی می‌شوند.
+- SmartFilters::query_products: clamp صفحه خارج از بازه به آخرین صفحه؛ **quirk SQLite**: offset فراتر از آخرین صفحه found_rows=0 برمی‌گرداند → probe صفحه ۱ برای محاسبه total/pages.
+- تست فیکسچر باید post_date متمایز بدهد (هر ۱۲ پست در یک ثانیه = ترتیب ناپایدار)؛ «#01 جدیدترین» یعنی post_date = base + (13-i)*60.
+- چک ریست DOM: per_page override باید قبل از چک «۳ کارت» برگردد وگرنه ۱ کارت درست است نه باگ.
+- رگرسیون T008=11، T005=15، T001=20، P06-T021=13، P06-T016=17.
