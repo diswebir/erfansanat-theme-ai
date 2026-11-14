@@ -31,6 +31,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Forms\ContactForm::boot(); // P08-T013: public contact submission endpoint (dependency recorded in task-013).
 \ErfanSanat\Theme\Forms\QuoteForm::boot(); // P08-T014: public quote submission endpoint (dependency recorded in task-014).
 \ErfanSanat\Theme\Forms\RecruitmentForm::boot(); // P08-T015: public recruitment submission endpoint (dependency recorded in task-015).
+\ErfanSanat\Theme\Forms\FeedbackForm::boot(); // P08-T016: public feedback submission endpoint (dependency recorded in task-016).
 \ErfanSanat\Theme\Core\PostTypes::boot();
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();

@@ -371,3 +371,8 @@
 - **دام دوباره:** Entries::store دوباره Schema::validate اجرا می‌کند و فیلدهای خارج از اسکیما را حذف می‌کند → unit اول ذخیره نمی‌شد؛ حل: unit/experience به اسکیمای recruitment اضافه شدند (whitelist در فرم می‌ماند).
 - **دام تست:** submit با «عنصر خام $_FILES» کار می‌کند نه wrapper — تست اول wrapper می‌داد و handle_resume name='es_rf_resume' می‌دید.
 - کلاس‌های hidden فرم، شمارش class="hidden" در چک قدیمی صفحه را می‌شکند؛ چک P07-T025 با data-recruit-panel= جدید شد (تو در تو بودن substring ها را در نظر بگیر).
+
+
+## 2026-11-07 — P08-T016 فرم نظرات مشتریان (20)
+- FeedbackForm: نرمال‌سازی ارقام فارسی/عربی → بازه ۱..۵ (خارج بازه WP_Error بدون ذخیره)؛ متن با اسکیمای feedback؛ وضعیت بررسی در متای _es_feedback_status = pending پیش‌فرض، approve() برای ادمین (دسترسی در T017).
+- فرم مستقل بدون الحاق به سکشن مرجع (بازخورد در mirror نبود) — بخش قابل استفاده مجدد.
