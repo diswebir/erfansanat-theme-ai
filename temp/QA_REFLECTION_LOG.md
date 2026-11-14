@@ -306,3 +306,10 @@
 - `SmartFilters::boot()` (init 20 یا مستقیم اگر init گذشته): اکشن عمومی `es_product_filters` با ورودی‌های کامل QueryBuilder (cats/term/price/sale_mode/orderby/page/per_page + ۱۸ pa_* به‌صورت key_list)؛ پاسخ html کارت‌های مرجع (include woocommerce/content-product.php per product) + total/pages/page.
 - `assets/js/product-filters.js`: state قابل اشتراک در URL (replaceState؛ es_cats/es_q/...)، restore از URL هنگام لود، debounce+abort+seq، تعویض grid.innerHTML با کارت سرور، به‌روزرسانی شمارنده/حالت خالی، رویداد es:products-filtered؛ window.ES_PRODUCT_FILTERS برای توسعه T007-T009.
 - زیرساخت تست: `ajax-bridge.php` (اجرای endpoint واقعی از CLI برای JSDOM) + `build-shop-fixture.php` (فیکسچر در DB مشترک؛ پاکسازی از طریق bridge). تست PHP **16/0** + JSDOM **9/0** (fetch→bridge→endpoint واقعی). رگرسیون T005=15، T001=20، P06-T016=17، P06-T018=13.
+
+
+## 2026-11-07 — P08-T007 فیلتر قیمت و حالت خرید (12 + 4 DOM)
+- `SmartFilters::sanitize_price()` (اسکالر/عددی/غیرمنفی → وگرنه null=بدون شرط) و `sanitize_sale_mode()` (فقط online/inquiry؛ بقیه all) عمومی شدند؛ build_product_query از آن‌ها استفاده می‌کند (AC-01/AC-02/AC-03).
+- product-filters.js: اسلایدر مرجع `data-product-price-range` (مقدار=max یعنی بی‌سقف) و رادیوهای `data-product-purchase-mode` (all/online/call→inquiry) به readControls/syncControls/listeners اضافه شدند؛ es_price/es_mode در URL؛ Clear همه را ریست می‌کند.
+- DOM: ۴ چک جدید در test-task-006-dom.mjs (اسلایدر/URL/استعلامی/ریست) — مجموع 14/0 با endpoint واقعی. رگرسیون T005=15، T006=16، T001=20، P06-T016=17.
+- یادآوری محیط: node_modules و temp/wp بین نوبت‌ها پاک می‌شوند → npm install + setup-harness.sh + theme activate + permalink؛ مسیر wp-cli برابر temp/wp است نه temp.

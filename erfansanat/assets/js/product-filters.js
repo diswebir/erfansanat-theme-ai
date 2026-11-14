@@ -46,6 +46,9 @@
 			return String(v).replace(/[0-9]/g, function (d) { return "۰۱۲۳۴۵۶۷۸۹"[d]; });
 		}
 
+		var priceRanges = archive.querySelectorAll('[data-product-price-range="true"]');
+		var modeRadios = archive.querySelectorAll("[data-product-purchase-mode]");
+
 		function readControls() {
 			state.cats = [];
 			catBoxes.forEach(function (box) {
@@ -53,6 +56,19 @@
 			});
 			var search = archive.querySelector('[data-product-search="true"]');
 			state.term = search ? (search.value || "").trim() : "";
+			// P08-T007: price ceiling — at slider max means "all prices".
+			var range = archive.querySelector('[data-product-price-range="true"]');
+			if (range) {
+				var value = parseInt(range.value || "0", 10) || 0;
+				var max = parseInt(range.getAttribute("max") || "0", 10) || 0;
+				state.price_max = (max > 0 && value >= max) ? 0 : value;
+			}
+			// P08-T007: purchase mode radios (reference "call" = inquiry).
+			var checked = archive.querySelector("[data-product-purchase-mode]:checked");
+			if (checked) {
+				var mode = checked.getAttribute("data-product-purchase-mode");
+				state.sale_mode = mode === "online" ? "online" : (mode === "call" || mode === "inquiry") ? "inquiry" : "all";
+			}
 		}
 
 		function syncControls() {
@@ -60,6 +76,17 @@
 				box.checked = state.cats.indexOf(box.getAttribute("data-product-cat-filter")) !== -1;
 			});
 			searchInputs.forEach(function (input) { input.value = state.term; });
+			priceRanges.forEach(function (range) {
+				var max = parseInt(range.getAttribute("max") || "0", 10) || 0;
+				range.value = state.price_max > 0 ? String(state.price_max) : String(max);
+				range.dispatchEvent(new Event("es:sync")); // label listeners may hook.
+			});
+			modeRadios.forEach(function (radio) {
+				var mode = radio.getAttribute("data-product-purchase-mode");
+				radio.checked = state.sale_mode === "all" ? mode === "all"
+					: state.sale_mode === "online" ? mode === "online"
+					: (mode === "call" || mode === "inquiry");
+			});
 		}
 
 		function writeUrl() {
@@ -143,6 +170,8 @@
 
 		catBoxes.forEach(function (box) { box.addEventListener("change", schedule); });
 		searchInputs.forEach(function (input) { input.addEventListener("input", schedule); });
+		priceRanges.forEach(function (range) { range.addEventListener("input", schedule); });
+		modeRadios.forEach(function (radio) { radio.addEventListener("change", schedule); });
 		clearBtns.forEach(function (btn) {
 			btn.addEventListener("click", function () {
 				state = { cats: [], term: "", price_max: 0, sale_mode: "all", orderby: "latest", page: 1 };

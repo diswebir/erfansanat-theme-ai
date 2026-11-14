@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T006 پاس.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T007 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -16,7 +16,8 @@ P08-T003=13 (content_search projects+post؛ type=project/post؛ ترم city/proj
 P08-T004=12 (+10 DOM) (search.js: debounce 250ms/abort/seq/keyboard/empty؛ enqueue es-search dep es-main؛ گارد __esSearchInit)
 P08-T005=15 (SmartFilters::build_product_query/query_products — whitelist product_cat+18 pa_*، price NUMERIC BETWEEN، true_sale، orderby whitelist، per_page≤48؛ بدون SQL خام)
 P08-T006=16 (+9 DOM) (product-filters part+JS؛ endpoint es_product_filters در SmartFilters::boot/init؛ شل آرشیو پارت را include می‌کند؛ URL state es_cats/es_q/es_price/es_mode/es_sort/es_page؛ window.ES_PRODUCT_FILTERS + __esFiltersExtraBody هوک T007/T008؛ ajax-bridge.php برای DOM واقعی)
-NEXT: P08-T007 price/purchase-mode UI; then T008 pa_* filters. and phase 8 (24 tasks)
+P08-T007=12 (+4 DOM در سوئیت T006) (sanitize_price/sanitize_sale_mode عمومی؛ JS اسلایدر data-product-price-range و رادیو data-product-purchase-mode را می‌خواند؛ at-max یعنی بی‌فیلتر؛ es_price/es_mode در URL)
+NEXT: P08-T008 pa_* attribute filters UI; then T009 sort/pagination/clear-all. and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

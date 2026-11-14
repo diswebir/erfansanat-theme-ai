@@ -76,6 +76,29 @@ await sleep(600);
 const empty = archive.querySelector('[data-product-empty="true"]');
 check('حالت خالی مرجع نمایش داده می‌شود', !empty.classList.contains('hidden') && grid.querySelectorAll('[data-product-item="true"]').length === 0);
 
+// T007: price ceiling slider (reference control) filters without refresh.
+archive.querySelector('[data-product-filters-clear="true"]').click();
+await sleep(600);
+const range = archive.querySelector('[data-product-price-range="true"]');
+range.value = '1000000'; // ≤ 1M: ریسه سوزنی (100k) + ریسه بلوطی (900k); درخت 5M out.
+range.dispatchEvent(new window.Event('input', { bubbles: true }));
+await sleep(600);
+check('T007: اسلایدر سقف بودجه گرید را فیلتر می‌کند', grid.textContent.includes('ریسه سوزنی DOM') && grid.textContent.includes('ریسه بلوطی DOM') && !grid.textContent.includes('درخت نوری DOM'));
+check('T007: سقف قیمت در URL می‌آید', window.location.search.includes('es_price=1000000'));
+
+// T007: purchase mode radio (reference "call" = inquiry).
+const callRadio = archive.querySelector('[data-product-purchase-mode="call"]');
+callRadio.checked = true;
+callRadio.dispatchEvent(new window.Event('change', { bubbles: true }));
+await sleep(600);
+check('T007: حالت استعلامی فقط کالای استعلامی می‌دهد', grid.textContent.includes('ریسه بلوطی DOM') && !grid.textContent.includes('ریسه سوزنی DOM'));
+check('T007: حالت خرید در URL می‌آید', window.location.search.includes('es_mode=inquiry'));
+
+// Clear also resets slider + radios.
+archive.querySelector('[data-product-filters-clear="true"]').click();
+await sleep(600);
+check('T007: حذف فیلترها اسلایدر/رادیو را هم ریست می‌کند', grid.querySelectorAll('[data-product-item="true"]').length === 3 && archive.querySelector('[data-product-purchase-mode="all"]').checked && !window.location.search.includes('es_price') && !window.location.search.includes('es_mode'));
+
 // Cleanup fixture data from the shared DB.
 execFileSync(join(root, 'temp/tools/php'), [join(here, 'ajax-bridge.php'), JSON.stringify({ cleanup: { posts: meta.ids, terms: meta.cats.map(c => [c, 'product_cat']) } })], { cwd: root, encoding: 'utf8' });
 

@@ -205,10 +205,10 @@ final class SmartFilters {
 			$args['tax_query'] = array_merge( array( 'relation' => 'AND' ), $tax_query );
 		}
 
-		// Price range + purchase mode → numeric/char meta clauses.
+		// Price range + purchase mode → numeric/char meta clauses (P08-T007).
 		$meta_query = array();
-		$min = isset( $state['price_min'] ) ? (float) $state['price_min'] : null;
-		$max = isset( $state['price_max'] ) ? (float) $state['price_max'] : null;
+		$min = self::sanitize_price( $state['price_min'] ?? null );
+		$max = self::sanitize_price( $state['price_max'] ?? null );
 		if ( null !== $min && null !== $max && $min > $max ) {
 			$tmp = $min; $min = $max; $max = $tmp;
 		}
@@ -219,7 +219,7 @@ final class SmartFilters {
 		} elseif ( null !== $max && $max > 0 ) {
 			$meta_query[] = array( 'key' => '_price', 'value' => $max, 'type' => 'NUMERIC', 'compare' => '<=' );
 		}
-		$mode = (string) ( $state['sale_mode'] ?? 'all' );
+		$mode = self::sanitize_sale_mode( $state['sale_mode'] ?? 'all' );
 		if ( 'online' === $mode ) {
 			$meta_query[] = array( 'key' => 'true_sale', 'value' => 'true', 'compare' => '=' );
 		} elseif ( 'inquiry' === $mode ) {
@@ -260,6 +260,30 @@ final class SmartFilters {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Strict price normalizer (P08-T007 AC-01): numeric, non-negative only.
+	 * Non-numeric/negative/array input → null (clause omitted, never fatal).
+	 *
+	 * @param mixed $value Raw price.
+	 */
+	public static function sanitize_price( $value ): ?float {
+		if ( ! is_scalar( $value ) || ! is_numeric( $value ) ) {
+			return null;
+		}
+		$price = (float) $value;
+		return $price >= 0 ? $price : null;
+	}
+
+	/**
+	 * Purchase-mode whitelist (P08-T007 AC-03): the legacy true_sale meta only
+	 * stores 'true'/'false'; anything else means "no filter".
+	 *
+	 * @param mixed $value Raw mode.
+	 */
+	public static function sanitize_sale_mode( $value ): string {
+		return in_array( $value, array( 'online', 'inquiry' ), true ) ? (string) $value : 'all';
 	}
 
 	/**
