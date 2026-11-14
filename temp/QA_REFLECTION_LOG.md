@@ -396,3 +396,13 @@
 - **دام pre_wp_mail:** callback دو آرگومانی است ($pre, $atts) → add_filter با accepted_args=2؛ $atts['to'] رشته/آرایه بسته به نسخه — با (array) نرمال کن.
 - ترتیب تست: delete_option گیرنده را قبل از submit نگذار (capture پس از fallback به admin_email خراب می‌شود).
 - وابستگی ثبت‌شده: ۴ فرم honeypot را از SpamGuard می‌گیرند + enforce_rate/hit/Mailer؛ تست‌های T013..T016 یک خط SpamGuard::reset_all() بعد از functions.php گرفتند.
+
+
+## 2026-11-07 — P08-T019 ممیزی SEO و Schema (20)
+- Core/Seo.php: canonical تم فقط در شکاف‌های هسته (front در حالت posts و آرشیو ترم) — singular/صفحه پیشخوان استاتیک را rel_canonical() خود هسته می‌پوشاند و تم نباید دوباره چاپ کند (AC-01). با پلاگین فعال: تم ساکت + remove_action('wp_head','rel_canonical',10) در زمان رندر (اولویت ۲ قبل از ۱۰) تا head مالک پلاگین شود (SC-02).
+- JSON-LD سه‌گانه با سازنده‌های خالص (organization/article/product_schema) + گارد one-shot per-type و reset_printed برای پروسه‌های چندرندر؛ خروجی wp_json_encode با JSON_UNESCAPED_UNICODE.
+- **دام WP نسخه QA:** get_post_modified_datetime وجود ندارد (get_post_datetime هست) → get_post_time/get_post_modified_time با DATE_W3C.
+- **امولیشن query برای تست head:** new WP_Query + جایگزینی $GLOBALS['wp_query'] + ست $GLOBALS['post'] از $q->posts[0] — بدون آن get_the_title/get_post_type خالی می‌مانند و JSON-LD چاپ نمی‌شود.
+- **دام wp_insert_term با نام تکراری:** WP_Error برگردانده و access ['term_id'] فوراً fatal می‌دهد → همیشه اول get_term_by و idempotent بساز؛ ران قطع‌شده ترم یتیم می‌گذارد (پاکسازی موفق self-clean است).
+- wp_die داخل هوک wp_head = exit 255 «critical error» نه Throwable — shutdown_function/error_get_last منبع را نشان داد (Seo.php:204).
+- P04-T017=23 سبز — hreflang مالکش Core\Hreflang ماند و Seo فقط audit_hreflang کمکی دارد.

@@ -39,6 +39,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Core\LegacyRedirects::boot();
 \ErfanSanat\Theme\Core\ViewCounter::boot();
 \ErfanSanat\Theme\Core\Hreflang::boot();
+\ErfanSanat\Theme\Core\Seo::boot(); // P08-T019: canonical + JSON-LD audit layer (dependency recorded in task-019).
 \ErfanSanat\Theme\Admin\ProjectColumns::boot();
 \ErfanSanat\Theme\Admin\ProductMetaboxes::boot();
 \ErfanSanat\Theme\Admin\ProductQuickEdit::boot();
