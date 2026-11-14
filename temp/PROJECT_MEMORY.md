@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T013 پاس.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T014 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -23,7 +23,8 @@ P08-T010=18 (+9 DOM) (build_project_query/query_projects/project_term_counts fac
 P08-T011=12 (کش نسخه‌دار cache_get/cache_set/bust_cache با option es_filters_cache_version + هوک‌های save_post/deleted_post/set_object_terms/terms؛ _prime_post_caches قبل از رندر کارت‌ها؛ search_products/search_content هم کش؛ بنچمارک ۱۰۰/۱۰۰ p95<200ms)
 P08-T012=22 (Schema چهار فرم contact/quote/recruitment/feedback + validate/sanitize؛ Entries::store/status/mark_read/query/delete با CPT خصوصی es_form_entry و meta _es_entry_data/_form/_status/_meta؛ boot از functions.php — وابستگی ثبت‌شده؛ در QA هیچ کاربر ادمین نیست → ادمین ساختنی در تست)
 P08-T013=18 (forms/contact.php با name attrs/honeypot es_cf_hp/nonce/error box + inline JS stopImmediatePropagation بر main.js؛ ContactForm::submit + endpoint es_contact_submit؛ section-form به پارت ارجاع — وابستگی ثبت‌شده؛ دو چک P07-T021 به قرارداد جدید به‌روز شد)
-NEXT: P08-T014 quote popup form; then T015 recruitment. and phase 8 (24 tasks)
+P08-T014=22 (QuoteForm::submit با resolve_content product/projects فقط publish؛ CTA استعلامی purchase.php → button data-quote-open + مودال forms/quote.php در حالت استعلامی — وابستگی ثبت‌شده؛ endpoint es_quote_submit)
+NEXT: P08-T015 recruitment form; then T016 feedback. and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

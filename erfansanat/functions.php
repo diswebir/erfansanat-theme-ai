@@ -29,6 +29,7 @@ require_once ES_INC_DIR . 'Core/NavWalkers.php';
 \ErfanSanat\Theme\Core\SmartFilters::boot(); // P08-T005/T006: product filter query + endpoint.
 \ErfanSanat\Theme\Forms\Entries::boot(); // P08-T012: private form-entry CPT (dependency recorded in task-012).
 \ErfanSanat\Theme\Forms\ContactForm::boot(); // P08-T013: public contact submission endpoint (dependency recorded in task-013).
+\ErfanSanat\Theme\Forms\QuoteForm::boot(); // P08-T014: public quote submission endpoint (dependency recorded in task-014).
 \ErfanSanat\Theme\Core\PostTypes::boot();
 \ErfanSanat\Theme\Core\Taxonomies::boot();
 \ErfanSanat\Theme\Core\Rewrites::boot();

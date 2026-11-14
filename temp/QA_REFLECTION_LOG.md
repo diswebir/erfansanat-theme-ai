@@ -357,3 +357,10 @@
 - **به‌روزرسانی قراردادهای قدیمی (وابستگی ثبت‌شده):** P07-T021 «بدون name/action» مال دوران stub بود؛ اکنون فرم واقعی با nonce/honeypot امن است و چک به «name + nonce + honeypot، بدون action خارجی» تغییر یافت. چک‌های سورسی P07 به forms/contact.php اشاره می‌کنند.
 - es_contains پایه‌اش ES_THEME است — برای فایل‌های temp/ مسیر absolute بده (dirname(__DIR__,2)).
 - wp_add_inline_script در خروجی پارت ظاهر نمی‌شود (به اسکریپت es-main می‌چسبد) → چک‌های سورسی نه رندری.
+
+
+## 2026-11-07 — P08-T014 فرم استعلام قیمت (22)
+- QuoteForm::resolve_content: الگوی ^\d{1,20}$ + get_post_status publish + نوع درست؛ لینک فقط برای محتوای منتشرشده.
+- **دام منطقی:** دو resolve پشت هم (product سپس project) — دومی اولی را بازنویسی می‌کرد و استعلام محصول بدون لینک می‌شد؛ fix: فقط اگر اولی خالی بود دومی جایگزین شود.
+- purchase.php: CTA استعلامی از <a href=checkout> به <button data-quote-open="product" data-quote-id> تغییر کرد (متن مرجع حفظ؛ P06-T006=23 سبز) + مودال quote فقط در حالت !es_is_online (متغیر درست es_is_online است نه es_mode).
+- مودال: open با closest('[data-quote-open]') + پر کردن es_qf_product_id/es_qf_product؛ Escape/backdrop بستن؛ success/error با کلاس‌های مرجع.
