@@ -240,7 +240,7 @@
 | `P08-T021` | ممیزی ریسپانسیو و دسترس‌پذیری | `8.3` | P04-T020, P05-T021, P06-T028, P07-T028 | `[PASSED]` |
 | `P08-T022` | Dry-run مهاجرت روی استیجینگ | `8.3` | P03-T002, P03-T012, P07-T026 | `[PASSED]` |
 | `P08-T023` | ترتیب غیرفعال‌سازی افزونه‌ها و Rollback | `8.3` | P08-T022 | `[PASSED]` |
-| `P08-T024` | E2E نهایی و بسته انتشار | `8.3` | P08-T019, P08-T020, P08-T021, P08-T022, P08-T023 | `[PENDING]` |
+| `P08-T024` | E2E نهایی و بسته انتشار | `8.3` | P08-T019, P08-T020, P08-T021, P08-T022, P08-T023 | `[PASSED]` |
 
 ## پروتکل هر تسک
 `READ MEMORY → THINK & PLAN → WRITE TEST → IMPLEMENT → RUN TEST & SELF-CORRECT → UPDATE MEMORY + Git Commit`

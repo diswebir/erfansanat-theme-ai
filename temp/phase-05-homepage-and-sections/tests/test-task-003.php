@@ -4,12 +4,19 @@
  * Run: php temp/phase-05-homepage-and-sections/tests/test-task-003.php
  */
 require dirname( __DIR__, 2 ) . '/tests/bootstrap.php';
+register_shutdown_function( function () { $e = error_get_last(); file_put_contents( '/tmp/t003fatal.txt', var_export( $e, true ) ); } );
 
 use ErfanSanat\Theme\Core\AttributeMap;
 
 es_task( 'P05-T003', 'کارت استاندارد محصول' );
 
 es_check( 'target: cards/card-product.php', es_file( 'template-parts/cards/card-product.php' ) );
+
+/** Idempotent term create: leftovers from an aborted run must not fatal. */
+function es_t003_term( string $name, string $tax ): int {
+	$existing = get_term_by( 'name', $name, $tax );
+	return $existing ? (int) $existing->term_id : (int) wp_insert_term( $name, $tax )['term_id'];
+}
 
 if ( es_load_wp() ) {
 	require_once ES_THEME . '/functions.php';
@@ -38,12 +45,12 @@ if ( es_load_wp() ) {
 
 	// ── SC-01: online product ─────────────────────────────────────────────.
 	$pid  = wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => 'پوینت لایت پیکسل ۴ سانتی فول‌کالر', 'post_excerpt' => 'پیکسل فول‌کالر با گواهی IP68 برای تونل‌های نوری' ) );
-	$cat  = wp_insert_term( 'پوینت لایت پیکسل LED', 'product_cat' );
-	wp_set_object_terms( $pid, array( (int) $cat['term_id'] ), 'product_cat' );
-	$ip   = wp_insert_term( 'IP68', 'pa_ip-rating' );
-	$volt = wp_insert_term( '12V/24V DC', 'pa_input-voltage' );
-	wp_set_object_terms( $pid, array( (int) $ip['term_id'] ), 'pa_ip-rating' );
-	wp_set_object_terms( $pid, array( (int) $volt['term_id'] ), 'pa_input-voltage' );
+	$cat = es_t003_term( 'پوینت لایت پیکسل LED', 'product_cat' );
+	wp_set_object_terms( $pid, array( (int) $cat ), 'product_cat' );
+	$ip = es_t003_term( 'IP68', 'pa_ip-rating' );
+	$volt = es_t003_term( '12V/24V DC', 'pa_input-voltage' );
+	wp_set_object_terms( $pid, array( (int) $ip ), 'pa_ip-rating' );
+	wp_set_object_terms( $pid, array( (int) $volt ), 'pa_input-voltage' );
 	update_post_meta( $pid, 'true_sale', 'true' );
 	update_post_meta( $pid, '_price', '98000' );
 	update_post_meta( $pid, '_regular_price', '112000' );
@@ -76,8 +83,8 @@ if ( es_load_wp() ) {
 	$inq = wp_insert_post( array( 'post_type' => 'product', 'post_status' => 'publish', 'post_title' => 'درخت نوری دلسا' ) );
 	update_post_meta( $inq, 'true_sale', 'false' );
 	update_post_meta( $inq, '_price', '0' );
-	$ip2 = wp_insert_term( 'IP67', 'pa_ip-rating' );
-	wp_set_object_terms( $inq, array( (int) $ip2['term_id'] ), 'pa_ip-rating' );
+	$ip2 = es_t003_term( 'IP67', 'pa_ip-rating' );
+	wp_set_object_terms( $inq, array( (int) $ip2 ), 'pa_ip-rating' );
 	$html = $render( $inq );
 	es_check( 'AC-02: true_sale=false → purchasable=false', 'false' === $attr( $html, 'purchasable' ) );
 	es_check( 'SC-02: محصول استعلامی price=0', '0' === $attr( $html, 'price' ) );
@@ -97,10 +104,10 @@ if ( es_load_wp() ) {
 
 	// Cleanup.
 	foreach ( array( $pid, $inq, $bare, $page, $att ) as $id ) { wp_delete_post( $id, true ); }
-	wp_delete_term( $cat['term_id'], 'product_cat' );
-	wp_delete_term( $ip['term_id'], 'pa_ip-rating' );
-	wp_delete_term( $ip2['term_id'], 'pa_ip-rating' );
-	wp_delete_term( $volt['term_id'], 'pa_input-voltage' );
+	wp_delete_term( $cat, 'product_cat' );
+	wp_delete_term( $ip, 'pa_ip-rating' );
+	wp_delete_term( $ip2, 'pa_ip-rating' );
+	wp_delete_term( $volt, 'pa_input-voltage' );
 } else {
 	es_check( 'بارگذاری WordPress تست', false );
 }

@@ -440,3 +440,15 @@
 - **دام چک hash لایو:** چک sha256 باید فقط جریان scratch را بپوشاند — نوشته‌های fixture لایو (wp_insert_post) بعد از چک بیایند وگرنه hash تغییر می‌کند.
 - front-page عنوان صفحه را در خروجی ندارد (سکشن‌ها) — چک محتوایی روی طول خروجی، نه strpos عنوان.
 - get_header() require_once است: فقط اولین رندرِ هر پروسه header کامل دارد (سازگار با چک‌های محتوایی، نه ساختاری).
+
+
+## 2026-11-07 — P08-T024 E2E نهایی و بسته انتشار (15)
+- **e2e نهایی: 2808 چک، 0 رد، exit 0** — `bash temp/run-all-phases-e2e.sh` (report: temp/e2e-report.md، state: temp/e2e-state.txt).
+- سه رگرسیون محیطی که e2e لو داد و اصلاح شد (وابستگی ثبت‌شده):
+  1. **P01-T012:** package-theme.sh قدیمی گم شده بود (temp/tools هرگز commit نمی‌شود) → اسکریپت جدید T024 قرارداد `temp/dist/erfansanat.zip` را برقرار کرد. **دام SIGPIPE:** `unzip -l | grep -q` با pipefail و exit 141 unzip → پیپ‌لاین رد می‌شود؛ خروجی را اول در متغیر بگیر.
+  2. **P05-T013:** شمارش «دقیقاً ۴ محصول» به DB وابسته بود (فیکسچرهای P08 مزاحم) → انتظار پویا با همین معیارهای کوئری سکشن + حالت خالی با فیلتر دسته ناموجود.
+  3. **P05-T003:** `wp_insert_term(...)['term_id']` روی ترم مانده از ران fatal شده fatal می‌داد و خودش را ماندگار می‌کرد (cleanup هیچ‌وقت نمی‌رسید) → helper idempotent es_t003_term + تعمیر کاربردهای $var['term_id'] بعد از تبدیل به int.
+- **چرخه گزارش/تست:** T024 اگر گزارش e2e را validate کند و e2e گزارش را آخر بنویسد، حلقه ناهمسو می‌شود → e2e بعد از هر فاز state می‌نویسد و T024 وضعیت «فازهای ۰۱..۰۷ اجرای جاری» را چک می‌کند (≥7 و ≤8 فاز، 0 رد) + گزارش کامل فقط به‌عنوان آرتیفکت تکمیلی.
+- **get_header() require_once است** — رندر دو باره قالب کامل ناممکن؛ اسنپ‌شات روی Renderer::render.
+- package: `temp/dist/erfansanat.zip` (249 فایل، 13MB، فقط erfansanat/)؛ **نصب تمیز اثبات شد**: کپی درخت + حذف دیتابیس (دقت: `rm database/*` فایل‌های نقطه‌دار را حذف نمی‌کند — کل پوشه!) → wp core install → unzip zip → theme activate → rewrite → locate_template(front-page)=found.
+- **برای e2e کامل پیش‌نیازها:** npm install + setup-harness + theme activate + permalinks + (node_modules برای DOM/wasm).

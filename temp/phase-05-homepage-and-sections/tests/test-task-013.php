@@ -63,7 +63,21 @@ if ( es_load_wp() ) {
 	es_check( 'AC-03: محصول پیش‌نویس نمایش داده نمی‌شود', false === strpos( $html, 'محصول پیش‌نویس مخفی' ) );
 	es_check( 'AC-03: محصول ناموجود نمایش داده نمی‌شود', false === strpos( $html, 'محصول ناموجود مخفی' ) );
 	$html_all = $render( array( 'count' => 24 ) );
-	es_check( 'AC-03: فقط ۴ محصول منتشرشده موجود', 4 === substr_count( $html_all, 'data-product-item="true"' ) );
+	// Expected = every publish+in-stock product in the install (P08 shop
+	// fixtures may coexist; the invariant is query parity, not a fixed 4).
+	$es_expected = (int) ( new WP_Query( array(
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'posts_per_page' => 100,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'meta_query'     => array(
+			'relation' => 'OR',
+			array( 'key' => '_stock_status', 'compare' => 'NOT EXISTS' ),
+			array( 'key' => '_stock_status', 'value' => 'outofstock', 'compare' => '!=' ),
+		),
+	) ) )->post_count;
+	es_check( 'AC-03: همه محصولات منتشرشده/موجود رندر شدند (بدون خارجی)', min( 24, $es_expected ) === substr_count( $html_all, 'data-product-item="true"' ) && 4 <= substr_count( $html_all, 'data-product-item="true"' ) );
 
 	// ── SC-02: product card carries full data-attr set ────────────────────.
 	es_check( 'SC-02: کارت data-product-item دارد', false !== strpos( $html, 'data-product-item="true"' ) );
@@ -82,7 +96,11 @@ if ( es_load_wp() ) {
 	foreach ( $pubs as $p ) { wp_delete_post( $p, true ); }
 	wp_delete_post( $draft, true );
 	wp_delete_post( $oos, true );
+	// Empty state via a non-matching category filter (the install may hold
+	// other products from P08 fixtures — order-independent by design).
+	add_filter( 'es_products_section_category', static function () { return 'es-no-such-category-t013'; } );
 	$html_empty = $render();
+	remove_all_filters( 'es_products_section_category' );
 	es_check( 'حالت خالی DOM را نمی‌شکند', false !== strpos( $html_empty, 'id="products"' ) && false !== strpos( $html_empty, 'محصولی برای نمایش وجود ندارد' ) );
 	$html_esc = $render( array( 'heading' => '<b>bold</b>' ) );
 	es_check( 'عنوان escape می‌شود', false === strpos( $html_esc, '<b>bold</b>' ) && false !== strpos( $html_esc, '&lt;b&gt;' ) );
