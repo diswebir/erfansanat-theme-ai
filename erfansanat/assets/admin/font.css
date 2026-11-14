@@ -1,0 +1,107 @@
+/**
+ * Erfan Sanat admin typography (P02-T019).
+ * Self-hosted Vazirmatn (variable 100–900) for the theme dashboard, theme
+ * metaboxes, section builder and term screens. Loaded ONLY on theme admin
+ * screens via Admin\Typography — never on the front-end. Icon fonts
+ * (dashicons / media / TinyMCE) and code fields are intentionally preserved.
+ */
+
+@font-face {
+	font-family: "Vazirmatn";
+	src: url("../fonts/vazirmatn-arabic.woff2") format("woff2");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+	unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+@font-face {
+	font-family: "Vazirmatn";
+	src: url("../fonts/vazirmatn-latin-ext.woff2") format("woff2");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: "Vazirmatn";
+	src: url("../fonts/vazirmatn-latin.woff2") format("woff2");
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+	/* ZWNJ/ZWJ (U+200C-200E) are intentionally left to the Arabic/Persian
+	   subset so Persian half-spaces always render from the correct face. */
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-200B, U+200F-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body.es-admin-vazirmatn,
+.es-dashboard,
+.es-sections,
+.es-repeater,
+.es-term-faq {
+	--es-admin-font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+	font-family: var(--es-admin-font);
+}
+
+/* Text + form controls across the theme admin screens. */
+body.es-admin-vazirmatn :is(h1, h2, h3, h4, h5, h6, p, label, legend, th, td, li, dt, dd, figcaption, blockquote),
+body.es-admin-vazirmatn :is(a, button, input, select, textarea, summary),
+body.es-admin-vazirmatn span:not(.dashicons):not(.dashicons-before):not(.media-modal-icon):not(.mce-ico):not(.editor-icon):not(.wp-media-buttons-icon),
+body.es-admin-vazirmatn :is(.description, .notice, .es-field__label, .es-field__desc, .es-tab__label, .es-panel__title, .es-dashboard__title, .es-save-status, .es-section-row__title, .es-sections__status) {
+	font-family: var(--es-admin-font);
+}
+
+/* Keep icon fonts intact (dashicons / media picker / editor). */
+body.es-admin-vazirmatn .dashicons,
+body.es-admin-vazirmatn .dashicons-before::before,
+body.es-admin-vazirmatn .media-modal-icon,
+body.es-admin-vazirmatn .wp-media-buttons-icon {
+	font-family: dashicons !important;
+}
+
+/* Code / identifiers stay monospace for legibility (labels remain Vazirmatn). */
+body.es-admin-vazirmatn :is(code, pre, kbd, samp),
+body.es-admin-vazirmatn textarea.es-code,
+body.es-admin-vazirmatn .es-field textarea[class*="code"],
+body.es-admin-vazirmatn input[dir="ltr"].code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+body.es-admin-vazirmatn input[type="number"],
+body.es-admin-vazirmatn .tabular-nums {
+	font-variant-numeric: tabular-nums;
+}
+
+/* Crisper Persian rendering across the theme admin screens. */
+body.es-admin-vazirmatn {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+/* Overview panel + status readout inherit the Persian face explicitly so no
+   element falls back to the default wp-admin font. */
+.es-dashboard .es-overview,
+.es-dashboard .es-overview :is(h2, h3, p, span, a, th, td, table),
+.es-dashboard .es-stat-card__value,
+.es-dashboard .es-stat-card__label,
+.es-dashboard .es-stat-card__pending,
+.es-dashboard .es-status-table,
+.es-dashboard .es-quick-action {
+	font-family: var(--es-admin-font, "Vazirmatn", "Segoe UI", Tahoma, sans-serif);
+}
+
+/* Stat numbers and status values align cleanly in Persian. */
+.es-dashboard .es-stat-card__value,
+.es-dashboard .es-status-table td {
+	font-variant-numeric: tabular-nums;
+}
+
+/* WP chrome rendered inside the dashboard page (notices, help, screen meta)
+   also uses the Persian face for a consistent experience. */
+body.es-admin-vazirmatn .es-dashboard ~ .notice,
+body.es-admin-vazirmatn .es-dashboard .notice,
+body.es-admin-vazirmatn .es-dashboard :is(.screen-meta, #screen-meta, .metabox-prefs) {
+	font-family: var(--es-admin-font, "Vazirmatn", "Segoe UI", Tahoma, sans-serif);
+}

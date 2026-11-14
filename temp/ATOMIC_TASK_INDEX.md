@@ -1,0 +1,195 @@
+# ATOMIC_TASK_INDEX — فهرست تسک‌های اتمیک
+
+مجموع: **176 تسک** (P08-T025 تکمیلی) · هر تسک یک خروجی مستقل، وابستگی مشخص و سناریوی تست دارد.
+
+## Phase 1 — هسته قالب، Autoloader و Assets (12 تسک)
+- `P01-T001` [هدر قالب و style.css](phase-01-core-and-assets/tasks/task-001.md) — قبلی `1.1`
+- `P01-T002` [Bootstrap و ثابت‌های قالب](phase-01-core-and-assets/tasks/task-002.md) — قبلی `1.1`
+- `P01-T003` [Autoloader اختصاصی](phase-01-core-and-assets/tasks/task-003.md) — قبلی `1.1`
+- `P01-T004` [چرخه عمر و Theme Supports](phase-01-core-and-assets/tasks/task-004.md) — قبلی `1.1`
+- `P01-T005` [Fallback index.php](phase-01-core-and-assets/tasks/task-005.md) — قبلی `1.1`
+- `P01-T006` [DeBloat: صف‌های بلوک](phase-01-core-and-assets/tasks/task-006.md) — قبلی `1.2`
+- `P01-T007` [DeBloat: head و ایموجی](phase-01-core-and-assets/tasks/task-007.md) — قبلی `1.2`
+- `P01-T008` [انتقال CSS و فونت‌ها](phase-01-core-and-assets/tasks/task-008.md) — قبلی `1.3`
+- `P01-T009` [انتقال JS و رسانه‌های پایه](phase-01-core-and-assets/tasks/task-009.md) — قبلی `1.3`
+- `P01-T010` [AssetManager: ثبت و نسخه‌گذاری](phase-01-core-and-assets/tasks/task-010.md) — قبلی `1.3`
+- `P01-T011` [AssetManager: enqueue شرطی](phase-01-core-and-assets/tasks/task-011.md) — قبلی `1.3`
+- `P01-T012` [یکپارچگی asset و بسته‌بندی](phase-01-core-and-assets/tasks/task-012.md) — قبلی `1.3`
+
+## Phase 2 — داشبورد اختصاصی ادمین و Section Builder (18 تسک)
+- `P02-T001` [Schema و ذخیره‌گاه آپشن‌ها](phase-02-custom-admin-dashboard/tasks/task-001.md) — قبلی `2.1`
+- `P02-T002` [Helper es_option و کش](phase-02-custom-admin-dashboard/tasks/task-002.md) — قبلی `2.1`
+- `P02-T003` [منوی ادمین و دسترسی](phase-02-custom-admin-dashboard/tasks/task-003.md) — قبلی `2.1`
+- `P02-T004` [پوسته UI تب‌بندی RTL](phase-02-custom-admin-dashboard/tasks/task-004.md) — قبلی `2.1`
+- `P02-T005` [Renderer فیلدهای پایه](phase-02-custom-admin-dashboard/tasks/task-005.md) — قبلی `2.1`
+- `P02-T006` [فیلدهای Media/Link/Icon](phase-02-custom-admin-dashboard/tasks/task-006.md) — قبلی `2.2`
+- `P02-T007` [فیلد Repeater](phase-02-custom-admin-dashboard/tasks/task-007.md) — قبلی `2.3`
+- `P02-T008` [AJAX Save: امنیت](phase-02-custom-admin-dashboard/tasks/task-008.md) — قبلی `2.1`
+- `P02-T009` [AJAX Save: sanitize و validation](phase-02-custom-admin-dashboard/tasks/task-009.md) — قبلی `2.1`
+- `P02-T010` [تب هدر/اعلان/لوگو](phase-02-custom-admin-dashboard/tasks/task-010.md) — قبلی `2.2`
+- `P02-T011` [تب مگامنو](phase-02-custom-admin-dashboard/tasks/task-011.md) — قبلی `2.2`
+- `P02-T012` [تب فوتر/تماس/شبکه‌های اجتماعی](phase-02-custom-admin-dashboard/tasks/task-012.md) — قبلی `2.2`
+- `P02-T013` [تب برند/رنگ و اسکریپت سفارشی](phase-02-custom-admin-dashboard/tasks/task-013.md) — قبلی `2.2`
+- `P02-T014` [تب تنظیمات آرشیو](phase-02-custom-admin-dashboard/tasks/task-014.md) — قبلی `2.2`
+- `P02-T015` [SectionManager: schema و ذخیره متا](phase-02-custom-admin-dashboard/tasks/task-015.md) — قبلی `2.3`
+- `P02-T016` [SectionManager: UI ترتیب و فعال‌سازی](phase-02-custom-admin-dashboard/tasks/task-016.md) — قبلی `2.3`
+- `P02-T017` [SectionManager: ویرایش محتوای سکشن](phase-02-custom-admin-dashboard/tasks/task-017.md) — قبلی `2.3`
+- `P02-T018` [SectionManager: API رندر و کش](phase-02-custom-admin-dashboard/tasks/task-018.md) — قبلی `2.3`
+
+## Phase 3 — CPTها، تکسونومی‌ها و متاباکس‌های Legacy (24 تسک)
+- `P03-T001` [ثبت CPT projects](phase-03-cpt-and-legacy-meta/tasks/task-001.md) — قبلی `3.1`
+- `P03-T002` [ثبت CPT services](phase-03-cpt-and-legacy-meta/tasks/task-002.md) — قبلی `3.1`
+- `P03-T003` [ثبت تکسونومی project_type](phase-03-cpt-and-legacy-meta/tasks/task-003.md) — قبلی `3.1`
+- `P03-T004` [ثبت تکسونومی city](phase-03-cpt-and-legacy-meta/tasks/task-004.md) — قبلی `3.1`
+- `P03-T005` [حفظ rewrite محصول و product_cat](phase-03-cpt-and-legacy-meta/tasks/task-005.md) — قبلی `3.1`
+- `P03-T006` [حفظ product_tag/product_brand](phase-03-cpt-and-legacy-meta/tasks/task-006.md) — قبلی `3.1`
+- `P03-T007` [نقشه سازگاری ۱۸ ویژگی pa_*](phase-03-cpt-and-legacy-meta/tasks/task-007.md) — قبلی `3.1`
+- `P03-T008` [Flush و رگرسیون Permalink](phase-03-cpt-and-legacy-meta/tasks/task-008.md) — قبلی `3.1`
+- `P03-T009` [ریدایرکت aliasهای محصول/دسته](phase-03-cpt-and-legacy-meta/tasks/task-009.md) — قبلی `3.3`
+- `P03-T010` [ریدایرکت project و aliasهای پروژه](phase-03-cpt-and-legacy-meta/tasks/task-010.md) — قبلی `3.3`
+- `P03-T011` [ستون‌ها و فیلترهای ادمین پروژه](phase-03-cpt-and-legacy-meta/tasks/task-011.md) — قبلی `3.1`
+- `P03-T012` [Codec متاهای Legacy](phase-03-cpt-and-legacy-meta/tasks/task-012.md) — قبلی `3.2`
+- `P03-T013` [متاباکس شناسه‌های صنعتی محصول](phase-03-cpt-and-legacy-meta/tasks/task-013.md) — قبلی `3.2`
+- `P03-T014` [متاباکس عنوان/وضعیت فروش محصول](phase-03-cpt-and-legacy-meta/tasks/task-014.md) — قبلی `3.2`
+- `P03-T015` [متاباکس کاتالوگ و گالری محصول](phase-03-cpt-and-legacy-meta/tasks/task-015.md) — قبلی `3.2`
+- `P03-T016` [متاباکس روابط محصول](phase-03-cpt-and-legacy-meta/tasks/task-016.md) — قبلی `3.2`
+- `P03-T017` [Repeater مشخصات محصول](phase-03-cpt-and-legacy-meta/tasks/task-017.md) — قبلی `3.2`
+- `P03-T018` [Repeater کاربرد و FAQ محصول](phase-03-cpt-and-legacy-meta/tasks/task-018.md) — قبلی `3.2`
+- `P03-T019` [Quick Edit و Bulk Edit محصول](phase-03-cpt-and-legacy-meta/tasks/task-019.md) — قبلی `3.2`
+- `P03-T020` [متاباکس گالری پروژه](phase-03-cpt-and-legacy-meta/tasks/task-020.md) — قبلی `3.3`
+- `P03-T021` [متاباکس تاریخ و محصولات پروژه](phase-03-cpt-and-legacy-meta/tasks/task-021.md) — قبلی `3.3`
+- `P03-T022` [متای دسته محصول: thumbnail و FAQ](phase-03-cpt-and-legacy-meta/tasks/task-022.md) — قبلی `3.3`
+- `P03-T023` [متاباکس Hreflang پست و ترم](phase-03-cpt-and-legacy-meta/tasks/task-023.md) — قبلی `3.3`
+- `P03-T024` [ذخیره‌گاه شمارنده بازدید](phase-03-cpt-and-legacy-meta/tasks/task-024.md) — قبلی `3.3`
+
+## Phase 4 — هدر، مگامنو، منوی موبایل و فوتر (20 تسک)
+- `P04-T001` [ثبت چهار موقعیت منو](phase-04-header-footer-navigation/tasks/task-001.md) — قبلی `4.2`
+- `P04-T002` [Shell هدر و head استاندارد](phase-04-header-footer-navigation/tasks/task-002.md) — قبلی `4.1`
+- `P04-T003` [نوار اعلان بالای هدر](phase-04-header-footer-navigation/tasks/task-003.md) — قبلی `4.1`
+- `P04-T004` [ردیف برند و اکشن‌های هدر](phase-04-header-footer-navigation/tasks/task-004.md) — قبلی `4.1`
+- `P04-T005` [Walker ناوبری دسکتاپ](phase-04-header-footer-navigation/tasks/task-005.md) — قبلی `4.2`
+- `P04-T006` [مگامنوی محصولات](phase-04-header-footer-navigation/tasks/task-006.md) — قبلی `4.1`
+- `P04-T007` [مگامنوی پروژه‌ها](phase-04-header-footer-navigation/tasks/task-007.md) — قبلی `4.1`
+- `P04-T008` [مگامنوی شرکتی](phase-04-header-footer-navigation/tasks/task-008.md) — قبلی `4.1`
+- `P04-T009` [Shell منوی موبایل Off-canvas](phase-04-header-footer-navigation/tasks/task-009.md) — قبلی `4.1`
+- `P04-T010` [Walker آکاردئون موبایل](phase-04-header-footer-navigation/tasks/task-010.md) — قبلی `4.2`
+- `P04-T011` [تب‌های داخلی مگامنوی موبایل](phase-04-header-footer-navigation/tasks/task-011.md) — قبلی `4.2`
+- `P04-T012` [Markup مودال جستجو](phase-04-header-footer-navigation/tasks/task-012.md) — قبلی `4.1`
+- `P04-T013` [Markup مودال سبد خرید](phase-04-header-footer-navigation/tasks/task-013.md) — قبلی `4.1`
+- `P04-T014` [بخش اطلاعات فوتر](phase-04-header-footer-navigation/tasks/task-014.md) — قبلی `4.1`
+- `P04-T015` [Footer پایانی و کپی‌رایت](phase-04-header-footer-navigation/tasks/task-015.md) — قبلی `4.1`
+- `P04-T016` [CTA مشترک تماس](phase-04-header-footer-navigation/tasks/task-016.md) — قبلی `4.1`
+- `P04-T017` [Hreflang در head](phase-04-header-footer-navigation/tasks/task-017.md) — قبلی `4.1`
+- `P04-T018` [Walker تولیدات شرکت](phase-04-header-footer-navigation/tasks/task-018.md) — قبلی `4.2`
+- `P04-T019` [Walker منوی لندینگ](phase-04-header-footer-navigation/tasks/task-019.md) — قبلی `4.2`
+- `P04-T020` [Parity و دسترس‌پذیری ناوبری](phase-04-header-footer-navigation/tasks/task-020.md) — قبلی `4.1`
+
+## Phase 5 — صفحه اصلی و کامپوننت‌های ماژولار (21 تسک)
+- `P05-T001` [Controller صفحه اصلی](phase-05-homepage-and-sections/tasks/task-001.md) — قبلی `5.1`
+- `P05-T002` [کارت استاندارد پروژه](phase-05-homepage-and-sections/tasks/task-002.md) — قبلی `5.2`
+- `P05-T003` [کارت استاندارد محصول](phase-05-homepage-and-sections/tasks/task-003.md) — قبلی `5.2`
+- `P05-T004` [کارت استاندارد مقاله](phase-05-homepage-and-sections/tasks/task-004.md) — قبلی `5.2`
+- `P05-T005` [تنظیمات ویدیوی اصلی هیرو](phase-05-homepage-and-sections/tasks/task-005.md) — قبلی `5.2`
+- `P05-T006` [اسلایدهای انتخابی هیرو از پروژه‌ها](phase-05-homepage-and-sections/tasks/task-006.md) — قبلی `5.2`
+- `P05-T007` [Markup و JS هیرو](phase-05-homepage-and-sections/tasks/task-007.md) — قبلی `5.1`
+- `P05-T008` [سکشن انواع پروژه](phase-05-homepage-and-sections/tasks/task-008.md) — قبلی `5.2`
+- `P05-T009` [سکشن پروژه‌های منتخب](phase-05-homepage-and-sections/tasks/task-009.md) — قبلی `5.2`
+- `P05-T010` [سکشن درباره و آمار](phase-05-homepage-and-sections/tasks/task-010.md) — قبلی `5.2`
+- `P05-T011` [سکشن بومی‌سازی](phase-05-homepage-and-sections/tasks/task-011.md) — قبلی `5.1`
+- `P05-T012` [سکشن تاریخچه](phase-05-homepage-and-sections/tasks/task-012.md) — قبلی `5.2`
+- `P05-T013` [سکشن محصولات منتخب](phase-05-homepage-and-sections/tasks/task-013.md) — قبلی `5.2`
+- `P05-T014` [CTA کاتالوگ جامع](phase-05-homepage-and-sections/tasks/task-014.md) — قبلی `5.2`
+- `P05-T015` [سکشن خدمات تخصصی](phase-05-homepage-and-sections/tasks/task-015.md) — قبلی `5.2`
+- `P05-T016` [سکشن استانداردهای کیفیت](phase-05-homepage-and-sections/tasks/task-016.md) — قبلی `5.1`
+- `P05-T017` [سکشن پشتیبانی و گارانتی](phase-05-homepage-and-sections/tasks/task-017.md) — قبلی `5.1`
+- `P05-T018` [سکشن مشتریان و همکاران](phase-05-homepage-and-sections/tasks/task-018.md) — قبلی `5.2`
+- `P05-T019` [سکشن جدیدترین مقالات](phase-05-homepage-and-sections/tasks/task-019.md) — قبلی `5.2`
+- `P05-T020` [یکپارچه‌سازی CTA/فوتر صفحه اصلی](phase-05-homepage-and-sections/tasks/task-020.md) — قبلی `5.1`
+- `P05-T021` [رگرسیون کوئری/ترتیب/حالت خالی صفحه اصلی](phase-05-homepage-and-sections/tasks/task-021.md) — قبلی `5.2`
+
+## Phase 6 — ووکامرس، محصول تکی و آرشیو فروشگاه (28 تسک)
+- `P06-T001` [Shim سازگاری ووکامرس برای QA](phase-06-woocommerce-and-products/tasks/task-001.md) — قبلی `6.1`
+- `P06-T002` [Shell تک‌محصول](phase-06-woocommerce-and-products/tasks/task-002.md) — قبلی `6.1`
+- `P06-T003` [گالری محصول](phase-06-woocommerce-and-products/tasks/task-003.md) — قبلی `6.1`
+- `P06-T004` [خلاصه عنوان/زیرعنوان/عنوان انگلیسی](phase-06-woocommerce-and-products/tasks/task-004.md) — قبلی `6.1`
+- `P06-T005` [شناسه‌های قانونی محصول](phase-06-woocommerce-and-products/tasks/task-005.md) — قبلی `6.1`
+- `P06-T006` [قیمت و منطق true_sale](phase-06-woocommerce-and-products/tasks/task-006.md) — قبلی `6.1`
+- `P06-T007` [Variation Swatches و Quantity](phase-06-woocommerce-and-products/tasks/task-007.md) — قبلی `6.1`
+- `P06-T008` [اطلاعیه قبل از خرید و کاتالوگ](phase-06-woocommerce-and-products/tasks/task-008.md) — قبلی `6.1`
+- `P06-T009` [مشخصات و ویژگی‌های کلیدی محصول](phase-06-woocommerce-and-products/tasks/task-009.md) — قبلی `6.1`
+- `P06-T010` [جدول ۱۸ ویژگی فنی pa_*](phase-06-woocommerce-and-products/tasks/task-010.md) — قبلی `6.1`
+- `P06-T011` [کاربردهای محصول](phase-06-woocommerce-and-products/tasks/task-011.md) — قبلی `6.1`
+- `P06-T012` [پروژه‌های مرتبط با محصول](phase-06-woocommerce-and-products/tasks/task-012.md) — قبلی `6.1`
+- `P06-T013` [FAQ محصول](phase-06-woocommerce-and-products/tasks/task-013.md) — قبلی `6.1`
+- `P06-T014` [دیدگاه‌ها و امتیاز محصول](phase-06-woocommerce-and-products/tasks/task-014.md) — قبلی `6.1`
+- `P06-T015` [محصولات مرتبط/مکمل](phase-06-woocommerce-and-products/tasks/task-015.md) — قبلی `6.1`
+- `P06-T016` [Shell آرشیو فروشگاه](phase-06-woocommerce-and-products/tasks/task-016.md) — قبلی `6.2`
+- `P06-T017` [Parity کارت محصول در آرشیو](phase-06-woocommerce-and-products/tasks/task-017.md) — قبلی `6.2`
+- `P06-T018` [آرشیو دسته product_cat](phase-06-woocommerce-and-products/tasks/task-018.md) — قبلی `6.2`
+- `P06-T019` [FAQ و توضیحات دسته](phase-06-woocommerce-and-products/tasks/task-019.md) — قبلی `6.2`
+- `P06-T020` [آرشیو برچسب/برند](phase-06-woocommerce-and-products/tasks/task-020.md) — قبلی `6.2`
+- `P06-T021` [Toolbar مرتب‌سازی و صفحه‌بندی](phase-06-woocommerce-and-products/tasks/task-021.md) — قبلی `6.2`
+- `P06-T022` [قالب سبد خرید](phase-06-woocommerce-and-products/tasks/task-022.md) — قبلی `6.3`
+- `P06-T023` [Mini-cart و AJAX سبد](phase-06-woocommerce-and-products/tasks/task-023.md) — قبلی `6.3`
+- `P06-T024` [فرم Checkout](phase-06-woocommerce-and-products/tasks/task-024.md) — قبلی `6.3`
+- `P06-T025` [رسید/پیش‌فاکتور Checkout](phase-06-woocommerce-and-products/tasks/task-025.md) — قبلی `6.3`
+- `P06-T026` [حساب کاربری Woo](phase-06-woocommerce-and-products/tasks/task-026.md) — قبلی `6.3`
+- `P06-T027` [صفحه auth/ورود پیامکی](phase-06-woocommerce-and-products/tasks/task-027.md) — قبلی `6.3`
+- `P06-T028` [رگرسیون چرخه خرید و افزونه‌ها](phase-06-woocommerce-and-products/tasks/task-028.md) — قبلی `6.3`
+
+## Phase 7 — پروژه‌ها، وبلاگ، برگه‌ها و لندینگ‌ها (28 تسک)
+- `P07-T001` [Shell تک‌پروژه](phase-07-projects-blog-and-pages/tasks/task-001.md) — قبلی `7.1`
+- `P07-T002` [گالری تک‌پروژه](phase-07-projects-blog-and-pages/tasks/task-002.md) — قبلی `7.1`
+- `P07-T003` [متادیتای تک‌پروژه](phase-07-projects-blog-and-pages/tasks/task-003.md) — قبلی `7.1`
+- `P07-T004` [محصولات استفاده‌شده در پروژه](phase-07-projects-blog-and-pages/tasks/task-004.md) — قبلی `7.1`
+- `P07-T005` [پروژه‌های مرتبط](phase-07-projects-blog-and-pages/tasks/task-005.md) — قبلی `7.1`
+- `P07-T006` [آرشیو پروژه‌ها](phase-07-projects-blog-and-pages/tasks/task-006.md) — قبلی `7.1`
+- `P07-T007` [آرشیو نوع پروژه](phase-07-projects-blog-and-pages/tasks/task-007.md) — قبلی `7.1`
+- `P07-T008` [آرشیو شهر](phase-07-projects-blog-and-pages/tasks/task-008.md) — قبلی `7.1`
+- `P07-T009` [آرشیو اصلی وبلاگ](phase-07-projects-blog-and-pages/tasks/task-009.md) — قبلی `7.2`
+- `P07-T010` [آرشیو دسته/عمومی وبلاگ](phase-07-projects-blog-and-pages/tasks/task-010.md) — قبلی `7.2`
+- `P07-T011` [کارت مقاله و فیلتر کلاینت](phase-07-projects-blog-and-pages/tasks/task-011.md) — قبلی `7.2`
+- `P07-T012` [Shell تک‌نوشته](phase-07-projects-blog-and-pages/tasks/task-012.md) — قبلی `7.2`
+- `P07-T013` [TOC تک‌نوشته](phase-07-projects-blog-and-pages/tasks/task-013.md) — قبلی `7.2`
+- `P07-T014` [اشتراک‌گذاری تک‌نوشته](phase-07-projects-blog-and-pages/tasks/task-014.md) — قبلی `7.2`
+- `P07-T015` [شمارنده بازدید نوشته/پروژه/محصول](phase-07-projects-blog-and-pages/tasks/task-015.md) — قبلی `7.2`
+- `P07-T016` [مقالات مرتبط](phase-07-projects-blog-and-pages/tasks/task-016.md) — قبلی `7.2`
+- `P07-T017` [دیدگاه‌های وبلاگ](phase-07-projects-blog-and-pages/tasks/task-017.md) — قبلی `7.2`
+- `P07-T018` [صفحه جستجو](phase-07-projects-blog-and-pages/tasks/task-018.md) — قبلی `7.2`
+- `P07-T019` [صفحه 404](phase-07-projects-blog-and-pages/tasks/task-019.md) — قبلی `7.2`
+- `P07-T020` [برگه درباره ما](phase-07-projects-blog-and-pages/tasks/task-020.md) — قبلی `7.3`
+- `P07-T021` [برگه تماس با ما](phase-07-projects-blog-and-pages/tasks/task-021.md) — قبلی `7.3`
+- `P07-T022` [برگه مجوزها و افتخارات](phase-07-projects-blog-and-pages/tasks/task-022.md) — قبلی `7.3`
+- `P07-T023` [برگه سوالات متداول](phase-07-projects-blog-and-pages/tasks/task-023.md) — قبلی `7.3`
+- `P07-T024` [برگه گارانتی و خدمات پس از فروش](phase-07-projects-blog-and-pages/tasks/task-024.md) — قبلی `7.3`
+- `P07-T025` [برگه استخدام](phase-07-projects-blog-and-pages/tasks/task-025.md) — قبلی `7.3`
+- `P07-T026` [برگه خدمات smartelement](phase-07-projects-blog-and-pages/tasks/task-026.md) — قبلی `7.3`
+- `P07-T027` [تک‌خدمت](phase-07-projects-blog-and-pages/tasks/task-027.md) — قبلی `7.3`
+- `P07-T028` [لندینگ آریا](phase-07-projects-blog-and-pages/tasks/task-028.md) — قبلی `7.3`
+
+## Phase 8 — ایجکس، فرم‌ها، ممیزی و استقرار (25 تسک — شامل تکمیلی)
+- `P08-T001` [قرارداد و امنیت AJAX](phase-08-ajax-filters-and-audit/tasks/task-001.md) — قبلی `8.1`
+- `P08-T002` [جستجوی زنده محصولات](phase-08-ajax-filters-and-audit/tasks/task-002.md) — قبلی `8.1`
+- `P08-T003` [جستجوی زنده پروژه‌ها و مقالات](phase-08-ajax-filters-and-audit/tasks/task-003.md) — قبلی `8.1`
+- `P08-T004` [اتصال JS مودال جستجو](phase-08-ajax-filters-and-audit/tasks/task-004.md) — قبلی `8.1`
+- `P08-T005` [QueryBuilder فیلتر محصول](phase-08-ajax-filters-and-audit/tasks/task-005.md) — قبلی `8.1`
+- `P08-T006` [UI فیلترهای آرشیو محصول](phase-08-ajax-filters-and-audit/tasks/task-006.md) — قبلی `8.1`
+- `P08-T007` [فیلتر قیمت و حالت خرید](phase-08-ajax-filters-and-audit/tasks/task-007.md) — قبلی `8.1`
+- `P08-T008` [فیلتر ۱۸ ویژگی pa_*](phase-08-ajax-filters-and-audit/tasks/task-008.md) — قبلی `8.1`
+- `P08-T009` [مرتب‌سازی/صفحه‌بندی/حذف فیلتر](phase-08-ajax-filters-and-audit/tasks/task-009.md) — قبلی `8.1`
+- `P08-T010` [فیلتر پروژه‌ها](phase-08-ajax-filters-and-audit/tasks/task-010.md) — قبلی `8.1`
+- `P08-T011` [کارایی/کش فیلتر و جستجو](phase-08-ajax-filters-and-audit/tasks/task-011.md) — قبلی `8.1`
+- `P08-T012` [Schema و ذخیره‌گاه فرم‌ها](phase-08-ajax-filters-and-audit/tasks/task-012.md) — قبلی `8.2`
+- `P08-T013` [فرم تماس با ما](phase-08-ajax-filters-and-audit/tasks/task-013.md) — قبلی `8.2`
+- `P08-T014` [فرم استعلام قیمت پاپ‌آپ](phase-08-ajax-filters-and-audit/tasks/task-014.md) — قبلی `8.2`
+- `P08-T015` [فرم استخدام](phase-08-ajax-filters-and-audit/tasks/task-015.md) — قبلی `8.2`
+- `P08-T016` [فرم بازخورد مشتری](phase-08-ajax-filters-and-audit/tasks/task-016.md) — قبلی `8.2`
+- `P08-T017` [پنل ورودی‌های فرم](phase-08-ajax-filters-and-audit/tasks/task-017.md) — قبلی `8.2`
+- `P08-T018` [ایمیل، Honeypot و Rate-limit](phase-08-ajax-filters-and-audit/tasks/task-018.md) — قبلی `8.2`
+- `P08-T019` [ممیزی SEO و Schema](phase-08-ajax-filters-and-audit/tasks/task-019.md) — قبلی `8.3`
+- `P08-T020` [ممیزی کارایی و Escaping](phase-08-ajax-filters-and-audit/tasks/task-020.md) — قبلی `8.3`
+- `P08-T021` [ممیزی ریسپانسیو و دسترس‌پذیری](phase-08-ajax-filters-and-audit/tasks/task-021.md) — قبلی `8.3`
+- `P08-T022` [Dry-run مهاجرت روی استیجینگ](phase-08-ajax-filters-and-audit/tasks/task-022.md) — قبلی `8.3`
+- `P08-T023` [ترتیب غیرفعال‌سازی افزونه‌ها و Rollback](phase-08-ajax-filters-and-audit/tasks/task-023.md) — قبلی `8.3`
+- `P08-T024` [E2E نهایی و بسته انتشار](phase-08-ajax-filters-and-audit/tasks/task-024.md) — قبلی `8.3`
+- `P08-T025` [سخت‌سازی پس از ممیزی نهایی](phase-08-ajax-filters-and-audit/tasks/task-025.md) — تکمیلی

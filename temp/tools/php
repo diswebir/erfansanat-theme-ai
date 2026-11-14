@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# PHP 8.4 CLI (WASM) wrapper — usable as `php` when temp/tools is on PATH.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec node "$DIR/php-cli.mjs" "$@"

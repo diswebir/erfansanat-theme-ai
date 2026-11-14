@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+/** P07-T011 — real main.js filters the shared card/filter DOM (not a reimplementation). */
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const root = join(here, '../../..');
+const require = createRequire(join(root, 'temp/tools/package.json'));
+const { JSDOM } = require('jsdom');
+let pass = 0, fail = 0;
+const check = (name, ok, detail = '') => { ok ? pass++ : fail++; console.log(`  [${ok ? 'PASS' : 'FAIL'}] ${name}${ok ? '' : ' — ' + detail}`); };
+const html = execFileSync(join(root, 'temp/tools/php'), [join(here, 'build-blog-fixture.php'), '7', '4'], { cwd: root, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+const dom = new JSDOM(html, { url: 'https://example.test/blog/', runScripts: 'outside-only', pretendToBeVisual: true });
+const { window } = dom, { document } = window;
+window.matchMedia ||= () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
+window.IntersectionObserver ||= class { observe() {} unobserve() {} disconnect() {} };
+window.scrollTo ||= () => {};
+window.HTMLElement.prototype.scrollIntoView ||= () => {};
+window.eval(readFileSync(join(root, 'erfansanat/assets/js/main.js'), 'utf8'));
+document.dispatchEvent(new window.Event('DOMContentLoaded', { bubbles: true }));
+const visible = () => [...document.querySelectorAll('[data-blog-item]')].filter((el) => !el.classList.contains('hidden'));
+const count = () => document.querySelector('[data-blog-count]').textContent.trim();
+const search = document.querySelector('[data-blog-search]');
+const type = (q) => { search.value = q; search.dispatchEvent(new window.Event('input', { bubbles: true })); };
+const cat = (name) => [...document.querySelectorAll('[data-blog-cat-btn]')].find((el) => el.getAttribute('data-blog-cat-btn') === name).click();
+const reset = () => document.querySelector('[data-blog-reset]').click();
+
+check('AC-01: کارت واقعی با قرارداد فیلتر و صفحه اول', document.querySelectorAll('[data-blog-item][data-blog-search-text]').length === 7 && visible().length === 4 && count() === '۷');
+cat('مجله علمی');
+check('AC-02: فیلتر دسته شش مقاله و صفحه‌بندی مجدد', count() === '۶' && visible().length === 4 && visible().every((el) => el.getAttribute('data-blog-category') === 'مجله علمی'));
+cat('اخبار و رویداد ها');
+check('AC-02: دسته دوم یک مقاله و پنهان‌شدن صفحه‌بندی', count() === '۱' && visible().length === 1 && document.querySelector('[data-pagination-root]').classList.contains('hidden'));
+reset();
+check('بازنشانی دسته، جستجو و شمارنده', count() === '۷' && visible().length === 4 && search.value === '' && document.querySelector('[data-blog-reset]').classList.contains('hidden'));
+type('مقاله آزمایشی ۲');
+check('SC-01: جستجوی عنوان فارسی یک کارت درست', count() === '۱' && visible().length === 1 && visible()[0].getAttribute('data-blog-search-text').includes('مقاله آزمایشی ۲'));
+type('آزمايشي ۱');
+check('جستجو با ی/ک عربی همان مقاله فارسی را می‌یابد', count() === '۱' && visible().length === 1 && visible()[0].getAttribute('data-blog-search-text').includes('مقاله آزمایشی 1'));
+type('عبارت ناموجود');
+check('AC-03: حالت خالی و پنهان‌شدن گرید/صفحه‌بندی', count() === '۰' && visible().length === 0 && !document.querySelector('[data-blog-empty]').classList.contains('hidden') && document.querySelector('[data-pagination-root]').classList.contains('hidden'));
+reset();
+document.querySelector('[data-page-next]').click();
+check('صفحه دوم پس از بازنشانی سه کارت دارد', count() === '۷' && visible().length === 3 && visible()[0].getAttribute('data-blog-search-text').includes('مقاله آزمایشی 5'));
+document.querySelector('[data-page-prev]').click();
+check('بازگشت به صفحه اول چهار کارت دارد', visible().length === 4 && visible()[0].getAttribute('data-blog-search-text').includes('مقاله آزمایشی 1'));
+check('عنوان و خلاصه پس از بازنشانی درست‌اند', document.querySelector('[data-blog-heading]').textContent.trim() === 'آخرین مقالات' && document.querySelector('[data-blog-summary]').textContent.includes('مقاله'), document.querySelector('[data-blog-heading]').textContent + ' | ' + document.querySelector('[data-blog-summary]').textContent);
+console.log(`\n  RESULT: ${pass} passed, ${fail} failed`);
+window.close();
+process.exitCode = fail ? 1 : 0;
