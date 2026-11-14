@@ -55,6 +55,8 @@ final class Schema {
 				'name'       => array( 'type' => 'text', 'required' => true, 'label' => 'نام و نام خانوادگی' ),
 				'phone'      => array( 'type' => 'tel', 'required' => true, 'label' => 'شماره تماس' ),
 				'email'      => array( 'type' => 'email', 'required' => false, 'label' => 'ایمیل (اختیاری)' ),
+				'unit'       => array( 'type' => 'text', 'required' => false, 'label' => 'واحد سازمانی' ),
+				'experience' => array( 'type' => 'text', 'required' => false, 'label' => 'میزان سابقه' ),
 				'background' => array( 'type' => 'textarea', 'required' => true, 'label' => 'تحصیلات، مهارت‌ها و سوابق' ),
 			),
 			'feedback'    => array(

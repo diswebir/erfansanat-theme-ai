@@ -12,7 +12,7 @@ es_task( 'P07-T025', 'برگه استخدام' );
 es_check( 'target: page-templates/recruitment.php', es_file( 'page-templates/recruitment.php' ) );
 es_check( 'AC-02: data-recruit-tabs حفظ شده', es_contains( 'page-templates/recruitment.php', 'data-recruit-tabs="true"' ) && es_contains( 'page-templates/recruitment.php', 'data-recruit-tab-btn' ) && es_contains( 'page-templates/recruitment.php', 'data-recruit-tab-panel' ) );
 es_check( 'AC-03: فرم بدون action/method/handler', ! es_contains( 'page-templates/recruitment.php', 'admin-post.php' ) && ! es_contains( 'page-templates/recruitment.php', 'method="post"' ) && ! es_contains( 'page-templates/recruitment.php', 'admin-ajax' ) );
-es_check( 'AC-03: یادداشت امن تا فاز ۸', es_contains( 'page-templates/recruitment.php', 'به‌زودی فعال می‌شود' ) );
+es_check( 'AC-03: یادداشت وضعیت ثبت آنلاین', es_contains( 'page-templates/recruitment.php', 'ثبت آنلاین درخواست استخدام فعال است' ) ); // P08-T015: real form replaced the stub note (dependency recorded).
 
 if ( es_load_wp() ) {
 	require_once ES_THEME . '/functions.php';
@@ -35,8 +35,8 @@ if ( es_load_wp() ) {
 	es_check( 'مرجع: ۴ تب R&D/پروژه/حسابداری/IT', 4 === substr_count( $html, 'data-recruit-tab-btn=' ) && false !== strpos( $html, 'data-recruit-tab-btn="rnd"' ) && false !== strpos( $html, 'data-recruit-tab-btn="it"' ) );
 	es_check( 'مرجع: ۴ پنل + ۷ موقعیت شغلی', 4 === substr_count( $html, 'data-recruit-tab-panel=' ) && 7 === substr_count( $html, '<article' ) );
 	es_check( 'AC-02: پلن‌ها data-recruit-panel هم دارند (main.js)', 4 === substr_count( $html, 'data-recruit-panel=' ) );
-	es_check( 'مرجع: پنل اول باز، بقیه hidden', 1 === substr_count( $html, 'data-recruit-tab-panel="rnd" data-recruit-panel="rnd" class="block"' ) && 3 === substr_count( $html, 'class="hidden"' ) );
-	es_check( 'AC-03: فرم هیچ name/action برای ارسال ندارد', ! preg_match( '/<form[^>]*(action|method)=/', $html ) && ! preg_match( '/<(input|textarea|select)[^>]*name=/', $html ) );
+	es_check( 'مرجع: پنل اول باز، بقیه hidden', 1 === substr_count( $html, 'data-recruit-tab-panel="rnd" data-recruit-panel="rnd" class="block"' ) && 4 === substr_count( $html, ' data-recruit-panel="' ) && substr_count( $html, 'class="hidden' ) >= 3 ); // P08-T015: form error/success boxes also use hidden (dependency recorded).
+	es_check( 'AC-03: فرم واقعی امن (name + nonce + honeypot، بدون action خارجی)', es_contains( 'template-parts/forms/recruitment.php', 'name="es_rf_name"' ) && es_contains( 'template-parts/forms/recruitment.php', 'name="nonce"' ) && es_contains( 'template-parts/forms/recruitment.php', 'es_rf_hp' ) ); // P08-T015: real handler (dependency recorded).
 	es_check( 'مرجع: فرم #apply-form present', false !== strpos( $html, 'id="apply-form"' ) && false !== strpos( $html, 'href="#apply-form"' ) );
 
 	// SC-02: job description from settings.

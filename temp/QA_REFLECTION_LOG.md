@@ -364,3 +364,10 @@
 - **دام منطقی:** دو resolve پشت هم (product سپس project) — دومی اولی را بازنویسی می‌کرد و استعلام محصول بدون لینک می‌شد؛ fix: فقط اگر اولی خالی بود دومی جایگزین شود.
 - purchase.php: CTA استعلامی از <a href=checkout> به <button data-quote-open="product" data-quote-id> تغییر کرد (متن مرجع حفظ؛ P06-T006=23 سبز) + مودال quote فقط در حالت !es_is_online (متغیر درست es_is_online است نه es_mode).
 - مودال: open با closest('[data-quote-open]') + پر کردن es_qf_product_id/es_qf_product؛ Escape/backdrop بستن؛ success/error با کلاس‌های مرجع.
+
+
+## 2026-11-07 — P08-T015 فرم استخدام (27)
+- RecruitmentForm: whitelist واحدها (rnd/project/accounting/it با برچسب فارسی از tabs صفحه) و تجربه؛ رزومه: پسوند allowlist + سقف 2MB + نام تصادفی token- در uploads/es-resumes + دفاع دوم بررسی پسوند روی دیسک؛ خطای فایل → حذف entry نیمه‌کاره.
+- **دام دوباره:** Entries::store دوباره Schema::validate اجرا می‌کند و فیلدهای خارج از اسکیما را حذف می‌کند → unit اول ذخیره نمی‌شد؛ حل: unit/experience به اسکیمای recruitment اضافه شدند (whitelist در فرم می‌ماند).
+- **دام تست:** submit با «عنصر خام $_FILES» کار می‌کند نه wrapper — تست اول wrapper می‌داد و handle_resume name='es_rf_resume' می‌دید.
+- کلاس‌های hidden فرم، شمارش class="hidden" در چک قدیمی صفحه را می‌شکند؛ چک P07-T025 با data-recruit-panel= جدید شد (تو در تو بودن substring ها را در نظر بگیر).
