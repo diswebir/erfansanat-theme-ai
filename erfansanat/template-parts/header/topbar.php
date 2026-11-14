@@ -33,7 +33,7 @@ foreach ( (array) $es_announcement['links'] as $es_link ) {
 		continue;
 	}
 	// Full URLs / anchors are used as-is; bare slugs resolve to site pages.
-	if ( preg_match( '#^(https?://|//|#|/)#', $es_url ) ) {
+	if ( preg_match( '#^(https?://|//|\#|/)#', $es_url ) ) {
 		$es_href = $es_url;
 	} else {
 		$es_href = Menus::page_url( $es_url );

@@ -406,3 +406,12 @@
 - **دام wp_insert_term با نام تکراری:** WP_Error برگردانده و access ['term_id'] فوراً fatal می‌دهد → همیشه اول get_term_by و idempotent بساز؛ ران قطع‌شده ترم یتیم می‌گذارد (پاکسازی موفق self-clean است).
 - wp_die داخل هوک wp_head = exit 255 «critical error» نه Throwable — shutdown_function/error_get_last منبع را نشان داد (Seo.php:204).
 - P04-T017=23 سبز — hreflang مالکش Core\Hreflang ماند و Seo فقط audit_hreflang کمکی دارد.
+
+
+## 2026-11-07 — P08-T020 ممیزی کارایی و Escaping (12)
+- **باگ واقعی پیدا و اصلاح شد (وابستگی ثبت‌شده):** topbar.php:36 `preg_match('#^(https?://|//|#|/)#')` — `#` داخل الگو دلیلیمتر را می‌بست و «Unknown modifier '|'» می‌داد (۳ warning در هر رندر) → `\#`. رندر صفحه اصلی/تک‌مقاله/آرشیو اکنون صفر warning.
+- قاعده اسکن escape: `echo $var;` خام فقط با علامت phpcs:ignore مجاز (خروجی داخلی escape‌شده مثل Menus::html)؛ تِرنری با هر دو شاخه literal امن ساختاری است و regex `[^;?]*;` آن را فلگ نمی‌کند — اسکن روی خط‌ها نه کل فایل.
+- بودجه‌ها: استایل‌های صف‌شده ≤8 (واقعی 6)، اسکریپت ≤6 (واقعی 3)، کوئری صفحه اصلی ≤250 (واقعی 35)، تک‌مقاله ≤150 (واقعی 6)؛ emoji با DeBloat حذف.
+- **SAVEQUERIES باید قبل از es_load_wp تعریف شود** تا wpdb کوئری‌ها را بشمارد؛ بدون آن num_queries صفر برمی‌گردد.
+- چک asset داخلی: روی src های registered صف‌شده‌ها نه regex کل head (لینک‌های api.w.org/oembed مجازند و asset نیستند).
+- رندر صفحات با swap کوئری + include قالب واقعی (get_header/get_footer) — همین مسیر warning های topbar را لو داد؛ ممیزی کارایی باید قالب واقعی را اجرا کند نه فقط head.
