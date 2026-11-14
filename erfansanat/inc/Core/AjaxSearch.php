@@ -67,6 +67,18 @@ final class AjaxSearch {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function search_content( string $term, int $limit = 6 ): array {
+		// P08-T011: version-keyed result cache (invalidated via SmartFilters hooks).
+		$key = 'content-search:' . md5( self::normalize( $term ) . '|' . $limit );
+		$hit = \ErfanSanat\Theme\Core\SmartFilters::cache_get( $key );
+		if ( is_array( $hit ) ) {
+			return $hit;
+		}
+		$result = self::search_content_uncached( $term, $limit );
+		\ErfanSanat\Theme\Core\SmartFilters::cache_set( $key, $result );
+		return $result;
+	}
+
+	private static function search_content_uncached( string $term, int $limit = 6 ): array {
 		$variants = self::term_variants( $term );
 		$term     = $variants[0];
 		if ( preg_match_all( '/./us', $term ) < 2 ) {
@@ -179,6 +191,18 @@ final class AjaxSearch {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function search_products( string $term, int $limit = 6 ): array {
+		// P08-T011: version-keyed result cache (invalidated via SmartFilters hooks).
+		$key = 'product-search:' . md5( self::normalize( $term ) . '|' . $limit );
+		$hit = \ErfanSanat\Theme\Core\SmartFilters::cache_get( $key );
+		if ( is_array( $hit ) ) {
+			return $hit;
+		}
+		$result = self::search_products_uncached( $term, $limit );
+		\ErfanSanat\Theme\Core\SmartFilters::cache_set( $key, $result );
+		return $result;
+	}
+
+	private static function search_products_uncached( string $term, int $limit = 6 ): array {
 		$variants = self::term_variants( $term );
 		$term     = $variants[0];
 		// AC-03: no query for very short terms (1 char, any script).

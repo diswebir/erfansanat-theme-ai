@@ -335,3 +335,10 @@
 - project-filters.php/js: الگوی product-filters؛ URL با پیشوند es_p* تا با پارامترهای شل (type/location) تلاقی نکند؛ شمارنده‌های ترم از counts پاسخ به‌روز می‌شوند.
 - WP_Query «s» فقط عنوان/متن پست است نه ترم — تست اول «خمینی‌شهر» را انتظار داشت و fail شد؛ اصلاح: جستجوی عنوان + چک «شهر بدون عنوان → خالی اما سالم».
 - شمار اولیه DOM: کارت پروژه data-project-card ندارد → selector عمومی children/article. رگرسیون T009=14، T005=15، T001=20، P07-T006=12، P07-T007=10، P07-T008=10، P06-T021=13.
+
+
+## 2026-11-07 — P08-T011 کارایی/کش فیلتر و جستجو (12)
+- SmartFilters: cache_version (option es_filters_cache_version) + cache_get/cache_set (memory + wp_cache گروه es_filters، کلید نسخه‌دار) + bust_cache روی save_post/deleted_post/set_object_terms/created|edited|deleted_term/edited_terms؛ query_products/query_projects/project_term_counts کش شدند؛ _prime_post_caches(ids,true,true) قبل از هر حلقه رندر کارت (ضد N+1؛ ۹ کارت با <40 کوئری).
+- AjaxSearch: search_products/search_content با wrapper کش (کلید normalize(term)+limit) — **دام:** در namespace باید self::normalize باشد؛ normalize() تنها = fatal «critical error» و ران تست وسط راه می‌میرد.
+- **آلودگی DB از ران abortشده:** ران فetal فیکسچرها را بدون cleanup رها می‌کند → ران بعدی «نام دسته» fail می‌شود (۲ ست فیکسچر T002 موازی). پاکسازی ران‌های قبلی (پست‌های حاوی T00x + ترم‌ها) سپس رگرسیون → همه سبز. قبل از ران رگرسیون، DB چک/پاک شود.
+- بنچمارک ۱۰۰ محصول + ۱۰۰ پروژه: p95 هر سه endpoint زیر 200ms (SC-01 ثبت شد).

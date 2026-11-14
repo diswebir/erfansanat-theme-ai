@@ -20,7 +20,10 @@ final class SmartFilters {
 
 	private static bool $booted = false;
 
-	/** Register the public filter endpoint on the shared Ajax contract (P08-T006). */
+	/**
+	 * Register the public filter endpoint on the shared Ajax contract (P08-T006)
+	 * and the content-change invalidation hooks (P08-T011 AC-02).
+	 */
 	public static function boot(): void {
 		if ( self::$booted ) {
 			return;
@@ -32,6 +35,55 @@ final class SmartFilters {
 		} else {
 			add_action( 'init', array( __CLASS__, 'register_endpoint' ), 20 );
 		}
+
+		// P08-T011: any content/term change invalidates cached results.
+		foreach ( array( 'save_post', 'deleted_post', 'set_object_terms', 'created_term', 'edited_term', 'deleted_term', 'edited_terms' ) as $es_hook ) {
+			add_action( $es_hook, array( __CLASS__, 'bust_cache' ), 10, 0 );
+		}
+	}
+
+	private const CACHE_GROUP = 'es_filters';
+
+	private static ?int $cache_version = null;
+
+	private static array $memory_cache = array();
+
+	/** Monotonic cache version, persisted so invalidation survives requests. */
+	public static function cache_version(): int {
+		if ( null === self::$cache_version ) {
+			self::$cache_version = (int) get_option( 'es_filters_cache_version', 1 );
+		}
+		return self::$cache_version;
+	}
+
+	/** Invalidate every cached filter/search result (content changed). */
+	public static function bust_cache(): void {
+		self::$cache_version = self::cache_version() + 1;
+		update_option( 'es_filters_cache_version', self::$cache_version, false );
+		if ( function_exists( 'wp_cache_flush_group' ) ) {
+			wp_cache_flush_group( self::CACHE_GROUP );
+		}
+		self::$memory_cache = array();
+	}
+
+	/** Fetch a cached result set (version-keyed; stale entries never read). */
+	public static function cache_get( string $key ) {
+		$versioned = self::cache_version() . ':' . $key;
+		if ( array_key_exists( $versioned, self::$memory_cache ) ) {
+			return self::$memory_cache[ $versioned ];
+		}
+		$hit = wp_cache_get( $versioned, self::CACHE_GROUP );
+		if ( false !== $hit ) {
+			self::$memory_cache[ $versioned ] = $hit;
+		}
+		return $hit;
+	}
+
+	/** Store a result set for the current cache version. */
+	public static function cache_set( string $key, $value ): void {
+		$versioned = self::cache_version() . ':' . $key;
+		self::$memory_cache[ $versioned ] = $value;
+		wp_cache_set( $versioned, $value, self::CACHE_GROUP );
 	}
 
 	/**
@@ -97,6 +149,11 @@ final class SmartFilters {
 			'page'      => $input['page'],
 			'per_page'  => $input['per_page'],
 		) );
+
+		// AC-03: prime posts + meta in ONE query — no per-card N+1.
+		if ( $result['ids'] && function_exists( '_prime_post_caches' ) ) {
+			_prime_post_caches( $result['ids'], true, true );
+		}
 
 		// Render the exact reference card (woocommerce/content-product.php).
 		$template = locate_template( 'woocommerce/content-product.php' );
@@ -358,8 +415,15 @@ final class SmartFilters {
 	 * @return array{ids:array<int,int>,total:int,pages:int,page:int}
 	 */
 	public static function query_projects( array $state ): array {
-		$args = self::build_project_query( $state );
-		return self::run_paged_query( $args );
+		// P08-T011: version-keyed result cache (invalidated on content change).
+		$key = 'projects:' . md5( (string) wp_json_encode( self::cacheable_state( $state ) ) );
+		$hit = self::cache_get( $key );
+		if ( is_array( $hit ) ) {
+			return $hit;
+		}
+		$result = self::run_paged_query( self::build_project_query( $state ) );
+		self::cache_set( $key, $result );
+		return $result;
 	}
 
 	/**
@@ -403,6 +467,18 @@ final class SmartFilters {
 	 * @return array<string,array<int,int>> tax => termId => count
 	 */
 	public static function project_term_counts( array $state ): array {
+		// P08-T011: version-keyed facet counters cache.
+		$key = 'project-counts:' . md5( (string) wp_json_encode( $state ) );
+		$hit = self::cache_get( $key );
+		if ( is_array( $hit ) ) {
+			return $hit;
+		}
+		$counts = self::project_term_counts_uncached( $state );
+		self::cache_set( $key, $counts );
+		return $counts;
+	}
+
+	private static function project_term_counts_uncached( array $state ): array {
 		$counts = array();
 		foreach ( self::allowed_project_taxonomies() as $taxonomy ) {
 			$counts[ $taxonomy ] = array();
@@ -443,6 +519,9 @@ final class SmartFilters {
 			'per_page' => $input['per_page'],
 		) );
 
+		if ( $result['ids'] && function_exists( '_prime_post_caches' ) ) {
+			_prime_post_caches( $result['ids'], true, true ); // AC-03: no N+1.
+		}
 		$template = locate_template( 'template-parts/cards/card-project.php' );
 		$html     = '';
 		if ( $template && $result['ids'] ) {
@@ -497,32 +576,32 @@ final class SmartFilters {
 	 * @return array{ids:array<int,int>,total:int,pages:int,page:int,args:array<string,mixed>}
 	 */
 	public static function query_products( array $state ): array {
-		$args = self::build_product_query( $state );
-		$args['fields']        = 'ids';
-		$args['no_found_rows'] = false;
-		$q     = new \WP_Query( $args );
-		$page  = max( 1, (int) ( $args['paged'] ?? 1 ) );
-		$pages = (int) $q->max_num_pages;
-		// SQLite QA-DB quirk: an offset past the last page reports found_rows=0.
-		// Fall back to a page-1 probe so out-of-range pages clamp to the last one.
-		if ( ! $q->posts && $page > 1 ) {
-			$probe_args           = $args;
-			$probe_args['paged']  = 1;
-			$probe                = new \WP_Query( $probe_args );
-			$total                = (int) $probe->found_posts;
-			$pages                = (int) ceil( $total / max( 1, (int) $probe_args['posts_per_page'] ) );
-			if ( $pages > 0 && $page > $pages ) {
-				$page          = $pages; // P08-T009: clamp to the last page.
-				$args['paged'] = $page;
-				$q             = new \WP_Query( $args );
-			}
+		// P08-T011: version-keyed result cache (invalidated on content change).
+		$key = 'products:' . md5( (string) wp_json_encode( self::cacheable_state( $state ) ) );
+		$hit = self::cache_get( $key );
+		if ( is_array( $hit ) ) {
+			return $hit;
 		}
+		$result = self::run_paged_query( self::build_product_query( $state ) );
+		self::cache_set( $key, $result );
+		return $result;
+	}
+	/**
+	 * State fingerprint for cache keys: only fields that change results.
+	 *
+	 * @param array<string,mixed> $state Raw state.
+	 * @return array<string,mixed>
+	 */
+	private static function cacheable_state( array $state ): array {
 		return array(
-			'ids'   => array_map( 'intval', $q->posts ),
-			'total' => (int) $q->found_posts,
-			'pages' => $pages,
-			'page'  => $page,
-			'args'  => $args,
+			'term'      => (string) ( $state['term'] ?? '' ),
+			'tax'       => $state['tax'] ?? array(),
+			'price_min' => (float) ( $state['price_min'] ?? 0 ),
+			'price_max' => (float) ( $state['price_max'] ?? 0 ),
+			'sale_mode' => (string) ( $state['sale_mode'] ?? 'all' ),
+			'orderby'   => (string) ( $state['orderby'] ?? 'latest' ),
+			'page'      => (int) ( $state['page'] ?? 1 ),
+			'per_page'  => (int) ( $state['per_page'] ?? 12 ),
 		);
 	}
 }

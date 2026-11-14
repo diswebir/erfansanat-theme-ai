@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T010 پاس.
+## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T011 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -20,7 +20,8 @@ P08-T007=12 (+4 DOM در سوئیت T006) (sanitize_price/sanitize_sale_mode ع�
 P08-T008=11 (+5 DOM → مجموع سوئیت 19) (گروه‌های pa_* در product-filters.php با data-product-attr-group/attr-filter؛ سواچ pa_color از فیلتر es_product_color_swatch_map؛ JS state.attrs → body pa_* و URL es_attr_{tax}؛ کلیدها با خط تیره: pa_ip-rating، pa_input-voltage)
 P08-T009=14 (+5 DOM → مجموع سوئیت 24) (sort select مرجع→ORDERBY؛ renderPagination سرور-محور داخل data-pagination-root با کلاس‌های مرجع؛ clamp صفحه خارج از بازه با probe page-1 برای SQLite quirk؛ ریست کامل شامل سورت/صفحه)
 P08-T010=18 (+9 DOM) (build_project_query/query_projects/project_term_counts facet-aware + endpoint es_project_filters؛ project-filters.php گروه type/city با data-project-type-filter/-city-filter و data-project-term-count؛ project-filters.js با es_ptypes/es_pcities/es_pq/es_psort/es_ppage؛ شل پروژه پارت را در سایدبار+drawer include می‌کند — وابستگی ثبت‌شده)
-NEXT: P08-T011 perf/cache; then T012 Forms Schema/Entries. and phase 8 (24 tasks)
+P08-T011=12 (کش نسخه‌دار cache_get/cache_set/bust_cache با option es_filters_cache_version + هوک‌های save_post/deleted_post/set_object_terms/terms؛ _prime_post_caches قبل از رندر کارت‌ها؛ search_products/search_content هم کش؛ بنچمارک ۱۰۰/۱۰۰ p95<200ms)
+NEXT: P08-T012 Forms Schema/Entries (inc/Forms/Schema.php+Entries.php); then T013 contact form. and phase 8 (24 tasks)
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.
