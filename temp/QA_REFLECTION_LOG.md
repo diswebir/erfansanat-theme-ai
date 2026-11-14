@@ -463,3 +463,7 @@
 - **SC-02 حالا خودکار است:** verify-clean-install.sh → کپی تازه هارنس، پاک‌سازی کل پوشه database (دام نقطه‌دار)، core install، unzip از زیپ انتشار، activate، رندر front-page (190,269 بایت روی DB خالی)، CLEAN INSTALL OK / exit 0 (~18s).
 - **پاریتی zip ↔ git = 212 فایل** (لیست unzip شامل ورودی‌های پوشه است: 249 = 212 فایل + 37 پوشه).
 - e2e بعد از T025: **2826 چک / 0 رد / exit 0** (P08: 408 → 426).
+
+## 2026-11-14 — merge نهایی
+- PR #7 (`main` ← `arena/7378effd-erfansanat-theme-ai`) با تأیید کاربر و merge commit ادغام شد — کل پروژه (8 فاز، 176 تسک اتمیک + سخت‌سازی T025) وارد main شد.
+- برنچ session حذف نشد (Arena آن را ردیابی می‌کند)؛ کارهای آینده از main منشعب می‌شوند.

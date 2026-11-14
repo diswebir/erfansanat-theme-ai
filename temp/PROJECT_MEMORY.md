@@ -35,7 +35,7 @@ P08-T023=17 (DEACTIVATION_RUNBOOK.md: ترتیب ۶ مرحله‌ای بک‌آ�
 P08-T022=20 (staging-migration-dry-run.sh + MIGRATION_REPORT_TEMPLATE.md: کپی scratch با symlink + DB واقعی، بک‌آپ + sha256، شمارش پست/ترم/۳۷ کلید legacy قبل-بعد، drift=0، گزارش markdown؛ تست جریان را in-process بازتولید می‌کند چون php-wasm subprocess ندارد — اسکریپت با bash هارنس اثبات شد)
 P08-T021=13 (ممیزی ریسپانسیو/a11y: بریک‌پوینت‌های CSS 640/768/1024؛ بدون عرض ثابت ≥۱۰۰۰px؛ همه img دارای alt؛ label هر فیلد فرم؛ مودال/دراور با aria-label/role dialog؛ آکاردئون button+aria-expanded؛ Escape در main.js/certificates/مودال استعلام؛ onclick فقط روی button/input/a؛ اسنپ‌شات سکشن‌های خانه پایدار + viewport meta + max-w-[1300px])
 P08-T020=12 (ممیزی کارایی/escaping: اسکن echo خام بدون phpcs:ignore=0؛ رندر بدون warning صفحه اصلی/تک‌مقاله/آرشیو؛ بودجه asset styles<=8/scripts<=6 و کوئری front<=250/single<=150؛ assetهای صف‌شده همه داخلی؛ emoji حذف. **باگ واقعی topbar.php:36 اصلاح شد — # داخل regex باید \# باشد (وابستگی ثبت‌شده)**)
-NEXT: فاز ۸ کامل شد (25/25 با T025 تکمیلی). تمام تسک‌ها پاس؛ PR به main باز/پیشنهاد شده؛ گام بعدی فقط تصمیم کاربر (merge PR یا تسک‌های جدید).
+NEXT: فاز ۸ کامل شد (25/25) و PR #7 با تأیید کاربر به main merge شد — پروژه کامل؛ ادامه فقط برای درخواست‌های جدید کاربر.
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.
