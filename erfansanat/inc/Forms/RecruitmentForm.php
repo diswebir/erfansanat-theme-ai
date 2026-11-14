@@ -133,7 +133,12 @@ final class RecruitmentForm {
 	 * @return array{entry:int,message:string}|WP_Error
 	 */
 	public static function submit( array $payload, array $file = array(), array $context = array() ) {
-		if ( isset( $payload['es_rf_hp'] ) && '' !== trim( (string) $payload['es_rf_hp'] ) ) {
+		// P08-T018: shared anti-spam — per-IP rate limit then the honeypot.
+		$es_rate = SpamGuard::enforce_rate( 'recruitment' );
+		if ( is_wp_error( $es_rate ) ) {
+			return $es_rate;
+		}
+		if ( ! SpamGuard::honeypot_ok( $payload['es_rf_hp'] ?? '' ) ) {
 			return new \WP_Error( 'es_form_honeypot', 'ارسال درخواست ممکن نیست. لطفاً صفحه را دوباره بارگذاری کنید.' );
 		}
 		$unit = (string) ( $payload['es_rf_unit'] ?? '' );
@@ -178,6 +183,9 @@ final class RecruitmentForm {
 		if ( $resume_meta ) {
 			update_post_meta( (int) $entry_id, '_es_entry_meta', array_merge( (array) get_post_meta( (int) $entry_id, '_es_entry_meta', true ), $resume_meta ) );
 		}
+		SpamGuard::hit( 'recruitment' );
+		// SC-03: notify after storing — an email failure keeps the entry.
+		Mailer::send_entry( 'recruitment', (int) $entry_id, $data );
 		return array(
 			'entry'   => (int) $entry_id,
 			'message' => 'درخواست همکاری شما ثبت شد؛ منابع انسانی با شما تماس می‌گیرد.',

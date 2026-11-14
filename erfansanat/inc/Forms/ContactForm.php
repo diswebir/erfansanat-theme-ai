@@ -69,8 +69,13 @@ final class ContactForm {
 	 * @return array{entry:int,message:string}|WP_Error
 	 */
 	public static function submit( array $payload, array $context = array() ) {
+		// P08-T018: shared anti-spam — per-IP rate limit then the honeypot.
+		$es_rate = SpamGuard::enforce_rate( 'contact' );
+		if ( is_wp_error( $es_rate ) ) {
+			return $es_rate;
+		}
 		// AC-02: a filled honeypot means a bot — reject without storing.
-		if ( isset( $payload['es_cf_hp'] ) && '' !== trim( (string) $payload['es_cf_hp'] ) ) {
+		if ( ! SpamGuard::honeypot_ok( $payload['es_cf_hp'] ?? '' ) ) {
 			return new \WP_Error( 'es_form_honeypot', 'ارسال درخواست ممکن نیست. لطفاً صفحه را دوباره بارگذاری کنید.' );
 		}
 		$data = Schema::validate(
@@ -89,6 +94,9 @@ final class ContactForm {
 		if ( is_wp_error( $entry_id ) ) {
 			return $entry_id;
 		}
+		SpamGuard::hit( 'contact' );
+		// SC-03: notify after storing — an email failure keeps the entry.
+		Mailer::send_entry( 'contact', (int) $entry_id, $data );
 		return array(
 			'entry'   => (int) $entry_id,
 			'message' => 'درخواست شما با موفقیت ثبت شد!',

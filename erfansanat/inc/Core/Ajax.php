@@ -78,9 +78,9 @@ final class Ajax {
 		$entry = self::$registry[ $action ];
 		$args  = $entry['args'];
 
-		// AC-01 / SC-01: every endpoint verifies its own nonce.
+		// AC-01 / SC-01: every endpoint verifies its own nonce (shared guard).
 		$nonce = isset( $_REQUEST['nonce'] ) ? sanitize_key( wp_unslash( $_REQUEST['nonce'] ) ) : '';
-		if ( ! wp_verify_nonce( $nonce, self::nonce_action( $action ) ) ) {
+		if ( ! \ErfanSanat\Theme\Forms\SpamGuard::nonce_ok( $nonce, self::nonce_action( $action ) ) ) {
 			self::fail( 'invalid_nonce', __( 'درخواست نامعتبر است (nonce).', 'erfansanat' ), 403 );
 		}
 

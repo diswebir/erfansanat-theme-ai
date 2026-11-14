@@ -100,7 +100,12 @@ final class QuoteForm {
 	 * @return array{entry:int,message:string,content_url:string}|WP_Error
 	 */
 	public static function submit( array $payload, array $context = array() ) {
-		if ( isset( $payload['es_qf_hp'] ) && '' !== trim( (string) $payload['es_qf_hp'] ) ) {
+		// P08-T018: shared anti-spam — per-IP rate limit then the honeypot.
+		$es_rate = SpamGuard::enforce_rate( 'quote' );
+		if ( is_wp_error( $es_rate ) ) {
+			return $es_rate;
+		}
+		if ( ! SpamGuard::honeypot_ok( $payload['es_qf_hp'] ?? '' ) ) {
 			return new \WP_Error( 'es_form_honeypot', 'ارسال درخواست ممکن نیست. لطفاً صفحه را دوباره بارگذاری کنید.' );
 		}
 		$content = self::resolve_content( (string) ( $payload['es_qf_product_id'] ?? '' ), 'product' );
@@ -131,6 +136,9 @@ final class QuoteForm {
 		if ( is_wp_error( $entry_id ) ) {
 			return $entry_id;
 		}
+		SpamGuard::hit( 'quote' );
+		// SC-03: notify after storing — an email failure keeps the entry.
+		Mailer::send_entry( 'quote', (int) $entry_id, $data );
 		$content_url = (string) ( $content['url'] ?? '' );
 		if ( '' !== $content_url ) {
 			update_post_meta( (int) $entry_id, '_es_entry_meta', array_merge(

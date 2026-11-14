@@ -386,3 +386,13 @@
 - تست php-wasm با `node` اجرا می‌شود نه `php` (php-cli.mjs یک اسکریپت ESM است)؛ `php temp/tools/php-cli.mjs` بی‌صدا خروجی سورس می‌دهد.
 - تست namespace سراسری: کلاس‌های theme را حتماً use کن (FeedbackForm بدون use → fatal «کلاس پیدا نشد» وسط تست).
 - wp_insert_user برای نام کاربری تکراری fatal نمی‌دهد بلکه WP_Error می‌دهد → قبل از ساخت، مانده‌های run قبلی را get_user_by('login') و پاک کن.
+
+
+## 2026-11-07 — P08-T018 ایمیل، Honeypot و Rate-limit (28)
+- SpamGuard: سه دفاع مشترک — honeypot_ok (خالی=مجاز)، nonce_ok (Ajax::dispatch از این مسیر می‌رود — وابستگی ثبت‌شده)، enforce_rate/hit per-IP+scope با transient (سقف ۱۰ در ۶۰۰ ثانیه، پنجره ثابت از اولین برخورد) + reset_all برای ادمین/تست.
+- Mailer: گیرنده option «es_form_recipient» → filter «es_form_recipient» → admin_email؛ send_entry بعد از store در هر ۴ فرم صدا زده می‌شود — **خطای ایمیل هرگز ورودی را از دست نمی‌دهد (SC-03)** و try/catch روی wp_mail.
+- **دام Schema::labels() وجود ندارد** — متد واقعی Schema::types() است (همان نگاشت نوع→برچسب فارسی)؛ Mailer اول labels صدا زد و fatal شد.
+- **دام reset_all:** DELETE خام روی wp_options کش options/wp_cache را پاک نمی‌کند و get_transient مقدار کهنه برمی‌گرداند → باید option_name ها را SELECT و با delete_transient حذف کرد (کش + timeout با هم).
+- **دام pre_wp_mail:** callback دو آرگومانی است ($pre, $atts) → add_filter با accepted_args=2؛ $atts['to'] رشته/آرایه بسته به نسخه — با (array) نرمال کن.
+- ترتیب تست: delete_option گیرنده را قبل از submit نگذار (capture پس از fallback به admin_email خراب می‌شود).
+- وابستگی ثبت‌شده: ۴ فرم honeypot را از SpamGuard می‌گیرند + enforce_rate/hit/Mailer؛ تست‌های T013..T016 یک خط SpamGuard::reset_all() بعد از functions.php گرفتند.

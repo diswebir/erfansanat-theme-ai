@@ -46,6 +46,7 @@ function es_capture_ajax( callable $fn ): array {
 
 if ( es_load_wp() ) {
 	require_once ES_THEME . '/functions.php';
+	\ErfanSanat\Theme\Forms\SpamGuard::reset_all(); // P08-T018: fresh rate budget (dependency).
 	require_once ES_ROOT . '/temp/tests/woocommerce-shim.php';
 	if ( ! defined( 'DOING_AJAX' ) ) { define( 'DOING_AJAX', true ); }
 	wp_set_current_user( 0 );
