@@ -423,3 +423,12 @@
 - **دام get_header():** include دوباره قالب کامل ناممکن است — load_template با require_once و سند HTML یک‌بار در هر ریکوئست ساخته می‌شود؛ اسنپ‌شات determinism را باید روی Renderer::render (بخش حساس به viewport) گرفت نه دو بار include کل صفحه.
 - مودال‌های search/mobile-menu نقش dialog ندارند اما aria-label/aria-hidden دارند — قاعده audit: aria-label یا aria-modal یا role=dialog برای هر مودال/دراور.
 - P05-T021=21، P08-T019=20، P08-T020=12 همه سبز — رندر front-page در ممیزی‌ها با swap کوئری + Seo::reset_printed انجام می‌شود.
+
+
+## 2026-11-07 — P08-T022 Dry-run مهاجرت روی استیجینگ (20)
+- staging-migration-dry-run.sh: درخت استیجینگ scratch با symlink به سورس + DB واقعیِ کپی‌شده — هیچ نوشتنی روی لایو (SC-01)؛ بک‌آپ staging-backup-<stamp>.sqlite + sha256 (AC-01)؛ شمارش پست/ترم/۳۷ کلید legacy قبل/بعد (AC-02)؛ کلیدها با املای تاریخی (english_titl/galerry_produ/foure-image/usage_countr/product-feature2_copy) بدون rename (AC-03)؛ گزارش markdown با drift=0 (SC-02).
+- **cp -a کل temp/wp (149MB) در بات ۶۰۰ ثانیه timeout شد** → الگوی symlink + کپی فقط DB؛ اجرا ۱۵ ثانیه.
+- **php در PATH نسخه wasm است و shell_exec/proc_open ندارد** (SPAWN_UNSUPPORTED) → تست، جریان dry-run را in-process بازتولید می‌کند (کپی DB → بک‌آپ → شمارش با PDO خام روی کپی → UPDATE idempotent → مقایسه → گزارش)؛ اسکریپت .sh جداگانه با bash هارنس اجرا و تایید شد.
+- مسیر ROOT اسکریپت باید دو سطح بالا باشد (temp/tools/../..) و mkdir دیتابیس کپی فراموش نشود.
+- شمارش کلیدها ۳۷ است نه ۳۶ (image-2..image-6 پنج‌تاست) — شمارش دستی فارسی را با count() تأیید کن.
+- رگرسیون‌ها: P03-T002=12، P03-T012=16، P07-T026=15، P08-T012=22 — LegacyMeta و CPT دست‌نخورده.
