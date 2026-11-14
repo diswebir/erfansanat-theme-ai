@@ -415,3 +415,11 @@
 - **SAVEQUERIES باید قبل از es_load_wp تعریف شود** تا wpdb کوئری‌ها را بشمارد؛ بدون آن num_queries صفر برمی‌گردد.
 - چک asset داخلی: روی src های registered صف‌شده‌ها نه regex کل head (لینک‌های api.w.org/oembed مجازند و asset نیستند).
 - رندر صفحات با swap کوئری + include قالب واقعی (get_header/get_footer) — همین مسیر warning های topbar را لو داد؛ ممیزی کارایی باید قالب واقعی را اجرا کند نه فقط head.
+
+
+## 2026-11-07 — P08-T021 ممیزی ریسپانسیو و دسترس‌پذیری (13)
+- اسکن‌های سورسی: عرض ثابت `w-[≥1000px]` ممنوع (max-w مجاز — جمع‌شونده است)، همه img با alt (44/44)، فرم‌ها label کامل (قاعده: labels+aria ≥ inputs−hidden−submit)، آکاردئون‌ها button+aria-expanded، Escape در main.js/certificates/مودال استعلام، onclick فقط روی button/input/a.
+- بریک‌پوینت‌های Tailwind 4 در styles.css به شکل `@media (width>=40rem/48rem/64rem)` هستند (نه max-width) — شمارش @media با grep خطی گمراه‌کننده است (فایل minified تک‌خطی).
+- **دام get_header():** include دوباره قالب کامل ناممکن است — load_template با require_once و سند HTML یک‌بار در هر ریکوئست ساخته می‌شود؛ اسنپ‌شات determinism را باید روی Renderer::render (بخش حساس به viewport) گرفت نه دو بار include کل صفحه.
+- مودال‌های search/mobile-menu نقش dialog ندارند اما aria-label/aria-hidden دارند — قاعده audit: aria-label یا aria-modal یا role=dialog برای هر مودال/دراور.
+- P05-T021=21، P08-T019=20، P08-T020=12 همه سبز — رندر front-page در ممیزی‌ها با swap کوئری + Seo::reset_printed انجام می‌شود.
