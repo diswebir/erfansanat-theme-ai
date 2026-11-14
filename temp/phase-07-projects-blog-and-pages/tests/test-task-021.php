@@ -11,7 +11,7 @@ use ErfanSanat\Theme\Options\Tabs\FooterTab;
 
 es_task( 'P07-T021', 'برگه تماس با ما' );
 es_check( 'target: page-templates/contact.php', es_file( 'page-templates/contact.php' ) );
-es_check( 'AC-03: DOM فرم مرجع', es_contains( 'template-parts/sections/contact/section-form.php', 'data-contact-form="true"' ) && es_contains( 'template-parts/sections/contact/section-form.php', 'data-contact-success="true"' ) );
+es_check( 'AC-03: DOM فرم مرجع', es_contains( 'template-parts/forms/contact.php', 'data-contact-form="true"' ) && es_contains( 'template-parts/sections/contact/section-form.php', 'data-contact-success="true"' ) ); // P08-T013: form extracted to template-parts/forms/contact.php (dependency recorded).
 es_check( 'AC-02: فرم بدون action/method ذخیره‌کننده', ! es_contains( 'template-parts/sections/contact/section-form.php', 'admin-post.php' ) && ! es_contains( 'template-parts/sections/contact/section-form.php', 'method="post"' ) );
 
 if ( es_load_wp() ) {
@@ -31,7 +31,7 @@ if ( es_load_wp() ) {
 	es_check( 'اطلاعات تماس از تنظیمات می‌آید', false !== strpos( $html, esc_html( $contact['phone'] ) ) || false !== strpos( $html, 'tel:' . preg_replace( '/\s+/', '', $contact['phone'] ) ) );
 	es_check( 'ایمیل/نشانی تنظیمات رندر می‌شود', false !== strpos( $html, esc_html( $contact['email'] ) ) && false !== strpos( $html, esc_html( $contact['address'] ) ) );
 	es_check( 'AC-02: پیام امن وضعیت فرم دیده می‌شود', false !== strpos( $html, 'به‌زودی فعال می‌شود' ) );
-	es_check( 'SC-02: فرم هیچ فیلد name/action برای ارسال ندارد', ! preg_match( '/<form[^>]*(action|method)=/', $html ) && ! preg_match( '/<input[^>]*name=/', $html ) );
+	es_check( 'SC-02: فرم واقعی امن شد (name + nonce + honeypot، بدون action خارجی)', es_contains( 'template-parts/forms/contact.php', 'name="es_cf_name"' ) && es_contains( 'template-parts/forms/contact.php', 'name="nonce"' ) && es_contains( 'template-parts/forms/contact.php', 'es_cf_hp' ) && false === strpos( (string) file_get_contents( ES_THEME . '/template-parts/forms/contact.php' ), 'action="http' ) ); // P08-T013: real handler replaced the pre-Phase-8 stub (dependency recorded).
 
 	// SC-01: phone override in the section shows up.
 	$cfg = SectionManager::get_sections( $page_id, 'contact' );

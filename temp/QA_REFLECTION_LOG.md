@@ -349,3 +349,11 @@
 - Forms/Entries.php: CPT es_form_entry (public/publicly_queryable=false، show_ui=false تا T017)؛ store → متا _es_entry_data/_es_entry_form/_es_entry_status(unread)/_es_entry_meta؛ query/mark_read/delete فقط manage_options.
 - **دام namespace:** WP_Error/WP_Query بدون \ داخل namespace ErfanSanat\Theme\Forms = Fatal «critical error» و cleanup ران نمی‌رود → DB آلوده (پاکسازی پست‌های T00x لازم شد).
 - QA DB هیچ کاربر ادمین ندارد (فقط مسیر deny قابل تست) → تست ادمین با wp_insert_user role=administrator می‌سازد و در teardown می‌حذف؛ wp_delete_user نیازمند wp-admin/includes/user.php.
+
+
+## 2026-11-07 — P08-T013 فرم تماس با ما (18)
+- template-parts/forms/contact.php: DOM مرجع + name attrs (es_cf_*) + nonce + honeypot hidden + error box؛ اسکریپت inline روی es-main (بدون فایل JS جدید): stopImmediatePropagation جلوی listener جعلی main.js را می‌گیرد، fetch به es_contact_submit، پیام خطا با textContent (AC-03).
+- ContactForm::submit: honeypot پر → WP_Error بدون ذخیره؛ Schema::validate(contact) → Entries::store؛ endpoint عمومی contact_submit (boot از functions.php — وابستگی).
+- **به‌روزرسانی قراردادهای قدیمی (وابستگی ثبت‌شده):** P07-T021 «بدون name/action» مال دوران stub بود؛ اکنون فرم واقعی با nonce/honeypot امن است و چک به «name + nonce + honeypot، بدون action خارجی» تغییر یافت. چک‌های سورسی P07 به forms/contact.php اشاره می‌کنند.
+- es_contains پایه‌اش ES_THEME است — برای فایل‌های temp/ مسیر absolute بده (dirname(__DIR__,2)).
+- wp_add_inline_script در خروجی پارت ظاهر نمی‌شود (به اسکریپت es-main می‌چسبد) → چک‌های سورسی نه رندری.
