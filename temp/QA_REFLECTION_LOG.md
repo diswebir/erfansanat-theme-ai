@@ -432,3 +432,11 @@
 - مسیر ROOT اسکریپت باید دو سطح بالا باشد (temp/tools/../..) و mkdir دیتابیس کپی فراموش نشود.
 - شمارش کلیدها ۳۷ است نه ۳۶ (image-2..image-6 پنج‌تاست) — شمارش دستی فارسی را با count() تأیید کن.
 - رگرسیون‌ها: P03-T002=12، P03-T012=16، P07-T026=15، P08-T012=22 — LegacyMeta و CPT دست‌نخورده.
+
+
+## 2026-11-07 — P08-T023 ترتیب غیرفعال‌سازی و Rollback (17)
+- DEACTIVATION_RUNBOOK.md: ۶ مرحله ثابت (بک‌آپ سه‌گانه → فعال‌سازی قالب → بررسی ۲۰۰ → Elementor → Jet* به ترتیب وابستگی jet-engine اول → بررسی مجدد + dry-run ممیزی)؛ سه نقطه rollback (wp db export + uploads + git tag pre-deactivation)؛ فقط Deactivate، هرگز uninstall/Delete Data؛ متاهای JetEngine همان postmeta استانداردند و LegacyMeta فرمت را حفظ می‌کند.
+- تمرین rollback در تست: کپی scratch → حذف jet*/elementor از active_plugins با PDO → تطبیق شمارش ۱۱ کلید legacy قبل/بعد → بازگردانی از بک‌آپ → رندر خانه/تک‌مقاله/آرشیو بدون warning (معادل ۲۰۰؛ افزونه‌ها در QA اصلاً نصب نبوده‌اند و قالب مستقل رندر می‌کند).
+- **دام چک hash لایو:** چک sha256 باید فقط جریان scratch را بپوشاند — نوشته‌های fixture لایو (wp_insert_post) بعد از چک بیایند وگرنه hash تغییر می‌کند.
+- front-page عنوان صفحه را در خروجی ندارد (سکشن‌ها) — چک محتوایی روی طول خروجی، نه strpos عنوان.
+- get_header() require_once است: فقط اولین رندرِ هر پروسه header کامل دارد (سازگار با چک‌های محتوایی، نه ساختاری).
