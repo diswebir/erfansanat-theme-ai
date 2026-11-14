@@ -313,3 +313,10 @@
 - product-filters.js: اسلایدر مرجع `data-product-price-range` (مقدار=max یعنی بی‌سقف) و رادیوهای `data-product-purchase-mode` (all/online/call→inquiry) به readControls/syncControls/listeners اضافه شدند؛ es_price/es_mode در URL؛ Clear همه را ریست می‌کند.
 - DOM: ۴ چک جدید در test-task-006-dom.mjs (اسلایدر/URL/استعلامی/ریست) — مجموع 14/0 با endpoint واقعی. رگرسیون T005=15، T006=16، T001=20، P06-T016=17.
 - یادآوری محیط: node_modules و temp/wp بین نوبت‌ها پاک می‌شوند → npm install + setup-harness.sh + theme activate + permalink؛ مسیر wp-cli برابر temp/wp است نه temp.
+
+
+## 2026-11-07 — P08-T008 فیلترهای ویژگی‌های فنی (11 + 5 DOM)
+- product-filters.php: برای هر AttributeMap::all() دارای ترم، گروه data-product-attr-group با چک‌باکس‌های data-product-attr-filter={tax} value={term_id} و شمارنده فارسی؛ pa_color سواچ از es_product_color_swatch_map؛ ترم نداشته باشد گروه رندر نمی‌شود (AC-03).
+- JS: state.attrs={tax:[ids]} → body.set(tax, ids) و URL es_attr_{tax}؛ syncControls/clear/readUrl پشتیبانی کامل.
+- **دام مهم:** کلید تاکسونومی‌ها با خط تیره است (pa_ip-rating، pa_input-voltage، pa_led-chip-type...) نه زیرخط — تست اول با pa_ip_rating خطای Invalid taxonomy داد و ۷ چک fail شد؛ بعد از اصلاح کلیدها 11/0.
+- DOM: ۵ چک جدید (گروه IP، سواچ رنگ، فیلتر IP68، URL ویژگی، پاکسازی) — مجموع 19/0. فیکسچر shop حالا IP/ولتاژ/رنگ هم می‌گیرد. رگرسیون T007=12، T006=16، T005=15، P06-T010=10، P06-T016=17.

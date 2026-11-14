@@ -56,3 +56,52 @@ $es_pf_fa = static function ( $v ) {
 		<?php esc_html_e( 'حذف همه فیلترها', 'erfansanat' ); ?>
 	</button>
 </div>
+<?php
+// P08-T008: technical attribute groups — every registered pa_* taxonomy with
+// terms renders a checkbox group; pa_color renders colour swatches. Attributes
+// with no terms build no UI (AC-03).
+if ( ! class_exists( '\ErfanSanat\Theme\Core\AttributeMap' ) ) {
+	return;
+}
+$es_pf_swatch_map = apply_filters(
+	'es_product_color_swatch_map',
+	array(
+		'فول‌کالر (هفت رنگ خودکار)' => 'bg-gradient-to-r from-red-500 via-emerald-500 to-blue-500',
+		'فول کالر'                  => 'bg-gradient-to-r from-red-500 via-emerald-500 to-blue-500',
+		'سبز'                       => 'bg-emerald-500',
+		'قرمز'                      => 'bg-red-500',
+		'سفید'                      => 'bg-white border border-slate-200',
+	)
+);
+foreach ( \ErfanSanat\Theme\Core\AttributeMap::all() as $es_pf_tax => $es_pf_def ) :
+	if ( ! taxonomy_exists( $es_pf_tax ) ) {
+		continue;
+	}
+	$es_pf_terms = get_terms( array( 'taxonomy' => $es_pf_tax, 'hide_empty' => true, 'orderby' => 'term_order' ) );
+	if ( is_wp_error( $es_pf_terms ) || ! $es_pf_terms ) {
+		continue; // AC-03: no values → no UI.
+	}
+	$es_pf_is_color = 'color' === ( $es_pf_def['type'] ?? '' );
+	?>
+	<div class="mt-4 border-t border-slate-100 pt-4" data-product-attr-group="<?php echo esc_attr( $es_pf_tax ); ?>">
+		<div class="mb-2.5 flex items-center justify-between">
+			<span class="flex items-center gap-2 text-[12px] font-extrabold text-slate-800">
+				<span><?php echo esc_html( $es_pf_def['label'] ?? $es_pf_tax ); ?></span>
+			</span>
+		</div>
+		<div class="space-y-1.5">
+			<?php foreach ( $es_pf_terms as $es_pf_term ) : ?>
+				<label class="flex cursor-pointer items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-[11.5px] font-bold text-slate-700 transition hover:border-emerald-300">
+					<span class="flex items-center gap-2">
+						<input type="checkbox" data-product-attr-filter="<?php echo esc_attr( $es_pf_tax ); ?>" value="<?php echo esc_attr( (string) $es_pf_term->term_id ); ?>" class="h-3.5 w-3.5 accent-emerald-600" />
+						<?php if ( $es_pf_is_color ) : ?>
+							<span class="h-3.5 w-3.5 rounded-full <?php echo esc_attr( $es_pf_swatch_map[ $es_pf_term->name ] ?? 'bg-slate-300' ); ?>" aria-hidden="true"></span>
+						<?php endif; ?>
+						<span><?php echo esc_html( $es_pf_term->name ); ?></span>
+					</span>
+					<span class="text-[10.5px] font-extrabold text-slate-400"><?php echo esc_html( $es_pf_fa( $es_pf_term->count ) ); ?></span>
+				</label>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php endforeach; ?>

@@ -99,6 +99,20 @@ archive.querySelector('[data-product-filters-clear="true"]').click();
 await sleep(600);
 check('T007: حذف فیلترها اسلایدر/رادیو را هم ریست می‌کند', grid.querySelectorAll('[data-product-item="true"]').length === 3 && archive.querySelector('[data-product-purchase-mode="all"]').checked && !window.location.search.includes('es_price') && !window.location.search.includes('es_mode'));
 
+// T008: technical attribute groups (pa_ip-rating) filter via the endpoint.
+const ipGroup = archive.querySelector('[data-product-attr-group="pa_ip-rating"]');
+check('T008: گروه ویژگی فنی IP رندر شده است', !!ipGroup);
+check('T008: سواچ رنگ برای pa_color هست', !!archive.querySelector('[data-product-attr-group="pa_color"] .rounded-full'));
+const ip68Box = archive.querySelector('[data-product-attr-group="pa_ip-rating"] [data-product-attr-filter="pa_ip-rating"]');
+ip68Box.checked = true;
+ip68Box.dispatchEvent(new window.Event('change', { bubbles: true }));
+await sleep(600);
+check('SC-01: فیلتر IP68 فقط ریسه سوزنی و درخت را می‌دهد', grid.textContent.includes('ریسه سوزنی DOM') && grid.textContent.includes('درخت نوری DOM') && !grid.textContent.includes('ریسه بلوطی DOM'));
+check('T008: مقدار ویژگی در URL می‌آید', window.location.search.includes('es_attr_pa_ip-rating='));
+archive.querySelector('[data-product-filters-clear="true"]').click();
+await sleep(600);
+check('T008: حذف فیلترها ویژگی‌ها را هم پاک می‌کند', grid.querySelectorAll('[data-product-item="true"]').length === 3 && !ip68Box.checked && !window.location.search.includes('es_attr_'));
+
 // Cleanup fixture data from the shared DB.
 execFileSync(join(root, 'temp/tools/php'), [join(here, 'ajax-bridge.php'), JSON.stringify({ cleanup: { posts: meta.ids, terms: meta.cats.map(c => [c, 'product_cat']) } })], { cwd: root, encoding: 'utf8' });
 

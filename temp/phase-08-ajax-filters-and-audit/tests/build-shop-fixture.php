@@ -24,6 +24,24 @@ foreach ( array( array( 'ریسه سوزنی DOM', 0, '100000', 'true' ), array(
 	$ids[] = $pid;
 }
 
+// T008: technical attributes on the fixture products (IP / voltage).
+\ErfanSanat\Theme\Core\AttributeMap::register_missing();
+$es_term_id = static function ( $tax, $name ) {
+	$found = get_terms( array( 'taxonomy' => $tax, 'hide_empty' => false, 'slug' => sanitize_title( $name ), 'fields' => 'ids' ) );
+	if ( is_array( $found ) && $found ) { return (int) reset( $found ); }
+	$t = wp_insert_term( $name, $tax );
+	return is_array( $t ) ? (int) $t['term_id'] : 0;
+};
+$ip68 = $es_term_id( 'pa_ip-rating', 'IP68' );
+$ip67 = $es_term_id( 'pa_ip-rating', 'IP67' );
+$v24  = $es_term_id( 'pa_input-voltage', '24V' );
+wp_set_object_terms( $ids[0], array( $ip68, $v24 ), 'pa_ip-rating', true );
+wp_set_object_terms( $ids[0], array( $v24 ), 'pa_input-voltage', true );
+wp_set_object_terms( $ids[1], array( $ip67 ), 'pa_ip-rating', true );
+wp_set_object_terms( $ids[2], array( $ip68 ), 'pa_ip-rating', true );
+$green = $es_term_id( 'pa_color', 'سبز' );
+wp_set_object_terms( $ids[0], array( $green ), 'pa_color', true );
+
 $q = new WP_Query( array( 'post_type' => 'product', 'post_status' => 'publish', 'posts_per_page' => 20 ) );
 $args = array( 'query' => $q, 'show_hero' => false );
 ob_start();

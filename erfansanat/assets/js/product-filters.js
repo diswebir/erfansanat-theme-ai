@@ -48,7 +48,9 @@
 
 		var priceRanges = archive.querySelectorAll('[data-product-price-range="true"]');
 		var modeRadios = archive.querySelectorAll("[data-product-purchase-mode]");
+		var attrBoxes = archive.querySelectorAll("[data-product-attr-filter]");
 
+		// P08-T008: attrs = { pa_tax: [termIds] }; everything else lives in state.
 		function readControls() {
 			state.cats = [];
 			catBoxes.forEach(function (box) {
@@ -69,6 +71,12 @@
 				var mode = checked.getAttribute("data-product-purchase-mode");
 				state.sale_mode = mode === "online" ? "online" : (mode === "call" || mode === "inquiry") ? "inquiry" : "all";
 			}
+			state.attrs = {};
+			attrBoxes.forEach(function (box) {
+				if (!box.checked) return;
+				var tax = box.getAttribute("data-product-attr-filter");
+				(state.attrs[tax] = state.attrs[tax] || []).push(box.value);
+			});
 		}
 
 		function syncControls() {
@@ -87,11 +95,22 @@
 					: state.sale_mode === "online" ? mode === "online"
 					: (mode === "call" || mode === "inquiry");
 			});
+			attrBoxes.forEach(function (box) {
+				var tax = box.getAttribute("data-product-attr-filter");
+				var values = state.attrs[tax] || [];
+				box.checked = values.indexOf(box.value) !== -1;
+			});
 		}
 
 		function writeUrl() {
 			var params = new URLSearchParams(window.location.search);
 			if (state.cats.length) params.set("es_cats", state.cats.join(",")); else params.delete("es_cats");
+			var seenTaxes = {};
+			attrBoxes.forEach(function (box) { seenTaxes[box.getAttribute("data-product-attr-filter")] = true; });
+			Object.keys(seenTaxes).forEach(function (tax) {
+				var values = state.attrs[tax] || [];
+				if (values.length) params.set("es_attr_" + tax, values.join(",")); else params.delete("es_attr_" + tax);
+			});
 			if (state.term) params.set("es_q", state.term); else params.delete("es_q");
 			if (state.price_max > 0) params.set("es_price", String(state.price_max)); else params.delete("es_price");
 			if (state.sale_mode !== "all") params.set("es_mode", state.sale_mode); else params.delete("es_mode");
@@ -104,12 +123,19 @@
 		function readUrl() {
 			var params = new URLSearchParams(window.location.search);
 			state.cats = (params.get("es_cats") || "").split(",").filter(Boolean);
+			state.attrs = {};
+			params.forEach(function (value, key) {
+				if (key.indexOf("es_attr_") === 0) {
+					var values = value.split(",").filter(Boolean);
+					if (values.length) state.attrs[key.slice(8)] = values;
+				}
+			});
 			state.term = params.get("es_q") || "";
 			state.price_max = parseInt(params.get("es_price") || "0", 10) || 0;
 			state.sale_mode = params.get("es_mode") || "all";
 			state.orderby = params.get("es_sort") || "latest";
 			state.page = parseInt(params.get("es_page") || "1", 10) || 1;
-			return !!(state.cats.length || state.term || state.price_max || state.sale_mode !== "all" || state.orderby !== "latest" || state.page > 1);
+			return !!(state.cats.length || state.term || state.price_max || state.sale_mode !== "all" || state.orderby !== "latest" || state.page > 1 || Object.keys(state.attrs).length);
 		}
 
 		function setBusy(on) {
@@ -128,6 +154,7 @@
 			body.set("nonce", config.nonces.product_filters);
 			body.set("term", state.term);
 			body.set("cats", state.cats.join(","));
+			Object.keys(state.attrs).forEach(function (tax) { body.set(tax, state.attrs[tax].join(",")); });
 			body.set("price_max", String(state.price_max || 0));
 			body.set("sale_mode", state.sale_mode);
 			body.set("orderby", state.orderby);
@@ -172,9 +199,10 @@
 		searchInputs.forEach(function (input) { input.addEventListener("input", schedule); });
 		priceRanges.forEach(function (range) { range.addEventListener("input", schedule); });
 		modeRadios.forEach(function (radio) { radio.addEventListener("change", schedule); });
+		attrBoxes.forEach(function (box) { box.addEventListener("change", schedule); });
 		clearBtns.forEach(function (btn) {
 			btn.addEventListener("click", function () {
-				state = { cats: [], term: "", price_max: 0, sale_mode: "all", orderby: "latest", page: 1 };
+				state = { cats: [], attrs: {}, term: "", price_max: 0, sale_mode: "all", orderby: "latest", page: 1 };
 				syncControls();
 				if (timer) clearTimeout(timer);
 				apply();
