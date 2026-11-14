@@ -376,3 +376,13 @@
 ## 2026-11-07 — P08-T016 فرم نظرات مشتریان (20)
 - FeedbackForm: نرمال‌سازی ارقام فارسی/عربی → بازه ۱..۵ (خارج بازه WP_Error بدون ذخیره)؛ متن با اسکیمای feedback؛ وضعیت بررسی در متای _es_feedback_status = pending پیش‌فرض، approve() برای ادمین (دسترسی در T017).
 - فرم مستقل بدون الحاق به سکشن مرجع (بازخورد در mirror نبود) — بخش قابل استفاده مجدد.
+
+
+## 2026-11-07 — P08-T017 پنل مدیریت ورودی‌ها (17)
+- FormEntries زیرمنوی پیشخوان (ThemeOptions::SLUG) با CAP manage_options: لیست فیلترشدنی (نوع فرم/وضعیت/از-تا تاریخ)، رندر کاملاً escape، اکشن‌های read/unread/approve/delete با admin-post + nonce + هدایت امن.
+- فیلتر تاریخ با get_post_timestamp روی نتیجه Entries::query پیاده شد تا فایل T012 (هدف نبودِ T017) دست‌نخورده بماند.
+- FeedbackForm::approve برای نوع feedback در اکشن‌ها صدا زده می‌شود — وضعیت بررسی و خوانده‌شدن دو چیز جدا هستند.
+- **محیط:** QA DB از نوبت قبلی بدون کاربر ID 1 مانده بود (P02-T003 با wp_set_current_user(1) رد می‌شد) → admin با SQL مستقیم در ID 1 بازسازی شد. node_modules و temp/wp هر دو بین نوبت‌ها پاک شده بودند → npm install + setup-harness + theme activate + permalinks قبل از رگرسیون‌های php-wasm لازم است.
+- تست php-wasm با `node` اجرا می‌شود نه `php` (php-cli.mjs یک اسکریپت ESM است)؛ `php temp/tools/php-cli.mjs` بی‌صدا خروجی سورس می‌دهد.
+- تست namespace سراسری: کلاس‌های theme را حتماً use کن (FeedbackForm بدون use → fatal «کلاس پیدا نشد» وسط تست).
+- wp_insert_user برای نام کاربری تکراری fatal نمی‌دهد بلکه WP_Error می‌دهد → قبل از ساخت، مانده‌های run قبلی را get_user_by('login') و پاک کن.

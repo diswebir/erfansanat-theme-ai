@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 7 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T016 پاس.
+## وضعیت فعلی: **PHASE 8 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T017 پاس.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -26,7 +26,8 @@ P08-T013=18 (forms/contact.php با name attrs/honeypot es_cf_hp/nonce/error box
 P08-T014=22 (QuoteForm::submit با resolve_content product/projects فقط publish؛ CTA استعلامی purchase.php → button data-quote-open + مودال forms/quote.php در حالت استعلامی — وابستگی ثبت‌شده؛ endpoint es_quote_submit)
 P08-T015=27 (RecruitmentForm::submit با whitelist واحد rnd/project/accounting/it + experience و رزومه اختیاری pdf/doc/docx/rtf/txt تا 2MB در uploads/es-resumes با نام تصادفی؛ endpoint es_recruitment_submit با $_FILES؛ صفحه استخدام به پارت ارجاع — وابستگی؛ سه چک P07-T025 به قرارداد جدید به‌روز شد)
 P08-T016=20 (FeedbackForm با نرمال‌سازی ارقام فارسی و بازه ۱..۵؛ وضعیت بررسی _es_feedback_status pending/approve؛ فرم مستقل forms/feedback.php با endpoint es_feedback_submit)
-NEXT: P08-T017 entries admin UI; then T018 email/honeypot/rate-limit. and phase 8 (24 tasks)
+P08-T017=17 (FormEntries زیرمنوی پیشخوان: لیست فیلترشدنی نوع/وضعیت/بازه تاریخ + رندر escape‌شده + اکشن‌های read/unread/approve/delete با nonce و manage_options؛ SC-02 subscriber → WP_Error)
+NEXT: P08-T018 ایمیل، Honeypot و Rate-limit (وابسته T013..T016); then T019 SEO. Phase 8 = 24 tasks.
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.
