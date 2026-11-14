@@ -342,3 +342,10 @@
 - AjaxSearch: search_products/search_content با wrapper کش (کلید normalize(term)+limit) — **دام:** در namespace باید self::normalize باشد؛ normalize() تنها = fatal «critical error» و ران تست وسط راه می‌میرد.
 - **آلودگی DB از ران abortشده:** ران فetal فیکسچرها را بدون cleanup رها می‌کند → ران بعدی «نام دسته» fail می‌شود (۲ ست فیکسچر T002 موازی). پاکسازی ران‌های قبلی (پست‌های حاوی T00x + ترم‌ها) سپس رگرسیون → همه سبز. قبل از ران رگرسیون، DB چک/پاک شود.
 - بنچمارک ۱۰۰ محصول + ۱۰۰ پروژه: p95 هر سه endpoint زیر 200ms (SC-01 ثبت شد).
+
+
+## 2026-11-07 — P08-T012 اسکیمای فرم‌ها و ذخیره ورودی‌ها (22)
+- Forms/Schema.php: چهار نوع با فیلدهای واقعی مرجع (contact: name/phone/organization/message؛ quote: +product/quantity؛ recruitment: +email/background؛ feedback: +rating)؛ validate: فیلد ناشناخته حذف، الزامی → WP_Error با برچسب فارسی، ایمیل sanitize_email، tel با اجازه +/()/رقم فارسی.
+- Forms/Entries.php: CPT es_form_entry (public/publicly_queryable=false، show_ui=false تا T017)؛ store → متا _es_entry_data/_es_entry_form/_es_entry_status(unread)/_es_entry_meta؛ query/mark_read/delete فقط manage_options.
+- **دام namespace:** WP_Error/WP_Query بدون \ داخل namespace ErfanSanat\Theme\Forms = Fatal «critical error» و cleanup ران نمی‌رود → DB آلوده (پاکسازی پست‌های T00x لازم شد).
+- QA DB هیچ کاربر ادمین ندارد (فقط مسیر deny قابل تست) → تست ادمین با wp_insert_user role=administrator می‌سازد و در teardown می‌حذف؛ wp_delete_user نیازمند wp-admin/includes/user.php.
