@@ -92,6 +92,7 @@ $es_search_icon = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="
 						</div>
 					</div>
 				</div>
+				<?php get_template_part( 'template-parts/archive/project-filters' ); // P08-T010: AJAX type/city filters + counters. ?>
 			</aside>
 
 			<div class="lg:col-span-9">
@@ -156,6 +157,7 @@ $es_search_icon = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="
 						<?php endforeach; ?>
 					</div>
 				</div>
+				<?php get_template_part( 'template-parts/archive/project-filters' ); // P08-T010 (drawer copy). ?>
 				<button type="button" data-archive-drawer-close="true" class="w-full rounded-xl bg-emerald-700 px-4 py-3 text-[13px] font-extrabold text-white transition hover:bg-emerald-800"><?php esc_html_e( 'اعمال فیلترها', 'erfansanat' ); ?></button>
 			</div>
 		</div>

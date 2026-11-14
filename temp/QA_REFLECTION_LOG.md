@@ -328,3 +328,10 @@
 - تست فیکسچر باید post_date متمایز بدهد (هر ۱۲ پست در یک ثانیه = ترتیب ناپایدار)؛ «#01 جدیدترین» یعنی post_date = base + (13-i)*60.
 - چک ریست DOM: per_page override باید قبل از چک «۳ کارت» برگردد وگرنه ۱ کارت درست است نه باگ.
 - رگرسیون T008=11، T005=15، T001=20، P06-T021=13، P06-T016=17.
+
+
+## 2026-11-07 — P08-T010 فیلترهای پروژه‌ها و شمارنده (18 + 9 DOM)
+- SmartFilters: PROJECT_ORDERBY (newest/popular/name)، build_project_query (AND بین type/city، IN داخل تاکسونومی، term→s عنوان)، query_projects با همان clamp/probe، project_term_counts facet-aware (شمارنده هر ترم با فیلتر تاکسونومی دیگر + جستجو، بدون فیلتر خودش)، ajax_project_filters پاسخ html کارت‌های card-project (include با args project_id) + counts.
+- project-filters.php/js: الگوی product-filters؛ URL با پیشوند es_p* تا با پارامترهای شل (type/location) تلاقی نکند؛ شمارنده‌های ترم از counts پاسخ به‌روز می‌شوند.
+- WP_Query «s» فقط عنوان/متن پست است نه ترم — تست اول «خمینی‌شهر» را انتظار داشت و fail شد؛ اصلاح: جستجوی عنوان + چک «شهر بدون عنوان → خالی اما سالم».
+- شمار اولیه DOM: کارت پروژه data-project-card ندارد → selector عمومی children/article. رگرسیون T009=14، T005=15، T001=20، P07-T006=12، P07-T007=10، P07-T008=10، P06-T021=13.

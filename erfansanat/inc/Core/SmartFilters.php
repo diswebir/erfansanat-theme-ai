@@ -56,6 +56,19 @@ final class SmartFilters {
 			'public' => true,
 			'inputs' => $inputs,
 		) );
+
+		// P08-T010: project_type/city filters with per-term counters.
+		Ajax::register( 'project_filters', array( __CLASS__, 'ajax_project_filters' ), array(
+			'public' => true,
+			'inputs' => array(
+				'term'     => array( 'type' => 'text', 'default' => '' ),
+				'types'    => array( 'type' => 'int_list', 'default' => array(), 'max' => 50 ),
+				'cities'   => array( 'type' => 'int_list', 'default' => array(), 'max' => 50 ),
+				'orderby'  => array( 'type' => 'enum', 'default' => 'newest', 'choices' => array_keys( self::PROJECT_ORDERBY ) ),
+				'page'     => array( 'type' => 'int', 'default' => 1, 'min' => 1, 'max' => 1000 ),
+				'per_page' => array( 'type' => 'int', 'default' => 12, 'min' => 1, 'max' => self::MAX_PER_PAGE ),
+			),
+		) );
 	}
 
 	/**
@@ -108,6 +121,13 @@ final class SmartFilters {
 	}
 
 	/** Sorting whitelist: request key → WP_Query orderby. */
+	/** Sorting whitelist for project archives (P08-T010). */
+	public const PROJECT_ORDERBY = array(
+		'newest'  => 'date',
+		'popular' => 'comment_count',
+		'name'    => 'title',
+	);
+
 	public const ORDERBY = array(
 		'latest'    => 'date',
 		'oldest'    => 'date_old',
@@ -260,6 +280,190 @@ final class SmartFilters {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Project archive taxonomies (P08-T010): type + city only.
+	 *
+	 * @return array<int,string>
+	 */
+	public static function allowed_project_taxonomies(): array {
+		return array( 'project_type', 'city' );
+	}
+
+	/**
+	 * Whitelisted WP_Query args for project archives. tax map: taxonomy →
+	 * ids/slugs; AND across taxonomies, IN inside one taxonomy.
+	 *
+	 * @param array<string,mixed> $state Filter state.
+	 * @return array<string,mixed>
+	 */
+	public static function build_project_query( array $state ): array {
+		$args = array(
+			'post_type'      => 'projects',
+			'post_status'    => 'publish',
+			'posts_per_page' => max( 1, min( self::MAX_PER_PAGE, (int) ( $state['per_page'] ?? 12 ) ) ),
+			'paged'          => max( 1, (int) ( $state['page'] ?? 1 ) ),
+		);
+		$term = trim( (string) ( $state['term'] ?? '' ) );
+		if ( '' !== $term ) {
+			$args['s'] = $term; // Escaped by WP_Query prepare.
+		}
+		$tax_query = array();
+		foreach ( self::allowed_project_taxonomies() as $taxonomy ) {
+			$values = $state['tax'][ $taxonomy ] ?? array();
+			if ( ! is_array( $values ) || ! $values ) {
+				continue;
+			}
+			$values = array_slice( array_values( array_filter( array_map( 'strval', $values ) ) ), 0, 50 );
+			if ( ! $values ) {
+				continue;
+			}
+			$is_ids = ! in_array( '0', preg_grep( '/[^0-9]/', $values ), true );
+			$tax_query[] = array(
+				'taxonomy' => $taxonomy,
+				'field'    => $is_ids ? 'term_id' : 'slug',
+				'terms'    => $is_ids ? array_map( 'intval', $values ) : $values,
+			);
+		}
+		if ( $tax_query ) {
+			$tax_query['relation'] = 'AND';
+			$args['tax_query']     = $tax_query;
+		}
+		$orderby = (string) ( $state['orderby'] ?? 'newest' );
+		if ( ! isset( self::PROJECT_ORDERBY[ $orderby ] ) ) {
+			$orderby = 'newest';
+		}
+		switch ( $orderby ) {
+			case 'popular':
+				$args['orderby'] = 'comment_count';
+				$args['order']   = 'DESC';
+				break;
+			case 'name':
+				$args['orderby'] = 'title';
+				$args['order']   = 'ASC';
+				break;
+			default:
+				$args['orderby'] = 'date';
+				$args['order']   = 'DESC';
+				break;
+		}
+		return $args;
+	}
+
+	/**
+	 * Run the project filter query with the same last-page clamp as products.
+	 *
+	 * @param array<string,mixed> $state Filter state.
+	 * @return array{ids:array<int,int>,total:int,pages:int,page:int}
+	 */
+	public static function query_projects( array $state ): array {
+		$args = self::build_project_query( $state );
+		return self::run_paged_query( $args );
+	}
+
+	/**
+	 * Shared paged runner: ids/total/pages with out-of-range clamping (the
+	 * SQLite QA-DB reports found_rows=0 past the last page — probe page 1).
+	 *
+	 * @param array<string,mixed> $args WP_Query args (fields forced to ids).
+	 * @return array{ids:array<int,int>,total:int,pages:int,page:int}
+	 */
+	private static function run_paged_query( array $args ): array {
+		$args['fields']        = 'ids';
+		$args['no_found_rows'] = false;
+		$q     = new \WP_Query( $args );
+		$page  = max( 1, (int) ( $args['paged'] ?? 1 ) );
+		$pages = (int) $q->max_num_pages;
+		if ( ! $q->posts && $page > 1 ) {
+			$probe_args          = $args;
+			$probe_args['paged'] = 1;
+			$probe               = new \WP_Query( $probe_args );
+			$total               = (int) $probe->found_posts;
+			$pages               = (int) ceil( $total / max( 1, (int) $probe_args['posts_per_page'] ) );
+			if ( $pages > 0 && $page > $pages ) {
+				$page          = $pages;
+				$args['paged'] = $page;
+				$q             = new \WP_Query( $args );
+			}
+		}
+		return array(
+			'ids'   => array_map( 'intval', $q->posts ),
+			'total' => (int) $q->found_posts,
+			'pages' => $pages,
+			'page'  => $page,
+		);
+	}
+
+	/**
+	 * Per-term counters for the filter UI (agent.md 8.1): faceted — a taxonomy's
+	 * counters respect the search term and the OTHER taxonomy's filter.
+	 *
+	 * @param array<string,mixed> $state Active filter state.
+	 * @return array<string,array<int,int>> tax => termId => count
+	 */
+	public static function project_term_counts( array $state ): array {
+		$counts = array();
+		foreach ( self::allowed_project_taxonomies() as $taxonomy ) {
+			$counts[ $taxonomy ] = array();
+			$terms = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
+			if ( is_wp_error( $terms ) || ! $terms ) {
+				continue;
+			}
+			$faceted           = $state;
+			$faceted['tax']    = isset( $state['tax'] ) && is_array( $state['tax'] ) ? $state['tax'] : array();
+			unset( $faceted['tax'][ $taxonomy ] ); // Same-taxonomy selection must not zero its own rows.
+			$faceted['page']   = 1;
+			$faceted['per_page'] = 1; // Only the count matters.
+			foreach ( $terms as $term ) {
+				$faceted['tax'][ $taxonomy ] = array( (int) $term->term_id );
+				$result = self::query_projects( $faceted );
+				$counts[ $taxonomy ][ (int) $term->term_id ] = (int) $result['total'];
+			}
+		}
+		return $counts;
+	}
+
+	/**
+	 * Endpoint callback (P08-T010): project filter state → query → reference
+	 * cards + facet counters.
+	 *
+	 * @param array<string,mixed> $input Whitelisted input.
+	 * @return array<string,mixed>
+	 */
+	public static function ajax_project_filters( array $input ): array {
+		$tax    = array();
+		$tax['project_type'] = $input['types'] ?? array();
+		$tax['city']         = $input['cities'] ?? array();
+		$result = self::query_projects( array(
+			'term'     => $input['term'],
+			'tax'      => $tax,
+			'orderby'  => $input['orderby'],
+			'page'     => $input['page'],
+			'per_page' => $input['per_page'],
+		) );
+
+		$template = locate_template( 'template-parts/cards/card-project.php' );
+		$html     = '';
+		if ( $template && $result['ids'] ) {
+			ob_start();
+			foreach ( $result['ids'] as $id ) {
+				$args = array( 'project_id' => (int) $id ); // Same contract as the shell grid.
+				include $template; // include (not require_once): cards repeat per request.
+			}
+			$html = (string) ob_get_clean();
+		}
+
+		return array(
+			'html'   => $html,
+			'total'  => $result['total'],
+			'pages'  => $result['pages'],
+			'page'   => $result['page'],
+			'counts' => self::project_term_counts( array(
+				'term' => $input['term'],
+				'tax'  => $tax,
+			) ),
+		);
 	}
 
 	/**
