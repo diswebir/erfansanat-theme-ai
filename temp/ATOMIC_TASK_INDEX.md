@@ -1,6 +1,6 @@
 # ATOMIC_TASK_INDEX — فهرست تسک‌های اتمیک
 
-مجموع: **175 تسک** · هر تسک یک خروجی مستقل، وابستگی مشخص و سناریوی تست دارد.
+مجموع: **176 تسک** (P08-T025 تکمیلی) · هر تسک یک خروجی مستقل، وابستگی مشخص و سناریوی تست دارد.
 
 ## Phase 1 — هسته قالب، Autoloader و Assets (12 تسک)
 - `P01-T001` [هدر قالب و style.css](phase-01-core-and-assets/tasks/task-001.md) — قبلی `1.1`
@@ -167,7 +167,7 @@
 - `P07-T027` [تک‌خدمت](phase-07-projects-blog-and-pages/tasks/task-027.md) — قبلی `7.3`
 - `P07-T028` [لندینگ آریا](phase-07-projects-blog-and-pages/tasks/task-028.md) — قبلی `7.3`
 
-## Phase 8 — ایجکس، فرم‌ها، ممیزی و استقرار (24 تسک)
+## Phase 8 — ایجکس، فرم‌ها، ممیزی و استقرار (25 تسک — شامل تکمیلی)
 - `P08-T001` [قرارداد و امنیت AJAX](phase-08-ajax-filters-and-audit/tasks/task-001.md) — قبلی `8.1`
 - `P08-T002` [جستجوی زنده محصولات](phase-08-ajax-filters-and-audit/tasks/task-002.md) — قبلی `8.1`
 - `P08-T003` [جستجوی زنده پروژه‌ها و مقالات](phase-08-ajax-filters-and-audit/tasks/task-003.md) — قبلی `8.1`
@@ -192,3 +192,4 @@
 - `P08-T022` [Dry-run مهاجرت روی استیجینگ](phase-08-ajax-filters-and-audit/tasks/task-022.md) — قبلی `8.3`
 - `P08-T023` [ترتیب غیرفعال‌سازی افزونه‌ها و Rollback](phase-08-ajax-filters-and-audit/tasks/task-023.md) — قبلی `8.3`
 - `P08-T024` [E2E نهایی و بسته انتشار](phase-08-ajax-filters-and-audit/tasks/task-024.md) — قبلی `8.3`
+- `P08-T025` [سخت‌سازی پس از ممیزی نهایی](phase-08-ajax-filters-and-audit/tasks/task-025.md) — تکمیلی

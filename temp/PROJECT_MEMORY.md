@@ -2,7 +2,7 @@
 
 > آخرین به‌روزرسانی: 2026-11-07 · قبل از هر تسک بخوان، بعد از هر تسک آپدیت کن.
 
-## وضعیت فعلی: **PHASE 8 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T024 پاس — **فاز ۸ کامل (24/24)**؛ e2e نهایی 2808 چک / 0 رد / exit 0.
+## وضعیت فعلی: **PHASE 8 IN PROGRESS** — فاز ۷ کامل (28/28)؛ فاز ۸: P08-T001..T025 پاس — **فاز ۸ کامل + تسک تکمیلی T025 (سخت‌سازی)**؛ e2e نهایی 2826 چک / 0 رد / exit 0.
 ```
 PHASES 1–6 COMPLETE; P06 runner ALL PASS twice (real-Woo staging verification deferred)
 PHASE 7: T001=14, T002=22, T003=12, T004=11, T005=10, T006=19, T007=10, T008=10
@@ -29,12 +29,13 @@ P08-T016=20 (FeedbackForm با نرمال‌سازی ارقام فارسی و ب
 P08-T017=17 (FormEntries زیرمنوی پیشخوان: لیست فیلترشدنی نوع/وضعیت/بازه تاریخ + رندر escape‌شده + اکشن‌های read/unread/approve/delete با nonce و manage_options؛ SC-02 subscriber → WP_Error)
 P08-T018=28 (SpamGuard مشترک: honeypot_ok + nonce_ok + rate-limit per-IP+scope با transient و reset_all؛ Mailer با گیرنده option es_form_recipient + filter es_form_recipient → admin_email؛ ایمیل بعد از store در هر ۴ فرم — خطای ایمیل ورودی را نگه می‌دارد؛ Ajax::dispatch nonce را از SpamGuard می‌گیرد)
 P08-T019=20 (Core/Seo.php: canonical فقط در شکاف‌های هسته — front/posts-mode و آرشیو ترم — singular را core می‌پوشاند؛ پلاگین SEO فعال → تم ساکت + remove_action rel_canonical؛ JSON-LD سه‌گانه Organization/Article/Product با es_seo_product_data filter؛ audit_hreflang کمکی؛ hreflang مالکش Core\Hreflang باقی می‌ماند)
+P08-T025=18 (حفاظ drift + پاریتی zip↔git در package-theme.sh؛ verify-clean-install.sh: نصب تمیز تکرارپذیر SC-02 — نکته: `wp rewrite structure` در php-wasm fatal proc_open → `wp option update permalink_structure` + `wp eval flush_rewrite_rules`؛ قرارداد حلقه‌ها قفل شد: bare the_post() فقط در index/single-projects/woo single؛ e2e artifacts در .gitignore)
 P08-T024=15 (run-all-phases-e2e.sh با گزارش e2e-report.md + e2e-state.txt؛ package-theme.sh → temp/dist/erfansanat.zip فقط پوشه erfansanat/؛ RELEASE_CHECKLIST.md با جدول واقعی ۸ فاز؛ E2E فرمی ۴ فرم + اکشن‌های ادمین + zip با ZipArchive؛ نصب تمیز با بسته اثبات شد)
 P08-T023=17 (DEACTIVATION_RUNBOOK.md: ترتیب ۶ مرحله‌ای بک‌آپ→قالب→بررسی→Elementor→Jet*→بررسی+ممیزی؛ سه نقطه rollback با sha256؛ فقط Deactivate نه uninstall؛ چک‌لیست ۲۰۰؛ سناریوی rollback روی کپی scratch تمرین شد — active_plugins بدون Jet*/Elementor و متاهای legacy دست‌نخورده)
 P08-T022=20 (staging-migration-dry-run.sh + MIGRATION_REPORT_TEMPLATE.md: کپی scratch با symlink + DB واقعی، بک‌آپ + sha256، شمارش پست/ترم/۳۷ کلید legacy قبل-بعد، drift=0، گزارش markdown؛ تست جریان را in-process بازتولید می‌کند چون php-wasm subprocess ندارد — اسکریپت با bash هارنس اثبات شد)
 P08-T021=13 (ممیزی ریسپانسیو/a11y: بریک‌پوینت‌های CSS 640/768/1024؛ بدون عرض ثابت ≥۱۰۰۰px؛ همه img دارای alt؛ label هر فیلد فرم؛ مودال/دراور با aria-label/role dialog؛ آکاردئون button+aria-expanded؛ Escape در main.js/certificates/مودال استعلام؛ onclick فقط روی button/input/a؛ اسنپ‌شات سکشن‌های خانه پایدار + viewport meta + max-w-[1300px])
 P08-T020=12 (ممیزی کارایی/escaping: اسکن echo خام بدون phpcs:ignore=0؛ رندر بدون warning صفحه اصلی/تک‌مقاله/آرشیو؛ بودجه asset styles<=8/scripts<=6 و کوئری front<=250/single<=150؛ assetهای صف‌شده همه داخلی؛ emoji حذف. **باگ واقعی topbar.php:36 اصلاح شد — # داخل regex باید \# باشد (وابستگی ثبت‌شده)**)
-NEXT: فاز ۸ کامل شد (24/24). تمام تسک‌های برنچ انجام شده؛ گام بعدی فقط درخواست کاربر (مثلاً PR یا تسک‌های جدید).
+NEXT: فاز ۸ کامل شد (25/25 با T025 تکمیلی). تمام تسک‌ها پاس؛ PR به main باز/پیشنهاد شده؛ گام بعدی فقط تصمیم کاربر (merge PR یا تسک‌های جدید).
 ```
 - **درخواست جاری کاربر (2026-11-07):** «کامل روی فاز 7 شروع به کار کن و همه تسک‌هاشو کامل کن» — اجرای پیوسته T014..T028. اجرای اتمیک فاز ۷ ادامه دارد؛ هر کامیت به برنچ ثابت Arena پوش می‌شود.
 - **بازیابی محیط:** تاریخچه محلی به base ریست شده بود؛ با fetch + reset --mixed به `41316d2` بازیابی شد (فایل‌ها سالم، working tree تمیز). هارنس بازسازی و قالب/rewrite فعال شد.

@@ -5,8 +5,10 @@
 
 ## ۱) پوشش تست — AC-01
 
-- آخرین اجرا (هارنس): `E2E RESULT: ALL PHASES PASS` — **۲۸۰۸ چک، ۰ رد، exit 0**.
+- آخرین اجرا (هارنس): `E2E RESULT: ALL PHASES PASS` — **۲۸۲۶ چک، ۰ رد، exit 0** (شامل P08-T025).
 - گزارش با جزئیات: `temp/e2e-report.md` (RESULT تک‌تک تسک‌ها) + `temp/e2e-state.txt` (نتیجه هر فاز).
+- سخت‌سازی پس از ممیزی (P08-T025): قرارداد حلقه‌های قالب (بدون آلودگی global)،
+  حفاظ drift + پاریتی زیپ↔گیت در بسته‌بندی، اثبات تکرارپذیر SC-02.
 
 | فاز | پاس | رد |
 |---|---|---|
@@ -17,7 +19,7 @@
 | phase-05-homepage-and-sections | 410 | 0 |
 | phase-06-woocommerce-and-products | 544 | 0 |
 | phase-07-projects-blog-and-pages | 437 | 0 |
-| phase-08-ajax-filters-and-audit | 408 | 0 |
+| phase-08-ajax-filters-and-audit | 426 | 0 |
 
 - معیار: ۱۰۰٪ پاس؛ skip فقط در حد «pending مجاز مستندشده» (P06-T028 تایید روی
   استیجینگ واقعی ووکامرس — محدودیت محیطی ثبت‌شده، نه نقص تست).
@@ -55,13 +57,18 @@
 ## ۶) نصب از بسته انتشار (SC-02)
 
 1. بسته: `bash temp/tools/package-theme.sh` → `temp/dist/erfansanat.zip` (فقط پوشه `erfansanat/` — AC-02).
-2. نصب تمیز: `wp core install` روی یک دیتابیس خالی → `unzip temp/dist/erfansanat.zip -d wp-content/themes/` → `wp theme activate erfansanat`.
-3. تمرین انجام‌شده در هارنس: نصب تمیز + فعال‌سازی + ثبت پیوندهای یکتا `/%postname%/` موفق؛ قالب بدون خطا فعال می‌شود.
-4. بعد از فعال‌سازی: چک‌لیست صفحات کلیدی ۲۰۰ از `temp/DEACTIVATION_RUNBOOK.md` بخش ۳.
+   - حفاظ drift (P08-T025): اگر `erfansanat/` از HEAD جدا افتاده باشد، بسته‌گیری با exit 3 رد می‌شود.
+   - پاریتی: فایل‌های زیپ دقیقاً با `git ls-files erfansanat/` برابرند (`parity: zip ↔ git OK`).
+2. اثبات خودکار و تکرارپذیر: `bash temp/tools/verify-clean-install.sh` → نصب WP روی DB خالی،
+   unzip زیپ، `theme activate erfansanat`، رندر صفحه خانه → `CLEAN INSTALL OK` (exit 0).
+   آخرین اجرا: نصب موفق، `front_len=190269`.
+3. نصب دستی معادل: `wp core install` روی دیتابیس خالی → `unzip temp/dist/erfansanat.zip -d wp-content/themes/` → `wp theme activate erfansanat` → `wp option update permalink_structure '/%postname%/'` → `wp eval 'flush_rewrite_rules();'`.
+4. تمرین انجام‌شده در هارنس: نصب تمیز + فعال‌سازی موفق؛ قالب بدون خطا فعال و صفحه خانه رندر می‌شود.
+5. بعد از فعال‌سازی: چک‌لیست صفحات کلیدی ۲۰۰ از `temp/DEACTIVATION_RUNBOOK.md` بخش ۳.
 
 ## ۷) تایید نهایی
 
-- [ ] E2E کامل: exit 0
-- [ ] زیپ فقط `erfansanat/` دارد
-- [ ] گزارش آمادگی (همین فایل) به‌روز
-- [ ] نقاط rollback ثبت شده‌اند
+- [x] E2E کامل: exit 0 (۲۸۲۶ چک، ۰ رد — 2026-11-14)
+- [x] زیپ فقط `erfansanat/` دارد (پاریتی zip ↔ git)
+- [x] گزارش آمادگی (همین فایل) به‌روز
+- [x] نقاط rollback ثبت شده‌اند

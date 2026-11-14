@@ -5,6 +5,10 @@ temp/wp/
 temp/tools/.write-test
 temp/dist/
 temp/asset-http-report.json
+# Generated e2e artifacts (rebuilt on every run of run-all-phases-e2e.sh)
+temp/e2e-report.md
+temp/e2e-state.txt
+temp/wp-clean/
 
 # OS / editor noise
 .DS_Store

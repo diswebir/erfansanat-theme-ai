@@ -452,3 +452,14 @@
 - **get_header() require_once است** — رندر دو باره قالب کامل ناممکن؛ اسنپ‌شات روی Renderer::render.
 - package: `temp/dist/erfansanat.zip` (249 فایل، 13MB، فقط erfansanat/)؛ **نصب تمیز اثبات شد**: کپی درخت + حذف دیتابیس (دقت: `rm database/*` فایل‌های نقطه‌دار را حذف نمی‌کند — کل پوشه!) → wp core install → unzip zip → theme activate → rewrite → locate_template(front-page)=found.
 - **برای e2e کامل پیش‌نیازها:** npm install + setup-harness + theme activate + permalinks + (node_modules برای DOM/wasm).
+
+## 2026-11-14 — P08-T025 سخت‌سازی پس از ممیزی نهایی (18)
+- **ممیزی «اگر موردی مونده»:** PLAN/INDEX بدون وضعیت ناتمام؛ صفر TODO/FIXME در تم؛ php -l و node --check کل تم بدون خطا (با PATH هارنس).
+- **ممیزی حلقه‌ها نتیجه مثبت داد:** فقط 3 فایل bare `the_post()` دارند (index.php، single-projects.php، woocommerce/single-product.php = main-loop مجاز)؛ کارت‌ها با ID صریح؛ SmartFilters setup/reset متوازن داخل ob → **بدون حفره آلودگی global**؛ قرارداد با تست T025 قفل شد.
+- **دو دام جدید ثبت شد:**
+  1. `wp rewrite structure` در php-wasm fatal proc_open می‌دهد (قبلاً "benign" بود) → در verify-clean-install با `wp option update permalink_structure` + `wp eval 'flush_rewrite_rules();'` جایگزین شد.
+  2. تست باید با `ob_end_flush(); es_summary();` تمام شود — `ob_end_clean()` خروجی RESULT را می‌بلعد و exit 1 بی‌صدای می‌دهد (تست T025 اولین اجرا).
+- **اسکریپت‌های مستقل باید php را خودشان resolve کنند** (`command -v php || $ROOT/temp/tools/php`) — PATH بین نوبت‌ها پایدار نیست.
+- **SC-02 حالا خودکار است:** verify-clean-install.sh → کپی تازه هارنس، پاک‌سازی کل پوشه database (دام نقطه‌دار)، core install، unzip از زیپ انتشار، activate، رندر front-page (190,269 بایت روی DB خالی)، CLEAN INSTALL OK / exit 0 (~18s).
+- **پاریتی zip ↔ git = 212 فایل** (لیست unzip شامل ورودی‌های پوشه است: 249 = 212 فایل + 37 پوشه).
+- e2e بعد از T025: **2826 چک / 0 رد / exit 0** (P08: 408 → 426).
